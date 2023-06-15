@@ -1,0 +1,140 @@
+@charset "UTF-8";
+    * {margin: 0; padding: 0; font-family: Consolas, monospace;}
+
+    form {
+        width: 400px;
+        height: 100%;
+        left: 50%;
+        margin-left: -200px;
+        background-color: rgb(245, 246, 247);
+        margin-top: 15px;
+
+    }
+
+    table {
+        position: absolute;
+        left: 50%;
+        margin-left: -200px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        width: 400px;
+        padding-top: 75px;
+    }
+
+    td {
+        width: 350px;
+        height: 50px;
+        padding-left: 20px;
+        padding-bottom: 5px;
+    }
+
+    p {
+        font-weight: bold;
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+
+    input,
+    select {
+        outline-color: rgb(15, 150, 200);
+        border: 1px solid rgb(200, 200, 200);
+        width: 350px;
+        height: 33px;
+        line-height: 30px;
+        padding-left: 5px;
+        font-size: 11px;
+        cursor: pointer;
+    }
+
+    img {
+        position: absolute;
+        height: 55px;
+        width: 200px;
+        left: 50%;
+        margin-left: -100px;
+        margin-top: 10px;
+    }
+
+    #gender,
+    #selNum {
+        width: 357px;
+        height: 35px;
+    }
+
+    #sel {
+        padding-top: 10px;
+    }
+
+    #sel * {
+        margin-bottom: 5px;
+    }
+
+    #inputNum {
+        float: left;
+        width: 255px;
+    }
+
+    #numButton {
+        float: left;
+        width: 90px;
+        font-size: 11px;
+        background-color: rgb(15, 150, 220);
+        color: white;
+        padding: 0;
+        margin-left: 5px;
+        height: 35px;
+        margin-top: -1px;
+        font-weight: bold;
+        border-radius: 5px;        
+    }
+
+    #create, #reset {
+        background-color: rgb(15, 150, 200);
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+        width: 175px;
+        margin-left: -1px;
+        height: 35px;
+    }
+
+    #reset{
+        background-color: white;
+        color: black;
+    }
+
+    #inputANum {
+        background-color: rgb(225, 225, 225);
+    }
+
+    select {
+        outline: 1px solid rgb(200, 200, 200);
+        border-right-width: 7.5px;
+        border-right-color: white;
+        border-left: none;
+        border-top: none;
+        border-bottom: none;
+    }
+
+    #hdn_msg_pwC {
+        display: none;
+        color: red;
+    }
+    
+    #m_id{
+        width: 255px;
+        float: left;
+    }
+    #btn_checkId{
+        float: left;
+        width: 90px;
+        font-size: 11px;
+        background-color: rgb(15, 150, 220);
+        color: white;
+        padding: 0;
+        margin-left: 5px;
+        height: 35px;
+        margin-top: -1px;
+        font-weight: bold;
+        border-radius: 5px;    
+    }

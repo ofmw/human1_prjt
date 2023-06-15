@@ -1,0 +1,27 @@
+@charset "UTF-8";
+    /*         div{
+            border: 1px solid gray; 
+            border-collapse: collapse;
+        } */
+        #div_board{
+            width: 1250px;
+            height: 650px;
+        }
+        #div_b_nav,#div_b_content{
+            float: left;
+            height: 650px;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        #div_b_nav{
+            width: 250px;
+        }
+        #div_b_nav *{
+            position: absolute;
+            font-weight: bold;
+            font-size: 17px;
+            margin-left: 40px;
+            margin-top: 40px;
+        }
+        #div_b_content{
+            width: 1000px;
+        }
