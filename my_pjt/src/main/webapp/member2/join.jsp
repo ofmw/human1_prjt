@@ -14,7 +14,7 @@
 <%
 	String dis = "none";
 %>
-<c:set var="dis" value="<%= dis %>"></c:set>
+<c:set var="dis" value="none"></c:set>
 
 <style>
 
