@@ -79,14 +79,6 @@
 <meta charset="UTF-8">
 <title>Q&A</title>
 </head>
-<script>
-    window.onload = function(){
-        let slt_rpp = document.getElementById("slt_rows_per_page");
-        slt_rpp.addEventListener("change",function(){
-            location.href = 'list.jsp?rows_per_page='+slt_rpp.value;
-        });
-    }
-</script>
 <style>
     *{margin: 0; padding: 0; font-family: Consolas, monospace; color: black; text-decoration: none;}
     .tbl{
@@ -97,6 +89,12 @@
         border-collapse: collapse;
         height: 20px;
         text-align: center;
+        font-size: 13px;
+    }
+    caption{
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
     #td_total{
         text-align: left;
@@ -108,12 +106,13 @@
         float: right;
         margin-right: 125px;
     }
+
 </style>
 <body>
     <!-- 검색 폼 -->
     <form action=""><!-- 액션에 값이 비어있을 때에는 자신의 페이지로 이동한다. -->
         <table id="tbl_search" class="tbl">
-            <caption>글 목록</caption>
+            <caption>Q&A 목록</caption>
             <tr>
                 <td id="td_total">
                     <c:set var="total" value="<%= totalRows %>"></c:set>
@@ -154,7 +153,7 @@
                     <tr>
                         <td>${boardList[rowNum-1].b_idx}</td>
                         <td id="td_title">
-                            <a href="view.jsp?no=${boardList[rowNum-1].b_idx}">${boardList[rowNum-1].title}</a>
+                            <a href="qa3.jsp?no=${boardList[rowNum-1].b_idx}">${boardList[rowNum-1].title}</a>
                         </td>
                         <td>${boardList[rowNum-1].m_name}</td>
                         <td>${boardList[rowNum-1].read_count}</td>
@@ -176,7 +175,7 @@
     <!-- 목록 하단에 글 작성 버튼 구현 -->
     <c:if test="${!empty member}">
         <div id="div_write">
-            <a href="../learncoding2/qa.jsp?status='write'"><button id="btn_write">글 작성</button></a>
+            <a href="../learncoding2/qa2.jsp"><button id="btn_write">글 작성</button></a>
         </div>
     </c:if>
 

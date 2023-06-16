@@ -18,10 +18,10 @@
 	
 	//DAO객체를 통해 VO에 저장된 내용을 DB에 저장
 	BoardDao dao = new BoardDao();
-	int result = dao.insertBoard(vo);
+	int result = dao.insertQA(vo);
 	dao.close();
 	if(result == 1){//글등록 성공시
-		response.sendRedirect("list.jsp");
+		response.sendRedirect("../learncoding2/qa.jsp");
 	}else{//글등록 실패시
 		JSFunction.alertBack("글등록에 실패했습니다.", out);
 	}

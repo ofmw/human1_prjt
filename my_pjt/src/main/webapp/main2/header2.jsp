@@ -75,7 +75,7 @@
                                 <tr>
                                     <td>ID</td>
                                     <td><input type="text" name="m_id"/></td>
-                                    <td rowspan="2"><input type="button" value="Login" id="btn_login" name="btn_login"/></td>
+                                    <td rowspan="2"><input type="button" value="Login" id="btn_login" name="btn_login" style="width: 50px; height: 60px;"/></td>
                                 </tr>
                                 <tr>
                                     <td>PW</td>

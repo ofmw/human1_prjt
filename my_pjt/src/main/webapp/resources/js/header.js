@@ -12,6 +12,7 @@
         
         let btn_login = frm_login.btn_login;//로그인 버튼
         btn_login.addEventListener("click", checkInput);
+        
 }
     
 function checkInput(){

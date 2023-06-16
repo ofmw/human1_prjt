@@ -1,21 +1,37 @@
+<%@page import="vo.BoardVo"%>
+<%@page import="dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+
+int b_idx = Integer.parseInt(request.getParameter("no"));  // 일련번호 받기 
+
+BoardDao dao = new BoardDao(); // DAO 생성
+BoardVo vo = dao.selectView(b_idx); // 게시물 가져오기
+dao.close();
+pageContext.setAttribute("boardVo", vo);
+
+%>    
+    
+    
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="UTF-8">
-    <title>Q&A 글 작성</title>
+    <title>글 수정</title>
 </head>
+
 <script>
     function validateForm() {
-        if (frm_write.title.value.length == 0) {
+        if (frm_edit.title.value.length == 0) {
             alert("제목을 입력하세요.");
-            frm_write.title.focus();
+            frm_edit.title.focus();
             return false;
-        } else if (frm_write.content.value.length == 0) {
+        } else if (frm_edit.content.value.length == 0) {
             alert("내용을 입력하세요.")
-            frm_write.content.focus();
+            frm_edit.content.focus();
             return false;
         }
     }
@@ -43,34 +59,36 @@
     }
     .tbl textarea {
         width: 100%;
-	    height: 400px;
+        height: 400px;
     }
 </style>
 <body>
-        <form action="../board2/wp_qa.jsp" name="frm_write" method="post" onsubmit="return validateForm();">
+        <form name="frm_edit" method="post" action="../board2/ep_qa.jsp" onsubmit="return validateForm();">
             <table class="tbl">
-                <caption>Q&A 작성</caption>
+                <caption>글 수정</caption>
                 <tr>
                     <th>작성자</th>
                     <td>
-                        <input type="text" value="${member.m_name}" style="text-align: center;" disabled>
-                        <input type="hidden" name="m_name" value="${member.m_name}">
-                        <input type="hidden" name="m_idx" value="${member.m_idx}">
+                        <input type="text" id="writer" value="${member.m_name}" disabled>
+                        <input type="hidden" name="m_name" value="${boardVo.m_name}">
+                        <input type="hidden" name="m_idx" value="${boardVo.m_idx}">
+                        <input type="hidden" name="b_idx" value="${boardVo.b_idx}">
                     </td>
                 </tr>
                 <tr>
                     <th>제목</th>
-                    <td><input type="text" name="title"></td>
+                    <td><input type="text" class="editable" name="title" value="${boardVo.title}"></td>
                 </tr>
                 <tr>
                     <th>내용</th>
-                    <td><textarea name="content" cols="30" rows="10" style="resize: none;"></textarea></td>
+                    <td><textarea name="content" class="editable" cols="30" rows="10"
+                            style="resize: none;">${boardVo.content}</textarea></td>
                 </tr>
                 <tr>
                     <td colspan="2" id="td_btn">
-                        <input type="submit" value="작성완료">
+                        <input type="submit" value="수정완료">
                         <input type="reset" value="초기화">
-                        <input type="button" value="목록으로" onclick="location.href='list.jsp'">
+                        <input type="button" value="목록으로" onclick="history.go(-2);">
                     </td>
                 </tr>
             </table>

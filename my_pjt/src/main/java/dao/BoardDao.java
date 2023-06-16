@@ -31,6 +31,29 @@ public class BoardDao extends DBConnectionPool {
 		return result;
 	}
 	
+	public int insertQA(BoardVo vo) {
+		int result = 0;//글 등록 실패시 반환값
+		
+		try {
+			String sql = "insert into rc_b_qa (b_idx, title, content, m_idx, m_name) "
+					+ "values(rc_b_qa_seq.nextval, ?, ?, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setInt(3, vo.getM_idx());
+			pstmt.setString(4, vo.getM_name());
+			
+			result = pstmt.executeUpdate();//executeUpdate()쿼리 수행결과 적용된 행의 수 반환
+			//성공시 1 반환
+			
+		} catch (Exception e) {
+			System.out.println("글 등록 중 예외 발생");
+			e.printStackTrace();
+		}	
+		return result;
+	}
+	
 	public int insertBoard(BoardVo vo) {
 		int result = 0;//글 등록 실패시 반환값
 		
@@ -203,6 +226,71 @@ public class BoardDao extends DBConnectionPool {
 		}
 		return totalCount;
 	}
+	
+	public void readCount_qa(int b_idx) {
+		String sql = "update rc_b_qa set read_count = read_count+1 where b_idx=?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, b_idx);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("조회수 증가 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public int updateQA(BoardVo vo) {
+		int result = 0;//수정 실패시 반환값
+		
+		try {
+			String sql = "update rc_b_qa set title=?, content=? where b_idx=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setInt(3, vo.getB_idx());
+			
+			//쿼리문 실행 후 적용된 행의 수 반환
+			//성공시 1 반환
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("게시물 수정 중 예외 발생");
+			e.printStackTrace();
+		}		
+		return result;
+	}
+	
+	public BoardVo selectQA(int b_idx) {
+		BoardVo vo = new BoardVo();
+		
+		String sql = "select * from rc_b_qa where b_idx=?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, b_idx);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				vo.setB_idx(rs.getInt("b_idx"));
+				vo.setTitle(rs.getString("title"));
+				vo.setContent(rs.getString("content"));
+				vo.setPost_date(rs.getDate("post_date"));
+				vo.setM_idx(rs.getInt("m_idx"));
+				vo.setM_name(rs.getString("m_name"));
+				vo.setRead_count(rs.getInt("read_count"));
+				vo.setDel_or_not(rs.getInt("del_or_not"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("게시물 로드 중 예외 발생");
+			e.printStackTrace();
+		}		
+		return vo;
+	}	
 //----------------------------------------------------------------------------------------------------------------------------------
 
 	//조회수 증가 메소드
