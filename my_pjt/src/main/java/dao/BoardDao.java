@@ -152,6 +152,59 @@ public class BoardDao extends DBConnectionPool {
 		return boardList;
 	}
 	
+//----------------------------------------------------------------------------------------------------------------------------------
+	public List<BoardVo> selectNotice() {
+		
+		List<BoardVo> boardList = new ArrayList<BoardVo>();
+		
+		String sql = null;
+		
+		try {
+				sql = "select * from rc_b_notice order by b_idx desc";
+				pstmt = conn.prepareStatement(sql);
+			
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardVo vo = new BoardVo();
+				vo.setB_idx(rs.getInt("b_idx"));
+				vo.setContent(rs.getString("content"));
+				vo.setPost_date(rs.getDate("post_date"));
+				vo.setM_idx(rs.getInt("m_idx"));
+				vo.setDel_or_not(rs.getInt("del_or_not"));
+				
+				boardList.add(vo);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return boardList;
+	}
+	
+	public int countNotice() {
+		int totalCount = 0;
+		
+		String sql = null;
+		
+		try {
+			sql = "select count(*) from rc_b_notice order by b_idx desc";
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				totalCount = rs.getInt(1);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return totalCount;
+	}
+//----------------------------------------------------------------------------------------------------------------------------------
+
 	//조회수 증가 메소드
 	public void updateReadCount(int board_idx) {
 		String sql = "update board_basic set read_count = read_count+1 where board_idx=?";

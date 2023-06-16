@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,28 +8,20 @@
 <title>회원가입</title>
 </head>
 
-<link rel="stylesheet" href="../resources/css/join_jsp.css" />
+<link rel="stylesheet" href="../resources/css/join_jsp.css?v=12345" />
 
-<script type="text/javascript" src="../resources/js/check.js"></script>
+<script type="text/javascript" src="../resources/js/check2.js"></script>
 
-<%
-	String dis = "none";
-%>
-<c:set var="dis" value="none"></c:set>
-
-<style>
-
-</style>
 <body>
     <form action="join_process.jsp" method="post" name="frm" autocomplete=off>
         <table>
             <img src="../resources/img/logo.png" alt="">
             <tr>
                 <td>
-                    <p>아이디</p>
-                    <input type="text" id="m_id" name="m_id">
-                    <input type="button" id="btn_checkId" name="aNum" value="중복확인" onclick=""><br><br>
-                    <p style="display:"${dis}>이미 사용중인 아이디입니다.</p>
+                    <p>아이디(이메일)</p>
+                    <input type="email" id="m_id" name="m_id" placeholder="이메일 주소">
+                    <input type="button" id="btn_checkId" value="중복확인" onclick="checkId()">
+                    <input type="hidden" name="confirm_id">
                 </td>
             </tr>
             <tr>
@@ -67,20 +60,14 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    <p>본인 확인 이메일</p>
-                    <input type="text" placeholder="선택입력" name="email">
-                </td>
-            </tr>
-            <tr>
                 <td id="sel">
                     <p>휴대전화</p>
-                    <select name="selNum" id="selNum">
+                    <select name="nation" id="nation">
                         <option value="0">대한민국 +82</option>
                     </select>
-                    <input type="text" id="inputNum" name="inputNum" placeholder="전화번호 입력">
-                    <input type="button" id="numButton" name="aNum" value="인증번호 받기" onclick="getANum()">
-                    <input type="text" id="inputANum" name="inputANum" placeholder="인증번호 입력하세요" disabled="true">
+                    <input type="text" id="selNum" name="selNum" placeholder="전화번호 입력">
+                    <input type="button" id="btn_aNum" name="btn_aNum" value="인증번호 받기" onclick="getANum()">
+                    <input type="text" id="inputANum" name="inputANum" placeholder="인증번호 입력" disabled="true">
                 </td>
             </tr>
             <tr>

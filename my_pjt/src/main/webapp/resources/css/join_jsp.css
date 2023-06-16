@@ -55,7 +55,7 @@
     }
 
     #gender,
-    #selNum {
+    #nation {
         width: 357px;
         height: 35px;
     }
@@ -68,12 +68,7 @@
         margin-bottom: 5px;
     }
 
-    #inputNum {
-        float: left;
-        width: 255px;
-    }
-
-    #numButton {
+    #btn_aNum {
         float: left;
         width: 90px;
         font-size: 11px;
@@ -98,7 +93,7 @@
         height: 35px;
     }
 
-    #reset{
+    #reset {
         background-color: white;
         color: black;
     }
@@ -121,11 +116,11 @@
         color: red;
     }
     
-    #m_id{
+    #m_id, #selNum {
         width: 255px;
         float: left;
     }
-    #btn_checkId{
+    #btn_checkId {
         float: left;
         width: 90px;
         font-size: 11px;
@@ -136,5 +131,5 @@
         height: 35px;
         margin-top: -1px;
         font-weight: bold;
-        border-radius: 5px;    
+        border-radius: 5px;
     }
