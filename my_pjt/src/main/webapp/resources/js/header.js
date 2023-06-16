@@ -16,11 +16,9 @@
     
 function checkInput(){
     if(frm_login.m_id.value.length==0){
-        alert("아이디가 입력되지 않았습니다.");
         frm_login.m_id.focus();
         return false;
     }else if(frm_login.m_pw.value.length==0){
-        alert("비밀번호가 입력되지 않았습니다.");
         frm_login.m_pw.focus();
         return false;
     }else{

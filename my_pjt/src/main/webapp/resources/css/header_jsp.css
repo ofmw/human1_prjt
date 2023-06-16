@@ -45,7 +45,7 @@
         line-height: 20px;
         font-weight: bold;
     }
-    #tbl_login input {
+    #tbl_login input[type="text"] {
         width: 140px;
         height: 20px;
         padding-left: 5px;

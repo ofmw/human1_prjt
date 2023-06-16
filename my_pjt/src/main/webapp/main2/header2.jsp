@@ -79,7 +79,7 @@
                                 </tr>
                                 <tr>
                                     <td>PW</td>
-                                    <td><input type="password" name="m_pw"/></td>
+                                    <td><input type="password" style="width: 140px; height: 20px; padding-left: 5px;" name="m_pw"/></td>
                                 </tr>
                             </table>
                             <div id="div_join">

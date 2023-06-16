@@ -35,8 +35,8 @@ public class BoardDao extends DBConnectionPool {
 		int result = 0;//글 등록 실패시 반환값
 		
 		try {
-			String sql = "insert into board_basic (board_idx, title, content, member_idx, member_name) "
-					+ "values(board_basic_seq.nextval, ?, ?, ?, ?)";
+			String sql = "insert into rc_b_qa (b_idx, title, content, m_idx, m_name) "
+					+ "values(rc_b_qa_seq.nextval, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getTitle());
@@ -67,13 +67,13 @@ public class BoardDao extends DBConnectionPool {
 				searchField = (String)map.get("searchField");
 				
 				if(searchField.equals("title")) {//검색구분이 '제목'인 경우
-					sql = "select count(*) from board_basic "
+					sql = "select count(*) from rc_b_qa "
 							+ "where title like '%'||?||'%' "
-							+ "order by board_idx desc";
+							+ "order by b_idx desc";
 				}else {//검색구분이 '내용'인 경우
-					sql = "select count(*) from board_basic "
+					sql = "select count(*) from rc_b_qa "
 							+ "where content like '%'||?||'%' "
-							+ "order by board_idx desc";
+							+ "order by b_idx desc";
 				}				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, searchWord);
@@ -83,7 +83,7 @@ public class BoardDao extends DBConnectionPool {
 				pstmt.executeQuery();
 				
 			}else {//검색어가 없는 경우
-				sql = "select count(*) from board_basic order by board_idx desc";
+				sql = "select count(*) from rc_b_qa order by b_idx desc";
 				pstmt = conn.prepareStatement(sql);
 			}
 			
@@ -112,13 +112,13 @@ public class BoardDao extends DBConnectionPool {
 				searchField = (String)map.get("searchField");
 				
 				if(searchField.equals("title")) {//검색구분이 '제목'인 경우
-					sql = "select * from board_basic "
+					sql = "select * from rc_b_qa "
 							+ "where title like '%'||?||'%' "
-							+ "order by board_idx desc";
+							+ "order by b_idx desc";
 				}else {//검색구분이 '내용'인 경우
-					sql = "select * from board_basic "
+					sql = "select * from rc_b_qa "
 							+ "where content like '%'||?||'%' "
-							+ "order by board_idx desc";
+							+ "order by b_idx desc";
 				}				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, searchWord);
@@ -126,19 +126,19 @@ public class BoardDao extends DBConnectionPool {
 				pstmt.executeQuery();
 				
 			}else {//검색어가 없는 경우
-				sql = "select * from board_basic order by board_idx desc";
+				sql = "select * from rc_b_qa order by b_idx desc";
 				pstmt = conn.prepareStatement(sql);
 			}
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				BoardVo vo = new BoardVo();
-				vo.setB_idx(rs.getInt("board_idx"));
+				vo.setB_idx(rs.getInt("b_idx"));
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setPost_date(rs.getDate("post_date"));
-				vo.setM_idx(rs.getInt("member_idx"));
-				vo.setM_name(rs.getString("member_name"));
+				vo.setM_idx(rs.getInt("m_idx"));
+				vo.setM_name(rs.getString("m_name"));
 				vo.setRead_count(rs.getInt("read_count"));
 				vo.setDel_or_not(rs.getInt("del_or_not"));
 				
@@ -206,12 +206,12 @@ public class BoardDao extends DBConnectionPool {
 //----------------------------------------------------------------------------------------------------------------------------------
 
 	//조회수 증가 메소드
-	public void updateReadCount(int board_idx) {
-		String sql = "update board_basic set read_count = read_count+1 where board_idx=?";
+	public void updateReadCount(int b_idx) {
+		String sql = "update rc_b_qa set read_count = read_count+1 where b_idx=?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, board_idx);
+			pstmt.setInt(1, b_idx);
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -222,23 +222,23 @@ public class BoardDao extends DBConnectionPool {
 	}
 	
 	
-	public BoardVo selectView(int board_idx) {
+	public BoardVo selectView(int b_idx) {
 		BoardVo vo = new BoardVo();
 		
-		String sql = "select * from board_basic where board_idx=?";
+		String sql = "select * from rc_b_qa where b_idx=?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, board_idx);
+			pstmt.setInt(1, b_idx);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				vo.setB_idx(rs.getInt("board_idx"));
+				vo.setB_idx(rs.getInt("b_idx"));
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
 				vo.setPost_date(rs.getDate("post_date"));
-				vo.setM_idx(rs.getInt("member_idx"));
-				vo.setM_name(rs.getString("member_name"));
+				vo.setM_idx(rs.getInt("m_idx"));
+				vo.setM_name(rs.getString("m_name"));
 				vo.setRead_count(rs.getInt("read_count"));
 				vo.setDel_or_not(rs.getInt("del_or_not"));
 			}
@@ -255,7 +255,7 @@ public class BoardDao extends DBConnectionPool {
 		int result = 0;//수정 실패시 반환값
 		
 		try {
-			String sql = "update board_basic set title=?, content=? where board_idx=?";
+			String sql = "update rc_b_qa set title=?, content=? where b_idx=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getTitle());
@@ -278,7 +278,7 @@ public class BoardDao extends DBConnectionPool {
 		int result = 0; //게시글 삭제 실패시 반환값
 		
 		try {
-			String sql = "delete from board_basic where board_idx=?";
+			String sql = "delete from rc_b_qa where b_idx=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getB_idx());
