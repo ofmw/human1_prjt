@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,7 @@
         <jsp:include page="../main2/header2.jsp"></jsp:include>
     </header>
     <section>
-        <jsp:include page="../board2/board_itNews.jsp"></jsp:include>
+        <jsp:include page="itNews/board_itNews.jsp"></jsp:include>
     </section>
     <footer>
         <jsp:include page="../main2/footer.jsp"></jsp:include>

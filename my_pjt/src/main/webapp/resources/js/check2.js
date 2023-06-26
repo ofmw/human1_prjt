@@ -1,6 +1,8 @@
 window.onload = function(){
     let pwC = document.getElementById("pwCheck");
     let hmc = document.getElementById("hdn_msg_pwC");
+    let m_pw = document.getElementById("m_pw")
+    
     pwC.onblur = function(){
         if (frm.pwCheck.value == frm.m_pw.value || frm.pwCheck.value.length == 0) {
             pwC.style.outlineColor="rgb(15, 150, 200)";
@@ -14,9 +16,14 @@ window.onload = function(){
 }
 
 function checkId() {
+    let emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     if(frm.m_id.value.length == 0){
         alert("아이디가 입력되지 않았습니다.");
-        frm.focus();
+        frm.m_id.focus();
+        return false;
+    }else if(!emailRegExp.test(frm.m_id.value)){
+        alert("올바른 이메일 형식이 아닙니다.");
+        frm.m_id.focus();
         return false;
     }else{
         let url = "checkId.jsp?m_id="+frm.m_id.value;
@@ -36,7 +43,19 @@ function getANum(){
     }
 }
 
+function checkSelNum() {
+    if(frm.selNum.value.length == 0){
+        alert("전화번호가 입력되지 않았습니다.");
+        frm.selNum.focus();
+        return false;
+    }else{
+        let url = "checkSelNum.jsp?m_id="+frm.selNum.value;
+        window.open(url, "_blank", "toolbar=no, menuber=no, scrollbar=yes, resizable=no, width=500, height=180");   
+    }
+}
+
 function addCheck() {
+    
     if (frm.m_id.value.length == 0) {
         alert("아이디가 입력되지 않았습니다.");
         frm.m_id.focus();

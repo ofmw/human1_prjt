@@ -3,7 +3,8 @@ package vo;
 import java.util.Date;
 
 public class BoardVo {
-
+	
+	private String table_name;//테이블 이름 가져오는 용도
 	private int b_idx;//글번호(board_basic테이블의 기본키)
 	private String title;//제목
 	private String content;//내용
@@ -13,6 +14,14 @@ public class BoardVo {
 	private int m_idx;//작성자 번호(member테이블에 대한 외래키)
 	private int del_or_not;//삭제여부(1:유지, -1:삭제)
 	private Date del_date;//삭제일
+	private int c_count;//코멘트 수
+	
+	public String getTable_name() {
+		return table_name;
+	}
+	public void setTable_name(String table_name) {
+		this.table_name = table_name;
+	}
 	public int getB_idx() {
 		return b_idx;
 	}
@@ -66,6 +75,12 @@ public class BoardVo {
 	}
 	public void setDel_date(Date del_date) {
 		this.del_date = del_date;
+	}
+	public int getC_count() {
+		return c_count;
+	}
+	public void setC_count(int c_count) {
+		this.c_count = c_count;
 	}
 	
 

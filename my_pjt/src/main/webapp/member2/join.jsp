@@ -8,14 +8,14 @@
 <title>회원가입</title>
 </head>
 
-<link rel="stylesheet" href="../resources/css/join_jsp.css?v=12345" />
+<link rel="stylesheet" href="../resources/css/join_jsp.css?v=1234" />
 
-<script type="text/javascript" src="../resources/js/check2.js"></script>
+<script type="text/javascript" src="../resources/js/check2.js?v=1234"></script>
 
 <body>
     <form action="join_process.jsp" method="post" name="frm" autocomplete=off>
+        <img src="../resources/img/logo.png" alt="">
         <table>
-            <img src="../resources/img/logo.png" alt="">
             <tr>
                 <td>
                     <p>아이디(이메일)</p>
@@ -74,7 +74,7 @@
             </tr>
             <tr>
                 <td>
-                    <input type="reset" id="reset" value="취소하기">
+                    <input type="reset" id="reset" value="취소하기" onclick="location.href='../index2.jsp'">
                     <input type="button" id="create" value="가입하기" onclick="addCheck()">
                 </td>
             </tr>

@@ -7,6 +7,7 @@ public class MemberVo {
 	private String m_id;
 	private String m_pw;
 	private String m_name;
+	private String birth;
 	private int gender;
 	private String selNum;
 	private int grade;
@@ -14,6 +15,7 @@ public class MemberVo {
 	private Date update_date;
 	private Date cancel_date;
 	private int cancel_or_not;
+	private int score;
 
 	
 	public MemberVo() {}
@@ -40,6 +42,14 @@ public class MemberVo {
 
 	public void setM_name(String m_name) {
 		this.m_name = m_name;
+	}
+
+	public String getBirth() {
+		return birth;
+	}
+
+	public void setBirth(String birth) {
+		this.birth = birth;
 	}
 
 	public int getGender() {
@@ -105,9 +115,15 @@ public class MemberVo {
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
-	
-	
-	
-	
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+
 
 }

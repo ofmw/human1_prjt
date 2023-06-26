@@ -20,9 +20,8 @@ String m_pw = request.getParameter("m_pw");
 %>
     <script type="text/javascript">
         alert("아이디나 패스워드를 확인해주세요.")
+        location.href="../index2.jsp";
     </script>
 <%
-		RequestDispatcher rd = request.getRequestDispatcher("../index2.jsp");
-		rd.forward(request, response);
 	}
 %>

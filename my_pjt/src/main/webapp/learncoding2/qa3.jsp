@@ -22,7 +22,7 @@
         <jsp:include page="../main2/header2.jsp"></jsp:include>
     </header>
     <section>
-        <jsp:include page="../board2/view_qa.jsp"></jsp:include>
+        <jsp:include page="qa/view_qa.jsp"></jsp:include>
     </section>    
     <footer>
         <jsp:include page="../main2/footer.jsp"></jsp:include>

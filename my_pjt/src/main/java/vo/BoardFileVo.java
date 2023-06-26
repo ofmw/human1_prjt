@@ -4,22 +4,26 @@ import java.util.Date;
 
 public class BoardFileVo {
 	
-	private int board_idx;
+	private int b_idx;
 	private String title;
 	private String content;
 	private String originFile;
 	private String saveFile;
 	private	Date post_date;
 	private int read_count;
-	private int member_idx;
-	private String member_name;
+	private int m_idx;
+	private String m_name;
 	private int del_or_not;
 	private Date del_date;
+	
 	public int getBoard_idx() {
-		return board_idx;
+		return b_idx;
 	}
-	public void setBoard_idx(int board_idx) {
-		this.board_idx = board_idx;
+	public int getB_idx() {
+		return b_idx;
+	}
+	public void setB_idx(int b_idx) {
+		this.b_idx = b_idx;
 	}
 	public String getTitle() {
 		return title;
@@ -57,17 +61,17 @@ public class BoardFileVo {
 	public void setRead_count(int read_count) {
 		this.read_count = read_count;
 	}
-	public int getMember_idx() {
-		return member_idx;
+	public int getM_idx() {
+		return m_idx;
 	}
-	public void setMember_idx(int member_idx) {
-		this.member_idx = member_idx;
+	public void setM_idx(int m_idx) {
+		this.m_idx = m_idx;
 	}
-	public String getMember_name() {
-		return member_name;
+	public String getM_name() {
+		return m_name;
 	}
-	public void setMember_name(String member_name) {
-		this.member_name = member_name;
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
 	}
 	public int getDel_or_not() {
 		return del_or_not;
@@ -80,11 +84,6 @@ public class BoardFileVo {
 	}
 	public void setDel_date(Date del_date) {
 		this.del_date = del_date;
-	}
-	
-	
-	
-	
-	
+	}	
 	
 }

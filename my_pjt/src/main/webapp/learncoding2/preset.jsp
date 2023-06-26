@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>index</title>
+<title>Preset</title>
 </head>
 <style>
     *{margin: 0; padding: 0; font-family: Consolas, monospace; color: black; text-decoration: none;}
@@ -23,7 +23,7 @@
         <jsp:include page="../main2/header2.jsp"></jsp:include>
     </header>
     <section>
-        <jsp:include page="../board2/board_qa.jsp"></jsp:include>
+        <jsp:include page="preset/board_preset.jsp"></jsp:include>
     </section>    
     <footer>
         <jsp:include page="../main2/footer.jsp"></jsp:include>

@@ -24,7 +24,7 @@
         <jsp:include page="../main2/header2.jsp"></jsp:include>
     </header>
     <section>
-        <jsp:include page="../board2/board_ranking.jsp"></jsp:include>
+        <jsp:include page="board_ranking.jsp"></jsp:include>
     </section>
     
     <footer>
