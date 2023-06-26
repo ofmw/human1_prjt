@@ -1,3 +1,4 @@
+<%@page import="vo.MemberVo"%>
 <%@page import="vo.CommentVo"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.CommentDao"%>
@@ -23,6 +24,8 @@ int cRows = cDao.selectCount(b_idx);
 List<CommentVo> commentList = cDao.selectList(b_idx);
 pageContext.setAttribute("commentList", commentList);
 cDao.close();
+
+MemberVo member = (MemberVo)session.getAttribute("member");
 %>
 <c:set var="cRows" value="<%= cRows %>"/>
 <!DOCTYPE html>
@@ -39,6 +42,18 @@ function deletePost() {
     	
         frm_view.method = "post";
         frm_view.action = "qa/delete_process.jsp?no=${boardVo.b_idx}";
+        frm_view.submit();  
+    }    
+}
+
+function deleteComment() {
+    
+    var confirmAns = confirm("정말로 삭제하겠습니까?");
+    
+    if (confirmAns) {
+        
+        frm_view.method = "post";
+        frm_view.action = "qa/dp_comment.jsp?post_date=${commentList[rowNum-1].post_date}";
         frm_view.submit();  
     }    
 }
@@ -95,6 +110,17 @@ function writeComment() {
         float: left;
         height: 72px;
         margin-left: 8px;
+    }
+    #delete_comment{
+        float: right;
+        margin-right: 10px;
+        font-size: 11px;
+    }
+    #view_comment{
+        float: left;
+        width: 600px;
+        word-break:break-all;
+        text-align: left;
     }
 </style>
 <body>
@@ -167,7 +193,10 @@ function writeComment() {
                    </p>
                 </th>
 	            <td colspan="3" style="height: 80px;">
-                    <input type="text" value="${commentList[rowNum-1].content}" style="border: none; padding: 5px;" disabled/>
+                    <div id="view_comment">${commentList[rowNum-1].content}</div>
+                    <c:if test="${commentList[rowNum-1].m_idx eq member.m_idx}">
+                        <a id="delete_comment" href="qa/dp_comment.jsp?post_date=${commentList[rowNum-1].post_date}&no=${boardVo.b_idx}">삭제</a>
+                    </c:if>
 	            </td>
 	        </tr>
         </c:forEach>

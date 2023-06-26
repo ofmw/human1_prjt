@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +160,25 @@ public class CommentDao extends DBConnectionPool {
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, b_idx);
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("게시물 삭제 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public int deleteComment(int m_idx, Timestamp post_date) {
+		int result = 0; //게시글 삭제 실패시 반환값
+		
+		try {
+			String sql = "delete from rc_c_qa where m_idx=? and post_date=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, m_idx);
+			pstmt.setTimestamp(2, post_date);
 			
 			result = pstmt.executeUpdate();
 			
