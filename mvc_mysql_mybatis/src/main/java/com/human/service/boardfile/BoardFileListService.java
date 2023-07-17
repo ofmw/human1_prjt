@@ -1,0 +1,33 @@
+package com.human.service.boardfile;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.human.dao.BoardFileDao;
+import com.human.vo.BoardFileVo;
+
+@Service("bfList")
+public class BoardFileListService implements BoardFileService {	
+	
+	private BoardFileDao dao;
+	
+	@Autowired
+	public BoardFileListService(BoardFileDao dao) {
+		this.dao = dao;
+	}
+	
+	public List<BoardFileVo> SelectList(String searchField, String searchWord) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(searchWord != null){
+		    map.put("searchField", searchField);
+		    map.put("searchWord", searchWord);
+		}
+		
+		return dao.selectList(map);
+	}
+	
+}

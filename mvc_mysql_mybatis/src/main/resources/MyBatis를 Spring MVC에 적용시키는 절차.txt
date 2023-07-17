@@ -1,0 +1,60 @@
+1. pom.xml에 의존모듈 추가하기
+- 기존의 Spring JDBC 의존모듈 위에 추가하기
+
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis-spring</artifactId>
+    <version>1.3.2</version>
+</dependency>
+
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.4.6</version>
+</dependency>
+
+2. root-context.xml에 빈 등록하기
+- 기존의 dataSource빈 아래에 추가하기
+
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+     <property name="dataSource" ref="dataSource"/>
+     <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+     <property name="mapperLocations" value="classpath:mapper/**/*Mapper.xml"/>
+</bean>
+
+<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+    <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+</bean>
+
+3. src/main/resources폴더 아래에 config폴더를 만들고 mybatis-config.xml파일 만들기
+- mybatis-config.xml파일은 일반적인 XML파일로 만들고
+  http://mybatis.org/mybatis-3/ko/getting-started.html에 나오는
+  <!DOCTYPE configuration ~ /mybatis-3-config.dtd">를 복사해서 붙여넣음
+  
+4. src/main/resources폴더 아래에 mapper폴더를 만들고 MemberMapper.xml, BoardFileMapper.xml파일 만들기
+- 일반적인 XML파일로 만들고
+  http://mybatis.org/mybatis-3/ko/getting-started.html에 나오는
+  <!DOCTYPE mapper ~ 예문 전체를 복사해서 붙여넣음
+  
+- 네임스페이스를 공통 패키지명과 해당 Mapper의 이름으로 정의해줌
+  **네임스페이스는 단지 Mapper를 구분하는 역할을 함
+  (예) <mapper namespace="com.human.MemberMapper">
+  
+5. 회원가입 처리구문에 적용하기
+- "/member/join_process.do"요청에 대한 처리
+  MyBatis의 실제적인 적용위치는 DAO클래스이며 여기서 sqlSession 빈을 주입받아서 처리함
+  
+- MyBatis를 사용할때 각각의 Mapper내에 있는 SQL구문은 Mapper의 네임스페이스와 SQL구문의 id값으로 구분되므로
+  각 Mapper파일의 네임스페이스를 DAO내에 상수로 정의해서 SqlSession메소드 호출시 사용함
+  
+  DBConnectionPool클래스는 더이상 필요치 않으므로 상속관계를 제거하고
+  멤버변수로 SqlSession형의 SqlSession을 정의하여 생성자를 이용한 의존자동주입을 받음
+  
+  (적용예)
+  public static final String MAPPER = "com.human.MemberMapper";
+  SqlSession sqlSession;
+  
+  @Autowired
+  public MemberDao(SqlSession sqlSession){
+    this.sqlSession = sqlSession;
+  }

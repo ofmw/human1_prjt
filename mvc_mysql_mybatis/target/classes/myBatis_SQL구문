@@ -1,0 +1,236 @@
+MyBaits SQL구문
+
+1.SQL구문 요소
+<구문이름 id="네임스페이스 내에서 구문의 유일한 구분자 값"
+        parameterType="파라미터(입력값) 데이터 타입"
+        resulttype="반환되는 결과값 데이터 타입">
+
+(1)구문이름
+- select: 매핑된 select구문
+- insert: 매핑된 insert구문
+- update: 매핑된 update구문
+- delete: 매핑된 delete구문
+- sql: 다른 구문에서 재사용하기 위한 SQL구문
+- resultMap: 반환되는 결과값에 대한 데이터형을 정의하는 구문
+
+(2)parameterType: 구문에 전달되는 파라미터의 패키지명을 포함한 클래스명이나 별칭
+
+(3)resultType: 반환되는 결과값의 패키지명을 포함한 클래스명이나 별칭
+
+*resultMap: 정의된 resultMap의 이름
+*statememntType: STATEMENT, PREPARED(기본값), CALLABLE 중 1개 선택
+
+2.SQL구문 요소의 내용: SQL문
+
+(1)#{파라미터명}: Mybatis로 하여금 PreparedStatement 파라미터에 프로퍼티를 만들어서 값을 세팅하게 함
+
+(2)<sql> 구문: 다른구문에서 재사용 가능한 SQL구문 정의, SQL조각 구문
+<sql id="아이디값"> 재사용할 SQL구문 </sql>
+
+(예)
+<sql id="memberColumns">member_idx, member_id,....</sql>
+
+다른 구문에서의 사용 예
+<select id="selectMember" parameterType="_int" resultType="memberVo">
+    select <include refid = "memberColumns"/> from member
+            where member_idx = #{member_idx}
+</select>
+
+(3)동적 SQL문
+ 1)if문
+<if test="조건식"> SQL문 </if>
+
+(예)
+<select id="selectList" parameterType="hashMap" resultType="boardVo">
+    select * from board_basic
+            where del_or_not = 1
+            <if test="searchWord != null and searchField == 'title'">
+                and title like '%'||#{searchWord}||'%'
+            </if>
+            <if test="searchWord != null and searchField == 'content'">
+                and content like '%'||#{searchWord}||'%'
+            </if>
+</select>
+***조건식에 사용되는 변수***
+- 파라미터 입력값에서 해당 변수에 대한 Getter메소드를 MyBatis에서 호출함
+- 일반적으로는 VO객체를 파라미터로 사용하므로 문제가 되지 않지만 기본형으로 1-2개의 파라미터를 입력할 경우에는 주의해야 함
+- 기본형의 경우 Getter메소드가 지원되지 않으므로 HashMap형으로 파라미터를 입력해야 함
+
+ 2)choose문
+ <choose>
+    <when text="조건식"> SQL문 </when>
+    ...
+    <otherwise> SQL문 </otherwise>
+</choose>
+
+(예)
+<select id="selectList" parameterType="hashMap" resultType="boardVo">
+    select * from board_basic
+            where del_or_not = 1
+            <if test="searchWord != null>
+                <choose>
+                    <when test="searchField == 'title'">
+                        and title like '%'||#{searchWord}||'%'
+                    </when>
+                    <otherwise>
+                        and content like '%'||#{searchWord}||'%'
+                    </otherwise>
+                </choose>
+            </if>
+</select>
+ 
+ 3)where, set, trim문
+(예)관리자 페이지에서 게시판의 삭제여부까지 검색대상에 포함시켜 게시판 테이블을 조회하는 경우
+
+<select id="selectList" parameterType="hashMap" resultType="boardVo">
+    select * from board_basic
+            where 
+            <if test="del_or_not != null">
+                del_or_not = #{del_or_not}
+            </if>
+            <if test="searchWord != null>
+                <choose>
+                    <when test="searchField == 'title'">
+                        and title like '%'||#{searchWord}||'%'
+                    </when>
+                    <otherwise>
+                        and content like '%'||#{searchWord}||'%'
+                    </otherwise>
+                </choose>
+            </if>
+</select>
+
+위의 SQL구문에서 del_or_not과 searchWord의 값이 null이면 where만 남게되어 오류가 발생하고
+del_or_not만 null인 경우에도 where 다음에 and가 바로오기때문에 오류가 발생함
+
+(해결방법)
+<where> 또는 <trim>구문으로 해결
+
+<select id="selectList" parameterType="hashMap" resultType="boardVo">
+    select * from board_basic
+            <where> --포함되는 SQL문이 실행되면 단순히 where키워드만 추가되고 SQL문이 and나 or로 시작하게 되면 그것을 삭제함
+                <if test="del_or_not != null">
+                    del_or_not = #{del_or_not}
+                </if>
+                <if test="searchWord != null>
+                    <choose>
+                        <when test="searchField == 'title'">
+                            and title like '%'||#{searchWord}||'%'
+                        </when>
+                        <otherwise>
+                            and content like '%'||#{searchWord}||'%'
+                        </otherwise>
+                    </choose>
+                </if>
+            </where>
+</select>
+
+<select id="selectList" parameterType="hashMap" resultType="boardVo">
+    select * from board_basic
+            <trim prefix="where" prefixOverrides="AND|OR">                
+                <if test="del_or_not != null">
+                    del_or_not = #{del_or_not}
+                </if>
+                <if test="searchWord != null>
+                    <choose>
+                        <when test="searchField == 'title'">
+                            and title like '%'||#{searchWord}||'%'
+                        </when>
+                        <otherwise>
+                            and content like '%'||#{searchWord}||'%'
+                        </otherwise>
+                    </choose>
+                </if>
+            </trim>
+</select>
+
+(동적으로 update문을 작성하는 경우)
+- <set>요소 사용
+- 동적으로 set키워드를 붙이고 필요없는 콤마(,)를 삭제함
+
+(예)
+<update id="updateMember" parameterType="memberVo">
+    update member
+        <set>
+            <if test="member_pw != null">
+                member_pw = #{member_pw},
+            </if>
+            <if test="selNum != null">
+                selNum = #{selNum},
+            </if>
+            ...
+        </set>
+        where member_idx = #{member_idx}
+</update>
+
+<update id="updateMember" parameterType="memberVo">
+    update member
+        <trim prefix="set" suffixOverrides=",">
+            <if test="member_pw != null">
+                member_pw = #{member_pw},
+            </if>
+            <if test="selNum != null">
+                selNum = #{selNum},
+            </if>
+            ...
+        </trim>
+        where member_idx = #{member_idx}
+</update>
+
+ 4)foreach문
+ - 컬렉션에 대한 반복처리
+ - 종종 in 조건에 사용됨
+ - 파라미터로 List나 배열을 입력값으로 전달하면 MyBatis는 자동으로 Map으로 감싸고
+   그것의 이름을 key로 사용하는데 List객체는 'list'를 key로 사용하고 배열객체는 'array'를 key로 사용함
+
+(예)회원의 거주지역이 '천안, 아산, 청주, 대전'인 회원의 수를 조회하는 경우
+- member테이블
+- address_city 거주지
+- 파라미터로 String[] cities를 전달함
+
+<select id="countMemberByCity" resultType="_int">
+    select * from member
+        where address_city in
+            <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+</select>
+
+(4) <selectKey>구문: SQL문을 실행하기 전에 다른 select문을 실행시켜서 얻은 값으로 SQL문을 완성하는 경우
+<selectKey keyProperty = "구문의 실행결과가 세팅될 프로퍼티명"
+           resultType = "반환되는 결과값의 데이터형"
+           order = "SQL문의 실핸 전, 또는 후에 대한 값. BERORE, AFTER">
+           
+    select문
+</selectKey>
+
+(예)주문테이블에 데이터 입력시 임의로 발생시킨 난수를 행운번호로 추가 입력하고자 하는 경우
+<insert id="insertOrder" parameterType="orderVo">
+    <selectKey keyProperty="lucky_no" resultType="int" order="BEFORE">
+        select abs(dbms_random.random) lucky_no from dual
+    </selectKey>
+    
+    insert into order (order_idx, product_idx, ..., lucky_no)
+        values (order_seq.nextval, #{product_idx}, ..., #{lucky_no})
+</insert>
+
+(5)<resultMap>구문
+- 데이터베이스 테이블의 컬럼명과 결과값을 저장할 VO객체의 필드명이 다른 경우 <resultMap>구문을 사용할 수 있음
+- resultMap을 반환하는 결과값을 데이터타입으로 사용하기 위해서는 먼저 <resultMap>구문을 정의해야 함
+
+(예)
+
+<resultMap id="memberResultMap" type="memberVo">
+    <id property="member_idx" column="user_idx"/>
+    <result property="member_id" column="user_id"/>
+    <result property="member_name" column="user_name/>
+    ...
+</resultMap>
+
+<select id="selectMember" parameterType="_int" resultMap="memberResultMap">
+    select user_idx, user_id, user_name, ... from user where user_idx = #{member_idx}
+</select>
+
+
+
+   
