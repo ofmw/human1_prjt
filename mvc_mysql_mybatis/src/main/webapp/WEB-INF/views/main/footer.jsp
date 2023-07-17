@@ -7,7 +7,7 @@
 <title>Footer</title>
 </head>
 <body>
-충남 천안시 동남구 대흥로 215, 7층 T.041-561-1122<br>
+테스트 충남 천안시 동남구 대흥로 215, 7층 T.041-561-1122<br>
 개인정보 처리방침 | 이용약관<br>
 Copyrightⓒ2023 휴먼교육센터. All right reserved.
 </body>
