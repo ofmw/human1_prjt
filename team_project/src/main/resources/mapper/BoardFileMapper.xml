@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.human.BoardFileMapper">
+    
+    <!-- 게시글 추가 처리구문 -->
+    <insert id="insertBoard" parameterType="boardFileVo">
+        insert into board_file (title, content, member_idx, member_name,originfile,savefile) values(#{title}, #{content}, #{member_idx}, #{member_name}, #{originFile}, #{saveFile})
+    </insert>
+    
+    <!-- 검색 조건에 맞는 게시물 수 반환 -->
+    <select id="selectCount" parameterType="map" resultType="_int">
+        select count(*) from board_file
+            <if test="searchWord != null">
+                <where>
+                    <choose>
+                        <when test="searchField == 'title'">
+                            title like CONCAT('%',#{searchWord},'%')
+                        </when>
+                        <otherwise>
+                            content like CONCAT('%',#{searchWord},'%')
+                        </otherwise>
+                    </choose>
+                </where>
+            </if>
+        order by board_idx desc
+    </select>
+    
+    <!-- 검색 조건에 맞는 게시물 목록 반환 -->
+    <select id="selectList" parameterType="map" resultType="boardFileVo">
+        select * from board_file
+            <if test="searchWord != null">
+                <where>
+                    <choose>
+                        <when test="searchField == 'title'">
+                            title like CONCAT('%',#{searchWord},'%')
+                        </when>
+                        <otherwise>
+                            content like CONCAT('%',#{searchWord},'%')
+                        </otherwise>
+                    </choose>
+                </where>
+            </if>
+        order by board_idx desc
+    </select>
+    
+    <!-- 조회수 증가 -->
+    <update id="updateReadCount" parameterType="_int">
+        update board_file set read_count = read_count+1 where board_idx=#{board_idx}
+    </update>
+    
+    <!-- 지정한 게시물을 찾아 내용 반환 -->
+    <select id="selectView" parameterType="_int" resultType="boardFileVo">
+        select * from board_file where board_idx = #{board_idx}
+    </select>
+    
+    <update id="updateBoard" parameterType="boardFileVo">
+        update board_file
+            <set>
+	            <if test="title != null">
+	                title=#{title},
+	            </if>
+	            <if test="content != null">
+                    content=#{content},
+                </if>
+                <if test="originfile != null">
+                    originfile=#{originFile},
+                </if>
+                <if test="savefile != null">
+                    savefile=#{savaFile}
+                </if>
+            </set>
+        where board_idx=#{board_idx}
+    </update>
+    
+    <!-- 지정한 게시물 삭제 -->    
+    <delete id="deletePost" parameterType="boardFileVo">
+        delete from board_file where board_idx=#{board_idx}
+    </delete>
+    
+</mapper>

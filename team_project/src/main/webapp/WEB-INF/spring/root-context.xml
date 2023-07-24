@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- MySQL관련 설정 --> 
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" 
+        value="jdbc:mysql://localhost:3306/mymysql?characterEncoding=UTF-8&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
+        <property name="username" value="web_dev"/>
+        <property name="password" value="1234" />   
+    </bean> 
+    
+    <!-- MyBatis 관련 설정 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+         <property name="dataSource" ref="dataSource"/>
+         <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+         <property name="mapperLocations" value="classpath:mapper/**/*Mapper.xml"/>
+    </bean>
+    
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <!-- 이메일 인증 관련 빈 등록 -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+       <property name="host" value="smtp.gmail.com"/>
+       <property name="port" value="587"/>
+       <property name="username" value="ofmw91@gmail.com"/>
+       <property name="password" value="rbyeqmziwonwxnhi"/>
+       <property name="javaMailProperties">
+           <props>
+               <prop key="mail.transport.protocol">smtp</prop>
+               <prop key="mail.smtp.auth">true</prop>
+               <!-- Gmail의 경우 보안문제 업데이트로 인해 SSLSocketFactory를 추가해야 smtp 사용가능 -->
+               <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+               <prop key="mail.smtp.starttls.enable">true</prop>
+               <prop key="mail.debug">true</prop>
+               <prop key="mail.smtp.trust">smtp.gmail.com</prop>
+               <prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>              
+           </props>
+       </property>
+    </bean>
+		
+</beans>
