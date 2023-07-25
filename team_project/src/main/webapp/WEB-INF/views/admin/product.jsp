@@ -172,7 +172,7 @@
 </head>
 <body>
     <div id="div_member1">
-        <h3>회원관리</h3>
+        <h3>제품관리</h3>
         <table>
             <tr>
                 <td>상태</td>
