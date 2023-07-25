@@ -10,5 +10,5 @@
         <typeAlias alias="memberVo" type="com.human.vo.MemberVo"/>
         <typeAlias alias="boardFileVo" type="com.human.vo.BoardFileVo"/>
     </typeAliases>
-    
+   
 </configuration>

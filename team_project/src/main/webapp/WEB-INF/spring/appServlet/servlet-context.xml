@@ -26,7 +26,7 @@
                   class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
     </beans:bean>
 	
-	<context:component-scan base-package="com.human.controller" />
+	<context:component-scan base-package="com.human.controller, com.human.service.member, com.human.dao" />
 	
 	<!-- Interseptor 관련 설정: 사용자의 요청에 대해서 로그인 여부를 체크하는 LoginInterceptor 설정 -->
     <interceptors>

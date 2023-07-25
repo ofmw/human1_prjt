@@ -11,7 +11,7 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String home() {
-		return "admin";/* 뷰의 이름 */
+		return "member/join";/* 뷰의 이름 */
 	}
 	@GetMapping("/index.do")
 	public String index() {
