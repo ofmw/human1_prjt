@@ -13,9 +13,5 @@ public class HomeController {
 	public String home() {
 		return "admin/admin";/* 뷰의 이름 */
 	}
-	@GetMapping("/admin.do")
-	public String index() {
-		return "admin/admin";/* 뷰의 이름 */
-	}
 	
 }

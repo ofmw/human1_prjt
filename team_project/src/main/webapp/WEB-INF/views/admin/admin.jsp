@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<% pageContext.setAttribute("status", "member"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,6 +26,58 @@
         width: 100%;
         height: 70px;
         overflow: hidden;
+    }
+    #div_admin_topBar img,#div_admin_topBar h3{
+        float: left;
+        line-height: 80px;
+        color: white;
+    }
+    #div_admin_topBar img{
+        margin: 15px;
+    }
+    #div_admin_topMenu{
+        float: right;
+        /* border: 1px solid black; */
+        width: 500px;
+        height: 50px;
+        margin: 10px;
+    }
+    #div_admin_topMenu span{
+        float: right;
+        width: 500px;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        margin-right: 10px;
+    }
+    #div_admin_topMenu div{
+        float: right;
+        /* border: 1px solid white; */
+        height: 25px;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+    #div_admin_topMenu_btns{
+        width: 150px;
+    }
+    #div_admin_timeout{            
+        width: 160px;
+    }
+    #div_admin_topMenu div *{
+        float: left;
+        color: white;
+        margin: 5px;            
+    }
+    #div_admin_timeout button{
+        background-color: rgb(127, 127, 127);
+        margin: 3px;
+        font-size: 11px;
+        width: 33px;
+        height: 20px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        line-height: 15px;
     }
     #div_admin_sideBar{
         float: left;
@@ -68,7 +119,7 @@
 		let adminElement = document.getElementById("div_admin");
 		let sideBarElement = document.getElementById("div_admin_sideBar");
 		let sectionElement = document.getElementById("div_admin_section");
-		let memberElement = document.getElementById("div_member2");
+		let memberElement = document.getElementById("div_right");
 		
 		function updateWidth(){ //width 자동 조정
 			let adminWidth = adminElement.clientWidth;
@@ -93,19 +144,18 @@
         window.addEventListener("resize", updateHeight); //실시간 Width값 조정
         
         /* display: none/block 변환 function */
-        let displayBtns = document.querySelectorAll(".display");
+        let addProduct = document.getElementById("btn_addProduct");
         let divShadow = document.getElementById("div_shadow");
         let cancelBtn = document.getElementById("btn_cancel");
         
-        displayBtns.forEach((btn) => {
-            btn.addEventListener("click", function(){
+        addProduct.addEventListener("click", function(){
                 divShadow.style.display = "block";
-            });
+        
         });
         
         cancelBtn.addEventListener("click", function(){
         	divShadow.style.display = "none";
-        	frm_member_edit.reset();
+        	frm_edit.reset();
         });
         
 	}
@@ -114,7 +164,19 @@
 <body>    
 	<div id="div_admin">
 	    <div id="div_admin_topBar">
-	    
+	       <img src="../resources/img/omart_classic_logo.png" alt="">
+            <h3>SMART 관리</h3>
+            <div id="div_admin_topMenu">
+                <span>관리자님</span>
+                <div id="div_admin_topMenu_btns">
+                    <a href="">메인으로 가기</a><p> | </p>
+                    <a href="">로그아웃</a>
+                </div>
+                <div id="div_admin_timeout">
+                    <p>남은시간 01:00:00</p>
+                    <button>연장</button>
+                </div>
+            </div>
 	    </div>
 	    <div id="div_admin_sideBar">
 	        <ul>
@@ -128,7 +190,7 @@
 	         </li>
 	         <li>
 	             <div>
-	                 <a href="admin/member.do">
+	                 <a href="${pageContext.request.contextPath}/admin/member.do">
                          <img src="" alt="">
                          <p>회원</p>
                      </a>
@@ -136,7 +198,7 @@
 	         </li>
 	         <li>
 	             <div>
-	                 <a href="">
+	                 <a href="${pageContext.request.contextPath}/admin/product.do">
                          <img src="" alt="">
                          <p>판매</p>
                      </a>
