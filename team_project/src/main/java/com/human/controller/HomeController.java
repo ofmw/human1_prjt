@@ -11,11 +11,11 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String home() {
-		return "admin";/* 뷰의 이름 */
+		return "admin/admin";/* 뷰의 이름 */
 	}
-	@GetMapping("/index.do")
+	@GetMapping("/admin.do")
 	public String index() {
-		return "index";/* 뷰의 이름 */
+		return "admin/admin";/* 뷰의 이름 */
 	}
 	
 }

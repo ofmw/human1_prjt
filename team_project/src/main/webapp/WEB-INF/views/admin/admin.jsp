@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<% pageContext.setAttribute("status", "member"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -126,7 +128,7 @@
 	         </li>
 	         <li>
 	             <div>
-	                 <a href="">
+	                 <a href="admin/member.do">
                          <img src="" alt="">
                          <p>회원</p>
                      </a>
@@ -159,7 +161,15 @@
 	     </ul>
 	    </div>
 	    <div id="div_admin_section">
-	        <jsp:include page="admin/member.jsp"></jsp:include>
+	       <c:choose>
+	           <c:when test="${status == 'member'}">
+	               <jsp:include page="member.jsp"></jsp:include>
+	           </c:when>
+	           <c:when test="${status == 'product'}">
+                   <jsp:include page="product.jsp"></jsp:include>
+               </c:when>
+	       </c:choose>
+	        
 	    </div>      
 	</div>
 </body>

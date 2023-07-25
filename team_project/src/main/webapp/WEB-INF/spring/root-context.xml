@@ -9,8 +9,8 @@
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" 
-        value="jdbc:mysql://localhost:3306/mymysql?characterEncoding=UTF-8&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
-        <property name="username" value="web_dev"/>
+        value="jdbc:mysql://127.0.0.1:3306/team?characterEncoding=UTF-8&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
+        <property name="username" value="team"/>
         <property name="password" value="1234" />   
     </bean> 
     
