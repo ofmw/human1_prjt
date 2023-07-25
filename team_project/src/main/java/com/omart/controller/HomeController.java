@@ -1,4 +1,4 @@
-package com.human.controller;
+package com.omart.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,7 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String home() {
-		return "admin";/* 뷰의 이름 */
+		return "member/login";/* 뷰의 이름 */
 	}
 	@GetMapping("/index.do")
 	public String index() {

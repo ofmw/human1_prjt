@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.human.MemberMapper">
+<mapper namespace="com.omart.MemberMapper">
     
     <!-- 아이디검사 구문 -->
     <!-- 일반적으로 id값은 DAO의 메소드이름으로 정의, parameterType: 입력값의 데이터타입, resultType: 조회결과값의 데이터타입 -->

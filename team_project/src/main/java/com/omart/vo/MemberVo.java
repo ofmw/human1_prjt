@@ -1,4 +1,4 @@
-package com.human.vo;
+package com.omart.vo;
 
 import java.util.Date;
 

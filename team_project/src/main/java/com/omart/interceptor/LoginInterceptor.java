@@ -1,4 +1,4 @@
-package com.human.interceptor;
+package com.omart.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.human.vo.MemberVo;
+import com.omart.vo.MemberVo;
 
 public class LoginInterceptor implements HandlerInterceptor {
 	

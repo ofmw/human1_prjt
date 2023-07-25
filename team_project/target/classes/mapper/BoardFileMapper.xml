@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.human.BoardFileMapper">
+<mapper namespace="com.omart.BoardFileMapper">
     
     <!-- 게시글 추가 처리구문 -->
     <insert id="insertBoard" parameterType="boardFileVo">
