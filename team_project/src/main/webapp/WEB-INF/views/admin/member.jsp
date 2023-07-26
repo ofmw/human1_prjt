@@ -114,37 +114,37 @@
         border-bottom: 1px solid lightgray;
         
     }
-    #tbl_member_edit{
+    #tbl_contents_edit{
         margin: 10px 0px;
     }    
-    #tbl_member_edit th, #tbl_member_edit td{
+    #tbl_contents_edit th, #tbl_contents_edit td{
 /*         border: 1px solid lightgray; */
         height: 32px;
         white-space: nowrap;
         font-size: 12px;
     }
-    #tbl_member_edit th{
+    #tbl_contents_edit th{
         width: 80px;
         padding-right: 10px;
         text-align: right;
     }
-    #tbl_member_edit td{
+    #tbl_contents_edit td{
         width: 150px;
     }
-    #tbl_member_edit input[type="text"]{
+    #tbl_contents_edit input[type="text"]{
         width: 150px;
         height: 25px;
         border: 1px solid lightgray;
         border-radius: 0px;
     }
-    #tbl_member_edit tr:nth-child(n+4):nth-child(-n+6) td:nth-child(3) input[type="text"]{
+    #tbl_contents_edit tr:nth-child(n+4):nth-child(-n+6) td:nth-child(3) input[type="text"]{
 	   width: 220px;
 	   margin-left: 2px;
     }
-    #tbl_member_edit tr th:nth-child(3) {
+    #tbl_contents_edit tr th:nth-child(3) {
 	   width: 60px;
     }
-    #tbl_member_edit tr:last-child td{
+    #tbl_contents_edit tr:last-child td{
 	   text-align: right;
 	   padding-top: 6px;
     }
@@ -206,7 +206,7 @@
         </table>
     </div>
     <div id="div_right">
-        <table id="tbl_member">
+        <table id="tbl_contents">
             <tr>
                 <td></td>
                 <td></td>
@@ -252,7 +252,7 @@
 	    <div id="div_member_edit">
 	    <p>고객정보</p>
 	       <form action="" name="frm_edit">
-		       <table id="tbl_member_edit">
+		       <table id="tbl_contents_edit">
 		           <tr>
 			           <th>이름</th>
 			           <td><input type="text" /></td>

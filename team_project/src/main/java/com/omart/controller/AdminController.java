@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 	
-//	@Setter(onMethod_={ @Autowired })
-//	MemberService mJoin;
-	
 	@GetMapping("/member.do")
 	public String member(Model model) {
 		model.addAttribute("status", "member");

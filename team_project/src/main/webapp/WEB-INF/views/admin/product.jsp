@@ -207,6 +207,109 @@
         margin-right: 5px;        
     }
 </style>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+	$(function(){
+		
+		let categoryMap = {"1": "AA", "2": "BB", "3": "CC", "4": "DD"};
+	    let p_id; //상품코드
+		let p_name; //상품명
+		let brand; //브랜드명
+		let price; //판매금액
+		let cost; //구매금액		
+		let category; //분류
+		let standard; //규격
+        let unit; //단위
+        let stock; //재고
+        let discount; //할인율
+		
+        $("#category").change(function(){
+            
+            let selectedCategory = $(this).val();
+            
+            if(selectedCategory != "0"){
+                
+                let categoryCode = categoryMap[selectedCategory];
+                
+                $.ajax({
+                    type: "get",
+                    url: "countCategory.do?category=" + categoryCode,
+                    success: function(count){
+                        let generatedCode = generateProductCode(categoryCode, count);
+                        $("#p_id").val(generatedCode);
+                    },
+                    error: function(error){
+                        console.error("AJAX 오류 발생", error);
+                    }
+                }); //end of ajax
+                
+            }else{
+                $("#p_id").val("");
+            }
+            
+        });
+        
+        //상품코드 생성 로직
+        function generateProductCode(categoryCode, count){          
+            
+            let codeNumber = count.toString().padStart(4, "0");
+            
+            let generatedCode = categoryCode + codeNumber;
+            return generatedCode;
+        }
+        
+		$("#btn_add").click(function(){			
+			
+			p_id = $("#p_id").val();
+			p_name = $("#p_name").val();
+			brand = $("#brand").val();
+			price = $("#price").val();
+			cost = $("#cost").val();
+			category = $("#category").val();
+			standard = $("#standard").val();
+		    unit = $("#unit").val();
+		    stock = $("#stock").val();
+		    discount = $("#discount").val();
+			
+			if(p_name == "" || brand == "" || price == "" || cost == "" || standard == "" || unit == "" ){
+				alert("모든 항목을 입력해주세요.");
+			}else if(category == "0"){
+				alert("분류를 선택해주세요.");
+			}else{
+				let formData = {
+						p_id: p_id,
+						p_name: p_name,
+			            brand: brand,
+			            price: parseInt(price),
+			            cost: parseInt(cost),
+			            category: category,
+			            standard: parseInt(standard),
+			            unit: unit,
+			            stock: parseInt(stock),
+			            discount: parseInt(discount)
+				};
+				
+				$.ajax({
+					
+					type: "post",
+					url: "insertProduct.do",
+					data: formData,
+					success: function(response){
+						alert("상품이 성공적으로 등록되었습니다.")
+						$("#btn_cancel").click();
+					},
+					error: function(error){
+						console.error("AJAX 오류 발생", error);
+						alert("상품 등록 중 오류가 발생했습니다.");
+					}					
+				}); //end of ajax
+				
+			}
+		});
+		
+		
+	});
+</script>
 </head>
 <body>
     <div id="div_left">
@@ -261,7 +364,7 @@
         <input type="button" value="일괄삭제">
     </div>
     <div id="div_right">        
-        <table id="tbl_member">
+        <table id="tbl_contents">
             <tr>
                 <td><input type="checkbox"></td>
                 <td></td>
@@ -274,9 +377,7 @@
                 <td>단위</td>
                 <td>재고</td>
                 <td>할인율</td>
-                <td>판매여부</td>
-
-                
+                <td>게시여부</td>                
             </tr>
             <c:forEach begin="1" end="50" var="i">
                 <tr>
@@ -304,59 +405,61 @@
     <div id="div_shadow">
 	    <div id="div_product_add">
 	    <p>상품등록</p>
-	       <form action="" name="frm_edit">
+	       <form action="" name="frm_product">
 		       <table id="tbl_product_add">
 		           <tr>
 			           <th>상품명</th>
-			           <td><input type="text" /></td>
+			           <td><input id="p_name" type="text"/></td>
 			           <th>분류</th>
 			           <td>
-				           <select>
-				                <option value="">육류</option>
-				                <option value="">가공</option>
-				                <option value="">수산</option>
-				                <option value="">야채</option>
+				           <select id="category">
+				                <option value="0">선택</option>
+				                <option value="1">육류</option>
+				                <option value="2">가공</option>
+				                <option value="3">수산</option>
+				                <option value="4">야채</option>
 				           </select>
 			           </td>
 		           </tr>
 		           <tr>
 			           <th>브랜드</th>
-			           <td><input type="text" /></td>
-			           <th>규격</th>
-			           <td><input type="text" /></td>
+			           <td><input id="brand" type="text"/></td>
+			           <th>상품코드</th>
+                       <td><input id="p_id" type="text" disabled/></td>
+			           
 		           </tr>
 		           <tr>
 			           <th>판매금액</th>
-			           <td><input type="text" /></td>
-			           <th>단위</th>
-			           <td><input type="text" /></td>
+			           <td><input id="price" type="text"/></td>
+			           <th>규격</th>
+                       <td><input id="standard"  type="text" /></td>
 		           </tr>
 		           <tr>
 			           <th>구매금액</th>
-                       <td><input type="text" /></td>
-                       <th>재고</th>
-                       <td><input type="text" /></td>
+                       <td><input id="cost" type="text"/></td>
+                       <th>단위</th>
+                       <td><input id="unit" type="text" /></td>
 		           </tr>
 		           <tr>
 			           <th>할인율</th>
-                       <td><input type="number" min="0" max="90"/></td>
-                       <th>상품코드</th>
-                       <td><input type="text" /></td>
+                       <td><input id="discount" type="number" min="0" max="90" value="0"/></td>
+                       <th>재고</th>
+                       <td><input id="stock" type="text" value="0"/></td>
 		           </tr>		           
 		           <tr>
 			           <th>썸네일</th>
 			           <td><input type="file" /></td>
 			           <th>게시상태</th>
                        <td>
-                           <input type="radio" name="option" id="option1"/><label for="option1">판매중</label>
-                           <input type="radio" name="option" id="option2"/><label for="option2">판매중단</label>
+                           <input type="radio" name="option" id="option1" value="1"/><label for="option1">판매중</label>
+                           <input type="radio" name="option" id="option2" value="0"/><label for="option2">판매중단</label>
                        </td>
 		           </tr>
 		           <tr>                
 		               <th>상품정보</th>
                        <td><input type="file" /></td>
 		               <td colspan="2">
-		                   <input id="btn_add" type="button" value="등록" />
+		                   <input id="btn_add" type="button" value="등록"/>
 			               <input id="btn_cancel" type="button" value="취소"/>
 		               </td>
 	               </tr>

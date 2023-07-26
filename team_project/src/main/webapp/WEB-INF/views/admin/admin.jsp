@@ -155,7 +155,7 @@
         
         cancelBtn.addEventListener("click", function(){
         	divShadow.style.display = "none";
-        	frm_edit.reset();
+        	frm_product.reset();
         });
         
 	}
