@@ -88,14 +88,14 @@
     #div_right button{
         margin-top: 5px;
     }
-    #div_shadow{
+    .div_shadow{
         position: absolute;
         width: 100%;
         height: 100%;
         background-color: rgba(50, 50, 50, 0.3);
         display: none;
     }
-    #div_product_add{
+    .div_product{
         position: absolute;
         width: 500px;
         height: 320px;
@@ -105,7 +105,7 @@
         top: 50%;
         margin-top: -260px;
     }
-    #div_product_add p{
+    .div_product p{
         font-size: 13px;
         line-height: 35px;      
         background-color: rgb(240, 240, 240);
@@ -114,46 +114,46 @@
         border-bottom: 1px solid lightgray;
         
     }
-    #tbl_product_add{
+    .tbl_product{
         margin: 10px 0px;
     }    
-    #tbl_product_add th, #tbl_product_add td{
+    .tbl_product th, .tbl_product td{
 /*         border: 1px solid lightgray; */
         height: 35px;
         white-space: nowrap;
         font-size: 12px;
     }
-    #tbl_product_add th{
+   .tbl_product th{
         width: 70px;
         padding-right: 10px;
         text-align: right;
     }
-    #tbl_product_add td{
+    .tbl_product td{
         width: 150px;
     }
-    #tbl_product_add input[type="text"], #tbl_product_add input[type="file"], #tbl_product_add input[type="number"]{
+    .tbl_product input[type="text"], .tbl_product input[type="file"], .tbl_product input[type="number"]{
         width: 150px;
         height: 25px;
         border-radius: 0px;
         font-size: 11px;
     }    
-    #tbl_product_add input[type="text"], #tbl_product_add input[type="number"]{
+    .tbl_product input[type="text"], .tbl_product input[type="number"]{
         border: 1px solid lightgray;
         padding-left: 5px;
         outline: none;
     }
-    #tbl_product_add input[type="number"]::-webkit-outer-spin-button,
-    #tbl_product_add input[type="number"]::-webkit-inner-spin-button{
+    .tbl_product input[type="number"]::-webkit-outer-spin-button,
+    .tbl_product input[type="number"]::-webkit-inner-spin-button{
         height: 30px;
         opacity: 1;
     }
-    #tbl_product_add tr:last-child td:nth-child(3){
+    .tbl_product tr:last-child td:nth-child(3){
 	    text-align: right;
     }
-    #tbl_product_add tr:nth-child(6) td{
+    .tbl_product tr:nth-child(6) td{
         border: none;
     }
-    #tbl_product_add select{
+    .tbl_product select{
         width: 157px;
         height: 27px;
         border-radius: 0px;
@@ -161,7 +161,7 @@
         border: 1px solid lightgray;
         outline: none;
     }
-    #btn_add, #btn_cancel{
+    #btn_add, #btn_edit, .btn_cancel{
        width: 80px;
        height: 27px;
        margin-left: 5px;
@@ -171,14 +171,14 @@
        border-radius: 3px;
        cursor: pointer;
     }
-    #btn_add{
+    #btn_add, #btn_edit{
        background-color: rgb(52, 152, 219);
        color: white;
     }
-    #btn_add:hover {
+    #btn_add:hover, #btn_edit:hover {
 	   background-color: rgb(42, 142, 209);
     }
-    #btn_cancel:hover {
+    .btn_cancel:hover {
 	   background-color: rgb(230, 230, 230);
     }   
     #div_productBtns{
@@ -273,6 +273,7 @@
 		    unit = $("#unit").val();
 		    stock = $("#stock").val();
 		    discount = $("#discount").val();
+		    post_state = $("input[name='option']:checked").val() || 0;
 			
 			if(p_name == "" || brand == "" || price == "" || cost == "" || standard == "" || unit == "" ){
 				alert("모든 항목을 입력해주세요.");
@@ -344,23 +345,96 @@
                 selectedStocks.push(stockId);
             });
 
-            applyFilter(selectedCategories, selectedBrands, selectedPostStates);
+            applyFilter(selectedCategories, selectedBrands, selectedPostStates, selectedStocks);
         });
 
-        function applyFilter(selectedCategories, selectedBrands, selectedPostStates) {
-            $("#tbl_contents tr:not(:first-child)").each(function () {
-                let productId = $(this).find("td:nth-child(3)").text();
-                let brandName = $(this).find("td:nth-child(5)").text();
-                let postState = $(this).find("td:nth-child(12)").text();
-                let showCategory = selectedCategories.length === 0 || selectedCategories.includes(productId.substring(0, 2));
-                let showBrand = selectedBrands.length === 0 || selectedBrands.includes(brandName);
-                let showPostState = selectedPostStates.length === 0 || selectedPostStates.includes(postState.trim());
-                if (showCategory && showBrand && showPostState) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
+		function applyFilter(selectedCategories, selectedBrands, selectedPostStates, selectedStocks) {
+	        $("#tbl_contents tr:not(:first-child)").each(function () {
+	        	console.log("selectedStocks:"+selectedStocks);
+	            let productId = $(this).find("td:nth-child(3)").text();
+	            let brandName = $(this).find("td:nth-child(5)").text();
+	            let postState = $(this).find("td:nth-child(12)").text();
+	            let stockState = $(this).find("td:nth-child(10)").text();
+	            let showCategory = selectedCategories.length === 0 || selectedCategories.includes(productId.substring(0, 2));
+	            let showBrand = selectedBrands.length === 0 || selectedBrands.includes(brandName);
+	            let showPostState = selectedPostStates.length === 0 || selectedPostStates.includes(postState.trim());
+	            let showStock = selectedStocks.length === 0 || (stockState === "0" && selectedStocks.includes("0")) || (stockState !== "0" && selectedStocks.includes("1"));
+	            if (showCategory && showBrand && showPostState && showStock) {
+	                $(this).show();
+	            } else {
+	                $(this).hide();
+	            }
+	        });
+	    }
+		
+        let addProduct = document.getElementById("btn_addProduct");
+        let divShadowAdd = document.getElementById("div_shadow_add");
+        let divShadowEdit = document.getElementById("div_shadow_edit");
+        let cancelBtns = document.querySelectorAll(".btn_cancel");
+        let editProductBtns = document.querySelectorAll(".btn_editProduct");
+                
+        /* btn_addProduct: none/block 변환 function */
+        addProduct.addEventListener("click", function(){
+        	divShadowAdd.style.display = "block";
+        
+        });
+        
+        cancelBtns.forEach(function(btn){
+        	btn.addEventListener("click", function(){
+        		divShadowAdd.style.display = "none";
+        		divShadowEdit.style.display = "none";
+                frm_add.reset();
+                frm_edit.reset();
+            }) 
+        });
+        
+        editProductBtns.forEach(function (btn){
+        	btn.addEventListener("click", function(){
+        		divShadowEdit.style.display = "block";
+        		
+        		// 클릭된 버튼의 id를 가져옵니다.
+                let productId = $(this).attr("id");
+                // productId의 앞 두 글자 가져오기
+                let categoryCode = productId.substring(0, 2);
+                
+                // category 코드를 해당 옵션 값으로 매핑
+                let categoryOptionValue = getCategoryValue(categoryCode);                
+
+                // 해당 id를 가진 상품 행(tr)을 선택합니다.
+                let productRow = $("#tbl_contents tr").filter(function() {
+                    return $(this).find("td:nth-child(3)").text() === productId;
+                });
+                
+                $("#p_id_edit").val(productId);
+                $("#p_name_edit").val(productRow.find("td:nth-child(4)").text());
+                $("#brand_edit").val(productRow.find("td:nth-child(5)").text());
+                $("#price_edit").val(productRow.find("td:nth-child(7)").text());
+                $("#cost_edit").val(productRow.find("td:nth-child(6)").text());                
+                $("#standard_edit").val(productRow.find("td:nth-child(8)").text());
+                $("#unit_edit").val(productRow.find("td:nth-child(9)").text());
+                $("#stock_edit").val(productRow.find("td:nth-child(10)").text());
+                $("#discount_edit").val(productRow.find("td:nth-child(11)").text());
+                $("#category_edit").val(categoryOptionValue);
+                
+             // 게시상태에 따라 라디오 버튼 선택
+                let postState = productRow.find("td:nth-child(12)").text().trim();
+                setPostStateRadio(postState);
+        		
+        	});
+        	        	
+        });
+        
+        function getCategoryValue(categoryCode) {
+            // categoryMap에서 categoryCode에 해당하는 값을 찾아서 반환
+            return Object.keys(categoryMap).find(key => categoryMap[key] === categoryCode) || "0";
+        }
+        
+        function setPostStateRadio(postState) {
+            if (postState === "판매중") {
+                $("#option1_edit").prop("checked", true);
+            } else {
+                $("#option2_edit").prop("checked", true);
+            }
         }
 						
 	});
@@ -407,7 +481,7 @@
             <tr>
                 <td>
                     <input type="checkbox" class="checkbox_stock" id="checkbox4_1"><label for="checkbox4_1">있음</label><br>
-                    <input type="checkbox" class="checkbox_stock" id="checkbox4_2"><label for="checkbox4_0">없음</label><br>
+                    <input type="checkbox" class="checkbox_stock" id="checkbox4_0"><label for="checkbox4_0">없음</label><br>
                 </td>
             </tr>
             <tr>
@@ -445,7 +519,7 @@
                 <tr>
                     <td><input type="checkbox"></td>                    
                     <td>
-                        <button class="display">
+                        <button class="btn_editProduct" id="${product.p_id}">
                             <img alt="" src="">
                         </button>
                     </td>
@@ -469,11 +543,11 @@
             </c:forEach>            
         </table>
     </div>
-    <div id="div_shadow">
-	    <div id="div_product_add">
+    <div id="div_shadow_add" class="div_shadow">
+	    <div id="div_product_add" class="div_product">
 	    <p>상품등록</p>
-	       <form action="" name="frm_product">
-		       <table id="tbl_product_add">
+	       <form action="" name="frm_add">
+		       <table id="tbl_product_add" class="tbl_product">
 		           <tr>
 			           <th>상품명</th>
 			           <td><input id="p_name" type="text"/></td>
@@ -511,7 +585,7 @@
 			           <th>할인율</th>
                        <td><input id="discount" type="number" min="0" max="90" value="0"/></td>
                        <th>재고</th>
-                       <td><input id="stock" type="text" value="0"/></td>
+                       <td><input id="stock" type="number" min="0" value="0"/></td>
 		           </tr>		           
 		           <tr>
 			           <th>썸네일</th>
@@ -527,12 +601,77 @@
                        <td><input type="file" /></td>
 		               <td colspan="2">
 		                   <input id="btn_add" type="button" value="등록"/>
-			               <input id="btn_cancel" type="button" value="취소"/>
+			               <input class="btn_cancel" id="btn_cancel" type="button" value="취소"/>
 		               </td>
 	               </tr>
 		       </table>
 	       </form>
 	    </div>
+    </div>
+    <div id="div_shadow_edit" class="div_shadow">
+        <div id="div_product_edit" class="div_product">
+        <p>상품수정</p>
+           <form action="" name="frm_edit">
+               <table id="tbl_product_edit" class="tbl_product">
+                   <tr>
+                       <th>상품명</th>
+                       <td><input id="p_name_edit" type="text"/></td>
+                       <th>분류</th>
+                       <td>
+                           <select id="category_edit">
+                                <option value="0">선택</option>
+                                <option value="1">육류</option>
+                                <option value="2">가공</option>
+                                <option value="3">수산</option>
+                                <option value="4">야채</option>
+                           </select>
+                       </td>
+                   </tr>
+                   <tr>
+                       <th>브랜드</th>
+                       <td><input id="brand_edit" type="text"/></td>
+                       <th>상품코드</th>
+                       <td><input id="p_id_edit" type="text" disabled/></td>
+                       
+                   </tr>
+                   <tr>
+                       <th>판매금액</th>
+                       <td><input id="price_edit" type="text"/></td>
+                       <th>규격</th>
+                       <td><input id="standard_edit"  type="text" /></td>
+                   </tr>
+                   <tr>
+                       <th>구매금액</th>
+                       <td><input id="cost_edit" type="text"/></td>
+                       <th>단위</th>
+                       <td><input id="unit_edit" type="text" /></td>
+                   </tr>
+                   <tr>
+                       <th>할인율</th>
+                       <td><input id="discount_edit" type="number" min="0" max="90" value="0"/></td>
+                       <th>재고</th>
+                       <td><input id="stock_edit" type="number" min="0" value="0"/></td>
+                   </tr>                   
+                   <tr>
+                       <th>썸네일</th>
+                       <td><input type="file" /></td>
+                       <th>게시상태</th>
+                       <td>
+                           <input type="radio" name="option_edit" id="option1_edit" value="1"/><label for="option1_edit">판매중</label>
+                           <input type="radio" name="option_edit" id="option2_edit" value="0"/><label for="option2_edit">판매중단</label>
+                       </td>
+                   </tr>
+                   <tr>                
+                       <th>상품정보</th>
+                       <td><input type="file" /></td>
+                       <td colspan="2">
+                           <input id="btn_edit" type="button" value="등록"/>
+                           <input class="btn_cancel" type="button" value="취소"/>
+                       </td>
+                   </tr>
+               </table>
+           </form>
+        </div>
     </div>
 </body>
 </html>

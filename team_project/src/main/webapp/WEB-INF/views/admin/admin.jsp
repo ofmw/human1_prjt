@@ -141,22 +141,8 @@
             memberElement.style.height = memberHeight + "px";
         }
         updateHeight(); //초기 Width값 설정
-        window.addEventListener("resize", updateHeight); //실시간 Width값 조정
+        window.addEventListener("resize", updateHeight); //실시간 Width값 조정   
         
-        /* display: none/block 변환 function */
-        let addProduct = document.getElementById("btn_addProduct");
-        let divShadow = document.getElementById("div_shadow");
-        let cancelBtn = document.getElementById("btn_cancel");
-        
-        addProduct.addEventListener("click", function(){
-                divShadow.style.display = "block";
-        
-        });
-        
-        cancelBtn.addEventListener("click", function(){
-        	divShadow.style.display = "none";
-        	frm_product.reset();
-        });
         
 	}
 </script>
