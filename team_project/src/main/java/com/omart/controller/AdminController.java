@@ -14,6 +14,11 @@ public class AdminController {
 	@GetMapping("/member.do")
 	public String member() {
 		return "redirect:/admin.do?status=member";
-	}	
+	}
+	
+	@GetMapping("/product.do")
+	public String product() {
+		return "redirect:/admin.do?status=product";
+	}
 		
 }
