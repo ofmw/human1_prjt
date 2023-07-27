@@ -1,8 +1,10 @@
 package com.omart.service.boardfile;
 
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Service;
 
+import com.omart.vo.BoardFileVo;
 
+@Service
 public interface BoardFileService {
-	default int insertBoard(int b_idx, int m_idx, int category, String title, String content, HttpServletRequest request) {return 0;}
+	default int insertBoard(BoardFileVo boardFileVo) {return 0;}
 }

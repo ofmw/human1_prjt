@@ -201,7 +201,7 @@
 			            }
 			          ]
 			        };
-
+			
 	        $.ajax({
 		          type: "POST", // POST 방식으로 서버로 요청
 		          url: "https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages", // Sens API의 메시지 전송 URL

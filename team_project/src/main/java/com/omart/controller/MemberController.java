@@ -14,6 +14,7 @@ import lombok.Setter;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
+
 //회원관리시스템 관련 요청에 대해 처리하는 컨트롤러.
 //사용자의 요청에 views의 member폴더가 경로에 포함되어 전달되므로
 //중복된 경로를 컨트롤러 상단에 @RequestMapping("/member")로 처리함
@@ -54,15 +55,12 @@ public class MemberController {
 	@GetMapping("/join.do")
 	public String join() {
 		return "member/join";
-	}
-	
+	}	
 	
 	@PostMapping("/join_process.do")
 	public String join_process(MemberVo memberVo) {
-	//커맨드 객체: 폼의 입력값 전송을 처리하는 메소드에서 파라미터 값들을 저장하는데 사용되는 자바 객체
-	//-파라미터 값들을 전달받을 수있도록 setter메소드를 포함하고 있음
-	//-폼의 name 속성값과 일치하는 필드에 입력값을 저장함
-	//-뷰에서 커맨드 객체를 사용하려면 첫글자를 소문자로 바꾼 클래스 이름으로 사용할 수 있음
+	
+
 		System.out.println("join_process");
 		int result = mJoin.join(memberVo);
 		

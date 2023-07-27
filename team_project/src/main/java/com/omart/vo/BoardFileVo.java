@@ -22,5 +22,6 @@ public class BoardFileVo {
 	private String saveFile;
 	private int stars;
 	private int category;
+
 	
 }

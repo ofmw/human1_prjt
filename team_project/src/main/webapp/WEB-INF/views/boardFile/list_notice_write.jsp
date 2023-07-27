@@ -142,7 +142,6 @@
  <script>
  $(function(){
 	$("#smt_save").click(function(){
-		let category = $("#category").val();
 		let m_name = $("#m_name").val();
 		let title = $("#title").val();
 		let content = $("#content").val();
@@ -152,7 +151,6 @@
 			alert("모든 항목을 입력해주세요")
 		}else{
 			let formData = {
-				category: parseInt(category),
 				m_name: m_name,
 				title: title,
 				content: content,
@@ -165,6 +163,8 @@
 				data: formData,
 				success: function(response){
 					alert("저장되었습니다.")
+					//글이 저장되면 공지사항 페이지로 이동
+					location.href = "list_notice.jsp"
 				},
 				error: function(error){
 					alert("실패했습니다.");
@@ -188,19 +188,9 @@
         </ul>
     </div>
     <form>
-        <p>1:1문의</p>
+        <p>공지사항</p>
         <table>
-          <tr>
-            <td id="td_title">말머리</td>
-            <td>
-              <select id="category" name="category" required>
-                <option value="1">문의내용</option>
-                <option value="2">회원정보</option>
-                <option value="3">주문/결제/배송</option>
-                <option value="4">취소/환불</option>
-              </select>
-            </td>
-          </tr>
+          
           <tr>
             <td id="td_title">작성자</td>
             <td>
@@ -220,18 +210,7 @@
               <textarea id="content" name="content" required></textarea>
             </td>
           </tr>
-          <tr>
-            <td id="td_title">ㅇ</td>
-            <td>
-            <!-- 
-                <div id="div_filebox">
-                    <input id="upload_name" value="파일명" disabled> 
-                    <label for="file">파일찾기</label> 
-                    <input type="file" id="file" style="display: none;"> 
-                  </div>
-             -->
-            </td>
-          </tr>
+          
         </table>
         <div id="div_sbm">
             <input type="button" value="이전" id="btn_back">

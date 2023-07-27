@@ -1,7 +1,5 @@
 package com.omart.service.boardfile;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +15,9 @@ public class BoardFileInsertService implements BoardFileService{
 		this.dao = dao;
 	}
 	
-	public int insertBoard(int b_idx, int m_idx, int category, String title, String content, HttpServletRequest request) {
-		BoardFileVo vo = new BoardFileVo();
-		vo.setB_idx(b_idx);
-		vo.setM_idx(m_idx);
-		vo.setCategory(category);
-		vo.setTitle(title);
-		vo.setContent(content);
+	public int insertBoard(BoardFileVo boardFileVo) {
 		
-		return dao.insertBoard(vo);
+		return dao.insertBoard(boardFileVo);
 	}
 	
 

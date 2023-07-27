@@ -9,7 +9,11 @@
     로그인 화면이 출력되도록 함
 - 사용자의 정상적인 요청URL에 대해서 가로챔
 
+<<<<<<< HEAD
 1. com.omart.interceptor패키지 내에 LoginInterceptor클래스 정의
+=======
+1. com.human.interceptor패키지 내에 LoginInterceptor클래스 정의
+>>>>>>> branch 'main' of https://github.com/ofmw/human1_prjt.git
 
 2. servlet-context.xml 파일에 로그인 인터셉터 관련 설정을 추가
 

@@ -11,11 +11,14 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String home() {
-		return "boardFile/list_inquiry";/* 뷰의 이름 */
+
+		return "boardFile/list_notice_write";/* 뷰의 이름 */
 	}
-	@GetMapping("/index.do")
-	public String index() {
-		return "index";/* 뷰의 이름 */
+	
+	@GetMapping("boardFile/list_inquiry")
+	public String home2() {
+
+		return "boardFile/list_inquiry";/* 뷰의 이름 */
 	}
 	
 }

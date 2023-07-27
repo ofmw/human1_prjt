@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.omart.AdminMapper">    
+    
+    <select id="countCategory" parameterType="string" resultType="_int">
+        SELECT COUNT(*) FROM product WHERE p_id LIKE CONCAT(#{category}, '%')
+    </select>
+    
+    <insert id="insertProduct" parameterType="productVo">
+        insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state})
+    </insert>
+    
+</mapper>

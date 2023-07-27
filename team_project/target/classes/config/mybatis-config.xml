@@ -8,6 +8,7 @@
     <typeAliases>
         <!-- 클래스에 대한 별칭 정의: MyBatis구문 내에서 별칭으로 클래스를 사용할 수 있음 -->
         <typeAlias alias="memberVo" type="com.omart.vo.MemberVo"/>
+        <typeAlias alias="productVo" type="com.omart.vo.ProductVo"/>
         <typeAlias alias="boardFileVo" type="com.omart.vo.BoardFileVo"/>
     </typeAliases>
    
