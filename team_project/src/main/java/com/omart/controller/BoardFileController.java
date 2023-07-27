@@ -22,6 +22,11 @@ public class BoardFileController {
 		return "boardFile/list_notice";
 	}
 	
+	@GetMapping("/list_notice_write.do")
+	public String list_notice_write() {
+		return "boardFile/list_notice_write";
+	}
+	
 	//1:1문의등록
 	@GetMapping("/list_inquiry.do")
 	public String list_inquiry() {

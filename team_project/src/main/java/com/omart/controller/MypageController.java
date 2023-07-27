@@ -32,13 +32,13 @@ public class MypageController {
 	//마이페이지 -> 1:1문의
 	@GetMapping("/list_inquiry.do")
 	public String list_inquiry() {
-		return "boardFile/list_inquiry";
+		return "redirect:/boardFile/list_inquiry.do";
 	}
 	
 	//마이페이지 -> 공지사항
 	@GetMapping("/list_notice.do")
 	public String list_notice() {
-		return "boardFile/list_notice";
+		return "redirect:/boardFile/list_notice.do";
 	}
 	
 	//로그아웃
