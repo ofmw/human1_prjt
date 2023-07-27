@@ -33,6 +33,6 @@ public class AdminController {
 		model.addAttribute("productList", productList);
 		
 		return "admin/admin";
-	}	
+	}		
 		
 }

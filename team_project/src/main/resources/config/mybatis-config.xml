@@ -10,7 +10,7 @@
         <typeAlias alias="memberVo" type="com.omart.vo.MemberVo"/>
         <typeAlias alias="productVo" type="com.omart.vo.ProductVo"/>
         <typeAlias alias="boardFileVo" type="com.omart.vo.BoardFileVo"/>       
-
+        <typeAlias alias="kakaoVo" type="com.omart.vo.KakaoVo"/>
     </typeAliases>
    
 </configuration>

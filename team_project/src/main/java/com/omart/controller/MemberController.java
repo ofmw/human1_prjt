@@ -1,5 +1,8 @@
 package com.omart.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,15 +68,20 @@ public class MemberController {
 		int result = mJoin.join(memberVo);
 		
 		String viewPage="member/join";
-		if(result == 1) {//정상적으로 회원가입이 이루어진 경우
+		if(result == 1) {
 			viewPage = "redirect:/home.do";
-			//view이름으로 "redirect:요청정보"가 전달되면 요청정보로 재요청이 이루어짐
 		}
+		return viewPage;
+	}
+		
+	//로그아웃
+	@GetMapping("/logout.do")
+	public String logout(HttpServletRequest request) {
+		
+		String viewPage = "redirect:/index.do";
+		HttpSession session = request.getSession();
+		session.invalidate();
 		
 		return viewPage;
 	}
-	
-	
-	
-	
 }
