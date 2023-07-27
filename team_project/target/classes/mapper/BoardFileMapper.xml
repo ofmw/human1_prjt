@@ -7,7 +7,7 @@
     
     <!-- 게시글 추가 처리구문 -->
     <insert id="insertBoard" parameterType="boardFileVo">
-        insert into board_file (title, content, member_idx, member_name,originfile,savefile) values(#{title}, #{content}, #{member_idx}, #{member_name}, #{originFile}, #{saveFile})
+        insert into inquiries (b_idx, m_idx, category, title, content, order_idx) values(1, #{m_idx}, #{category}, #{title}, #{content}, '1')
     </insert>
     
     <!-- 검색 조건에 맞는 게시물 수 반환 -->

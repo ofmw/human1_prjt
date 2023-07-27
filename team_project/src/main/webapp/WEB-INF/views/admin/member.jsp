@@ -7,47 +7,47 @@
 <meta charset="UTF-8">
 <title>Member</title>
 <style>
-    #div_member1, #div_member2{
+    #div_left, #div_right{
         float: left;
         height: 100%;
     }
-    #div_member1{
+    #div_left{
         width: 300px;
     }
-    #div_member1 *{
+    #div_left *{
         margin-left: 15px;
         margin-top: 5px;
     }
-    #div_member1 table{
+    #div_left table{
         border-collapse: collapse;
         width: 250px;
     }
-    #div_member1 td{
+    #div_left td{
         border: 1px solid lightgray;
     }
-    #div_member1 tr:nth-child(odd) td{
+    #div_left tr:nth-child(odd) td{
 	    height: 27px;
 	    font-size: 14px;
 	    line-height: 14px;
 	    font-weight: bold;
 	    padding-left: 5px;
     }
-    #div_member1 tr:nth-child(even) td{
+    #div_left tr:nth-child(even) td{
         background-color: white;
         font-size: 13px;
         line-height: 25px;
         padding: 5px 0px;
     }
-    #div_member1 input{
+    #div_left input{
         float: left;
     }
-    #div_member1 label{
+    #div_left label{
         float: left;
         height: 20px;
         margin-top: -2px;
         user-select: none;
     }
-    #div_member2{
+    #div_right{
         position: relative;
         border: 1px solid lightgray;
         margin-top: 37px;
@@ -56,13 +56,13 @@
         width: 500px;
         height: 500px;
     }
-    #div_member2 table{      
+    #div_right table{      
         position: absolute;
         border-collapse: collapse;
         width: 100%;
         table-layout: fixed;
     }   
-    #div_member2 td{
+    #div_right td{
         border: 1px solid lightgray;
         white-space: nowrap;
         overflow: hidden;
@@ -72,20 +72,20 @@
         font-size: 12px;
         text-align: center;
     }
-    #div_member2 tr:first-child td{
+    #div_right tr:first-child td{
 	    background-color: #f5f5f5;
 	    padding: 0px 10px;
     }
-    #div_member2 tr td:nth-child(1), #div_member2 tr td:nth-child(2), #div_member2 tr td:nth-child(3){
+    #div_right tr td:nth-child(1), #div_right tr td:nth-child(2){
         background-color: #f5f5f5;
         width: 25px;
         padding: 0;
     }
-    #div_member2 button, #div_member2 img{
+    #div_right button, #div_right img{
         width: 15px;
         height: 15px;
     }
-    #div_member2 button{
+    #div_right button{
         margin-top: 5px;
     }
     #div_shadow{
@@ -114,37 +114,37 @@
         border-bottom: 1px solid lightgray;
         
     }
-    #tbl_member_edit{
+    #tbl_contents_edit{
         margin: 10px 0px;
     }    
-    #tbl_member_edit th, #tbl_member_edit td{
+    #tbl_contents_edit th, #tbl_contents_edit td{
 /*         border: 1px solid lightgray; */
         height: 32px;
         white-space: nowrap;
         font-size: 12px;
     }
-    #tbl_member_edit th{
+    #tbl_contents_edit th{
         width: 80px;
         padding-right: 10px;
         text-align: right;
     }
-    #tbl_member_edit td{
+    #tbl_contents_edit td{
         width: 150px;
     }
-    #tbl_member_edit input[type="text"]{
+    #tbl_contents_edit input[type="text"]{
         width: 150px;
         height: 25px;
         border: 1px solid lightgray;
         border-radius: 0px;
     }
-    #tbl_member_edit tr:nth-child(n+4):nth-child(-n+6) td:nth-child(3) input[type="text"]{
+    #tbl_contents_edit tr:nth-child(n+4):nth-child(-n+6) td:nth-child(3) input[type="text"]{
 	   width: 220px;
 	   margin-left: 2px;
     }
-    #tbl_member_edit tr th:nth-child(3) {
+    #tbl_contents_edit tr th:nth-child(3) {
 	   width: 60px;
     }
-    #tbl_member_edit tr:last-child td{
+    #tbl_contents_edit tr:last-child td{
 	   text-align: right;
 	   padding-top: 6px;
     }
@@ -171,7 +171,7 @@
 </style>
 </head>
 <body>
-    <div id="div_member1">
+    <div id="div_left">
         <h3>회원관리</h3>
         <table>
             <tr>
@@ -205,10 +205,9 @@
             </tr>
         </table>
     </div>
-    <div id="div_member2">
-        <table id="tbl_member">
+    <div id="div_right">
+        <table id="tbl_contents">
             <tr>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td>아이디</td>
@@ -232,12 +231,7 @@
                         <button class="display">
                             <img alt="" src="">
                         </button>
-                    </td>
-                    <td>
-                        <button>
-                            <img alt="" src="">
-                        </button>
-                    </td>
+                    </td>                    
 	                <td>값1</td>
 	                <td>값1</td>
 	                <td>값1</td>
@@ -257,8 +251,8 @@
     <div id="div_shadow">
 	    <div id="div_member_edit">
 	    <p>고객정보</p>
-	       <form action="" name="frm_member_edit">
-		       <table id="tbl_member_edit">
+	       <form action="" name="frm_edit">
+		       <table id="tbl_contents_edit">
 		           <tr>
 			           <th>이름</th>
 			           <td><input type="text" /></td>
