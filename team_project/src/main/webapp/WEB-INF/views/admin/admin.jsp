@@ -225,13 +225,12 @@
 	    <div id="div_admin_section">
 	       <c:choose>
 	           <c:when test="${status == 'member'}">
-	               member
+	               <jsp:include page="member.jsp"></jsp:include>
 	           </c:when>
 	           <c:when test="${status == 'product'}">
-                   product
+                   <jsp:include page="product.jsp"></jsp:include>
                </c:when>
-	       </c:choose>
-	        
+	       </c:choose>	        
 	    </div>      
 	</div>
 </body>

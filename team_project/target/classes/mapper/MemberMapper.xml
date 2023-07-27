@@ -5,12 +5,37 @@
   
 <mapper namespace="com.omart.MemberMapper">
     
+    <!-- 아이디검사 구문 -->
+    <!-- 일반적으로 id값은 DAO의 메소드이름으로 정의, parameterType: 입력값의 데이터타입, resultType: 조회결과값의 데이터타입 -->
+    <!-- MyBatis도 SQL구문을 PreparedStatement구문으로 사용함. ?대신 #{파라미터이름}을 사용 -->
+    <select id="checkId" parameterType="string" resultType="_int">
+        select count(*) from member where m_id=#{m_id}
+    </select>
+    
+    <!-- 회원정보 입력구문 -->
+    <insert id="join" parameterType="MemberVo">
+        insert into member(m_name, birth, gender, selNum, m_id, m_pw) 
+                    values(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw})
+    </insert>
+    
     <!-- 로그인 처리구문 -->
     <select id="login" parameterType="map" resultType="memberVo">
-        SELECT *
-        FROM account_omart
-        WHERE m_id=#{member_id} and m_pw=#{member_pw}
+        select * from member where member_id=#{member_id} and member_pw=#{member_pw} and cancel_or_not=1
     </select>
+    
+    <!-- 회원정보 수정구문 -->
+    <update id="update" parameterType="memberVo">
+        update member set member_pw=#{member_pw}, member_name=#{member_name}, gender=#{gender}, selNum=#{selNum}, update_date=now() where member_id=#{member_id}
+    </update>
+    
+    <!-- 업데이트된 회원정보 가져오는 구문 -->
+    <select id="selectOne" parameterType="string" resultType="memberVo">
+        select * from member where member_id#{member_id}
+    </select>
+    
+    <update id="cancel" parameterType="_int">
+        update member set cancel_or_not=-1, cancel_date=now() where member_idx=#{member_idx}
+    </update>
     
     <!-- 정보 찾기 -->
 	<select id="klogin" parameterType="map" resultType="kakaoVo">
