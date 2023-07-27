@@ -1,5 +1,7 @@
 package com.omart.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -14,4 +16,5 @@ public class ProductVo {
 	private int stock;
 	private int discount;
 	private int post_state;
+	private List<String> selectedCategories;
 }

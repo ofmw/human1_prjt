@@ -212,6 +212,8 @@
 	$(function(){
 		
 		let categoryMap = {"1": "AA", "2": "BB", "3": "CC", "4": "DD"};
+		let brandMap = {"1": "농협", "2": "목우촌", "3": "하림", "4": "수협"};
+		let postStateMap = {"1": "판매중", "2": "판매중단"};
 	    let p_id; //상품코드
 		let p_name; //상품명
 		let brand; //브랜드명
@@ -222,6 +224,7 @@
         let unit; //단위
         let stock; //재고
         let discount; //할인율
+        let post_state; //게시상태
 		
         $("#category").change(function(){
             
@@ -286,7 +289,8 @@
 			            standard: parseInt(standard),
 			            unit: unit,
 			            stock: parseInt(stock),
-			            discount: parseInt(discount)
+			            discount: parseInt(discount),
+			            post_state: post_state,
 				};
 				
 				$.ajax({
@@ -296,7 +300,7 @@
 					data: formData,
 					success: function(response){
 						alert("상품이 성공적으로 등록되었습니다.")
-						$("#btn_cancel").click();
+						location.reload();
 					},
 					error: function(error){
 						console.error("AJAX 오류 발생", error);
@@ -306,8 +310,53 @@
 				
 			}
 		});
+
+		$("#btn_reset").click(function(){
+			
+			$("input[type='checkbox']").prop("checked", false);
+			$("#tbl_contents tr").show();
+			
+		});
 		
-		
+		$("#btn_filter").click(function () {
+            let selectedCategories = [];
+            let selectedBrands = [];
+            let selectedPostStates = [];
+
+            $(".checkbox_category:checked").each(function () {
+                let categoryId = $(this).attr("id").replace("checkbox1_", "");
+                selectedCategories.push(categoryMap[categoryId]);
+            });
+
+            $(".checkbox_brand:checked").each(function () {
+                let brandId = $(this).attr("id").replace("checkbox2_", "");
+                selectedBrands.push(brandMap[brandId]);
+            });
+            
+            $(".checkbox_postState:checked").each(function(){
+            	let postStateId = $(this).attr("id").replace("checkbox3_", "");
+            	selectedPostStates.push(postStateMap[postStateId]);
+            });
+
+            applyFilter(selectedCategories, selectedBrands, selectedPostStates);
+        });
+
+        function applyFilter(selectedCategories, selectedBrands, selectedPostStates) {
+            $("#tbl_contents tr:not(:first-child)").each(function () {
+                let productId = $(this).find("td:nth-child(3)").text();
+                let brandName = $(this).find("td:nth-child(5)").text();
+                let postState = $(this).find("td:nth-child(12)").text();                
+                let showCategory = selectedCategories.length === 0 || selectedCategories.includes(productId.substring(0, 2));
+                let showBrand = selectedBrands.length === 0 || selectedBrands.includes(brandName);
+                let showPostState = selectedPostStates.length === 0 || selectedPostStates.includes(postState);
+                if (showCategory && showBrand && showPostState) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+						
 	});
 </script>
 </head>
@@ -320,10 +369,10 @@
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox1_1"><label for="checkbox1_1">육류</label><br>
-                    <input type="checkbox" id="checkbox1_2"><label for="checkbox1_2">가공</label><br>
-                    <input type="checkbox" id="checkbox1_3"><label for="checkbox1_3">수산</label><br>
-                    <input type="checkbox" id="checkbox1_3"><label for="checkbox1_3">야채</label><br>
+                    <input type="checkbox" class="checkbox_category" id="checkbox1_1"><label for="checkbox1_1">육류</label><br>
+                    <input type="checkbox" class="checkbox_category" id="checkbox1_2"><label for="checkbox1_2">가공</label><br>
+                    <input type="checkbox" class="checkbox_category" id="checkbox1_3"><label for="checkbox1_3">수산</label><br>
+                    <input type="checkbox" class="checkbox_category" id="checkbox1_4"><label for="checkbox1_4">야채</label><br>
                 </td>
             </tr>
             <tr>
@@ -331,9 +380,10 @@
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox2_1"><label for="checkbox2_1">농협</label><br>
-                    <input type="checkbox" id="checkbox2_2"><label for="checkbox2_2">목우촌</label><br>
-                    <input type="checkbox" id="checkbox2_3"><label for="checkbox2_3">하림</label><br>
+                    <input type="checkbox" class="checkbox_brand" id="checkbox2_1"><label for="checkbox2_1">농협</label><br>
+                    <input type="checkbox" class="checkbox_brand" id="checkbox2_2"><label for="checkbox2_2">목우촌</label><br>
+                    <input type="checkbox" class="checkbox_brand" id="checkbox2_3"><label for="checkbox2_3">하림</label><br>
+                    <input type="checkbox" class="checkbox_brand" id="checkbox2_4"><label for="checkbox2_4">수협</label><br>
                 </td>
             </tr>
             <tr>
@@ -341,8 +391,8 @@
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox3_1"><label for="checkbox3_1">판매중</label><br>
-                    <input type="checkbox" id="checkbox3_2"><label for="checkbox3_2">판매중단</label><br>
+                    <input type="checkbox" class="checkbox_postState" id="checkbox3_1"><label for="checkbox3_1">판매중</label><br>
+                    <input type="checkbox" class="checkbox_postState" id="checkbox3_0"><label for="checkbox3_0">판매중단</label><br>
                 </td>
             </tr>
             <tr>
@@ -353,6 +403,12 @@
                     <input type="checkbox" id="checkbox4_1"><label for="checkbox4_1">있음</label><br>
                     <input type="checkbox" id="checkbox4_2"><label for="checkbox4_2">없음</label><br>
                 </td>
+            </tr>
+            <tr>
+            	<td>
+            	   <input id="btn_reset" type="button" value="초기화"/>
+            	   <input id="btn_filter" type="button" value="선택완료"/>
+            	</td>
             </tr>
         </table>
     </div>
@@ -377,9 +433,9 @@
                 <td>단위</td>
                 <td>재고</td>
                 <td>할인율</td>
-                <td>게시여부</td>                
+                <td>게시상태</td>                
             </tr>
-            <c:forEach begin="1" end="50" var="i">
+            <c:forEach items="${productList}" var="product">
                 <tr>
                     <td><input type="checkbox"></td>                    
                     <td>
@@ -387,16 +443,21 @@
                             <img alt="" src="">
                         </button>
                     </td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
+	                <td>${product.p_id}</td>
+	                <td>${product.p_name}</td>
+	                <td>${product.brand}</td>
+	                <td>${product.cost}</td>
+                    <td>${product.price}</td>
+                    <td>${product.standard}</td>
+                    <td>${product.unit}</td>
+                    <td>${product.stock}</td>
+                    <td>${product.discount}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${product.post_state == 1}">판매중</c:when>
+                            <c:otherwise>판매중단</c:otherwise>
+                        </c:choose>
+                    </td>
 
 	            </tr>
             </c:forEach>            

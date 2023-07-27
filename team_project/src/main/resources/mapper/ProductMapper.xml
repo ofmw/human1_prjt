@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.omart.ProductMapper">    
+    
+    <select id="productList" resultType="productVo">
+        SELECT * FROM product
+        <where>
+            <if test="selectedCategories != null and selectedCategories.size() > 0">
+                <foreach collection="selectedCategories" item="category" separator=" OR " open="(" close=")">
+                    <if test="category == '육류'">
+                        SUBSTRING(p_id, 1, 2) = 'AA'
+                    </if>
+                    <if test="category == '가공'">
+                        SUBSTRING(p_id, 1, 2) = 'BB'
+                    </if>
+                    <if test="category == '수산'">
+                        SUBSTRING(p_id, 1, 2) = 'CC'
+                    </if>
+                    <if test="category == '야채'">
+                        SUBSTRING(p_id, 1, 2) = 'DD'
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </select>
+    
+</mapper>

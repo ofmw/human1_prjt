@@ -204,14 +204,14 @@
                      </a>
 	             </div>                    
 	         </li>
-	         <li>
+	         <!-- <li>
 	             <div>
 	                 <a href="">
                          <img src="" alt="">
                          <p>통계</p>
                      </a>
 	             </div>                    
-	         </li>
+	         </li> -->
 	         <li>
 	             <div>
 	                 <a href="">
