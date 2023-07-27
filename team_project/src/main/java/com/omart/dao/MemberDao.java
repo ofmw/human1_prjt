@@ -38,7 +38,13 @@ public class MemberDao{
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("member_id", member_id);
 			return sqlSession.selectOne(MAPPER+".klogin", map);
+	  }
+	  
+	//회원가입 처리
+		public int join(MemberVo vo) {	
+			return sqlSession.insert(MAPPER+".join", vo);
 		}
+	  
 
 	
 }

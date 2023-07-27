@@ -20,7 +20,5 @@ public class HomeController {
 	@GetMapping("/mypage/index.do")
 	public String mypage_index() {
 		return "index";/* 뷰의 이름 */
-
-	}	
-	
+	}
 }

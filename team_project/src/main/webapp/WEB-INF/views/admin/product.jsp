@@ -213,7 +213,7 @@
 		
 		let categoryMap = {"1": "AA", "2": "BB", "3": "CC", "4": "DD"};
 		let brandMap = {"1": "농협", "2": "목우촌", "3": "하림", "4": "수협"};
-		let postStateMap = {"1": "판매중", "2": "판매중단"};
+		let postStateMap = {"1": "판매중", "0": "판매중단"};
 	    let p_id; //상품코드
 		let p_name; //상품명
 		let brand; //브랜드명
@@ -322,6 +322,7 @@
             let selectedCategories = [];
             let selectedBrands = [];
             let selectedPostStates = [];
+            let selectedStocks = [];
 
             $(".checkbox_category:checked").each(function () {
                 let categoryId = $(this).attr("id").replace("checkbox1_", "");
@@ -333,9 +334,14 @@
                 selectedBrands.push(brandMap[brandId]);
             });
             
-            $(".checkbox_postState:checked").each(function(){
-            	let postStateId = $(this).attr("id").replace("checkbox3_", "");
-            	selectedPostStates.push(postStateMap[postStateId]);
+            $(".checkbox_postState:checked").each(function () {
+                let postStateId = $(this).attr("id").replace("checkbox3_", "");
+                selectedPostStates.push(postStateMap[postStateId]);
+            });
+            
+            $(".checkbox_stock:checked").each(function () {
+                let stockId = $(this).attr("id").replace("checkbox4_", "");
+                selectedStocks.push(stockId);
             });
 
             applyFilter(selectedCategories, selectedBrands, selectedPostStates);
@@ -345,10 +351,10 @@
             $("#tbl_contents tr:not(:first-child)").each(function () {
                 let productId = $(this).find("td:nth-child(3)").text();
                 let brandName = $(this).find("td:nth-child(5)").text();
-                let postState = $(this).find("td:nth-child(12)").text();                
+                let postState = $(this).find("td:nth-child(12)").text();
                 let showCategory = selectedCategories.length === 0 || selectedCategories.includes(productId.substring(0, 2));
                 let showBrand = selectedBrands.length === 0 || selectedBrands.includes(brandName);
-                let showPostState = selectedPostStates.length === 0 || selectedPostStates.includes(postState);
+                let showPostState = selectedPostStates.length === 0 || selectedPostStates.includes(postState.trim());
                 if (showCategory && showBrand && showPostState) {
                     $(this).show();
                 } else {
@@ -400,8 +406,8 @@
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox4_1"><label for="checkbox4_1">있음</label><br>
-                    <input type="checkbox" id="checkbox4_2"><label for="checkbox4_2">없음</label><br>
+                    <input type="checkbox" class="checkbox_stock" id="checkbox4_1"><label for="checkbox4_1">있음</label><br>
+                    <input type="checkbox" class="checkbox_stock" id="checkbox4_2"><label for="checkbox4_0">없음</label><br>
                 </td>
             </tr>
             <tr>

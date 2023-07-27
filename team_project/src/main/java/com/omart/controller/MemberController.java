@@ -17,12 +17,6 @@ import lombok.Setter;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-
-//회원관리시스템 관련 요청에 대해 처리하는 컨트롤러.
-//사용자의 요청에 views의 member폴더가 경로에 포함되어 전달되므로
-//중복된 경로를 컨트롤러 상단에 @RequestMapping("/member")로 처리함
-//컨트롤러 내에 정의되는 요청매핑은 모두 앞에 /member가 붙는 것으로 
-//보면 됨
 	
 	@Setter(onMethod_={ @Autowired })
 	MemberService mJoin;
@@ -41,7 +35,7 @@ public class MemberController {
 		
 		String viewPage="member/join";
 		if(result == 1) {
-			viewPage = "redirect:/home.do";
+			viewPage = "redirect:/index.do";
 		}
 		return viewPage;
 	}

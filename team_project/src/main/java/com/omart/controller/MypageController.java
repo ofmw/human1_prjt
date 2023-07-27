@@ -29,6 +29,18 @@ public class MypageController {
 		return "mypage/order_detail";
 	}
 	
+	//마이페이지 -> 1:1문의
+	@GetMapping("/list_inquiry.do")
+	public String list_inquiry() {
+		return "boardFile/list_inquiry";
+	}
+	
+	//마이페이지 -> 공지사항
+	@GetMapping("/list_notice.do")
+	public String list_notice() {
+		return "boardFile/list_notice";
+	}
+	
 	//로그아웃
 	@GetMapping("member/logout.do")
 	public String logout(HttpServletRequest request) {

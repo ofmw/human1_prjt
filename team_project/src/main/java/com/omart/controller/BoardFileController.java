@@ -16,6 +16,12 @@ import lombok.Setter;
 public class BoardFileController {
 	@Setter(onMethod_={ @Autowired })
 	BoardFileService bfInsert;
+	
+	@GetMapping("/list_notice.do")
+	public String list_notice() {
+		return "boardFile/list_notice";
+	}
+	
 	//1:1문의등록
 	@GetMapping("/list_inquiry.do")
 	public String list_inquiry() {

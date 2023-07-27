@@ -204,7 +204,7 @@
           <tr>
             <td id="td_title">작성자</td>
             <td>
-              <input type="text" id="m_name" name="m_name" required>
+              <input type="text" id="m_name" name="m_name" required value="${member.m_name}">
               <input type="hidden" id="m_idx" name="m_idx" value="1">
             </td>
           </tr>

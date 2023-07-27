@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>임시홈페이지</title>
 
 <!-- 임시 css -->
 <style>

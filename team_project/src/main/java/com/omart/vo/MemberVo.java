@@ -30,5 +30,5 @@ public class MemberVo {
 	private String m_name;			//이름
 	private int gender;				//성별
 	private String selNum;			//전화번호
-	private Date birth;				//생년월일
+	private String birth;			//생년월일
 }
