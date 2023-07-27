@@ -20,7 +20,7 @@
 <body>
 
 <!-- 헤더 -->
-<header><jsp:include page="common/header1.jsp"></jsp:include></header>	
+<header><jsp:include page="common/header1.jsp"></jsp:include></header>
 
 <section>
 	<div id="asdf">content

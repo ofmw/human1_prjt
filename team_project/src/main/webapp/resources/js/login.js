@@ -3,6 +3,7 @@ $(function() {
     let $shadow = $("#shadow");
     let $close_btn = $("#close_btn");
     let $login_btn2 = $("#login_btn2");
+    let $open_login = $("#open_login");
 
     $close_btn.on("click", function() {
         $shadow.css({
@@ -21,6 +22,7 @@ $(function() {
     }
 
     $login_btn2.on("click", showShadow);
+    $open_login.on("click", showShadow);
     
     /* 비밀번호 CapsLock 감지 */
     let checkCapsLock = document.getElementById('member_pw');

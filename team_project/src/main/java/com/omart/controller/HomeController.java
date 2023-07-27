@@ -17,5 +17,9 @@ public class HomeController {
 	public String index() {
 		return "index";/* 뷰의 이름 */
 	}
+	@GetMapping("/mypage/index.do")
+	public String mypage_index() {
+		return "index";/* 뷰의 이름 */
+	}
 	
 }
