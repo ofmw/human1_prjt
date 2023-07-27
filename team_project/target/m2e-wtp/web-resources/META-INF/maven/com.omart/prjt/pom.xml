@@ -12,9 +12,14 @@
         <org.springframework-version>5.1.5.RELEASE</org.springframework-version><!-- 변경 -->
         <org.aspectj-version>1.6.10</org.aspectj-version>
         <org.slf4j-version>1.6.6</org.slf4j-version>
+        <!-- 네이버 SMS API -->
+		<naver.api.accessKey>h4BjwmodGCWHpW6lxoPj</naver.api.accessKey>
+		<naver.api.secretKey>zLhbW5OTd6ShI0Ls4t3jTFhZff2HcyiFifkymgql</naver.api.secretKey>
+		<naver.api.openKey>ncp:sms:kr:312456196439:team</naver.api.openKey>        
+		
     </properties>
     <dependencies>
-        <!-- Spring -->
+       <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -98,6 +103,14 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
+
+    	<!-- 네이버 SMS API 클라이언트 라이브러리 의존성 추가 
+    	<dependency>
+	        <groupId>com.naver.cloud.openapi</groupId>
+	        <artifactId>sens-sms-client</artifactId>
+	        <version>4.5.13</version>
+    	</dependency>
+    	-->
         
         <!-- gson 추가 -->
         <dependency>
