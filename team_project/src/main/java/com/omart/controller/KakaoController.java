@@ -32,7 +32,7 @@ public class KakaoController {
 		System.out.println("###access_Token#### : " + access_Token);
 		System.out.println("###nickname#### : " + userInfo.getM_name());
 		System.out.println("###email#### : " + userInfo.getM_id());
-		
+		userInfo.setPlatform("kakao");
 		
 		
 		// 위 코드는 session객체에 담긴 정보를 초기화 하는 코드.
@@ -57,7 +57,8 @@ public class KakaoController {
 	
 	@GetMapping("/klogout.do")
 	public String klogout(HttpSession session) {
-		System.out.println("access_tooooooooken" +session.getAttribute("access_token"));
+		System.out.println("---------<카카오 로그아웃 요청>---------");
+		System.out.println("access_token: " +session.getAttribute("access_token"));
 		ks.logout((String)session.getAttribute("access_token"));
 		session.invalidate();
 		return "redirect:/index.do";

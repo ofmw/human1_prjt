@@ -22,12 +22,12 @@ public class AjaxMemberController {
 	
 	//로그인
 	@PostMapping("/login.do")
-    public String login(@RequestParam("member_id") String member_id,
-                        @RequestParam("member_pw") String member_pw,
+    public String login(@RequestParam("m_id") String m_id,
+                        @RequestParam("m_pw") String m_pw,
                         HttpSession session) {
         
 		//로그인 처리를 할 MemberLoginService 클래스를 이용함
-		MemberVo vo = mLogin.login(member_id, member_pw);
+		MemberVo vo = mLogin.login(m_id, m_pw);
 		
 		if(vo != null){
 			System.out.println("---회원 개인정보---");

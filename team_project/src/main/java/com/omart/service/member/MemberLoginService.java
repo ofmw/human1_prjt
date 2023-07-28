@@ -32,7 +32,6 @@ public class MemberLoginService implements MemberService {
 			vo = dao.login(member_id);
 		}
 		return vo; 
-		
 	}
 	
 }

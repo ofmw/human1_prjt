@@ -16,9 +16,9 @@ public class KakaoLoginService implements MemberService {
 		this.dao = dao;
 	}
 	
-	public MemberVo klogin(String member_id) {
-		System.out.println("서비스클래스: " +member_id);
-		return dao.klogin(member_id);
+	public MemberVo klogin(String m_id) {
+		System.out.println("서비스클래스: " +m_id);
+		return dao.klogin(m_id);
 	}
 	
 }
