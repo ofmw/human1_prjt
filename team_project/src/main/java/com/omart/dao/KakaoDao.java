@@ -6,7 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.omart.vo.KakaoVo;
+import com.omart.vo.MemberVo;
 
 @Repository
 public class KakaoDao {
@@ -23,10 +23,10 @@ public class KakaoDao {
 	}
 	
 	// 정보 확인
-	public KakaoVo findkakao(HashMap<String, Object> userInfo) {
+	public MemberVo findkakao(HashMap<String, Object> userInfo) {
 		System.out.println("RN:"+userInfo.get("nickname"));
 		System.out.println("RE:"+userInfo.get("email"));
-		KakaoVo vo = sqlSession.selectOne(MAPPER+".klogin", userInfo);
+		MemberVo vo = sqlSession.selectOne(MAPPER+".klogin", userInfo);
 //		vo.setPlatform("kakao");
 		return vo;
 	}

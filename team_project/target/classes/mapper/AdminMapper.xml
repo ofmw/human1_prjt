@@ -14,7 +14,7 @@
     </insert>
     
     <select id="memberList" resultType="memberVo">
-        select * from member_omart
+        select * from member_omart where grade not like 9
     </select>
     
 </mapper>

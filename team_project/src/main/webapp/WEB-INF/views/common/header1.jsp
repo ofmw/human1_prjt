@@ -43,7 +43,14 @@
 		                        <a href="boardFile/list_notice.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
-								<a href="mypage/mypage.do">${member.m_name}님</a>
+							     <c:choose>
+							         <c:when test="${member.grade eq 9}">
+							             <a href="admin/member.do">${member.m_name}님</a>
+							         </c:when>
+							         <c:otherwise>
+							             <a href="mypage/mypage.do">${member.m_name}님</a>
+							         </c:otherwise>
+							     </c:choose>								
 								<a href="boardFile/list_notice.do">고객센터</a>
 								<c:choose>
 									<c:when test="${member.platform eq 'kakao'}">

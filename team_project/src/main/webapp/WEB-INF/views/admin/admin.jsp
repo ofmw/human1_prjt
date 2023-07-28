@@ -151,13 +151,13 @@
 <body>    
 	<div id="div_admin">
 	    <div id="div_admin_topBar">
-	        <a href="../index.do"><img src="../resources/img/omart_classic_logo.png" alt=""></a>
+	        <img src="../resources/img/omart_classic_logo.png" alt="">
             <h3>SMART 관리</h3>
             <div id="div_admin_topMenu">
-                <span>관리자님</span>
+                <span>${member.m_name}님</span>
                 <div id="div_admin_topMenu_btns">
-                    <a href="">메인으로 가기</a><p> | </p>
-                    <a href="">로그아웃</a>
+                    <a href="../index.do">메인으로 가기</a><p> | </p>
+                    <a href="../member/logout.do">로그아웃</a>
                 </div>
                 <div id="div_admin_timeout">
                     <p>남은시간 01:00:00</p>

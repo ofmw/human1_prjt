@@ -44,10 +44,9 @@ public class MemberController {
 	@GetMapping("/logout.do")
 	public String logout(HttpServletRequest request) {
 		
-		String viewPage = "redirect:/index.do";
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		return viewPage;
+		return "member/logout";
 	}
 }
