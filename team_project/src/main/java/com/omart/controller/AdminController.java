@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.omart.service.admin.AdminService;
 import com.omart.service.product.ProductService;
+import com.omart.vo.MemberVo;
 import com.omart.vo.ProductVo;
 
 import lombok.Setter;
@@ -18,11 +20,18 @@ import lombok.Setter;
 public class AdminController {
 	
 	@Setter(onMethod_= {@Autowired})
-	ProductService pdList;
+	private ProductService pdList;
+	@Setter(onMethod_= {@Autowired})	
+	private AdminService mList;
 	
 	@GetMapping("/member.do")
 	public String member(Model model) {
 		model.addAttribute("status", "member");
+		
+		List<MemberVo> memberList = mList.MemberList();
+		
+		model.addAttribute("memberList", memberList);
+		
 		return "admin/admin";
 	}	
 	@GetMapping("/product.do")

@@ -142,9 +142,9 @@
         <p>고객센터</p>
         <ul>
             <li onclick="location.href='list_faq_member.html'">FAQ</li>
-            <li onclick="location.href='list_notice.html'">공지사항</li>
+            <li onclick="location.href='list_notice.do'">공지사항</li>
             <li onclick="location.href='list_event.html'">이벤트</li>
-            <li onclick="location.href='list_inquiry.html'">1:1문의하기</li>
+            <li onclick="location.href='list_inquiry.do'">1:1문의하기</li>
         </ul>
     </div>
 
@@ -223,7 +223,7 @@
                     </div>
                 </ul>
             </div>
-			<a href="list_notice_write.jsp"><button id="btn_write">글등록</button></a>
+			<a href="list_notice_write.do"><button id="btn_write">글등록</button></a>
 			
     </div>
 

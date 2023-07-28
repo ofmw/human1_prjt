@@ -15,7 +15,7 @@ public class MemberJoinService implements MemberService {
 	public MemberJoinService(MemberDao dao) {
 		this.dao = dao;
 	}
-	@Override
+
 	public int join(MemberVo memberVo) {
 		// 회원 비밀번호를 암호화하여 저장
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

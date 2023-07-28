@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>임시 index</title>
+<title>Temp</title>
 
 <!-- 임시 css -->
 <style>
@@ -20,7 +20,7 @@
 <header><jsp:include page="common/header1.jsp"></jsp:include></header>	
 
 <section>
-    
+    <a href="admin/member.do">관리자페이지</a>
 </section>
 
 <!-- 푸터 -->
