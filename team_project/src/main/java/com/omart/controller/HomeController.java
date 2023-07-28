@@ -11,7 +11,7 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String home() {
-		return "admin/admin";/* 뷰의 이름 */
+		return "index_temp";/* 뷰의 이름 */
 		
 	}	
 

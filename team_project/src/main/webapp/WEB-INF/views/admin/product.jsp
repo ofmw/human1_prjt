@@ -187,14 +187,14 @@
         height: 37px;
         margin-left: 300px;        
     }
-    #tbl_product_add tr:nth-child(6) td:last-child *{
+    .tbl_product tr:nth-child(6) td:last-child *{
         float: left;
     }
-    #tbl_product_add tr:nth-child(6) td:last-child input[type="radio"]{
+    .tbl_product tr:nth-child(6) td:last-child input[type="radio"]{
         margin-top: 3px;
         margin-left: 10px;
     }
-    #tbl_product_add tr:nth-child(6) td:last-child label{
+    .tbl_product tr:nth-child(6) td:last-child label{
         margin-left: 5px;
         margin-right: 10px;
     }
@@ -665,7 +665,7 @@
                        <th>상품정보</th>
                        <td><input type="file" /></td>
                        <td colspan="2">
-                           <input id="btn_edit" type="button" value="등록"/>
+                           <input id="btn_edit" type="button" value="수정"/>
                            <input class="btn_cancel" type="button" value="취소"/>
                        </td>
                    </tr>

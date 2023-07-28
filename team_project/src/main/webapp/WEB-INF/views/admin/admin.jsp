@@ -48,7 +48,7 @@
         text-align: right;
         font-size: 11px;
         color: white;
-        margin-right: 10px;
+        margin-right: 10px;             
     }
     #div_admin_topMenu div{
         float: right;
@@ -142,6 +142,7 @@
         }
         updateHeight(); //초기 Width값 설정
         window.addEventListener("resize", updateHeight); //실시간 Width값 조정   
+        
         
         
 	}
