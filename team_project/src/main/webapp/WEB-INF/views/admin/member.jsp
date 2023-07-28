@@ -76,7 +76,7 @@
 	    background-color: #f5f5f5;
 	    padding: 0px 10px;
     }
-    #div_right tr td:nth-child(1), #div_right tr td:nth-child(2){
+    #div_right tr td:nth-child(1){
         background-color: #f5f5f5;
         width: 25px;
         padding: 0;
@@ -209,7 +209,6 @@
         <table id="tbl_contents">
             <tr>
                 <td></td>
-                <td></td>
                 <td>아이디</td>
                 <td>등급</td>
                 <td>이름</td>
@@ -224,26 +223,25 @@
                 <td>플랫폼</td>
                 
             </tr>
-            <c:forEach begin="1" end="50" var="i">
+            <c:forEach items="${memberList}" var="member">
                 <tr>
-                    <td>${i}</td>
                     <td>
                         <button class="display">
                             <img alt="" src="">
                         </button>
                     </td>                    
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-	                <td>값1</td>
-                    <td>값1</td>
+	                <td>${member.m_id}</td>
+                    <td>${member.grade}</td>
+                    <td>${member.m_name}</td>
+                    <td>${member.birth}</td>
+                    <td>${member.gender}</td>
+                    <td>${member.selNum}</td>
+                    <td>${member.j_date}</td>
+                    <td>${member.u_date}</td>
+                    <td>${member.a_date}</td>
+                    <td>${member.a_state}</td>
+                    <td>${member.login_date}</td>
+                    <td></td>
 	            </tr>
             </c:forEach>            
         </table>
