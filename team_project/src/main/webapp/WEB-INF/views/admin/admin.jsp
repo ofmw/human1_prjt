@@ -31,6 +31,7 @@
         float: left;
         line-height: 80px;
         color: white;
+        user-select: none;
     }
     #div_admin_topBar img{
         margin: 15px;
@@ -48,7 +49,8 @@
         text-align: right;
         font-size: 11px;
         color: white;
-        margin-right: 10px;             
+        margin-right: 10px; 
+        user-select: none;
     }
     #div_admin_topMenu div{
         float: right;
@@ -62,6 +64,9 @@
     }
     #div_admin_timeout{            
         width: 160px;
+    }
+    #div_admin_timeout p{
+        user-select: none;
     }
     #div_admin_topMenu div *{
         float: left;

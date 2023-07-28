@@ -176,6 +176,10 @@
 	   background-color: rgb(230, 230, 230);
     }    
 </style>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+
+</script>
 </head>
 <body>
     <div id="div_left">
@@ -237,7 +241,7 @@
             <c:forEach items="${memberList}" var="member">
                 <tr>
                     <td>
-                        <button class="display">
+                        <button class="btn_detailMemberInfo" id="${member.m_id}">
                             <img alt="" src="">
                         </button>
                     </td>                    
