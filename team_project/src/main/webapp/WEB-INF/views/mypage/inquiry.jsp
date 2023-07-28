@@ -147,11 +147,55 @@
             font-weight: bold;
             border-bottom: 2px solid #222;
         }
-        #mp_main_claim_title{
-            padding-bottom: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom: 2px solid #222;
+
+        table{
+            margin-top: 10px;
+            text-align: center;
+            border-spacing: 0;
+            border-collapse: collapse;
+            color: #222;
+            width: 100%;
+        }
+        th{
+            height: 40px;
+            font-size: 15px;
+            border-top: 1px solid black;
+            border-bottom: 1px solid #e5e5e5;
+            background-color: #f9f9f9;
+        }
+        /* 리스트 테이블 td 공통 */
+        td:not(#td_pnav){
+            height: 50px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        /* 리스트 테이블 구매일자 */
+        .td_date{
+            /* background-color: skyblue; */
+            font-size: 14px;
+            color: #777;
+        }
+        /* 리스트 테이블 구매상품 이름 */
+        .td_title{
+            text-align: left;
+        }
+        /* 리스트 테이블 주문상세내역 버튼 */
+        .inquiry_detail_btn{
+            display: inline-block;
+            padding-top: 3px;
+            width: 110px;
+            height: 30px;
+            font-size: 14px;
+            color: #777;
+            border: 1px solid #cfcfcf;
+            box-sizing: border-box;
+        }
+        #td_pnav{
+            height: 50px;
+        }
+        #mp_main_inquiry_info{
+            margin-top: 10px;
+            font-size: 13px;
+            color: #777;
         }
     </style>
 
@@ -228,8 +272,45 @@
         </div>
 
         <div id="mp_main">
-            <div id="mp_main_osc" class="mp_main_obj">
-                <div id="mp_main_claim_title">1:1 문의</div>
+			<div id="mp_main_inquiry" class="mp_main_obj">
+                <div class="mp_main_title">1:1 문의</div>
+                <div id="mp_main_inquiry_info">
+                	<p>
+                		＊ 고객님께서 고객센터 1:1문의에 작성하신 문의 내역입니다.<br>
+                		＊ 상세 내용은 문의내역상세 버튼을 클릭하여 확인 가능합니다.
+                	</p>
+                </div>
+                <div id="mp_main_inquiry_content">
+                    <table >
+                        <colgroup>
+                            <col style="width: 9%;">
+                            <col style="width: 69%;">
+                            <col style="width: 7%;">
+                            <col style="width: 15%;">
+                        </colgroup>
+                        <tr>
+                            <th>작성일</th>
+                            <th>제목</th>
+                            <th>진행상태</th>
+                            <th>선택</th>
+                        </tr>
+                        <tr>
+                            <td class="td_date">2023.07.28</td>
+                            <td class="td_title">[주문/배송] 배송이 오지 않았습니다</td>
+                            <td class="td_state">진행중</td>
+                            <td><a href="#" class="inquiry_detail_btn">문의상세내역</a></td>
+                        </tr>
+                        <tr>
+                            <td class="td_date">2023.07.21</td>
+                            <td class="td_title">[취소/환불] ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ</td>
+                            <td class="td_state">답변완료</td>
+                            <td><a href="#" class="inquiry_detail_btn">문의상세내역</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" id="td_pnav">네비게이션</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
         </div>
