@@ -33,6 +33,8 @@
 	    align-items: center;
 	    width: 1280px;
 	    height: 80px;
+	    padding: 0 20px;
+        box-sizing: border-box;
 	}
 	/* 사이트 로고 영역 */
 	#div_omart_logo{
@@ -104,6 +106,8 @@
 	    justify-content: space-between;
 	    width: 1280px;
 	    height: 100%;
+	    padding: 0 20px;
+        box-sizing: border-box;
 	}
 	/* 카테고리 */
 	#div_category {

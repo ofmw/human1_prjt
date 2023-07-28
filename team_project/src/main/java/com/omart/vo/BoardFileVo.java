@@ -1,10 +1,6 @@
 package com.omart.vo;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -16,9 +12,7 @@ public class BoardFileVo {
 	private String m_id;
 	private String title;
 	private String content;
-	
 	private Timestamp post_date;
-//	private Timestamp up_date;
 	private int read_count;
 	private int end_state;
 	private Timestamp edit_date;
@@ -26,9 +20,5 @@ public class BoardFileVo {
 	private String saveFile;
 	private int stars;
 	private int category;
-	
-	
-	
-
 	
 }

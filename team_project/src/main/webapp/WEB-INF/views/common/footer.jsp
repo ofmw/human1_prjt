@@ -35,7 +35,7 @@
         }
         #wrap2{
             width: 1280px;
-            padding-left: 25px;
+            padding-left: 45px;
         }
         #div_footer_menu_box {
             display: flex;
@@ -51,7 +51,7 @@
         #div_footer_menu{
             display: flex;
             width: 1280px;
-            padding-left: 10px;
+            padding-left: 30px;
         }
         #div_footer_menu div{
             display: flex;

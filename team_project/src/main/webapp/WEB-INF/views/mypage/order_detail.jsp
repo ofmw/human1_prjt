@@ -63,7 +63,7 @@
                 <div class="mp_main_menu_list">
                     <ul>
                         <!-- <li><a href="mypage 주문배송.html">주문/배송조회</a></li> -->
-                        <li><a href="mypage 주문배송조회.html">주문/배송조회</a></li>
+                        <li><a href="purchase_history.do">주문/배송조회</a></li>
                         <!-- <li><a href="#">자주 구매한 상품</a></li> -->
                     </ul>
                 </div>
@@ -76,7 +76,7 @@
                         <li><a href="mypage 찜목록.html">찜목록</a></li>
                         <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
                         <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
-                        <li><a href="mypage 11문의.html">1:1 문의</a></li>
+                        <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>
             </div>

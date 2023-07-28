@@ -26,6 +26,6 @@ public class HomeController {
 
 	@GetMapping("/index.do")
 	public String index() {
-		return "index";/* 뷰의 이름 */
+		return "index_temp";/* 뷰의 이름 */
 	}
 }

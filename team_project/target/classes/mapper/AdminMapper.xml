@@ -14,7 +14,7 @@
     </insert>
     
     <select id="memberList" resultType="memberVo">
-        select * from member
+        select * from member_omart
     </select>
     
 </mapper>

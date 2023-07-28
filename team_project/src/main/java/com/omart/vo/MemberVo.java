@@ -15,7 +15,7 @@ public class MemberVo {
 	private String platform;
 	
 	//계정 정보
-	private int m_idx;				//멤버 번호(고유번호)
+	private int m_idx;				//회원 번호(고유번호)
 	private String m_id;			//아이디
 	private String m_pw;			//비밀번호
 	private Timestamp j_date;		//가입일
