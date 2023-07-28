@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/mypage")
 public class MypageController {
 	
-	//인덱스
-	@GetMapping("/index.do")
-	public String mypage_index() {
-		return "redirect:/index.do";/* 뷰의 이름 */
-	}
+	
 	
 	//마이페이지
 	@GetMapping("/mypage.do")
@@ -35,10 +31,16 @@ public class MypageController {
 		return "mypage/order_detail";
 	}
 	
-	//마이페이지 -> 1:1문의
-	@GetMapping("/list_inquiry.do")
+	//마이페이지 - 1:1문의
+	@GetMapping("/inquiry.do")
 	public String list_inquiry() {
-		return "redirect:/boardFile/list_inquiry.do";
+		return "mypage/inquiry";
+	}
+	
+	//마이페이지 -> 인덱스
+	@GetMapping("/index.do")
+	public String mypage_index() {
+		return "redirect:/index.do";/* 뷰의 이름 */
 	}
 	
 	//마이페이지 -> 공지사항
@@ -47,7 +49,7 @@ public class MypageController {
 		return "redirect:/boardFile/list_notice.do";
 	}
 	
-	//로그아웃
+	//마이페이지 -> 로그아웃
 	@GetMapping("member/logout.do")
 	public String logout(HttpServletRequest request) {
 		

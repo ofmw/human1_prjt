@@ -15,7 +15,7 @@ public class KakaoVo {
 	private String platform;
 	
 	//계정 정보
-	private int m_idx;				//멤버 번호(고유번호)
+	private int m_idx;				//회원 번호(고유번호)
 	private String m_id;			//아이디
 	private Timestamp j_date;		//가입일
 	private Timestamp a_date;		//휴면계정 전환일
