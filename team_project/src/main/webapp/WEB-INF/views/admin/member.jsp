@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,6 +81,12 @@
         background-color: #f5f5f5;
         width: 25px;
         padding: 0;
+    }
+    #div_right tr td:nth-child(3), #div_right tr td:nth-child(4), #div_right tr td:nth-child(6), #div_right tr td:last-child{
+        width: 35px;
+    }
+    #div_right tr td:nth-child(5), #div_right tr td:nth-child(12){
+        width: 45px;
     }
     #div_right button, #div_right img{
         width: 15px;
@@ -181,7 +188,6 @@
                 <td>
                     <input type="checkbox" id="checkbox1_1"><label for="checkbox1_1">활성</label><br>
                     <input type="checkbox" id="checkbox1_2"><label for="checkbox1_2">휴면</label><br>
-                    <input type="checkbox" id="checkbox1_3"><label for="checkbox1_3">탈퇴</label><br>
                 </td>
             </tr>
             <tr>
@@ -203,6 +209,12 @@
                     <input type="checkbox" id="checkbox3_2"><label for="checkbox3_2">여자</label><br>
                 </td>
             </tr>
+            <tr>
+                <td>
+                   <input id="btn_reset" type="button" value="초기화"/>
+                   <input id="btn_filter" type="button" value="선택완료"/>
+                </td>
+            </tr>
         </table>
     </div>
     <div id="div_right">
@@ -215,13 +227,12 @@
                 <td>생년월일</td>
                 <td>성별</td>
                 <td>전화번호</td>
+                <td>최근접속일</td>
                 <td>가입일</td>
                 <td>수정일</td>
                 <td>전환일</td>
-                <td>활성여부</td>
-                <td>최근접속일</td>
-                <td>플랫폼</td>
-                
+                <td>활성여부</td>                
+                <td>플랫폼</td>                
             </tr>
             <c:forEach items="${memberList}" var="member">
                 <tr>
@@ -231,16 +242,46 @@
                         </button>
                     </td>                    
 	                <td>${member.m_id}</td>
-                    <td>${member.grade}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${member.grade eq 0}">
+                                브론즈
+                            </c:when>
+                            <c:when test="${member.grade eq 1}">
+                                실버
+                            </c:when>
+                            <c:when test="${member.grade eq 2}">
+                                골드
+                            </c:when>
+                        </c:choose>                    
+                    </td>
                     <td>${member.m_name}</td>
                     <td>${member.birth}</td>
-                    <td>${member.gender}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${member.gender eq 1 or member.gender eq 3}">
+                                남자
+                            </c:when>
+                            <c:when test="${member.gender eq 2 or member.gender eq 4}">
+                                여자
+                            </c:when>
+                        </c:choose> 
+                    </td>
                     <td>${member.selNum}</td>
-                    <td>${member.j_date}</td>
-                    <td>${member.u_date}</td>
-                    <td>${member.a_date}</td>
-                    <td>${member.a_state}</td>
                     <td>${member.login_date}</td>
+                    <td><fmt:formatDate value="${member.j_date}" pattern="yyyy-MM-dd"/></td>
+                    <td><fmt:formatDate value="${member.u_date}" pattern="yyyy-MM-dd"/></td>
+                    <td><fmt:formatDate value="${member.a_date}" pattern="yyyy-MM-dd"/></td>
+                    <td>
+                    <c:choose>
+                            <c:when test="${member.a_state eq 1}">
+                                활성
+                            </c:when>
+                            <c:otherwise>
+                                비활성
+                            </c:otherwise>
+                        </c:choose> 
+                    </td>                    
                     <td></td>
 	            </tr>
             </c:forEach>            
