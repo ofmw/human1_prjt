@@ -20,4 +20,5 @@ public class BoardFileDao {
 	public int insertBoard(BoardFileVo vo) {
 		return sqlSession.insert(MAPPER + ".insertBoard", vo);
 	}
+	
 }

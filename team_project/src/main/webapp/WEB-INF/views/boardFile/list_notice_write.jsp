@@ -58,17 +58,17 @@
     form td{
         border-top: 1px solid black;
     }
-    #category, #m_name, #title, #content{
+    #category, #m_id, #title, #content{
         margin: 10px 20px;
         font-size: 15px;
     }
-    #m_name, #title{
+    #m_id, #title{
         padding: 5px 0;
         width: 560px;
         font-size: 15px;
         border: none;
     }
-    #m_name:focus,#title,#content{
+    #m_id:focus,#title,#content{
         outline: none;
     }
     #content{
@@ -142,16 +142,16 @@
  <script>
  $(function(){
 	$("#smt_save").click(function(){
-		let m_name = $("#m_name").val();
+		let m_id = $("#m_id").val();
 		let title = $("#title").val();
 		let content = $("#content").val();
 		let m_idx = $("#m_idx").val();
 	
-		if(category == "" || m_name == "" || title == "" || content == ""){
+		if( m_id == "" || title == "" || content == ""){
 			alert("모든 항목을 입력해주세요")
 		}else{
 			let formData = {
-				m_name: m_name,
+				m_id: m_id,
 				title: title,
 				content: content,
 				m_idx: parseInt(m_idx)
@@ -159,12 +159,12 @@
 			
 			$.ajax({
 				type: "post",
-				url: "insert_inquiry_process.do",
+				url: "insert_notice_write_process.do",
 				data: formData,
 				success: function(response){
 					alert("저장되었습니다.")
 					//글이 저장되면 공지사항 페이지로 이동
-					location.href = "list_notice.jsp"
+					location.href = "boardFile/list_notice.jsp"
 				},
 				error: function(error){
 					alert("실패했습니다.");
@@ -194,8 +194,8 @@
           <tr>
             <td id="td_title">작성자</td>
             <td>
-              <input type="text" id="m_name" name="m_name" required>
-              <input type="hidden" id="m_idx" name="m_idx" value="1">
+              <input type="text" id="m_id" name="m_id" required>
+              <input type="hidden" id="m_idx" name="m_idx" value="2">
             </td>
           </tr>
           <tr>
