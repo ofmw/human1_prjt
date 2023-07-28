@@ -19,7 +19,7 @@ import lombok.Setter;
 public class MemberController {
 	
 	@Setter(onMethod_={ @Autowired })
-	MemberService mJoin;
+	private MemberService mJoin;
 	
 	@GetMapping("/join.do")
 	public String join() {

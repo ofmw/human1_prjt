@@ -23,7 +23,6 @@ public class MemberVo {
 	private Timestamp a_date;		//휴면계정 전환일
 	private int a_state;			//계정 활성화 여부 (0: 휴면계정 / 1: 활성계정)
 	private Timestamp login_date;	//최근(마지막) 로그인 일시
-//	private int platform;			//가입 플랫폼 (0: 오마트 사이트 가입 / 1: 네이버 / 2: 카카오)
 	private int grade;				//회원등급
 	
 	//회원 개인정보

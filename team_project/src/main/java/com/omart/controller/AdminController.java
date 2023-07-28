@@ -18,7 +18,7 @@ import lombok.Setter;
 public class AdminController {
 	
 	@Setter(onMethod_= {@Autowired})
-	ProductService pdList;
+	private ProductService pdList;
 	
 	@GetMapping("/member.do")
 	public String member(Model model) {

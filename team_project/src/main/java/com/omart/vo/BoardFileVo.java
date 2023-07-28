@@ -14,7 +14,7 @@ public class BoardFileVo {
 	private String title;
 	private String content;
 	private Timestamp post_date;
-	private Timestamp up_date;
+//	private Timestamp up_date;
 	private int read_count;
 	private int end_state;
 	private Timestamp edit_date;

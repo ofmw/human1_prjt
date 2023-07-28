@@ -81,7 +81,7 @@
 
         <div id="mp_main">
             <div id="mp_main_osc" class="mp_main_obj">
-                <div id="mp_main_osc_title"><a href="mypage 주문배송.html">주문/배송 조회</a></div>
+                <div id="mp_main_osc_title"><a href="purchase_history.do">주문/배송 조회</a></div>
                 <div id="mp_main_osc_infobar">
                     <div class="mp_main_osc_infobar_obj_btw">결제완료<a href="#">5</a></div>
                     <div class="mp_main_osc_infobar_obj_btw"><span>상품준비중</span><a href="#">5</a></div>

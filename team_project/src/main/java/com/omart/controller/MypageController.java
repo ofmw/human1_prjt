@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/mypage")
 public class MypageController {
 	
+	//인덱스
+	@GetMapping("/index.do")
+	public String mypage_index() {
+		return "redirect:/index.do";/* 뷰의 이름 */
+	}
+	
 	//마이페이지
 	@GetMapping("/mypage.do")
 	public String mypage() {

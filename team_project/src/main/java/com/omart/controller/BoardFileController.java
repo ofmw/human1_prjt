@@ -15,7 +15,7 @@ import lombok.Setter;
 @RequestMapping("/boardFile")
 public class BoardFileController {
 	@Setter(onMethod_={ @Autowired })
-	BoardFileService bfInsert;
+	private BoardFileService bfInsert;
 	
 	@GetMapping("/list_notice.do")
 	public String list_notice() {
