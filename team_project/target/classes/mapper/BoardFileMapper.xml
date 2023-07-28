@@ -7,9 +7,15 @@
     
     <!-- 게시글 추가 처리구문 -->
     <insert id="insertBoard" parameterType="boardFileVo">
-        insert into inquiries (b_idx, m_idx, category, title, content, order_idx) values(1, #{m_idx}, #{category}, #{title}, #{content}, '1')
+        insert into inquiries (m_idx, category, title, content, order_idx) values(#{m_idx}, #{category}, #{title}, #{content}, #{order_idx})
+    </insert>
+    <insert id="noticeBoard" parameterType='boardFileVo'>
+    	insert into notice (m_idx, m_id, title, content, post_date) values(#{m_idx}, #{m_id}, #{title}, #{content}, #{post_date})
     </insert>
     
+    <select id="getAllNotices" resultType="boardFileVo">
+    	select * from notice order by b_idx desc
+    </select>
     <!-- 검색 조건에 맞는 게시물 수 반환 -->
     <select id="selectCount" parameterType="map" resultType="_int">
         select count(*) from board_file

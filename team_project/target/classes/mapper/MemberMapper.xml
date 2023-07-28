@@ -22,7 +22,7 @@
     <select id="login" parameterType="map" resultType="memberVo">
         SELECT *
         from member_omart
-        WHERE m_id=#{m_id} AND m_pw=#{m_pw}
+        WHERE m_id=#{m_id}
     </select>
     
     <!-- 회원정보 수정구문 -->

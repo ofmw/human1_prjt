@@ -23,7 +23,7 @@ public class AjaxController {
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdList;
 	@Setter(onMethod_={ @Autowired })
-	private BoardFileService bfInsert;
+	BoardFileService bfInsert, bfNotice;
 	
 	@GetMapping("/admin/countCategory.do")
 	@ResponseBody
@@ -52,5 +52,17 @@ public class AjaxController {
 //		return viewPage;
 	}
 	
+	@PostMapping("/insert_notice_write_process.do")
+	public void insert_notice_write_process(BoardFileVo boardFileVo) {
+		System.out.println("아아");
+		String viewPage = "boardFile/list_notice";
+		
+		int result = bfNotice.noticeBoard(boardFileVo);
+		
+		if(result == 1) {
+			viewPage = "redirect: list_notice.do";
+		}
+//		return viewPage;
+	}
 	
 }
