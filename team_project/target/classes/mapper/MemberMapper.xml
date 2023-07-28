@@ -21,13 +21,13 @@
     <!-- 로그인 처리구문 -->
     <select id="login" parameterType="map" resultType="memberVo">
         SELECT *
-        from member_omart
-        WHERE m_id=#{m_id} AND m_pw=#{m_pw}
+        FROM member_omart
+        WHERE m_id=#{member_id} AND m_pw=#{member_pw}
     </select>
     
     <!-- 회원정보 수정구문 -->
     <update id="update" parameterType="memberVo">
-        update m_omart set m_pw=#{m_pw}, m_name=#{m_name}, gender=#{gender}, selNum=#{selNum}, update_date=now() where m_id=#{m_id}
+        update member_omart set m_pw=#{m_pw}, m_name=#{m_name}, gender=#{gender}, selNum=#{selNum}, update_date=now() where m_id=#{m_id}
     </update>
     
     <!-- 업데이트된 회원정보 가져오는 구문 -->
@@ -36,19 +36,19 @@
     </select>
     
     <update id="cancel" parameterType="_int">
-        update m_omart set cancel_or_not=-1, cancel_date=now() where m_idx=#{m_idx}
+        update member_omart set cancel_or_not=-1, cancel_date=now() where m_idx=#{m_idx}
     </update>
     
     <!-- 정보 찾기 -->
 	<select id="klogin" parameterType="map" resultType="kakaoVo">
 		SELECT *
-		FROM account_kakao
+		FROM member_kakao
 		WHERE m_id=#{email}
 	</select>
 	
 	<!-- 정보 저장 -->
 	<insert id="kjoin" parameterType="map">
-		INSERT INTO account_kakao(m_id, m_name, gender)
+		INSERT INTO member_kakao(m_id, m_name, gender)
 		VALUES(#{email}, #{nickname},
 			<choose>
 				<when test="#{gender} == 'male'">0</when>
