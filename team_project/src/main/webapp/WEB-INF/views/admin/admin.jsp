@@ -48,7 +48,7 @@
         text-align: right;
         font-size: 11px;
         color: white;
-        margin-right: 10px;
+        margin-right: 10px;             
     }
     #div_admin_topMenu div{
         float: right;
@@ -141,22 +141,9 @@
             memberElement.style.height = memberHeight + "px";
         }
         updateHeight(); //초기 Width값 설정
-        window.addEventListener("resize", updateHeight); //실시간 Width값 조정
+        window.addEventListener("resize", updateHeight); //실시간 Width값 조정   
         
-        /* display: none/block 변환 function */
-        let addProduct = document.getElementById("btn_addProduct");
-        let divShadow = document.getElementById("div_shadow");
-        let cancelBtn = document.getElementById("btn_cancel");
         
-        addProduct.addEventListener("click", function(){
-                divShadow.style.display = "block";
-        
-        });
-        
-        cancelBtn.addEventListener("click", function(){
-        	divShadow.style.display = "none";
-        	frm_product.reset();
-        });
         
 	}
 </script>
@@ -204,14 +191,14 @@
                      </a>
 	             </div>                    
 	         </li>
-	         <li>
+	         <!-- <li>
 	             <div>
 	                 <a href="">
                          <img src="" alt="">
                          <p>통계</p>
                      </a>
 	             </div>                    
-	         </li>
+	         </li> -->
 	         <li>
 	             <div>
 	                 <a href="">
@@ -230,8 +217,7 @@
 	           <c:when test="${status == 'product'}">
                    <jsp:include page="product.jsp"></jsp:include>
                </c:when>
-	       </c:choose>
-	        
+	       </c:choose>	        
 	    </div>      
 	</div>
 </body>

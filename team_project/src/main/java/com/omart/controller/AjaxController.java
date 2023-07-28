@@ -1,5 +1,6 @@
 package com.omart.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.omart.service.admin.AdminService;
+import com.omart.service.product.ProductService;
 import com.omart.service.boardfile.BoardFileService;
 import com.omart.vo.BoardFileVo;
 import com.omart.vo.ProductVo;
@@ -18,6 +20,8 @@ import lombok.Setter;
 public class AjaxController {
 	@Setter(onMethod_={ @Autowired })
 	AdminService cgCount, pdInsert;
+	@Setter(onMethod_= {@Autowired})
+	ProductService pdList;
 	@Setter(onMethod_={ @Autowired })
 	BoardFileService bfInsert, bfNotice;
 	
@@ -31,14 +35,7 @@ public class AjaxController {
 	@PostMapping("/admin/insertProduct.do")
 	public void insertProduct(ProductVo productVo) {
 		System.out.println("인서트프로덕트");
-//		
-//		ProductVo productVo = new ProductVo();
-//		productVo.setP_id(vo.getP_id());
-//		productVo.setP_name(vo.getP_name());
-//		productVo.setBrand(vo.getBrand());
-//		productVo.setCost(Integer.parseInt(vo.getCost()));
-//		
-//		
+		
 		pdInsert.insertProduct(productVo);
 	}
 	

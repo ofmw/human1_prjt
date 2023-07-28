@@ -24,29 +24,23 @@
 	<!-- 파일업로드용 변경(추가) -->
     <beans:bean id="multipartResolver" 
                   class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-    </beans:bean>
-	
-
-	
+    </beans:bean>	
 
 	<context:component-scan base-package="com.omart.controller" />
     <context:component-scan base-package="com.omart.service.member" />
     <context:component-scan base-package="com.omart.dao" />
     <context:component-scan base-package="com.omart.service.admin" />
-    <context:component-scan base-package="com.omart.service.boardfile" />
-    
-    
+    <context:component-scan base-package="com.omart.service.product" />
+    <context:component-scan base-package="com.omart.service.boardfile" />        
+    <context:component-scan base-package="com.omart.vo" />
 	
-	<!-- Interseptor 관련 설정: 사용자의 요청에 대해서 로그인 여부를 체크하는 LoginInterceptor 설정 -->
-    <interceptors>
-       <interceptor>
-           <mapping path="/**/*.do"/>
-           <!-- 경로 패턴을 가리키는 특수문자(*: 0개 또는 그 이상의 글자, ?: 1개 글자, **: 0개 또는 그 이상의 폴더 -->           
-<!--            <exclude-mapping path="/index.do"/> -->
-           
-           <beans:bean id="loginInterceptor" class="com.omart.interceptor.LoginInterceptor"/>
-           
-       </interceptor>
-    </interceptors>
+	<annotation-driven>
+	    <message-converters>
+	        <!-- @ResponseBody Content-Type:application/json;charset=UTF-8  -->
+	        <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<beans:property name="supportedMediaTypes" value="text/html; charset=UTF-8"/>
+	        </beans:bean>
+	    </message-converters>
+	</annotation-driven>
 	
 </beans:beans>

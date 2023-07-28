@@ -15,7 +15,7 @@
     <!-- 회원정보 입력구문 -->
     <insert id="join" parameterType="MemberVo">
         insert into member(m_name, birth, gender, selNum, m_id, m_pw) 
-		            values(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw})
+                    values(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw})
     </insert>
     
     <!-- 로그인 처리구문 -->
@@ -36,6 +36,23 @@
     <update id="cancel" parameterType="_int">
         update member set cancel_or_not=-1, cancel_date=now() where member_idx=#{member_idx}
     </update>
-
-
+    
+    <!-- 정보 찾기 -->
+	<select id="klogin" parameterType="map" resultType="kakaoVo">
+		SELECT *
+		FROM account_kakao
+		WHERE m_id=#{email}
+	</select>
+	
+	<!-- 정보 저장 -->
+	<insert id="kjoin" parameterType="map">
+		INSERT INTO account_kakao(m_id, m_name, gender)
+		VALUES(#{email}, #{nickname},
+			<choose>
+				<when test="#{gender} == 'male'">0</when>
+       			<when test="#{gender} == 'female'">1</when>
+			</choose>
+		)
+	</insert>
+    
 </mapper>

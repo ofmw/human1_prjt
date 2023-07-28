@@ -12,7 +12,7 @@ public class HomeController {
 	@GetMapping("/")
 	public String home() {
 		
-		return "boardFile/list_notice";/* 뷰의 이름 */
+		return "index_temp";/* 뷰의 이름 */
 	}
 	
 	@GetMapping("boardFile/list_inquiry")
@@ -20,5 +20,9 @@ public class HomeController {
 
 		return "boardFile/list_inquiry";/* 뷰의 이름 */
 	}
+
+		
+	
+
 	
 }
