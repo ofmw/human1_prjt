@@ -20,13 +20,10 @@ import lombok.Setter;
 public class KakaoController {
 	
 	@Setter(onMethod_={ @Autowired })
-	KakaoService ks;
-	@Setter(onMethod_={ @Autowired })
-	MemberService kLogin;
-	
+	private KakaoService ks;
 
-	@GetMapping("/kakao.do")
-	public String kakaoLogin(@RequestParam("code") String code, HttpSession session) throws ScriptException {
+	@GetMapping("/klogin.do")
+	public String klogin(@RequestParam("code") String code, HttpSession session) throws ScriptException {
 		// code는 카카오 서버로부터 받은 인가 코드
 		System.out.println("@@@@@@@@토큰토큰: " + code);
 		String access_Token = ks.getAccessToken(code);

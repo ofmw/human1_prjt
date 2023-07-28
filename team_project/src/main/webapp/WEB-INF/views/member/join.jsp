@@ -163,9 +163,6 @@
 </style>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript" src="resources/js/hmac-sha256.js"></script>
-<script type="text/javascript" src="resources/js/enc-base64.js"></script>
-
 
 <script>
 
@@ -267,9 +264,9 @@
     }
 </script>
 <body>
-    <form action="member/join_process.do" method="POST">
+    <form action="join_process.do" method="POST">
         <div id="div_join">
-        <img src="/resources/img/로고_블랙.png" onclick="location.href='join.do'">
+        <img src="../resources/img/로고_블랙.png" onclick="location.href='join.do'">
             <div  id="div_box">
                 <h4>회원가입</h4>
             </div>

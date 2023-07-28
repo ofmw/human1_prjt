@@ -14,13 +14,16 @@
     div{
        	border: 1px solid red;
         }
+    #divdiv{
+    	position: absolute;
+    	width: 100%;
+    	height: 100%;
+    }
     
     #div_menu{
-        position: relative;
         float: left;
-        height: 100%;
+        height: 700px;
         width: 200px;
-        top: 100px;
     }
     #div_menu p{
         padding: 6px 0;
@@ -43,7 +46,7 @@
         background-color: black;
         color: white;
     }
-    #cs_info{
+    #div_cs_info{
         position: absolute;
         bottom: 0;
         left: 0;
@@ -54,18 +57,14 @@
         width: 100%;
         height: 80px;
     }
-    #cs_info span{
+    #div_cs_info span{
         font-size: 17px;
         color: rgb(224, 224, 224);
     }
     #div_faq{
-        position: relative;
         margin-bottom: 50px;
         float: left;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-70%); /* 중앙 정렬을 위한 설정 */
-        width: 758px;
+        width: 760px;
     }
     #div_faq p{
         font-size: 28px;
@@ -96,7 +95,8 @@
     }
     #div_faqContent li{
         margin-top: 20px;
-        width: 758px;
+        padding: 0 10px;
+        width: 738px;
         height: 50px;
         font-size: 18px;
         border-bottom: 1px solid rgb(224, 224, 224);
@@ -154,9 +154,9 @@
         <p>고객센터</p>
         <ul>
             <li onclick="location.href='list_faq_member.html'">FAQ</li>
-            <li onclick="location.href='boardFile/list_notice.do'">공지사항</li>
+            <li onclick="location.href='list_notice.do'">공지사항</li>
             <li onclick="location.href='list_event.html'">이벤트</li>
-            <li onclick="location.href='boardFile/list_inquiry.do'">1:1문의하기</li>
+            <li onclick="location.href='list_inquiry.do'">1:1문의하기</li>
         </ul>
     </div>
 
@@ -171,7 +171,12 @@
             <div id="div_faqContent">
                 <c:forEach items="${noticeList}" var="notice">
                 <ul>
-                    <li>${notice.title}<p><fmt:formatDate value="${notice.post_date}" pattern="yyyy-MM-dd"/></p><p class="faq_see">보기</p></li>
+                    <li>${notice.title}
+                    	<p class="faq_see">보기</p>
+                    	<p style="padding-right: 30px; color: rgb(224, 224, 224); cursor: default;">
+                    		<fmt:formatDate value="${notice.post_date}" pattern="yyyy-MM-dd"/>
+                    	</p>
+                    </li>
                     <div class="close">
                         ${notice.content}
                     </div>
@@ -179,12 +184,11 @@
                 </c:forEach>
             </div>
 			<a href="list_notice_write.do"><button id="btn_write">글등록</button></a>
-			
+			<div  id="div_cs_info">
+			<p>고객센터 이용안내 <span>운영시간09:00~21:00</span></p>
+			</div>		
     </div>
 </div>
-    <div>
-
-    </div>
-      <p id="cs_info">고객센터 이용안내 <span>운영시간09:00~21:00</span></p>
+    
 </body>
 </html>

@@ -182,9 +182,9 @@
         <p>고객센터</p>
         <ul>
             <li onclick="location.href='list_faq_member.html'">FAQ</li>
-            <li onclick="location.href='list_notice.html'">공지사항</li>
+            <li onclick="location.href='list_notice.do'">공지사항</li>
             <li onclick="location.href='list_event.html'">이벤트</li>
-            <li onclick="location.href='list_inquiry.html'">1:1문의하기</li>
+            <li onclick="location.href='list_inquiry.do'">1:1문의하기</li>
         </ul>
     </div>
     <form>
@@ -204,7 +204,7 @@
           <tr>
             <td id="td_title">작성자</td>
             <td>
-              <input type="text" id="m_name" name="m_name" required>
+              <input type="text" id="m_name" name="m_name" required value="${member.m_name}">
               <input type="hidden" id="m_idx" name="m_idx" value="1">
             </td>
           </tr>

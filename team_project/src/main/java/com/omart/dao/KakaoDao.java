@@ -13,7 +13,7 @@ public class KakaoDao {
 	
 	public static final String MAPPER = "com.omart.MemberMapper";
 	//MyBatis를 이용한 DB 연결 및 작업은 SqlSession객체가 담당함
-	SqlSession sqlSession;
+	private SqlSession sqlSession;
 
 	//SqlSession객체는 root-context.xml에 빈으로 등록했으므로
 	//생성자 방식으로 자동 의존주입 받음
@@ -27,7 +27,7 @@ public class KakaoDao {
 		System.out.println("RN:"+userInfo.get("nickname"));
 		System.out.println("RE:"+userInfo.get("email"));
 		KakaoVo vo = sqlSession.selectOne(MAPPER+".klogin", userInfo);
-		vo.setPlatform("kakao");
+//		vo.setPlatform("kakao");
 		return vo;
 	}
 	

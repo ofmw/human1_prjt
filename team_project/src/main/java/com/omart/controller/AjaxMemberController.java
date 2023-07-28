@@ -1,10 +1,8 @@
 package com.omart.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,13 +18,13 @@ import lombok.Setter;
 public class AjaxMemberController {
 
 	@Setter(onMethod_={ @Autowired })
-	MemberService mLogin;
+	private MemberService mLogin;
 	
 	//로그인
 	@PostMapping("/login.do")
     public String login(@RequestParam("member_id") String member_id,
                         @RequestParam("member_pw") String member_pw,
-                        HttpServletRequest request) {
+                        HttpSession session) {
         
 		//로그인 처리를 할 MemberLoginService 클래스를 이용함
 		MemberVo vo = mLogin.login(member_id, member_pw);
@@ -45,7 +43,6 @@ public class AjaxMemberController {
 			System.out.println("활성여부: " +vo.getA_state());
 //			System.out.println("플랫폼: " +vo.getPlatform());
 			System.out.println("회원등급: " +vo.getGrade());
-			HttpSession session = request.getSession();
 			session.setAttribute("member", vo);
             return "success";
         } else {

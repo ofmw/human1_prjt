@@ -151,7 +151,7 @@
 <body>    
 	<div id="div_admin">
 	    <div id="div_admin_topBar">
-	       <img src="../resources/img/omart_classic_logo.png" alt="">
+	        <img src="../resources/img/omart_classic_logo.png" alt="">
             <h3>SMART 관리</h3>
             <div id="div_admin_topMenu">
                 <span>관리자님</span>

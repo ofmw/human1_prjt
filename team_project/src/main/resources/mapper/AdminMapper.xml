@@ -13,4 +13,8 @@
         insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state})
     </insert>
     
+    <select id="memberList" resultType="memberVo">
+        select * from member
+    </select>
+    
 </mapper>

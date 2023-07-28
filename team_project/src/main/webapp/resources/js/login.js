@@ -3,6 +3,7 @@ $(function() {
     let $shadow = $("#shadow");
     let $close_btn = $("#close_btn");
     let $login_btn2 = $("#login_btn2");
+    let $open_login = $("#open_login");
 
     $close_btn.on("click", function() {
         $shadow.css({
@@ -21,6 +22,7 @@ $(function() {
     }
 
     $login_btn2.on("click", showShadow);
+    $open_login.on("click", showShadow);
     
     /* 비밀번호 CapsLock 감지 */
     let checkCapsLock = document.getElementById('member_pw');
@@ -48,7 +50,7 @@ $(function() {
         // 새 창을 띄우기 위한 윈도우 옵션들
         let windowFeatures = "width=" + windowWidth + ",height=" + windowHeight + ",left=" + windowLeft + ",top=" + windowTop;
 
-        let url = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=AdI9mtwo_qO9HcI4nYXD&redirect_uri=http://localhost:9090/prjt/member/naver.do";
+        let url = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=AdI9mtwo_qO9HcI4nYXD&redirect_uri=http://localhost:9090/prjt/member/nlogin.do";
         window.open(url, "_blank", windowFeatures);
     });
 
@@ -66,7 +68,7 @@ $(function() {
         // 새 창을 띄우기 위한 윈도우 옵션들
         let windowFeatures = "width=" + windowWidth + ",height=" + windowHeight + ",left=" + windowLeft + ",top=" + windowTop;
 
-        let url = "https://kauth.kakao.com/oauth/authorize?client_id=96ad22b1dc5d2f8c1d217f6aa61146a0&redirect_uri=http://localhost:9090/prjt/kakao.do&response_type=code";
+        let url = "https://kauth.kakao.com/oauth/authorize?client_id=96ad22b1dc5d2f8c1d217f6aa61146a0&redirect_uri=http://localhost:9090/prjt/klogin.do&response_type=code";
         //window.open(url, "_blank", windowFeatures);
         location.href = url;
     });

@@ -19,9 +19,9 @@ import lombok.Setter;
 @RestController
 public class AjaxController {
 	@Setter(onMethod_={ @Autowired })
-	AdminService cgCount, pdInsert;
+	private AdminService cgCount, pdInsert;
 	@Setter(onMethod_= {@Autowired})
-	ProductService pdList;
+	private ProductService pdList;
 	@Setter(onMethod_={ @Autowired })
 	BoardFileService bfInsert, bfNotice;
 	

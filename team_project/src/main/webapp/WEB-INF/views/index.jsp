@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>임시홈페이지</title>
 
 <!-- 임시 css -->
 <style>
@@ -20,7 +20,7 @@
 <body>
 
 <!-- 헤더 -->
-<header><jsp:include page="common/header1.jsp"></jsp:include></header>	
+<header><jsp:include page="common/header1.jsp"></jsp:include></header>
 
 <section>
 	<div id="asdf">content
