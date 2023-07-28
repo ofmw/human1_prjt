@@ -40,7 +40,7 @@
     </update>
     
     <!-- 정보 찾기 -->
-	<select id="klogin" parameterType="map" resultType="kakaoVo">
+	<select id="klogin" parameterType="map" resultType="memberVo">
 		SELECT *
 		FROM member_kakao
 		WHERE m_id=#{email}

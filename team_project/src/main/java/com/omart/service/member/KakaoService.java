@@ -16,7 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.omart.dao.KakaoDao;
-import com.omart.vo.KakaoVo;
+import com.omart.vo.MemberVo;
 
 @Service
 public class KakaoService {
@@ -80,7 +80,7 @@ public class KakaoService {
 	@Autowired
 	private KakaoDao kd;
 	
-	public KakaoVo getUserInfo(String access_Token) {
+	public MemberVo getUserInfo(String access_Token) {
 
 		// 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
 		HashMap<String, Object> userInfo = new HashMap<String, Object>();
@@ -122,7 +122,7 @@ public class KakaoService {
 			e.printStackTrace();
 		}
 		// catch 아래 코드 추가.
-				KakaoVo result = kd.findkakao(userInfo);
+				MemberVo result = kd.findkakao(userInfo);
 				// 위 코드는 먼저 정보가 저장되있는지 확인하는 코드.
 				System.out.println("S:" + result);
 				if(result==null) {

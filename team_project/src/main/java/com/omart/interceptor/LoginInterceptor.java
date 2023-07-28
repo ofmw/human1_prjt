@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.omart.vo.KakaoVo;
 import com.omart.vo.MemberVo;
 
 public class LoginInterceptor implements HandlerInterceptor {
@@ -16,6 +17,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 		boolean result = true; //Controller로 사용자의 요청이 전달되게 하는 반환값
 		
 		HttpSession session = request.getSession();
+		
 		MemberVo member = (MemberVo)session.getAttribute("member");
 		
 		if(member == null) {

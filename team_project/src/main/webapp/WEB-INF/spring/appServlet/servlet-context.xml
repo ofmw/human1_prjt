@@ -47,7 +47,7 @@
 			<exclude-mapping path="/member/checkId_process.do"/>
 			<exclude-mapping path="/member/login.do"/>
 			<exclude-mapping path="/member/join_process.do"/>
-			<exclude-mapping path="/boardFile/list.do"/>
+			<exclude-mapping path="/boardFile/list_notice.do"/>
 			<exclude-mapping path="/boardFile/view.do"/>
 			<exclude-mapping path="/klogin.do"/>
 			

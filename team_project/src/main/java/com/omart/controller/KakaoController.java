@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.omart.service.member.KakaoService;
-import com.omart.service.member.MemberService;
-import com.omart.vo.KakaoVo;
+import com.omart.vo.MemberVo;
 
 import lombok.Setter;
 
@@ -29,7 +28,7 @@ public class KakaoController {
 		String access_Token = ks.getAccessToken(code);
 		
 		// 위에서 만든 코드 아래에 코드 추가
-		KakaoVo userInfo = ks.getUserInfo(access_Token);
+		MemberVo userInfo = ks.getUserInfo(access_Token);
 		System.out.println("###access_Token#### : " + access_Token);
 		System.out.println("###nickname#### : " + userInfo.getM_name());
 		System.out.println("###email#### : " + userInfo.getM_id());
