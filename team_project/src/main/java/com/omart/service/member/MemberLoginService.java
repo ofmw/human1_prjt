@@ -16,8 +16,8 @@ public class MemberLoginService implements MemberService {
 		this.dao = dao;
 	}
 	
-	public MemberVo login(String member_id, String member_pw) {
-		return dao.login(member_id, member_pw);
+	public MemberVo login(String m_id, String m_pw) {
+		return dao.login(m_id, m_pw);
 	}
 	
 }

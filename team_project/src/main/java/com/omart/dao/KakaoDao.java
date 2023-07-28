@@ -27,7 +27,6 @@ public class KakaoDao {
 		System.out.println("RN:"+userInfo.get("nickname"));
 		System.out.println("RE:"+userInfo.get("email"));
 		MemberVo vo = sqlSession.selectOne(MAPPER+".klogin", userInfo);
-//		vo.setPlatform("kakao");
 		return vo;
 	}
 	

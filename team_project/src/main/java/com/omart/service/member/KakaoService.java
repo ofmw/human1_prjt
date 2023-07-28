@@ -20,10 +20,13 @@ import com.omart.vo.MemberVo;
 
 @Service
 public class KakaoService {
+	
+	//엑세스 토큰 얻어오는 메서드
 	public String getAccessToken (String code) {
+		
         String access_Token = "";
         String refresh_Token = "";
-        String reqURL = "https://kauth.kakao.com/oauth/token";
+        String reqURL = "https://kauth.kakao.com/oauth/token"; //카카오 로그인 API 요청 URL
 
         try {
             URL url = new URL(reqURL);
@@ -121,26 +124,28 @@ public class KakaoService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// catch 아래 코드 추가.
-				MemberVo result = kd.findkakao(userInfo);
-				// 위 코드는 먼저 정보가 저장되있는지 확인하는 코드.
-				System.out.println("S:" + result);
-				if(result==null) {
-				// result가 null이면 정보가 저장이 안되있는거므로 정보를 저장.
-					kd.kakaoinsert(userInfo);
-					// 위 코드가 정보를 저장하기 위해 Repository로 보내는 코드임.
-					return kd.findkakao(userInfo);
-					// 위 코드는 정보 저장 후 컨트롤러에 정보를 보내는 코드임.
-					//  result를 리턴으로 보내면 null이 리턴되므로 위 코드를 사용.
-				} else {
-					return result;
-					// 정보가 이미 있기 때문에 result를 리턴함.
-				}
+		//member_kakao 테이블에서 기존 가입 정보 조회
+		MemberVo result = kd.findkakao(userInfo);
+		//테이블 조회 결과 (정보 없을경우 null)
+		System.out.println("오마트 회원가입 정보 조회 결과(카카오): " + result);
+		
+		if(result==null) {
+			//result가 null이면 회원가입 진행
+			kd.kakaoinsert(userInfo);
+			//회원가입 후 테이블 조회 재실행
+			return kd.findkakao(userInfo);
+		}else {
+			return result;
+			//이미 가입되어 있으므로 MemberVo 객체 리턴
+		}
 	}
 	
 	
+	//카카오 로그아웃
 	public void logout(String access_Token) {
+		//로그아웃 API 요청 URL
 	    String reqURL = "https://kapi.kakao.com/v1/user/logout";
+	    
 	    try {
 	        URL url = new URL(reqURL);
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -158,6 +163,7 @@ public class KakaoService {
 	        while ((line = br.readLine()) != null) {
 	            result += line;
 	        }
+	        //로그아웃 요청 ID 출력
 	        System.out.println(result);
 	    } catch (IOException e) {
 	        e.printStackTrace();

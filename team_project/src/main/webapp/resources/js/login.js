@@ -25,7 +25,7 @@ $(function() {
     $open_login.on("click", showShadow);
     
     /* 비밀번호 CapsLock 감지 */
-    let checkCapsLock = document.getElementById('member_pw');
+    let checkCapsLock = document.getElementById('m_pw');
     checkCapsLock.addEventListener('keydown', function(e){
             if (e.getModifierState('CapsLock')) {
                 $("#ccl_message").css('display', 'block');
