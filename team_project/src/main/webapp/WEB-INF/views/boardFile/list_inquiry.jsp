@@ -220,18 +220,20 @@
               <textarea id="content" name="content" required></textarea>
             </td>
           </tr>
+          <!-- 
           <tr>
             <td id="td_title">ㅇ</td>
             <td>
-            <!-- 
+            
                 <div id="div_filebox">
                     <input id="upload_name" value="파일명" disabled> 
                     <label for="file">파일찾기</label> 
                     <input type="file" id="file" style="display: none;"> 
                   </div>
-             -->
+             
             </td>
           </tr>
+          -->
         </table>
         <div id="div_sbm">
             <input type="button" value="이전" id="btn_back">

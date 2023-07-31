@@ -12,7 +12,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
         *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
     div{
-       	border: 1px solid red;
+       	
         }
     #div_notice{
     	position: absolute;
@@ -20,12 +20,18 @@
     	height: 100%;
     	overflow: hidden;
     }
-    
+    #divdivdiv{
+    	position: absolute;
+	    min-width: 980px;
+	    height: 90%;
+	    left: 50%;
+	    margin-left: -490px;
+    }
     #div_menu{
-        float: left;
-        width: 250px;
-        height: 700px;
-        padding-top: 100px;
+    	width: 200px;
+   		margin-top: 100px;
+    	position: absolute;
+
     }
     #div_menu p{
         padding: 6px 0;
@@ -50,24 +56,25 @@
     }
     #div_cs_info{
         position: absolute;
-        bottom: 0;
-        left: 0;
-        padding-left: 10px;
-        padding-top: 10px;
-        border-top: 3px solid black;
-        font-size: 23px;
-        width: 100%;
-        height: 80px;
+	    bottom: 0;
+	    padding-left: 10px;
+	    padding-top: 10px;
+	    border-top: 3px solid black;
+	    font-size: 23px;
+	    width: 100%;
+	    height: 80px;
     }
     #div_cs_info span{
         font-size: 17px;
         color: rgb(224, 224, 224);
     }
-    #div_section{
+
+    #div_faq{
+    	margin-left: 40px;
+
         margin-bottom: 50px;
         float: left;
-        width: 1000px;
-        height: 700px;
+        width: 693px;
     }
     #div_section p{
         font-size: 28px;
@@ -76,57 +83,71 @@
     }
     #div_section ul{
         list-style: none;
-        margin-bottom: 50px;
+        height: 50px;
     }
     #div_sectionMenu{
         font-size: 0;/* 자식객체에 inline-block 하면 여백 남는거 해결방법 */
         padding-left: 50px;
     }
-    #div_sectionMenu li{
+
+    #div_faqMenu li{
         float: left;
-/*         margin-bottom: 20px; */
-        padding: 10px 0;
-        width: 400px;
-        text-align: center;
-        border: 1px solid black;
-        border-left: none;
-        font-size: 19px;
-        cursor: pointer;
+	    margin-bottom: 20px;
+	    padding: 10px 0;
+	    width: 344.5px;
+	    text-align: center;
+	    border: 1px solid black;
+	    border-left: none;
+	    font-size: 19px;
+	    cursor: pointer;
     }
     #div_sectionMenu ul li:nth-child(1){
         background-color: black;
         color: white;
     }
-    #div_sectionContent{
-        float: left;
-        width: 1100px;
-        height: 500px;
+
+    #div_faqContent{
+    	
     }
-    #div_sectionContent li{
-        margin-top: 20px;
+    #div_faqContent li{
+        margin-top: 30px;
         padding: 0 10px;
-        width: 738px;
+        width: 673px;
         height: 50px;
         font-size: 18px;
         border-bottom: 1px solid rgb(224, 224, 224);
         line-height: 30px;
+        float: left;
     }
     #div_sectionContent p{
         float: right;
         font-size: 13px;
         cursor: pointer;
     }
-    #div_sectionContent div{
+
+    #div_faqContent div{
+    	width: 653px;
         padding: 20px;
         background-color: rgb(224, 224, 224);
+        float: left;
     }
     #div_sectionContent ul li p:nth_child(1){
     	color: gray;
     }
     .close{
         display: none;
-        position: relative;
+        position: absolute;
         padding: 10px;
+    }
+    #div_div_faqContent{
+        position: absolute;
+   		width: 773px;
+    	margin-top: 80px;
+    	margin-left: 200px;
+    }
+    #btn_write{
+    	margin-top: 40px;
+    	float: right;
     }
 
 
@@ -158,7 +179,9 @@
     };
 </script>
 <body>
-<div id="div_notice">
+
+<div id="divdiv">
+<div id="divdivdiv">
     <div id="div_menu">
         <p>고객센터</p>
         <ul>
@@ -168,8 +191,8 @@
             <li onclick="location.href='list_inquiry.do'">1:1문의하기</li>
         </ul>
     </div>
-
-    <div id="div_section">
+	<div id="div_div_faqContent">
+    <div id="div_faq">
         <p>공지사항</p>
             <div id="div_sectionMenu">
                 <ul>
@@ -177,7 +200,8 @@
                     <li onclick="location.href='list_notice_event.html'" style="border-right: none;">이벤트 당첨자 발표</li>
                 </ul>
             </div>
-            <div id="div_sectionContent">
+            
+            <div id="div_faqContent">
                 <c:forEach items="${noticeList}" var="notice">
                 <ul>
                     <li>${notice.title}
@@ -193,10 +217,14 @@
                 </c:forEach>
             </div>
 			<a href="list_notice_write.do"><button id="btn_write">글등록</button></a>
+			
+		</div>
+	</div>
+	</div>
 			<div  id="div_cs_info">
 			<p>고객센터 이용안내 <span>운영시간09:00~21:00</span></p>
 			</div>		
-    </div>
+    
 </div>
     
 </body>

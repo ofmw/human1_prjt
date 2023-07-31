@@ -7,10 +7,10 @@
     
     <!-- 게시글 추가 처리구문 -->
     <insert id="insertBoard" parameterType="boardFileVo">
-        insert into inquiries (m_idx, category, title, content, order_idx) values(#{m_idx}, #{category}, #{title}, #{content}, #{order_idx})
+        insert into inquiries (m_idx, category, title, content, order_idx) values(#{m_idx}, #{category}, #{title}, #{content}, '1')
     </insert>
     <insert id="noticeBoard" parameterType='boardFileVo'>
-    	insert into notice (m_idx, m_id, title, content, post_date) values(#{m_idx}, #{m_id}, #{title}, #{content}, #{post_date})
+    	insert into notice (m_idx, m_id, title, content) values(1, #{m_id}, #{title}, #{content})
     </insert>
     
     <select id="getAllNotices" resultType="boardFileVo">

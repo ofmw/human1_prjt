@@ -24,13 +24,17 @@ public class MemberLoginService implements MemberService {
 		this.dao = dao;
 	}
 	
-	public MemberVo login(String m_id, String m_pw) {
-		MemberVo vo = null;
-		String encodePassword = dao.login(m_id).getM_pw();
-		cryptPasswordEncoder.matches(m_pw, encodePassword);
-		if(cryptPasswordEncoder.matches(m_pw, encodePassword) == true) {
-			vo = dao.login(m_id);
-		}
+	public MemberVo login(String m_id, String m_pw) {		
+		MemberVo vo = null;		
+		MemberVo result = dao.login(m_id);
+		
+		if(result != null) {
+			String encodePassword = result.getM_pw();
+			cryptPasswordEncoder.matches(m_pw, encodePassword);
+			if(cryptPasswordEncoder.matches(m_pw, encodePassword) == true) {
+				vo = result;
+			}
+		}		
 		return vo; 
 	}
 	
