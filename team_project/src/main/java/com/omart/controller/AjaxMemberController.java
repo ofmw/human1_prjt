@@ -27,16 +27,18 @@ public class AjaxMemberController {
                         HttpSession session) {
         
 		//로그인 처리를 할 MemberLoginService 클래스를 이용함
+		System.out.println("━━━━━━━━━━━━━━━━━<일반 로그인 요청>━━━━━━━━━━━━━━━━━");
 		MemberVo vo = mLogin.login(m_id, m_pw);
 		
 		if(vo != null){
-			System.out.println("---회원 개인정보---");
+			System.out.println("로그인 결과 : 성공");
+			System.out.println("----------회원 개인정보----------");
 			System.out.println("이름: " +vo.getM_name());
 			System.out.println("성별: " +vo.getGender());
 			System.out.println("전화번호: " +vo.getSelNum());
 			System.out.println("회원번호: " +vo.getM_idx());
 			System.out.println("생년월일: " +vo.getBirth());
-			System.out.println("---회원 계정정보---");
+			System.out.println("----------회원 계정정보----------");
 			System.out.println("아이디: " +vo.getM_id());
 			System.out.println("비밀번호: " +vo.getM_pw());
 			System.out.println("가입일: " +vo.getJ_date());
@@ -46,6 +48,7 @@ public class AjaxMemberController {
 			session.setAttribute("member", vo);
             return "success";
         } else {
+        	System.out.println("로그인 결과 : 실패(해당 계정 정보 없음)");
             return "failure";
         }
     }
