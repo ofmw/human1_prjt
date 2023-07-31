@@ -25,6 +25,8 @@ public class AjaxMemberController {
     public String login(@RequestParam("m_id") String m_id,
                         @RequestParam("m_pw") String m_pw,
                         HttpSession session) {
+		
+        System.out.println("m_id:"+m_id);
         
 		//로그인 처리를 할 MemberLoginService 클래스를 이용함
 		MemberVo vo = mLogin.login(m_id, m_pw);

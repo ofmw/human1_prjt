@@ -10,7 +10,7 @@ $(document).ready(function() {
 	});
 	
 	//---------------로그인 처리 메서드---------------//
-	$("#login_btn").click(function() {
+	$("#login_btn").click(function() {	
     let memberId = $("#m_id").val();
     let memberPw = $("#m_pw").val();
 

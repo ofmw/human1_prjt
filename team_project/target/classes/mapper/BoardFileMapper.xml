@@ -31,7 +31,7 @@
                     </choose>
                 </where>
             </if>
-        order by board_idx desc
+        order by b_idx desc
     </select>
     
     <!-- 검색 조건에 맞는 게시물 목록 반환 -->
@@ -49,17 +49,17 @@
                     </choose>
                 </where>
             </if>
-        order by board_idx desc
+        order by b_idx desc
     </select>
     
     <!-- 조회수 증가 -->
     <update id="updateReadCount" parameterType="_int">
-        update board_file set read_count = read_count+1 where board_idx=#{board_idx}
+        update board_file set read_count = read_count+1 where b_idx=#{b_idx}
     </update>
     
     <!-- 지정한 게시물을 찾아 내용 반환 -->
     <select id="selectView" parameterType="_int" resultType="boardFileVo">
-        select * from board_file where board_idx = #{board_idx}
+        select * from board_file where b_idx = #{b_idx}
     </select>
     
     <update id="updateBoard" parameterType="boardFileVo">
@@ -78,12 +78,12 @@
                     savefile=#{savaFile}
                 </if>
             </set>
-        where board_idx=#{board_idx}
+        where b_idx=#{b_idx}
     </update>
     
     <!-- 지정한 게시물 삭제 -->    
     <delete id="deletePost" parameterType="boardFileVo">
-        delete from board_file where board_idx=#{board_idx}
+        delete from board_file where b_idx=#{b_idx}
     </delete>
     
 </mapper>

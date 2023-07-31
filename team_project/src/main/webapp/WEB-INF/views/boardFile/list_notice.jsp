@@ -14,16 +14,18 @@
     div{
        	border: 1px solid red;
         }
-    #divdiv{
+    #div_notice{
     	position: absolute;
     	width: 100%;
     	height: 100%;
+    	overflow: hidden;
     }
     
     #div_menu{
         float: left;
+        width: 250px;
         height: 700px;
-        width: 200px;
+        padding-top: 100px;
     }
     #div_menu p{
         padding: 6px 0;
@@ -61,39 +63,46 @@
         font-size: 17px;
         color: rgb(224, 224, 224);
     }
-    #div_faq{
+    #div_section{
         margin-bottom: 50px;
         float: left;
-        width: 760px;
+        width: 1000px;
+        height: 700px;
     }
-    #div_faq p{
+    #div_section p{
         font-size: 28px;
         font-weight: bold;
-        padding-bottom: 30px;
+        padding: 50px;
     }
-    #div_faq ul{
+    #div_section ul{
         list-style: none;
         margin-bottom: 50px;
     }
-    #div_faqMenu{
+    #div_sectionMenu{
         font-size: 0;/* 자식객체에 inline-block 하면 여백 남는거 해결방법 */
+        padding-left: 50px;
     }
-    #div_faqMenu li{
-        display: inline-block;
-        margin-bottom: 20px;
+    #div_sectionMenu li{
+        float: left;
+/*         margin-bottom: 20px; */
         padding: 10px 0;
-        width: 378px;
+        width: 400px;
         text-align: center;
         border: 1px solid black;
         border-left: none;
         font-size: 19px;
         cursor: pointer;
     }
-    #div_faqMenu ul li:nth-child(1){
+    #div_sectionMenu ul li:nth-child(1){
         background-color: black;
         color: white;
     }
-    #div_faqContent li{
+    #div_sectionContent{
+        float: left;
+        width: 1100px;
+        height: 500px;
+    }
+    #div_sectionContent li{
         margin-top: 20px;
         padding: 0 10px;
         width: 738px;
@@ -102,16 +111,16 @@
         border-bottom: 1px solid rgb(224, 224, 224);
         line-height: 30px;
     }
-    #div_faqContent p{
+    #div_sectionContent p{
         float: right;
         font-size: 13px;
         cursor: pointer;
     }
-    #div_faqContent div{
+    #div_sectionContent div{
         padding: 20px;
         background-color: rgb(224, 224, 224);
     }
-    #div_faqContent ul li p:nth_child(1){
+    #div_sectionContent ul li p:nth_child(1){
     	color: gray;
     }
     .close{
@@ -149,7 +158,7 @@
     };
 </script>
 <body>
-<div id="divdiv">
+<div id="div_notice">
     <div id="div_menu">
         <p>고객센터</p>
         <ul>
@@ -160,15 +169,15 @@
         </ul>
     </div>
 
-    <div id="div_faq">
+    <div id="div_section">
         <p>공지사항</p>
-            <div id="div_faqMenu">
+            <div id="div_sectionMenu">
                 <ul>
                     <li onclick="location.href='list_notice.html'">공지사항</li>
                     <li onclick="location.href='list_notice_event.html'" style="border-right: none;">이벤트 당첨자 발표</li>
                 </ul>
             </div>
-            <div id="div_faqContent">
+            <div id="div_sectionContent">
                 <c:forEach items="${noticeList}" var="notice">
                 <ul>
                     <li>${notice.title}
