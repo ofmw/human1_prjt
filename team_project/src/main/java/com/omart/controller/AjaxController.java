@@ -39,7 +39,7 @@ public class AjaxController {
 		pdInsert.insertProduct(productVo);
 	}
 	
-	@PostMapping("/insert_inquiry_process.do")
+	@PostMapping("/boardFile/insert_inquiry_process.do")
 	public void insert_inquiry_process(BoardFileVo boardFileVo) {
 		System.out.println("인서트");
 		String viewPage = "boardFile/list_inquiry";
@@ -52,7 +52,7 @@ public class AjaxController {
 //		return viewPage;
 	}
 	
-	@PostMapping("/insert_notice_write_process.do")
+	@PostMapping("/boardFile/insert_notice_write_process.do")
 	public void insert_notice_write_process(BoardFileVo boardFileVo) {
 		System.out.println("아아");
 		String viewPage = "boardFile/list_notice";
