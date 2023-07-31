@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
 	
 	//---------------카테고리 메뉴---------------//
 	$("#div_category_block").on("mouseover", function() {
@@ -9,33 +9,42 @@ $(document).ready(function() {
 		$(this).css("display", "none");
 	});
 	
-	//---------------로그인 처리 메서드---------------//
-	$("#login_btn").click(function() {	
-    let memberId = $("#m_id").val();
-    let memberPw = $("#m_pw").val();
+	//---------------로그인 모달창---------------//
+	let $shadow = $("#shadow");
+    let $close_btn = $("#close_btn");
+    let $login_btn2 = $("#login_btn2");
+    let $open_login = $("#open_login");	//마이페이지 버튼 임시
+    
+    /* 로그인 모달창 열기 메서드 */
+    function showShadow() {
+        $shadow.css({
+            'display': 'block',
+            'z-index': '5000'
+        });
+        $("body").css('overflow', 'hidden');
+    }
+    
+    /* 로그인 모달창 닫기 메서드 */
+    $close_btn.on("click", function() {
+        $shadow.css({
+            'display': 'none',
+            'z-index': '0'
+        });
+        $("body").css('overflow', 'visible');
+    });
 
-    //ajax 통신
-	$.ajax({
-		type: "POST", // 또는 "GET", 서버에서 지원하는 방식에 따라 변경 가능
-		url: "member/login.do", // 컨트롤러의 URL을 입력해주세요.
-		data: {
-		m_id: memberId,
-		m_pw: memberPw
-		},
-		success: function(response) {
-			//로그인 성공시
-	        if (response === "success") {
-	            location.href = "index.do";
-	        }else{
-				//로그인 실패시
-				alert("아이디 또는 비밀번호가 일치하지 않습니다.\n다시 확인하신 후 입력해주세요.");
-				$("#m_pw").val("");
-				$("#m_pw").focus();
-			}
-		},
-		error: function() {
-			alert("서버와의 통신에 문제가 발생했습니다.");
-			}
-		}); //end of ajax
-	}); //end of 로그인 처리 메서드
+    $login_btn2.on("click", showShadow);
+    $open_login.on("click", showShadow); //마이페이지 버튼 임시
+    
+    /* 비밀번호 입력 CapsLock 감지 */
+    let checkCapsLock = document.getElementById('m_pw');
+    checkCapsLock.addEventListener('keydown', function(e){
+            if (e.getModifierState('CapsLock')) {
+                $("#ccl_message").css('display', 'block');
+            }else {
+                $("#ccl_message").css('display', 'none');
+        }
+    });
+	
+	
 }); //end of JQuery

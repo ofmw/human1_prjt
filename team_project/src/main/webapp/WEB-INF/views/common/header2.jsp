@@ -47,7 +47,7 @@
 								<a href="list_notice.do">고객센터</a>
 								<c:choose>
 									<c:when test="${member.platform eq 'kakao'}">
-										<a href="klogout.do">로그아웃</a>
+										<a href="kakaologout.do">로그아웃</a>
 									</c:when>
 									<c:otherwise>
 										<a href="member/logout.do">로그아웃</a>									

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.omart.service.member.KakaoService;
+import com.omart.service.kakao.KakaoService;
 import com.omart.vo.MemberVo;
 
 import lombok.Setter;
@@ -19,19 +19,22 @@ import lombok.Setter;
 public class KakaoController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private KakaoService ks;
-
-	@GetMapping("/klogin.do")
-	public String klogin(@RequestParam("code") String code, HttpSession session) throws ScriptException {
-		// code는 카카오 서버로부터 받은 인가 코드
-		System.out.println("@@@@@@@@토큰토큰: " + code);
-		String access_Token = ks.getAccessToken(code);
+	private KakaoService kToken;
+	
+	//카카오 회원가입 및 로그인
+	@GetMapping("/kakaologin.do")
+	public String kakaoLogin(@RequestParam("code") String code, HttpSession session) throws ScriptException {
 		
-		// 위에서 만든 코드 아래에 코드 추가
-		MemberVo userInfo = ks.getUserInfo(access_Token);
-		System.out.println("###access_Token#### : " + access_Token);
-		System.out.println("###nickname#### : " + userInfo.getM_name());
-		System.out.println("###email#### : " + userInfo.getM_id());
+		//code는 카카오 서버로부터 받은 인가 코드
+		System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그인 요청>━━━━━━━━━━━━━━━━━");
+		System.out.println("인가 코드: " + code);
+		String access_Token = kToken.getKakaoAccessToken(code);
+		
+		//위에서 만든 코드 아래에 코드 추가
+		MemberVo userInfo = kToken.getKakaoUserInfo(access_Token);
+//		System.out.println("###access_Token#### : " + access_Token);
+		System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
+		System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
 		userInfo.setPlatform("kakao");
 		
 		
@@ -55,11 +58,12 @@ public class KakaoController {
 		return "index";
 	}
 	
-	@GetMapping("/klogout.do")
-	public String klogout(HttpSession session) {
-		System.out.println("---------<카카오 로그아웃 요청>---------");
+	//카카오 로그아웃
+	@GetMapping("/kakaologout.do")
+	public String kakaoLogout(HttpSession session) {
+		System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그아웃 요청>━━━━━━━━━━━━━━━━━");
 		System.out.println("access_token: " +session.getAttribute("access_token"));
-		ks.logout((String)session.getAttribute("access_token"));
+		kToken.kakaoLogout((String)session.getAttribute("access_token"));
 		session.invalidate();
 		return "redirect:/index.do";
 	}

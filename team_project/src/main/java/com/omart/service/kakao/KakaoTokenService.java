@@ -1,4 +1,4 @@
-package com.omart.service.member;
+package com.omart.service.kakao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,17 +16,23 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.omart.dao.KakaoDao;
+import com.omart.dao.MemberDao;
 import com.omart.vo.MemberVo;
 
-@Service
-public class KakaoService {
+import lombok.Setter;
+
+@Service("kToken")
+public class KakaoTokenService implements KakaoService {
+	
+	@Setter(onMethod_={ @Autowired })
+	private KakaoDao kd;
 	
 	//엑세스 토큰 얻어오는 메서드
-	public String getAccessToken (String code) {
+	public String getKakaoAccessToken (String code) {
 		
         String access_Token = "";
         String refresh_Token = "";
-        String reqURL = "https://kauth.kakao.com/oauth/token"; //카카오 로그인 API 요청 URL
+        String reqURL = "https://kauth.kakao.com/oauth/token"; //카카오 로그인 엑세스 토큰 요청 URL
 
         try {
             URL url = new URL(reqURL);
@@ -41,15 +47,15 @@ public class KakaoService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=96ad22b1dc5d2f8c1d217f6aa61146a0"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:9090/prjt/klogin.do"); // TODO 인가코드 받은 redirect_uri 입력
-            sb.append("&code=" + code);
+            sb.append("&client_id=96ad22b1dc5d2f8c1d217f6aa61146a0"); //TODO REST_API_KEY 입력
+            sb.append("&redirect_uri=http://localhost:9090/prjt/kakaologin.do"); //TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&code=" + code); //인가 코드
             bw.write(sb.toString());
             bw.flush();
 
-            //결과 코드가 200이라면 성공
+            //응답 코드 (통신 성공 여부. 200이면 성공)
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            System.out.println("responseCode(엑세스 토큰 요청) : " + responseCode);
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -63,8 +69,10 @@ public class KakaoService {
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();
+            //Json 객체에 응답 객체 담기
             JsonElement element = parser.parse(result);
-
+            
+            //엑서스 토큰, 리프레쉬 토큰 추출
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
@@ -80,25 +88,26 @@ public class KakaoService {
         return access_Token;
     }
 	
-	@Autowired
-	private KakaoDao kd;
-	
-	public MemberVo getUserInfo(String access_Token) {
+	//인가 코드(엑세스 토큰)로 회원정보 토큰 얻기 및 파싱하여 데이터 추출하는 메서드
+	public MemberVo getKakaoUserInfo(String access_Token) {
 
-		// 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
+		//요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
 		HashMap<String, Object> userInfo = new HashMap<String, Object>();
+		//회원정보 토큰 요청 API URL
 		String reqURL = "https://kapi.kakao.com/v2/user/me";
 		try {
 			URL url = new URL(reqURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 
-			// 요청에 필요한 Header에 포함될 내용
+			//요청에 필요한 Header에 포함될 내용
 			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
-
+			
+			//응답 코드 (통신 성공 여부)
 			int responseCode = conn.getResponseCode();
-			System.out.println("responseCode : " + responseCode);
+			System.out.println("responseCode(회원정보 토큰 요청) : " + responseCode);
 
+			//요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 			String line = "";
@@ -109,9 +118,11 @@ public class KakaoService {
 			}
 			System.out.println("response body : " + result);
 
+			//Gson 라이브러리에 포함된 클래스로 Json파싱 객체 생성
 			JsonParser parser = new JsonParser();
+			//Json 객체에 응답 객체 담기
 			JsonElement element = parser.parse(result);
-
+			
 			JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
 			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
@@ -142,7 +153,7 @@ public class KakaoService {
 	
 	
 	//카카오 로그아웃
-	public void logout(String access_Token) {
+	public void kakaoLogout(String access_Token) {
 		//로그아웃 API 요청 URL
 	    String reqURL = "https://kapi.kakao.com/v1/user/logout";
 	    

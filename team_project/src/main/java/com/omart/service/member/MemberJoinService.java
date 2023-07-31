@@ -7,20 +7,15 @@ import org.springframework.stereotype.Service;
 import com.omart.dao.MemberDao;
 import com.omart.vo.MemberVo;
 
+import lombok.Setter;
+
 @Service("mJoin")
 public class MemberJoinService implements MemberService {
+	
+	@Setter(onMethod_={ @Autowired })
 	private MemberDao dao;
+	@Setter(onMethod_={ @Autowired })
 	private BCryptPasswordEncoder cryptPasswordEncoder;
-	
-	@Autowired
-	public MemberJoinService(MemberDao dao) {
-		this.dao = dao;
-	}
-	
-	@Autowired
-	public void setCryptPasswordEncoder(BCryptPasswordEncoder cryptPasswordEncoder) {
-		this.cryptPasswordEncoder = cryptPasswordEncoder;
-	}
 
 	public int join(MemberVo memberVo) {
 		

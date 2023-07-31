@@ -14,8 +14,8 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class MemberLoginService implements MemberService {
 	
+	@Setter(onMethod_={ @Autowired })
 	private MemberDao dao;
-	
 	@Setter(onMethod_={ @Autowired })
 	private BCryptPasswordEncoder cryptPasswordEncoder;
 	
@@ -35,6 +35,7 @@ public class MemberLoginService implements MemberService {
 				vo = result;
 			}
 		}		
+
 		return vo; 
 	}
 	
