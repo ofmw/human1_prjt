@@ -20,13 +20,20 @@ public class MemberLoginService implements MemberService {
 	private BCryptPasswordEncoder cryptPasswordEncoder;
 	
 	public MemberVo login(String member_id, String member_pw) {
+		
 		MemberVo vo = null;
-		String encodePassword = dao.login(member_id).getM_pw();
-		cryptPasswordEncoder.matches(member_pw, encodePassword);
-		if(cryptPasswordEncoder.matches(member_pw, encodePassword) == true) {
-			vo = dao.login(member_id);
+		MemberVo result = dao.login(member_id);
+		
+		if(result != null) {
+			
+			String encodePassword = result.getM_pw();
+			cryptPasswordEncoder.matches(member_pw, encodePassword);
+			if(cryptPasswordEncoder.matches(member_pw, encodePassword) == true) {
+				
+			}
 		}
-		return vo; 
+		
+		return vo;
 	}
 	
 }

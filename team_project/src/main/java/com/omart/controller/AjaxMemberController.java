@@ -25,9 +25,9 @@ public class AjaxMemberController {
     public String login(@RequestParam("m_id") String m_id,
                         @RequestParam("m_pw") String m_pw,
                         HttpSession session) {
-        
-		//로그인 처리를 할 MemberLoginService 클래스를 이용함
+		
 		System.out.println("━━━━━━━━━━━━━━━━━<일반 로그인 요청>━━━━━━━━━━━━━━━━━");
+		
 		MemberVo vo = mLogin.login(m_id, m_pw);
 		
 		if(vo != null){
@@ -40,7 +40,8 @@ public class AjaxMemberController {
 			System.out.println("생년월일: " +vo.getBirth());
 			System.out.println("----------회원 계정정보----------");
 			System.out.println("아이디: " +vo.getM_id());
-			System.out.println("비밀번호: " +vo.getM_pw());
+			System.out.println("비밀번호 (암호화): " +vo.getM_pw());
+			System.out.println("비밀번호 (복호화): " +m_pw);
 			System.out.println("가입일: " +vo.getJ_date());
 			System.out.println("활성여부: " +vo.getA_state());
 //			System.out.println("플랫폼: " +vo.getPlatform());
