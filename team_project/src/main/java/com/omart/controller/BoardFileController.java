@@ -29,7 +29,7 @@ public class BoardFileController {
 	public String list_notice_write(Model model) {
 		List<BoardFileVo> noticeList = bfNotice.getAllNotices();
 		model.addAttribute("noticeList", noticeList);
-		return "list_notice.do";
+		return "boardFile/list_notice_write";
 	}
 	
 	@GetMapping("/list_notice.do")

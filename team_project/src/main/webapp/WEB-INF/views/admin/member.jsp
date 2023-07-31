@@ -95,14 +95,14 @@
     #div_right button{
         margin-top: 5px;
     }
-    #div_shadow{
+    #div_shadow_info{
         position: absolute;
         width: 100%;
         height: 100%;
         background-color: rgba(50, 50, 50, 0.3);
         display: none;
     }
-    #div_member_edit{
+    #div_member_info{
         position: absolute;
         width: 500px;
         height: 400px;
@@ -112,7 +112,7 @@
         top: 50%;
         margin-top: -300px;
     }
-    #div_member_edit p{
+    #div_member_info p{
         font-size: 13px;
         line-height: 35px;      
         background-color: rgb(240, 240, 240);
@@ -121,41 +121,41 @@
         border-bottom: 1px solid lightgray;
         
     }
-    #tbl_contents_edit{
+    #tbl_contents_info{
         margin: 10px 0px;
     }    
-    #tbl_contents_edit th, #tbl_contents_edit td{
+    #tbl_contents_info th, #tbl_contents_info td{
 /*         border: 1px solid lightgray; */
         height: 32px;
         white-space: nowrap;
         font-size: 12px;
     }
-    #tbl_contents_edit th{
+    #tbl_contents_info th{
         width: 80px;
         padding-right: 10px;
         text-align: right;
     }
-    #tbl_contents_edit td{
+    #tbl_contents_info td{
         width: 150px;
     }
-    #tbl_contents_edit input[type="text"]{
+    #tbl_contents_info input[type="text"]{
         width: 150px;
         height: 25px;
         border: 1px solid lightgray;
         border-radius: 0px;
     }
-    #tbl_contents_edit tr:nth-child(n+4):nth-child(-n+6) td:nth-child(3) input[type="text"]{
+    #tbl_contents_info tr:nth-child(n+4):nth-child(-n+6) td:nth-child(3) input[type="text"]{
 	   width: 220px;
 	   margin-left: 2px;
     }
-    #tbl_contents_edit tr th:nth-child(3) {
+    #tbl_contents_info tr th:nth-child(3) {
 	   width: 60px;
     }
-    #tbl_contents_edit tr:last-child td{
+    #tbl_contents_info tr:last-child td{
 	   text-align: right;
 	   padding-top: 6px;
     }
-    #btn_edit, #btn_cancel{
+    #btn_info, #btn_cancel{
        width: 80px;
        height: 27px;
        margin-left: 5px;
@@ -165,11 +165,11 @@
        border-radius: 3px;
        cursor: pointer;
     }
-    #btn_edit{
+    #btn_info{
        background-color: rgb(52, 152, 219);
        color: white;
     }
-    #btn_edit:hover {
+    #btn_info:hover {
 	   background-color: rgb(42, 142, 209);
     }
     #btn_cancel:hover {
@@ -178,7 +178,26 @@
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
-
+$(function(){
+	let divShadowInfo = document.getElementById("div_shadow_info");
+	let memberInfoBtns = document.querySelectorAll(".btn_memberInfo");
+	
+	memberInfoBtns.forEach(function(btn){
+		btn.addEventListener("click", function(){
+			divShadowInfo.style.display = "block";
+		})
+	});
+	
+	let cancelBtn = document.getElementById("btn_cancel");
+	
+	cancelBtn.addEventListener("click", function(){
+		divShadowInfo.style.display = "none";
+		frm_info.reset();
+	});
+	
+	
+	
+});
 </script>
 </head>
 <body>
@@ -241,7 +260,7 @@
             <c:forEach items="${memberList}" var="member">
                 <tr>
                     <td>
-                        <button class="btn_detailMemberInfo" id="${member.m_id}">
+                        <button class="btn_memberInfo" id="${member.m_id}">
                             <img alt="" src="">
                         </button>
                     </td>                    
@@ -291,11 +310,11 @@
             </c:forEach>            
         </table>
     </div>
-    <div id="div_shadow">
-	    <div id="div_member_edit">
+    <div id="div_shadow_info">
+	    <div id="div_member_info">
 	    <p>고객정보</p>
-	       <form action="" name="frm_edit">
-		       <table id="tbl_contents_edit">
+	       <form action="" name="frm_info">
+		       <table id="tbl_contents_info">
 		           <tr>
 			           <th>이름</th>
 			           <td><input type="text" /></td>
@@ -350,8 +369,7 @@
 		           <tr>                
 		               <td colspan="2"></td>
 		               <td colspan="2">
-		                   <input id="btn_edit" type="button" value="수정" />
-			               <input id="btn_cancel" type="button" value="취소"/>
+			               <input id="btn_cancel" type="button" value="확인"/>
 		               </td>
 	               </tr>
 		       </table>

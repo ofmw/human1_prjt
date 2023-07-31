@@ -19,20 +19,23 @@ public class MemberLoginService implements MemberService {
 	@Setter(onMethod_={ @Autowired })
 	private BCryptPasswordEncoder cryptPasswordEncoder;
 	
-	public MemberVo login(String member_id, String member_pw) {
-		
-		MemberVo vo = null;
-		MemberVo result = dao.login(member_id);
+	@Autowired
+	public MemberLoginService(MemberDao dao) {
+		this.dao = dao;
+	}
+	
+	public MemberVo login(String m_id, String m_pw) {		
+		MemberVo vo = null;		
+		MemberVo result = dao.login(m_id);
 		
 		if(result != null) {
-			
 			String encodePassword = result.getM_pw();
-			cryptPasswordEncoder.matches(member_pw, encodePassword);
-			if(cryptPasswordEncoder.matches(member_pw, encodePassword) == true) {
-				
+			cryptPasswordEncoder.matches(m_pw, encodePassword);
+			if(cryptPasswordEncoder.matches(m_pw, encodePassword) == true) {
+				vo = result;
 			}
-		}
-		
+		}		
+
 		return vo;
 	}
 	

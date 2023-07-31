@@ -18,93 +18,95 @@
 
     <!-- 헤더 -->
     <div id="div_header">
-        
-        <!-- 헤더 윗부분 -->
-        <div id="div_header_upper">
-            <!-- 헤더 윗부분 내부요소 -->
-            <div id="div_header_upper_elements">
-
-                <!-- 사이트 로고 -->
-                <div id="div_omart_logo">
-                    <a href="index.do"><img id="omart_logo" src="resources/img/omart.png" alt="omart로고"></a>
-                </div>
-                <!-- 검색 -->
-                <div id="input_search_area">
-                    <input id="input_search" type="search">
-                </div>
-                
-                <!-- ㅁㄴㅇㄹ -->
-				<div id="div_persnal">
-					<div id="div_member_menu">
-						<c:choose>
-							<c:when test="${empty member}">
-            		            <span id="login_btn2">로그인</span>
-    		                    <a href="member/join.do">회원가입</a>
-		                        <a href="boardFile/list_notice.do">고객센터</a>
-							</c:when>
-							<c:otherwise>
-							     <c:choose>
-							         <c:when test="${member.grade eq 9}">
-							             <a href="admin/member.do">${member.m_name}님</a>
-							         </c:when>
-							         <c:otherwise>
-							             <a href="mypage/mypage.do">${member.m_name}님</a>
-							         </c:otherwise>
-							     </c:choose>								
-								<a href="boardFile/list_notice.do">고객센터</a>
-								<c:choose>
-									<c:when test="${member.platform eq 'kakao'}">
-										<a href="kakaologout.do">로그아웃</a>
-									</c:when>
-									<c:otherwise>
-										<a href="member/logout.do">로그아웃</a>									
-									</c:otherwise>
-								</c:choose>
-							</c:otherwise>
-						</c:choose>
+        <div id="div_header_contents">
+        	<!-- 헤더 윗부분 -->
+	        <div id="div_header_upper">
+	            <!-- 헤더 윗부분 내부요소 -->
+	            <div id="div_header_upper_elements">
+	
+	                <!-- 사이트 로고 -->
+	                <div id="div_omart_logo">
+	                    <a href="index.do"><img id="omart_logo" src="resources/img/omart.png" alt="omart로고"></a>
+	                </div>
+	                <!-- 검색 -->
+	                <div id="input_search_area">
+	                    <input id="input_search" type="search">
+	                </div>
+	                
+	                <!-- ㅁㄴㅇㄹ -->
+					<div id="div_persnal">
+						<div id="div_member_menu">
+							<c:choose>
+								<c:when test="${empty member}">
+	            		            <span id="login_btn2">로그인</span>
+	    		                    <a href="member/join.do">회원가입</a>
+			                        <a href="boardFile/list_notice.do">고객센터</a>
+								</c:when>
+								<c:otherwise>
+								     <c:choose>
+								         <c:when test="${member.grade eq 9}">
+								             <a href="admin/member.do">${member.m_name}님</a>
+								         </c:when>
+								         <c:otherwise>
+								             <a href="mypage/mypage.do">${member.m_name}님</a>
+								         </c:otherwise>
+								     </c:choose>								
+									<a href="boardFile/list_notice.do">고객센터</a>
+									<c:choose>
+										<c:when test="${member.platform eq 'kakao'}">
+											<a href="kakaologout.do">로그아웃</a>
+										</c:when>
+										<c:otherwise>
+											<a href="member/logout.do">로그아웃</a>									
+										</c:otherwise>
+									</c:choose>
+								</c:otherwise>
+							</c:choose>
+						</div>
+		                    	
+	                    <div id="div_persnal_menu">
+	                        <a href="">ㅇ</a>
+	                        <c:choose>
+	                        	<c:when test="${empty member}">
+	                        		<a id="open_login" href="#">ㅁ</a>
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		<a href="mypage/mypage.do">ㅁ</a>
+	                        	</c:otherwise>
+	                        </c:choose>
+	                        <a href="">ㅇ</a>
+	                        <a href="">ㅇ</a>
+	                    </div>
 					</div>
-	                    	
-                    <div id="div_persnal_menu">
-                        <a href="">ㅇ</a>
-                        <c:choose>
-                        	<c:when test="${empty member}">
-                        		<a id="open_login" href="#">ㅁ</a>
-                        	</c:when>
-                        	<c:otherwise>
-                        		<a href="mypage/mypage.do">ㅁ</a>
-                        	</c:otherwise>
-                        </c:choose>
-                        <a href="">ㅇ</a>
-                        <a href="">ㅇ</a>
-                    </div>
 				</div>
 			</div>
-		</div>
-
-        <!-- 헤더 아랫부분 -->
-        <div id="div_header_lower">
-            <!-- 헤더 아랫부분 내부요소 -->
-            <div id="div_header_lower_elements">
-
-                <!-- 카테고리 -->
-                <div>
-                    <div id="div_category_block">
-                        전체 카테고리
-                    </div>
-                    <div id="div_category">
-                        전체 카테고리
-                    </div>
-                </div>
-                
-                <!-- 메뉴모음 -->
-                <div id="div_quick_menu">
-                    <a href="">베스트</a>
-                    <a href="">할인</a>
-                    <a href="">신상품</a>
-                    <a href="">이벤트</a>
-                </div>
-            </div>
+	
+	        <!-- 헤더 아랫부분 -->
+	        <div id="div_header_lower">
+	            <!-- 헤더 아랫부분 내부요소 -->
+	            <div id="div_header_lower_elements">
+	
+	                <!-- 카테고리 -->
+	                <div>
+	                    <div id="div_category_block">
+	                        전체 카테고리
+	                    </div>
+	                    <div id="div_category">
+	                        전체 카테고리
+	                    </div>
+	                </div>
+	                
+	                <!-- 메뉴모음 -->
+	                <div id="div_quick_menu">
+	                    <a href="">베스트</a>
+	                    <a href="">할인</a>
+	                    <a href="">신상품</a>
+	                    <a href="">이벤트</a>
+	                </div>
+	            </div>
+	        </div>
         </div>
+        
     </div><!-- end of header -->
     
     <!-- 로그인 모달창 -->

@@ -26,15 +26,24 @@ public class AjaxMemberController {
                         @RequestParam("m_pw") String m_pw,
                         HttpSession session) {
 		
+
 		System.out.println("━━━━━━━━━━━━━━━━━<일반 로그인 요청>━━━━━━━━━━━━━━━━━");
 		
 		MemberVo vo = mLogin.login(m_id, m_pw);
 		
 		if(vo != null){
+			
+			String grade = null;
+			switch(vo.getGrade()) {
+			case 0: grade = "브론즈"; break;
+			case 1: grade = "실버"; break;
+			case 2: grade = "골드"; break;
+			}
+			
 			System.out.println("로그인 결과 : 성공");
 			System.out.println("----------회원 개인정보----------");
 			System.out.println("이름: " +vo.getM_name());
-			System.out.println("성별: " +vo.getGender());
+			System.out.println("성별: " +((vo.getGender() == 1) ? "남자":"여자"));
 			System.out.println("전화번호: " +vo.getSelNum());
 			System.out.println("회원번호: " +vo.getM_idx());
 			System.out.println("생년월일: " +vo.getBirth());
@@ -45,7 +54,7 @@ public class AjaxMemberController {
 			System.out.println("가입일: " +vo.getJ_date());
 			System.out.println("활성여부: " +vo.getA_state());
 //			System.out.println("플랫폼: " +vo.getPlatform());
-			System.out.println("회원등급: " +vo.getGrade());
+			System.out.println("회원등급: " +grade);
 			session.setAttribute("member", vo);
             return "success";
         } else {

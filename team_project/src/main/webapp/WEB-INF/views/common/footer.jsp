@@ -7,22 +7,13 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
         *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
-        #div_test {
-            position: relative;
-            height: 1000px;
-            width: 1200px;
-            text-align: center;
-            line-height: 1000px;
-            border: 1px solid red;
-            left: 50%;
-            margin-left: -600px;
-        }
+
         #div_footer {
-            border: 1px solid gray;
             position: relative;
             display: flex;
             flex-direction: column;
             width: 100%;
+            min-width: 1280px;
             height: 280px;
             bottom: 0px;
         }
@@ -115,8 +106,6 @@
     </style>
 </head>
 <body>
-    <!-- <div id="div_test">컨텐츠</div> -->
-
 
     <div id="div_footer">
         <div id="wrap">
