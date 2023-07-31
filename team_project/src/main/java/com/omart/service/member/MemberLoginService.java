@@ -14,15 +14,10 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class MemberLoginService implements MemberService {
 	
+	@Setter(onMethod_={ @Autowired })
 	private MemberDao dao;
-	
 	@Setter(onMethod_={ @Autowired })
 	private BCryptPasswordEncoder cryptPasswordEncoder;
-	
-	@Autowired
-	public MemberLoginService(MemberDao dao) {
-		this.dao = dao;
-	}
 	
 	public MemberVo login(String member_id, String member_pw) {
 		MemberVo vo = null;

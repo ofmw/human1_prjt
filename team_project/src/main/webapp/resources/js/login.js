@@ -1,42 +1,54 @@
 $(function() {
 
-    let $shadow = $("#shadow");
-    let $close_btn = $("#close_btn");
-    let $login_btn2 = $("#login_btn2");
-    let $open_login = $("#open_login");
-
-    $close_btn.on("click", function() {
-        $shadow.css({
-            'display': 'none',
-            'z-index': '0'
-        });
-        $("body").css('overflow', 'visible');
-    });
-
-    function showShadow() {
-        $shadow.css({
-            'display': 'block',
-            'z-index': '5000'
-        });
-        $("body").css('overflow', 'hidden');
-    }
-
-    $login_btn2.on("click", showShadow);
-    $open_login.on("click", showShadow);
+    //---------------일반 로그인 처리 메서드---------------//
+	$("#login_btn").click(function() {
+    let memberId = $("#m_id").val();
+    let memberPw = $("#m_pw").val();
     
-    /* 비밀번호 CapsLock 감지 */
-    let checkCapsLock = document.getElementById('m_pw');
-    checkCapsLock.addEventListener('keydown', function(e){
-            if (e.getModifierState('CapsLock')) {
-                $("#ccl_message").css('display', 'block');
-            }else {
-                $("#ccl_message").css('display', 'none');
-        }
-    });
+    /* 아이디, 비밀번호 공란 체크 메서드 */
+    if(memberId == "") {
+    	alert("아이디를 입력해주세요");
+    	$("#m_id").focus();
+    	return false;
+    	
+    }else if(memberPw == "") {
+    	alert("비밀번호를 입력해주세요");
+    	$("#m_pw").focus();
+    	return false;
+    	
+    }else {
+    
+    	/* ajax 통신 */
+		$.ajax({
+			type: "POST", // 또는 "GET", 서버에서 지원하는 방식에 따라 변경 가능
+			url: "member/login.do",
+			data: {
+			m_id: memberId,
+			m_pw: memberPw
+			},
+			success: function(response) {
+				//로그인 성공시
+		        if (response === "success") {
+		            location.href = "index.do";
+		        }else{
+					//로그인 실패시
+					alert("아이디 또는 비밀번호가 일치하지 않습니다.\n다시 확인하신 후 입력해주세요.");
+					$("#m_pw").val("");
+					$("#m_pw").focus();
+				}
+			},
+			error: function() {
+				alert("서버와의 통신에 문제가 발생했습니다.");
+				}
+			}); //end of ajax
+			
+    	} //end of 아이디, 비밀번호 공란 체크
+    	
+    }); //end of 로그인 처리 메서드
 
     
     
-    /* 네이버 로그인 */
+    //---------------네이버 로그인 처리 메서드---------------//
     $("#sns_naver_btn").click(function(event){
         event.preventDefault();
         
@@ -54,7 +66,7 @@ $(function() {
         window.open(url, "_blank", windowFeatures);
     });
 
-    /* 카카오 로그인 */
+    //---------------카카오 로그인 처리 메서드---------------//
     $("#sns_kakao_btn").click(function(event){
         event.preventDefault();
         
@@ -68,7 +80,7 @@ $(function() {
         // 새 창을 띄우기 위한 윈도우 옵션들
         let windowFeatures = "width=" + windowWidth + ",height=" + windowHeight + ",left=" + windowLeft + ",top=" + windowTop;
 
-        let url = "https://kauth.kakao.com/oauth/authorize?client_id=96ad22b1dc5d2f8c1d217f6aa61146a0&redirect_uri=http://localhost:9090/prjt/klogin.do&response_type=code";
+        let url = "https://kauth.kakao.com/oauth/authorize?client_id=96ad22b1dc5d2f8c1d217f6aa61146a0&redirect_uri=http://localhost:9090/prjt/kakaologin.do&response_type=code";
         //window.open(url, "_blank", windowFeatures);
         location.href = url;
     });

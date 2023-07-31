@@ -22,19 +22,16 @@ public class KakaoDao {
 		this.sqlSession = sqlSession;
 	}
 	
-	// 정보 확인
+	//가입정보 확인
 	public MemberVo findkakao(HashMap<String, Object> userInfo) {
-		System.out.println("RN:"+userInfo.get("nickname"));
-		System.out.println("RE:"+userInfo.get("email"));
+		System.out.println("사용자 이름 : "+userInfo.get("nickname"));
+		System.out.println("사용자 이메일 : "+userInfo.get("email"));
 		MemberVo vo = sqlSession.selectOne(MAPPER+".klogin", userInfo);
 		return vo;
 	}
 	
-	// 정보 저장
+	//새 가입정보 저장
 	public void kakaoinsert(HashMap<String, Object> userInfo) {
 		sqlSession.insert(MAPPER+".kjoin", userInfo);
 	}
-
-
-
 }
