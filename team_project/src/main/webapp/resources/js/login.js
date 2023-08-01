@@ -21,7 +21,7 @@ $(function() {
     	/* ajax 통신 */
 		$.ajax({
 			type: "POST", // 또는 "GET", 서버에서 지원하는 방식에 따라 변경 가능
-			url: "member/login.do",
+			url: "login.do",
 			data: {
 			m_id: memberId,
 			m_pw: memberPw

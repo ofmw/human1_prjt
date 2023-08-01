@@ -4,7 +4,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,14 +13,13 @@ import com.omart.vo.MemberVo;
 import lombok.Setter;
 
 @RestController
-@RequestMapping("/member")
 public class AjaxMemberController {
-
+	
 	@Setter(onMethod_={ @Autowired })
 	private MemberService mLogin;
-	
+
 	//로그인
-	@PostMapping("/login.do")
+	@PostMapping("/**/login.do")
     public String login(@RequestParam("m_id") String m_id,
                         @RequestParam("m_pw") String m_pw,
                         HttpSession session) {
@@ -53,8 +51,8 @@ public class AjaxMemberController {
 			System.out.println("비밀번호 (복호화): " +m_pw);
 			System.out.println("가입일: " +vo.getJ_date());
 			System.out.println("활성여부: " +vo.getA_state());
-//			System.out.println("플랫폼: " +vo.getPlatform());
-			System.out.println("회원등급: " +grade);
+//				System.out.println("플랫폼: " +vo.getPlatform());
+			System.out.println("회원등급: " + grade);
 			session.setAttribute("member", vo);
 			
 			if(vo.getGrade() == 9) {

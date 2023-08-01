@@ -2,12 +2,19 @@ package com.omart.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.omart.service.member.MemberService;
 import com.omart.service.product.ProductService;
+import com.omart.vo.MemberVo;
 import com.omart.vo.ProductVo;
 
 import lombok.Setter;
@@ -38,8 +45,22 @@ public class HomeController {
 	}
 
 	@GetMapping("/index.do")
-	public String index() {
+	public String index(Model model) {
+		
+		List<ProductVo> productList = pdList.ProductList();
+		model.addAttribute("productList", productList);
+		
 		return "index";/* 뷰의 이름 */
+	}
+	
+	//로그아웃
+	@GetMapping("/**/logout.do")
+	public String logout(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		session.invalidate();
+		
+		return "member/logout";
 	}
 	
 }

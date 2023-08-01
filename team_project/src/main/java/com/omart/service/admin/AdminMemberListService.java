@@ -17,7 +17,6 @@ public class AdminMemberListService implements AdminService {
 	private final AdminDao dao;
 	
 	public List<MemberVo> MemberList() {
-		
 		return dao.memberList();
 	}
 	

@@ -32,6 +32,8 @@ public class AdminController {
 		
 		model.addAttribute("memberList", memberList);
 		
+		System.out.println(memberList.get(0).getPlatform());
+		
 		return "admin/admin";
 	}	
 	@GetMapping("/product.do")
@@ -40,7 +42,6 @@ public class AdminController {
 		
 		List<ProductVo> productList = pdList.ProductList();
 		model.addAttribute("productList", productList);
-		
 		return "admin/admin";
 	}		
 		

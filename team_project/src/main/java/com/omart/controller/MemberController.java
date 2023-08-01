@@ -41,12 +41,12 @@ public class MemberController {
 	}
 		
 	//로그아웃
-	@GetMapping("/logout.do")
-	public String logout(HttpServletRequest request) {
-		
-		HttpSession session = request.getSession();
-		session.invalidate();
-		
-		return "member/logout";
-	}
+//	@GetMapping("/logout.do")
+//	public String logout(HttpServletRequest request) {
+//		
+//		HttpSession session = request.getSession();
+//		session.invalidate();
+//		
+//		return "member/logout";
+//	}
 }
