@@ -56,9 +56,9 @@
 										<c:when test="${member.platform eq 'kakao'}">
 											<a href="kakaologout.do">로그아웃</a>
 										</c:when>
-										<c:otherwise>
-											<a href="member/logout.do">로그아웃</a>									
-										</c:otherwise>
+										<c:when test="${member.platform eq 'omart'}">
+											<a href="member/logout.do">로그아웃</a>
+										</c:when>
 									</c:choose>
 								</c:otherwise>
 							</c:choose>

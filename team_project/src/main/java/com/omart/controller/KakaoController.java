@@ -25,37 +25,30 @@ public class KakaoController {
 	@GetMapping("/kakaologin.do")
 	public String kakaoLogin(@RequestParam("code") String code, HttpSession session) throws ScriptException {
 		
-		//code는 카카오 서버로부터 받은 인가 코드
-		System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그인 요청>━━━━━━━━━━━━━━━━━");
-		System.out.println("인가 코드: " + code);
-		String access_Token = kToken.getKakaoAccessToken(code);
+		// code는 카카오 서버로부터 받은 인가 코드
+	    System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그인 요청>━━━━━━━━━━━━━━━━━");
+	    System.out.println("인가 코드: " + code);
+
+	    // userInfo가 null이 아닐 때만 다시 access_Token을 가져오는 로직을 실행
+	    MemberVo userInfo = (MemberVo) session.getAttribute("member");
+	    String access_Token = null;
+	    if (userInfo == null) {
+	        access_Token = kToken.getKakaoAccessToken(code);
+	        userInfo = kToken.getKakaoUserInfo(access_Token);
+	        session.setAttribute("access_token", access_Token);
+	        session.setAttribute("member", userInfo);
+	    }
+
+	    // 출력
+	    System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
+	    System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
+	    System.out.println("가입된 회원 성별 : " + userInfo.getGender());
+
+	    // 위 2개의 코드는 닉네임과 이메일을 session 객체에 담는 코드
+	    // jsp에서 ${sessionScope.kakaoN} 이런 형식으로 사용할 수 있다.
+
+	    return "index";
 		
-		//위에서 만든 코드 아래에 코드 추가
-		MemberVo userInfo = kToken.getKakaoUserInfo(access_Token);
-//		System.out.println("###access_Token#### : " + access_Token);
-		System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
-		System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
-		userInfo.setPlatform("kakao");
-		
-		
-		// 위 코드는 session객체에 담긴 정보를 초기화 하는 코드.
-		session.setAttribute("access_token", access_Token);
-		session.setAttribute("member", userInfo);
-		// 위 2개의 코드는 닉네임과 이메일을 session객체에 담는 코드
-		// jsp에서 ${sessionScope.kakaoN} 이런 형식으로 사용할 수 있다.
-		
-//		String member_id = (String) userInfo.get("email");
-//		System.out.println("컨트롤러: " +member_id);
-//		
-//		MemberVo vo = kLogin.klogin(member_id);
-//		HttpSession session = request.getSession();
-//		session.setAttribute("member", vo);
-//		
-//		ScriptEngineManager manager = new ScriptEngineManager();
-//	    ScriptEngine engine = manager.getEngineByName("javascript");
-//	    engine.eval("window.close();");
-		
-		return "index";
 	}
 	
 	//카카오 로그아웃

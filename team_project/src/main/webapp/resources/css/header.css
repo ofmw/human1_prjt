@@ -124,6 +124,7 @@
 	    font-size: 14px;
 	    user-select: none;
 	    display: none;
+	    z-index: 4000;
 	}
 	/* 카테고리 */
 	#div_category_block {
@@ -138,6 +139,7 @@
 	    color: white;
 	    font-size: 14px;
 	    user-select: none;
+	    z-index: 4000;
 	}
 	/* 우측 메뉴모음 */
 	#div_quick_menu {

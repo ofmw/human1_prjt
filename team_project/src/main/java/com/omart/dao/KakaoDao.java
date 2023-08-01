@@ -24,9 +24,11 @@ public class KakaoDao {
 	
 	//가입정보 확인
 	public MemberVo findkakao(HashMap<String, Object> userInfo) {
+		String email = (String) userInfo.get("email");
 		System.out.println("사용자 이름 : "+userInfo.get("nickname"));
-		System.out.println("사용자 이메일 : "+userInfo.get("email"));
-		MemberVo vo = sqlSession.selectOne(MAPPER+".klogin", userInfo);
+		System.out.println("사용자 이메일 : "+email);
+		System.out.println("사용자 성별 : "+userInfo.get("gender"));
+		MemberVo vo = sqlSession.selectOne(MAPPER+".klogin", email);
 		return vo;
 	}
 	
