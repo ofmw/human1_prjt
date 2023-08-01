@@ -50,7 +50,7 @@
 										<a href="kakaologout.do">로그아웃</a>
 									</c:when>
 									<c:when test="${member.platform eq 'omart'}">
-										<a href="member/logout.do">로그아웃</a>
+										<a href="logout.do">로그아웃</a>
 									</c:when>
 								</c:choose>
 							</c:otherwise>

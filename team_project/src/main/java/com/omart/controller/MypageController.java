@@ -50,13 +50,13 @@ public class MypageController {
 	}
 	
 	//마이페이지 -> 로그아웃
-	@GetMapping("member/logout.do")
-	public String logout(HttpServletRequest request) {
-		
-		String viewPage = "redirect:/index.do";
-		HttpSession session = request.getSession();
-		session.invalidate();
-		
-		return viewPage;
-	}
+//	@GetMapping("logout.do")
+//	public String logout(HttpServletRequest request) {
+//		
+//		String viewPage = "redirect:/index.do";
+//		HttpSession session = request.getSession();
+//		session.invalidate();
+//		
+//		return viewPage;
+//	}
 }
