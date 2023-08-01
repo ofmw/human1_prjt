@@ -36,7 +36,7 @@ public class MemberLoginService implements MemberService {
 			}
 		}		
 
-		return vo; 
+		return vo;
 	}
 	
 }

@@ -128,9 +128,11 @@ public class KakaoTokenService implements KakaoService {
 
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 			String email = kakao_account.getAsJsonObject().get("email").getAsString();
+			String gender = kakao_account.getAsJsonObject().get("gender").getAsString();
 
 			userInfo.put("nickname", nickname);
 			userInfo.put("email", email);
+			userInfo.put("gender", gender);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -142,8 +144,10 @@ public class KakaoTokenService implements KakaoService {
 		
 		if(result==null) {
 			//result가 null이면 회원가입 진행
+			System.out.println("━━━━━━━━━━━━━━━━━<카카오 회원가입 요청>━━━━━━━━━━━━━━━━━");
 			kd.kakaoinsert(userInfo);
 			//회원가입 후 테이블 조회 재실행
+			System.out.println("----------카카오 회원가입 완료 후 테이블 재조회----------");
 			return kd.findkakao(userInfo);
 		}else {
 			return result;

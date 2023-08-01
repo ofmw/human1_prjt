@@ -49,9 +49,9 @@
 									<c:when test="${member.platform eq 'kakao'}">
 										<a href="kakaologout.do">로그아웃</a>
 									</c:when>
-									<c:otherwise>
-										<a href="member/logout.do">로그아웃</a>									
-									</c:otherwise>
+									<c:when test="${member.platform eq 'omart'}">
+										<a href="member/logout.do">로그아웃</a>
+									</c:when>
 								</c:choose>
 							</c:otherwise>
 						</c:choose>
@@ -107,8 +107,8 @@
 
 				<!-- 로그인 -->
                 <div id="login_input_area">
-                    <input type="text" name="member_id" id="member_id" class="input_object" placeholder="아이디를 입력해주세요">
-                    <input type="password" name="member_pw" id="member_pw" class="input_object" placeholder="비밀번호를 입력해주세요">
+                    <input type="text" name="m_id" id="m_id" class="input_object" placeholder="아이디를 입력해주세요">
+                    <input type="password" name="m_pw" id="m_pw" class="input_object" placeholder="비밀번호를 입력해주세요">
                 </div>
                 <div id="checkCapsLock">
                     <span id="ccl_message">Caps Lock이 켜져 있습니다</span>
