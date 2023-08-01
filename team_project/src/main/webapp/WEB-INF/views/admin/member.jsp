@@ -305,7 +305,7 @@ $(function(){
                             </c:otherwise>
                         </c:choose> 
                     </td>                    
-                    <td></td>
+                    <td>${member.platform}</td>
 	            </tr>
             </c:forEach>            
         </table>
