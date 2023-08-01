@@ -48,6 +48,15 @@ public class AjaxMemberController {
 //			System.out.println("플랫폼: " +vo.getPlatform());
 			System.out.println("회원등급: " +vo.getGrade());
 			session.setAttribute("member", vo);
+			
+			if(vo.getGrade() == 9) {
+				session.setMaxInactiveInterval(60 * 60);
+				long startTime = System.currentTimeMillis();
+				session.setAttribute("startTime", startTime);
+			}else {
+				session.setMaxInactiveInterval(-1);
+			}
+			
             return "success";
         } else {
         	System.out.println("로그인 결과 : 실패(해당 계정 정보 없음)");

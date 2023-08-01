@@ -73,7 +73,7 @@
         color: white;
         margin: 5px;            
     }
-    #div_admin_timeout button{
+    #div_admin_timeout input[type="button"]{
         background-color: rgb(127, 127, 127);
         margin: 3px;
         font-size: 11px;
@@ -146,11 +146,64 @@
             memberElement.style.height = memberHeight + "px";
         }
         updateHeight(); //초기 Width값 설정
-        window.addEventListener("resize", updateHeight); //실시간 Width값 조정   
+        window.addEventListener("resize", updateHeight); //실시간 Width값 조정
         
+        function updateRemainingTime(){
+        	$.ajax({
+                
+                url: "sessionInfo.do",
+                type: "post",
+                success: function(response){
+                    let remainingTime = response.remainingTime;
+                    displayRemainingTime(remainingTime);
+                },
+                error: function(error){
+                    consle.log("세션 정보를 가져오는데 실패하였습니다.");
+                }
+                
+            });
+        }
+                
+        function displayRemainingTime(remainingTime) {
+            let seconds = Math.floor(remainingTime / 1000);
+            let hours = Math.floor(seconds / 3600);
+            let minutes = Math.floor((seconds % 3600) / 60);
+            seconds = seconds % 60;
+
+            // Format the time as hh:mm:ss
+            let formattedTime = padZero(hours) + ":" + padZero(minutes) + ":" + padZero(seconds);
+            $("#div_admin_timeout p").text("남은시간: " + formattedTime);
+        }
+
+        function padZero(num) {
+            return num < 10 ? "0" + num : num.toString();
+        }
+
+        updateRemainingTime();
+        setInterval(updateRemainingTime, 1000);
         
+     // 연장 버튼 클릭 시 세션 연장 함수 호출
+        $("#btn_extend").click(function() {
+            extendSession();
+        });
         
-	}
+        function extendSession() {
+            // 서버에 연장 요청 보내기
+            $.ajax({
+                url: "extendSession.do",
+                type: "post",
+                success: function(response) {
+                    // 연장 성공 시 메시지 표시하고 남은 시간 갱신
+                    alert("세션 연장에 성공하였습니다.");
+                    updateRemainingTime();
+                },
+                error: function(error) {
+                    console.log("세션 연장에 실패하였습니다.");
+                }
+            });
+        }
+        
+	}	
 </script>
 </head>
 <body>    
@@ -165,8 +218,8 @@
                     <a href="../member/logout.do">로그아웃</a>
                 </div>
                 <div id="div_admin_timeout">
-                    <p>남은시간 01:00:00</p>
-                    <button>연장</button>
+                    <p></p>
+                    <input type="button" id="btn_extend" value="연장"></button>
                 </div>
             </div>
 	    </div>

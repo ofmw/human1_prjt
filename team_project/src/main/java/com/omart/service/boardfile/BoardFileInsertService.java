@@ -20,5 +20,4 @@ public class BoardFileInsertService implements BoardFileService{
 		return dao.insertBoard(boardFileVo);
 	}
 	
-
 }

@@ -29,8 +29,24 @@ public class AdminDao{
 		return sqlSession.insert(MAPPER+".insertProduct", productVo);
 	};
 	
+	public int editProduct(ProductVo productVo) {
+		return sqlSession.update(MAPPER+".editProduct", productVo);
+	}
+	
+	public int stateChangeTrue(String p_id) {
+		return sqlSession.update(MAPPER+".stateChangeTrue", p_id);
+	};
+	
+	public int stateChangeFalse(String p_id) {
+		return sqlSession.update(MAPPER+".stateChangeFalse", p_id);
+	};
+	
+	public int deleteProduct(String p_id) {
+		return sqlSession.update(MAPPER+".deleteProduct", p_id);
+	}
+	
 	public List<MemberVo> memberList(){
 		
 		return sqlSession.selectList(MAPPER+".memberList");
-	}
+	};
 }
