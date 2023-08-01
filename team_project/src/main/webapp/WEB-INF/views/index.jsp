@@ -94,7 +94,7 @@
         /* background-color: aquamarine; */
     }
 /* ---------------------상품 영역--------------------- */
-    #p_best{
+    .p_best{
         width: 100%;
         margin-top: 100px;
     }
@@ -363,7 +363,7 @@
             <div id="hp_area_products_box">
 
 				<!-- 베스트 상품 -->
-                <div id="p_best">
+                <div class="p_best">
                     <div class="p_elements">
                         <div class="p_title">베스트 상품</div>
                         <div class="p_inner_elements">
@@ -399,7 +399,7 @@
                 </div>
 
 				<!-- 세일중인 상품 -->
-                <div id="p_best">
+                <div class="p_best">
                     <div class="p_elements">
                         <div class="p_title">세일중인 상품</div>
                         <div class="p_inner_elements">

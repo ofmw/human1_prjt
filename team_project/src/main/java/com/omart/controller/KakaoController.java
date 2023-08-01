@@ -25,29 +25,29 @@ public class KakaoController {
 	@GetMapping("/kakaologin.do")
 	public String kakaoLogin(@RequestParam("code") String code, HttpSession session) throws ScriptException {
 		
-		// code는 카카오 서버로부터 받은 인가 코드
-	    System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그인 요청>━━━━━━━━━━━━━━━━━");
-	    System.out.println("인가 코드: " + code);
+		
 
 	    // userInfo가 null이 아닐 때만 다시 access_Token을 가져오는 로직을 실행
 	    MemberVo userInfo = (MemberVo) session.getAttribute("member");
 	    String access_Token = null;
 	    if (userInfo == null) {
+	    	
+	    	// code는 카카오 서버로부터 받은 인가 코드
+		    System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그인 요청>━━━━━━━━━━━━━━━━━");
+		    System.out.println("인가 코드: " + code);
+		    
 	        access_Token = kToken.getKakaoAccessToken(code);
 	        userInfo = kToken.getKakaoUserInfo(access_Token);
 	        session.setAttribute("access_token", access_Token);
 	        session.setAttribute("member", userInfo);
+	        
+	        // 출력
+		    System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
+		    System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
+		    System.out.println("가입된 회원 성별 : " + userInfo.getGender());
 	    }
 
-	    // 출력
-	    System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
-	    System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
-	    System.out.println("가입된 회원 성별 : " + userInfo.getGender());
-
-	    // 위 2개의 코드는 닉네임과 이메일을 session 객체에 담는 코드
-	    // jsp에서 ${sessionScope.kakaoN} 이런 형식으로 사용할 수 있다.
-
-	    return "index";
+	    return "redirect:/index.do";
 		
 	}
 	
