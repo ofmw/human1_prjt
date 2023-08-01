@@ -18,7 +18,7 @@
 
     <!-- 헤더 -->
     <div id="div_header">
-        <div id="div_header_contents">
+        <!-- <div id="div_header_contents"> -->
         	<!-- 헤더 윗부분 -->
 	        <div id="div_header_upper">
 	            <!-- 헤더 윗부분 내부요소 -->

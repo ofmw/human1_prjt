@@ -24,6 +24,9 @@
 /* ---------------------헤더 윗부분--------------------- */
 	/* 헤더 윗부분 영역 */
 	#div_header_upper{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	    width: 100%;
 	    border-bottom: 1px solid rgb(200, 230, 140);
 	}
@@ -32,7 +35,7 @@
 	    display: flex;
 	    flex-direction: row;
 	    align-items: center;
-	    width: 100%;
+	    width: 1280px;
 	    height: 80px;
 	    padding: 0 20px;
         box-sizing: border-box;
