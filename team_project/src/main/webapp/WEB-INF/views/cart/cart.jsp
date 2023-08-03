@@ -387,6 +387,8 @@
 
          	// 해당 버튼이 속한 tr 요소를 찾아서 삭제합니다.
             $(this).closest("tr").remove();
+         	
+            updateTotalOrderedPrice();
         });
         
         function removeCart(m_idx, p_id) {
@@ -410,72 +412,36 @@
             });
         }
 
-        // sel_delete 버튼 클릭 이벤트 처리 (sel_product 체크된 항목 삭제)
+        //sel_delete 버튼 클릭 이벤트 처리 (sel_product 체크된 항목 삭제)
         $("#sel_delete").click(function() {
-            // class가 sel_product인 체크박스 중 체크된 항목들을 선택합니다.
+            //class가 sel_product인 체크박스 중 체크된 항목들을 선택합니다.
             let checkedProducts = $(".sel_product:checked");
-            let paymentPrice = $("#payment-price");
+            //결제예정금액
+            let paymentPrice = parseInt($("#payment-price").text().replace(/[^0-9]/g, ""));
+            //주문금액
+            let orderPrice = parseInt($("#ordered-price").text().replace(/[^0-9]/g, ""));
+            //삭제될 품목들의 총 금액
+            let totalPrice;
+            //새 결제예정금액 (기존 - 주문금액)
+            let newOrderPrice;
+            
+            let calprices = $(".calprice");  
             
             if (checkedProducts.length > 0) {
                 // 선택된 체크박스들이 속한 행을 모두 삭제합니다.
                 checkedProducts.each(function() {
                     var m_idx = parseInt($(this).closest("tr").find(".m_idx").val());
                     var p_id = $(this).closest("tr").find(".p_id").val();
-                    let orderPrice = parseInt($("#ordered-price").text().replace(/[^0-9]/g, ""));
                     
-                    //각 상품의 가격 (판매가 * 수량)
-                	$(".calprice").each(function() {
-                		
-                		//주문금액
-                		let totalPrice = 0;
-                		
-                		
-                		//선택된 행의 각 상품의 가격 (판매가 * 수량)
-                        var calPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
-                        totalPrice += calPriceValue;
-                        
-                        //기존 결제예정금액
-                        let targetPrice = parseInt(paymentPrice.text().replace(/[^0-9]/g, ""));
-                        //새 결제예정금액 (기존 - 주문금액)
-                        let newTotalPrice = targetPrice - totalPrice;
-                        
-                        if(newTotalPrice != 0){ //새 결제예정금액이 0원이 아니라면 (장바구니에 품목이 1개 이상)
-                        	alert("1");
-	                        if(newTotalPrice > 25000){ //25000원보다 클 시
-	                        	alert("2\n현재 선택된 상품금액: "+calPriceValue);
-	                        	$("#shipping-fee").text("+0 원") //배송비 0원
-	                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice);
-	                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
-	                            
-	                        }else{ //25000원보닥 작을 시
-	                        	alert("3");
-	                            $("#shipping-fee").text(shipping_fee+" 원") //배송비 3000원
-	                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice+3000);
-	                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
-	                        }
-	                        
-						}else{ //새 결제예정금액이 0원이라면 (장바구니에 품목 없음)
-							alert("4");
-			            	$("#shipping-fee").text("+0 원");
-			            	$("#ordered-price").text("0 원");
-			            	$("#payment-price").text("0");
-			            }
-                        
-                        let newOrderPrice = orderPrice - totalPrice;
-                        
-                        // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
-                        var formattedPrice = new Intl.NumberFormat("ko-KR").format(newOrderPrice);
-                        $("#ordered-price").text(formattedPrice + " 원");
-                        
-                        
-                        
-                    });
-
-                    // 배열에 m_idx와 p_id 추가
-                    var mIdxArray = [];
-                    var pIdArray = [];
-                    mIdxArray.push(m_idx);
-                    pIdArray.push(p_id);
+                    if(calprices !== null){
+                    	//각 상품의 가격 (판매가 * 수량)
+                        calprices.each(function() {
+                            //선택된 행의 각 상품의 가격 (판매가 * 수량)
+                            var calPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
+                            totalPrice += calPriceValue;
+                         
+                        });
+                    }
 
                     // 해당 버튼이 속한 tr 요소를 삭제합니다.
                     $(this).closest("tr").remove();
@@ -483,10 +449,10 @@
                     // AJAX를 이용하여 remove_cart.do에 삭제 요청을 보냅니다.
                     $.ajax({
                         type: "POST",
-                        url: "remove_cart2.do",
+                        url: "remove_cart.do",
                         data: {
-                            m_idx: mIdxArray,
-                            p_id: pIdArray
+                            m_idx: m_idx,
+                            p_id: p_id
                         },
                         success: function(response) {
                             if (response != null) {
@@ -503,6 +469,15 @@
             } else {
                 alert("삭제할 품목을 선택해주세요.");
             }
+            
+            newOrderPrice = orderPrice - totalPrice;
+            
+/*             // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
+            var formattedPrice = new Intl.NumberFormat("ko-KR").format(newOrderPrice);
+            $("#ordered-price").text(formattedPrice + " 원"); */
+            
+            updateTotalOrderedPrice();
+            
         });
 
         /* ---------------------주문정보 네비게이션--------------------- */
