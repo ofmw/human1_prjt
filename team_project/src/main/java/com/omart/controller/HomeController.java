@@ -33,7 +33,12 @@ public class HomeController {
 	public String home(Model model) {
 		
 		List<ProductVo> bestList = pdList.bestList();
+		List<ProductVo> saleList = pdList.saleList();
+		List<ProductVo> newList = pdList.newList();
+				
 		model.addAttribute("bestList", bestList);
+		model.addAttribute("saleList", saleList);
+		model.addAttribute("newList", newList);
 		
 		return "index";/* 뷰의 이름 */
 	}
@@ -47,8 +52,13 @@ public class HomeController {
 	@GetMapping("/index.do")
 	public String index(Model model) {
 		
-		List<ProductVo> productList = pdList.ProductList();
-		model.addAttribute("productList", productList);
+		List<ProductVo> bestList = pdList.bestList();
+		List<ProductVo> saleList = pdList.saleList();
+		List<ProductVo> newList = pdList.newList();
+				
+		model.addAttribute("bestList", bestList);
+		model.addAttribute("saleList", saleList);
+		model.addAttribute("newList", newList);
 		
 		return "index";/* 뷰의 이름 */
 	}

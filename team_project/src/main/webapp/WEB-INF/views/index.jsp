@@ -367,21 +367,18 @@
                     <div class="p_elements">
                         <div class="p_title">베스트 상품</div>
                         <div class="p_inner_elements">                        
-                        	<c:forEach begin="0" end="${bestList.length}" var="i">
-                        		<!-- 판매중인 제품 판별 -->
-                        		<c:if test="${bestList[i].post_state == 1}">                        			
-			                            <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
-			                                <div class="p_img"><img src="#" alt="#"></div>
-			                                <div class="p_info">
-			                                    <div class="p_info_brand">${bestList[i].brand}</div>
-			                                    <div class="p_info_name">${bestList[i].p_name} ${bestList[i].standard}${bestList[i].unit}</div>
-			                                    <div class="p_info_price">
-			                                    	<fmt:formatNumber value="${bestList[i].price}" pattern="#,###" />원
-			                                    </div>
-			                                    <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
-			                                </div>
-			                            </a>
-	                            </c:if>
+                        	<c:forEach begin="0" end="3" var="i">                      			
+	                            <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
+	                                <div class="p_img"><img src="#" alt="#"></div>
+	                                <div class="p_info">
+	                                    <div class="p_info_brand">${bestList[i].brand}</div>
+	                                    <div class="p_info_name">${bestList[i].p_name} ${bestList[i].standard}${bestList[i].unit}</div>
+	                                    <div class="p_info_price">
+	                                    	<fmt:formatNumber value="${bestList[i].price}" pattern="#,###" />원
+	                                    </div>
+	                                    <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+	                                </div>
+	                            </a>
                             </c:forEach>                            
                         </div>
                         
@@ -393,42 +390,43 @@
                     <div class="p_elements">
                         <div class="p_title">세일중인 상품</div>
                         <div class="p_inner_elements">
-                            <a href="#">
-                                <div class="p_img"><img src="#" alt="#"></div>
-                                <div class="p_info">
-                                    <div class="p_info_brand">농협</div>
-                                    <div class="p_info_name">참돔</div>
-                                    <div class="p_info_price">9억원</div>
-                                    <div class="p_info_stars">★ 4.5 (1043)</div>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="p_img"><img src="#" alt="#"></div>
-                                <div class="p_info">
-                                    <div class="p_info_brand">농협</div>
-                                    <div class="p_info_name">돌돔</div>
-                                    <div class="p_info_price">8,700원</div>
-                                    <div class="p_info_stars">★ 4.5 (3)</div>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="p_img"><img src="#" alt="#"></div>
-                                <div class="p_info">
-                                    <div class="p_info_brand">농협</div>
-                                    <div class="p_info_name">문어세꼬시</div>
-                                    <div class="p_info_price">32,165달러</div>
-                                    <div class="p_info_stars">★ 4.5 (11)</div>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="p_img"><img src="#" alt="#"></div>
-                                <div class="p_info">
-                                    <div class="p_info_brand">농협</div>
-                                    <div class="p_info_name">참돔</div>
-                                    <div class="p_info_price">9억원</div>
-                                    <div class="p_info_stars">★ 4.5 (123)</div>
-                                </div>
-                            </a>
+                            <c:forEach begin="0" end="3" var="i">                                 
+	                            <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
+	                                <div class="p_img"><img src="#" alt="#"></div>
+	                                <div class="p_info">
+	                                    <div class="p_info_brand">${saleList[i].brand}</div>
+	                                    <div class="p_info_name">${saleList[i].p_name} ${saleList[i].standard}${saleList[i].unit}</div>
+	                                    <div class="p_info_price">
+	                                        <c:set></c:set>
+	                                        <fmt:formatNumber value="${saleList[i].price-saleList[i].price*(saleList[i].discount/100)}" pattern="#,###" />원
+	                                    </div>
+	                                    <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+	                                </div>
+	                            </a>
+                            </c:forEach>  
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <!-- 새로운 상품 -->
+                <div class="p_best">
+                    <div class="p_elements">
+                        <div class="p_title">신규 상품</div>
+                        <div class="p_inner_elements">
+                            <c:forEach begin="0" end="3" var="i">                                 
+                                <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
+                                    <div class="p_img"><img src="#" alt="#"></div>
+                                    <div class="p_info">
+                                        <div class="p_info_brand">${newList[i].brand}</div>
+                                        <div class="p_info_name">${newList[i].p_name} ${newList[i].standard}${newList[i].unit}</div>
+                                        <div class="p_info_price">
+                                            <fmt:formatNumber value="${newList[i].price}" pattern="#,###" />원
+                                        </div>
+                                        <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+                                    </div>
+                                </a>
+                            </c:forEach>  
                         </div>
                         
                     </div>

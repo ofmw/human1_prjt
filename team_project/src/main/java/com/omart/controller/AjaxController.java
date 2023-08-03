@@ -36,7 +36,7 @@ public class AjaxController {
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdList;	
 	@Setter(onMethod_={ @Autowired })
-	private BoardFileService bfInsert, bfNotice;
+	private BoardFileService bfInsert, bfList;
 	@Setter(onMethod_= {@Autowired})
 	private MemberService mLogin;
 
