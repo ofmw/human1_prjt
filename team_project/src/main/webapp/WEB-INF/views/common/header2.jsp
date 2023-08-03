@@ -60,7 +60,7 @@
                     <div id="div_persnal_menu">
                         <a href="">ㅇ</a>
                         <a href="member/mypage.do">ㅁ</a>
-                        <a href="">ㅇ</a>
+                        <a href="cart/cart.do">카</a>
                         <a href="">ㅇ</a>
                     </div>
 				</div>
