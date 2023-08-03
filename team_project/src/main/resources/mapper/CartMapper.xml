@@ -26,5 +26,13 @@
 		SET amount = #{amount}
 		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
 	</update>
+	
+	<insert id="addCart" parameterType="cartVo">
+	    
+	    insert into cart (m_idx, p_id, amount)
+        values (#{m_idx}, #{p_id}, 1)
+        on duplicate key update amount = amount + 1
+	    
+	</insert>
     
 </mapper>

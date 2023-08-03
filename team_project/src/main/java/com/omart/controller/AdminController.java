@@ -38,7 +38,7 @@ public class AdminController {
 	public String product(Model model) {
 		model.addAttribute("status", "product");
 		
-		List<ProductVo> productList = pdList.ProductList();
+		List<ProductVo> productList = pdList.productList();
 		model.addAttribute("productList", productList);
 		return "admin/admin";
 	}		

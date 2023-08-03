@@ -41,4 +41,9 @@ public class CartDao{
 		sqlSession.update(MAPPER+".cartUpdate_Amount", newAmount);
 	}
 	
+	public void addCart(CartVo cartVo) {
+		System.out.println("cartVo:"+cartVo.getM_idx()+", "+cartVo.getP_id());
+		sqlSession.insert(MAPPER+".addCart", cartVo);
+	}
+	
 }

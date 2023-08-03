@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.omart.vo.MemberVo" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +13,8 @@
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="resources/js/login.js"></script>
-<script src="resources/js/header.js?v=1234"></script>
+<script src="resources/js/header.js?v=4567"></script>
+<script type="text/javascript"></script>
 
 </head>
 <body>
@@ -43,6 +46,7 @@
 			                        <a href="boardFile/list_notice.do">고객센터</a>
 								</c:when>
 								<c:otherwise>
+								    <input type="hidden" id="m_idx" value="${member.m_idx}"/>
 								     <c:choose>
 								         <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
 								             <a href="admin/member.do">${member.m_name}님</a>
@@ -68,13 +72,20 @@
 	                        <a href="">ㅇ</a>
 	                        <c:choose>
 	                        	<c:when test="${empty member}">
-	                        		<a id="open_login" href="#">ㅁ</a>
+	                        		<a class="need_login" href="#">ㅁ</a>
 	                        	</c:when>
 	                        	<c:otherwise>
 	                        		<a href="mypage/mypage.do">ㅁ</a>
 	                        	</c:otherwise>
 	                        </c:choose>
-	                        <a href="cart/cart.do">카</a>
+	                        <c:choose>
+	                           <c:when test="${empty member}">
+	                               <a class="need_login">카</a>
+	                           </c:when>
+	                           <c:otherwise>
+	                               <a href="cart/cart.do">카</a>
+	                           </c:otherwise>
+	                        </c:choose>	                        
 	                        <a href="">ㅇ</a>
 	                    </div>
 					</div>
@@ -92,7 +103,7 @@
 	                        전체 카테고리
 	                    </div>
 	                    <div id="div_category">
-	                        <a href="">전체 카테고리</a>
+	                        <a href="product/product_list.do">전체 카테고리</a>
 	                        <ul>
 	                        	<li><a href="">육류</a></li>
 	                        	<li><a href="">가공</a></li>
@@ -158,5 +169,10 @@
             </div><!-- end of 로그인창 내부요소 -->
         </div><!-- end of login container -->
     </div><!-- end of shadow -->
+    <div id="shadow_addCart">
+        <div id="addCart_container">
+            제품이 장바구니에 추가되었습니다.
+        </div>
+    </div>
 </body>
 </html>
