@@ -31,13 +31,27 @@ public class CartDao{
 		return vo;
 	}
 	
-	//해당 회원의 장바구니 상품의 상세 정보 가져오기
-	public void CartUpdate_Amount(CartVo newAmount) {
+	//해당 회원의 장바구니 상품의 수량 변경하기
+	public void cartUpdate_Amount(CartVo newAmount) {
 		sqlSession.update(MAPPER+".cartUpdate_Amount", newAmount);
 	}
 	
+	//해당 회원의 장바구니 상품의 수량 변경하기
+	public void cartRemove(CartVo target) {
+		System.out.println("@@@@@"+target.getM_idx());
+		System.out.println("@@@@@"+target.getP_id());
+		sqlSession.delete(MAPPER+".cartRemove", target);
+	}
+	
+	//해당 회원의 장바구니 상품의 수량 변경하기
+	public void cartRemove2(List<CartVo> target) {
+//		System.out.println("@@@@@"+target.getM_idx());
+//		System.out.println("@@@@@"+target.getP_id());
+		sqlSession.delete(MAPPER+".cartRemove2", target);
+	}
+	
 	//해당 회원의 장바구니 상품의 상세 정보 가져오기
-	public List<CartVo> CartUpdate_List(CartVo newAmount) {
+	public List<CartVo> cartUpdate_List(CartVo newAmount) {
 		
 		List<CartVo> vo = sqlSession.selectList(MAPPER+".cartList", newAmount);
 		if(vo != null) {

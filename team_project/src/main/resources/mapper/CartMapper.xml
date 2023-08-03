@@ -18,10 +18,29 @@
 		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
 	</update>
 	
+	<delete id="cartRemove" parameterType="cartVo">
+		DELETE
+		FROM cart
+		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
+	</delete>
+	
+	<delete id="cartRemove2" parameterType="java.util.List">
+		DELETE
+		FROM cart
+		WHERE m_idx IN
+	    <foreach item="item" collection="list" open="(" separator="," close=")">
+	        #{item.m_idx}
+	    </foreach>
+	    AND p_id IN
+	    <foreach item="item" collection="list" open="(" separator="," close=")">
+	        #{item.p_id}
+	    </foreach>
+	</delete>
+	
 	<select id="cartUpdate_List" parameterType="cartVo" resultType="cartVo">
 		SELECT *
 		FROM cart
-		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
+		WHERE m_idx = #{m_idx}
 	</select>
     
 </mapper>

@@ -258,12 +258,8 @@
         border-right: 1px solid #eee;
         color: #222;
     }
-    .td_odinfo_price{
+    .calprice{
         font-size: 22px;
-    }
-    .td_odinfo_price span{
-        padding-left: 1px;
-        font-size: 11px;
     }
     /* 수량 조절 */
     .td_odinfo_amount{
@@ -357,6 +353,9 @@
 
 <script>
     $(function() {
+    	
+    	//배송비
+    	const shipping_fee = 3000;
         /* ---------------------상품 수량 조절--------------------- */
         // + 버튼 클릭 이벤트 처리
         
@@ -380,16 +379,130 @@
 
         // 삭제 버튼 클릭 이벤트 처리
         $(".td_delete button").click(function() {
-            // 해당 버튼이 속한 tr 요소를 찾아서 삭제합니다.
+            
+        	let m_idx = parseInt($(this).closest('tr').find('.m_idx').val());
+        	let p_id = $(this).closest('tr').find('.p_id').val();
+        	
+        	removeCart(m_idx, p_id);
+
+         	// 해당 버튼이 속한 tr 요소를 찾아서 삭제합니다.
             $(this).closest("tr").remove();
         });
+        
+        function removeCart(m_idx, p_id) {
+            $.ajax({
+                type: "POST",
+                url: "remove_cart.do", // 증감된 값을 데이터베이스에 업데이트하는 서버 사이드 코드
+                data: {
+                	"m_idx": m_idx,
+                    "p_id": p_id
+                },
+                success: function (response) {
+                   if (response != null) {
+                	   	sessionStorage.setItem("cartList", response);
+                    } else {
+                        alert("장바구니 품목 삭제에 실패하였습니다.");
+                    }
+                }.bind(this),
+                error: function () {
+                    alert("오류가 발생하였습니다.");
+                }
+            });
+        }
 
         // sel_delete 버튼 클릭 이벤트 처리 (sel_product 체크된 항목 삭제)
         $("#sel_delete").click(function() {
             // class가 sel_product인 체크박스 중 체크된 항목들을 선택합니다.
-            var checkedProducts = $(".sel_product:checked");
-            // 선택된 체크박스들이 속한 행을 모두 삭제합니다.
-            checkedProducts.closest("tr").remove();
+            let checkedProducts = $(".sel_product:checked");
+            let paymentPrice = $("#payment-price");
+            
+            if (checkedProducts.length > 0) {
+                // 선택된 체크박스들이 속한 행을 모두 삭제합니다.
+                checkedProducts.each(function() {
+                    var m_idx = parseInt($(this).closest("tr").find(".m_idx").val());
+                    var p_id = $(this).closest("tr").find(".p_id").val();
+                    let orderPrice = parseInt($("#ordered-price").text().replace(/[^0-9]/g, ""));
+                    
+                    //각 상품의 가격 (판매가 * 수량)
+                	$(".calprice").each(function() {
+                		
+                		//주문금액
+                		let totalPrice = 0;
+                		
+                		
+                		//선택된 행의 각 상품의 가격 (판매가 * 수량)
+                        var calPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
+                        totalPrice += calPriceValue;
+                        
+                        //기존 결제예정금액
+                        let targetPrice = parseInt(paymentPrice.text().replace(/[^0-9]/g, ""));
+                        //새 결제예정금액 (기존 - 주문금액)
+                        let newTotalPrice = targetPrice - totalPrice;
+                        
+                        if(newTotalPrice != 0){ //새 결제예정금액이 0원이 아니라면 (장바구니에 품목이 1개 이상)
+                        	alert("1");
+	                        if(newTotalPrice > 25000){ //25000원보다 클 시
+	                        	alert("2\n현재 선택된 상품금액: "+calPriceValue);
+	                        	$("#shipping-fee").text("+0 원") //배송비 0원
+	                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice);
+	                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
+	                            
+	                        }else{ //25000원보닥 작을 시
+	                        	alert("3");
+	                            $("#shipping-fee").text(shipping_fee+" 원") //배송비 3000원
+	                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice+3000);
+	                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
+	                        }
+	                        
+						}else{ //새 결제예정금액이 0원이라면 (장바구니에 품목 없음)
+							alert("4");
+			            	$("#shipping-fee").text("+0 원");
+			            	$("#ordered-price").text("0 원");
+			            	$("#payment-price").text("0");
+			            }
+                        
+                        let newOrderPrice = orderPrice - totalPrice;
+                        
+                        // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
+                        var formattedPrice = new Intl.NumberFormat("ko-KR").format(newOrderPrice);
+                        $("#ordered-price").text(formattedPrice + " 원");
+                        
+                        
+                        
+                    });
+
+                    // 배열에 m_idx와 p_id 추가
+                    var mIdxArray = [];
+                    var pIdArray = [];
+                    mIdxArray.push(m_idx);
+                    pIdArray.push(p_id);
+
+                    // 해당 버튼이 속한 tr 요소를 삭제합니다.
+                    $(this).closest("tr").remove();
+
+                    // AJAX를 이용하여 remove_cart.do에 삭제 요청을 보냅니다.
+                    $.ajax({
+                        type: "POST",
+                        url: "remove_cart2.do",
+                        data: {
+                            m_idx: mIdxArray,
+                            p_id: pIdArray
+                        },
+                        success: function(response) {
+                            if (response != null) {
+                                sessionStorage.setItem("cartList", response);
+                            } else {
+                                alert("장바구니 품목 삭제에 실패하였습니다.");
+                            }
+                        },
+                        error: function() {
+                            alert("오류가 발생하였습니다.");
+                        }
+                    });
+                });
+            } else {
+                alert("삭제할 품목을 선택해주세요.");
+            }
         });
 
         /* ---------------------주문정보 네비게이션--------------------- */
@@ -454,9 +567,9 @@
         });
         
         
-        
      	// 페이지 로드 시 기존 값들을 합산하여 #product_total에 표시
         calculateTotal();
+        updateTotalOrderedPrice();
 
         // 버튼 클릭 시 이벤트 처리
         $(".plist_minus-btn, .plist_plus-btn").on("click", function() {
@@ -464,25 +577,67 @@
             calculateTotal();
         });
 		
-        function calculateTotalPrice(amount){
-        	let price = parseInt($(this).siblings(".price").val());
+        function calculateTotalPrice(price, amount){
         	let calprice = price * amount;
-        	let formattedPrice = new Intl.NumberFormat("ko-KR").format(calprice);
-        	$(this).siblings(".td_odinfo_price").find(".calprice").text(formattedPrice);
+        	console.log("가격: " +price);
+        	console.log("수량: " +amount);
+        	console.log("계산 결과: " +calprice);
+        	return calprice; 
         }
         
         function calculateTotal() {
             // plist_amount_value의 모든 요소들을 선택하여 각 값들을 합산
             let total = 0;
             $(".plist_amount_value").each(function() {
+            	
                 const amountValue = parseInt($(this).val());
                 if (!isNaN(amountValue)) {
                     total += amountValue;
                 }
+                
+                var amount = parseInt($(this).val());
+                var price = parseInt($(this).siblings(".price").val());
+
+                // 계산된 가격을 구합니다.
+                var calculatedPrice = calculateTotalPrice(price, amount);
+
+                // 형식을 지정하고 값을 .calprice 요소에 설정합니다.
+                var formattedPrice = new Intl.NumberFormat("ko-KR").format(calculatedPrice);
+                $(this).closest("tr").find(".calprice").text(formattedPrice);
             });
             
             // 합산 결과를 #product_total에 표시
             $("#product_total span").text(total);
+        }
+        
+        function updateTotalOrderedPrice() {
+            let totalPrice = 0;
+            $(".calprice").each(function() {
+                var calPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
+                totalPrice += calPriceValue;
+            });
+            
+            if(totalPrice != 0){
+            	if(totalPrice > 25000){
+                	$("#shipping-fee").text("+0 원")
+                	var formattedPrice = new Intl.NumberFormat("ko-KR").format(totalPrice);
+                    $("#payment-price").text(formattedPrice);
+                    
+                }else{
+                    $("#shipping-fee").text("+3000 원")
+                	var formattedPrice = new Intl.NumberFormat("ko-KR").format(totalPrice + shipping_fee);
+                    $("#payment-price").text(formattedPrice);
+                }
+            }else{
+            	$("#shipping-fee").text("+0 원");
+            	$("#ordered-price").text("0 원");
+            	$("#payment-price").text("0");
+            }
+            
+
+            // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
+            var formattedPrice = new Intl.NumberFormat("ko-KR").format(totalPrice);
+            $("#ordered-price").text(formattedPrice + " 원");
         }
         
         
@@ -495,6 +650,7 @@
             let M_idx = $(this).siblings(".m_idx").val();
             let m_idx = parseInt(M_idx);
         	let p_id = $(this).siblings(".p_id").val();
+        	let price = parseInt($(this).siblings(".price").val());
         	
         	let amount = inputElement.val(Math.min(currentAmount + 1, 20));
         	
@@ -505,7 +661,14 @@
                 alert("최대 주문 수량은 20개 입니다.");
             }
         	calculateTotal();
-        	calculateTotalPrice(amount);
+        	updateTotalOrderedPrice();
+        	
+        	if(currentAmount < 20){
+	        	let calprice = calculateTotalPrice(price, currentAmount+1);
+	        	let formattedPrice = new Intl.NumberFormat("ko-KR").format(calprice);
+	        	let calPriceElement = $(this).closest('tr').find('.calprice');
+	            calPriceElement.text(formattedPrice);
+        	}
         });
 
         // - 버튼 클릭 이벤트 처리
@@ -517,6 +680,7 @@
             let M_idx = $(this).siblings(".m_idx").val();
             let m_idx = parseInt(M_idx);
         	let p_id = $(this).siblings(".p_id").val();
+        	let price = parseInt($(this).siblings(".price").val());
             
         	let amount = inputElement.val(Math.max(currentAmount - 1, 1));
         	
@@ -524,7 +688,14 @@
                 updateAmount(m_idx, p_id, currentAmount - 1);
             }
             calculateTotal();
-            calculateTotalPrice(amount);
+            updateTotalOrderedPrice();
+            
+            if(currentAmount > 1){
+	            let calprice = calculateTotalPrice(price, currentAmount-1);
+	            let formattedPrice = new Intl.NumberFormat("ko-KR").format(calprice);
+	            let calPriceElement = $(this).closest('tr').find('.calprice');
+	            calPriceElement.text(formattedPrice);
+            }
         });
         
         
@@ -596,7 +767,7 @@
                                         <col style="width:10%;">
                                     </colgroup>
                                     <tr id="tr_empty_cart" style="display: none;">
-                                        <td colspan="4">장바구니에 담긴 상품이 없습니다!${CartList}</td>
+                                        <td colspan="4">장바구니에 담긴 상품이 없습니다!</td>
                                     </tr>
                                    	<c:if test="${!empty CartList}">
                                     	<c:forEach items="${CartList}" var="c">
@@ -616,8 +787,7 @@
 		                                        <td class="td_odinfo">
 		                                            <span class="td_odinfo_price">
 		                                            	<span class="calprice"></span>
-		                                            	<input type="hidden" class="price" value="${c.price}">
-		                                            	<span>원</span>
+		                                            	<span style="font-size:11px;padding-left:1px;">원</span>
 		                                            </span><br>
 		                                            <div class="td_odinfo_amount">
 		                                                <button type="button" class="plist_minus-btn">-</button>
@@ -625,6 +795,7 @@
 		                                                <button type="button" class="plist_plus-btn">+</button>
 		                                                <input type="hidden" class="m_idx" value="${c.m_idx}">
 		                                                <input type="hidden" class="p_id" value="${c.p_id}">
+		                                                <input type="hidden" class="price" value="${c.price}">
 		                                            </div>
 		                                        </td>
 		                                        <td class="td_delete"><button type="button">삭제하기</button></td>
@@ -669,7 +840,7 @@
                                 <div id="product_detail">
                                     <div id="product_ordered-price">
                                         <span>주문금액</span>
-                                        <span>30,000 원</span>
+                                        <span id="ordered-price"></span>
                                     </div>
                                     <div id="product_discount-price">
                                         <span>상품할인</span>
@@ -677,13 +848,15 @@
                                     </div>
                                     <div id="product_shipping-fee">
                                         <span>배송비</span>
-                                        <span>+0 원</span>
+                                        <span id="shipping-fee"></span>
                                     </div>
                                 </div>
                                 <div id="product_payment-price">
                                     <span>결제예정금액</span>
-                                    <span style="font-size:22px;font-weight:bold;">30,000<span id="won" style="font-size:15px;font-weight:100;">원</span></span>
-                                    
+                                    <span>
+                                    	<span id="payment-price" style="font-size:22px;font-weight:bold;"></span>
+                                    	<span id="won" style="font-size:15px;font-weight:100;">원</span>
+                                    </span>
                                 </div>
                             </div>
 
