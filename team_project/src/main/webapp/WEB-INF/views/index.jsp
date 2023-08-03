@@ -131,12 +131,18 @@
         font-size: 15px;
     }
     .p_info_price{
+        font-size: 13px;
+        font-weight: bold;
+        color: #8b96a1;
+        text-decoration: line-through;
+    }
+    .p_info_price_final{
         font-size: 18px;
         font-weight: bold;
     }
     .p_info_stars{
         font-size: 13px;
-        color: #8b96a1;;
+        color: #8b96a1;
     }
     
 /* ---------------------이미지 슬라이드 영역--------------------- */
@@ -373,8 +379,12 @@
 	                                <div class="p_info">
 	                                    <div class="p_info_brand">${bestList[i].brand}</div>
 	                                    <div class="p_info_name">${bestList[i].p_name} ${bestList[i].standard}${bestList[i].unit}</div>
-	                                    <div class="p_info_price">
-	                                    	<fmt:formatNumber value="${bestList[i].price}" pattern="#,###" />원
+	                                    <c:if test="${bestList[i].discount ge 0}">
+	                                       <div class="p_info_price"><fmt:formatNumber value="${bestList[i].price}" pattern="#,###" />원</div>
+	                                    </c:if>	                                    
+	                                    <div class="p_info_price_final">
+	                                    	<c:set var="discount_best" value="${bestList[i].price*(bestList[i].discount/100)}"></c:set>
+                                            <fmt:formatNumber value="${bestList[i].price - discount_best}" pattern="#,###" />원
 	                                    </div>
 	                                    <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
 	                                </div>
@@ -396,9 +406,9 @@
 	                                <div class="p_info">
 	                                    <div class="p_info_brand">${saleList[i].brand}</div>
 	                                    <div class="p_info_name">${saleList[i].p_name} ${saleList[i].standard}${saleList[i].unit}</div>
-	                                    <div class="p_info_price">
-	                                        <c:set></c:set>
-	                                        <fmt:formatNumber value="${saleList[i].price-saleList[i].price*(saleList[i].discount/100)}" pattern="#,###" />원
+	                                    <div class="p_info_price_final">
+	                                        <c:set var="discount_sale" value="${saleList[i].price*(saleList[i].discount/100)}"></c:set>
+	                                        <fmt:formatNumber value="${saleList[i].price - discount_sale}" pattern="#,###" />원
 	                                    </div>
 	                                    <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
 	                                </div>
@@ -420,8 +430,9 @@
                                     <div class="p_info">
                                         <div class="p_info_brand">${newList[i].brand}</div>
                                         <div class="p_info_name">${newList[i].p_name} ${newList[i].standard}${newList[i].unit}</div>
-                                        <div class="p_info_price">
-                                            <fmt:formatNumber value="${newList[i].price}" pattern="#,###" />원
+                                        <div class="p_info_price_final">
+                                            <c:set var="discount_new" value="${newList[i].price*(newList[i].discount/100)}"></c:set>
+                                            <fmt:formatNumber value="${newList[i].price - discount_new}" pattern="#,###" />원
                                         </div>
                                         <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
                                     </div>
