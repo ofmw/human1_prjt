@@ -8,5 +8,6 @@ public interface ProductService {
 	
 	default List<ProductVo> ProductList() {return null;}
 	default List<ProductVo> bestList() {return null;}
-	
+	default List<ProductVo> saleList() {return null;}
+	default List<ProductVo> newList() {return null;}
 }

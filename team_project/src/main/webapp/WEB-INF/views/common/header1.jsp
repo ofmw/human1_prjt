@@ -10,7 +10,7 @@
 <link href="resources/css/login.css" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="resources/js/login.js"></script>
+<script src="resources/js/login.js?v=1234"></script>
 <script src="resources/js/header.js?v=1234"></script>
 
 </head>

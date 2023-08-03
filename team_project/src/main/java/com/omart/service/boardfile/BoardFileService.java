@@ -19,4 +19,6 @@ public interface BoardFileService {
 	default List<BoardFileVo> getAllFaqes()	{return null;}
 	default List<BoardFileVo> getAllNotices() {return null;}
 	default List<BoardFileVo> getAllEvents() {return null;}
+	default List<BoardFileVo> getAllInquiries() {return null;}
+	default List<BoardFileVo> getAllQnas() {return null;}
 }

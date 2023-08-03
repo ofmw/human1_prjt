@@ -19,10 +19,6 @@ public class BoardFileDao {
 		this.sqlSession = sqlSession;
 	}
 	
-	public int insertInquiry(BoardFileVo vo) {
-		return sqlSession.insert(MAPPER + ".insertInquiry", vo);
-	}
-	
 	public int insertNotice(BoardFileVo vo) {
 		return sqlSession.insert(MAPPER + ".insertNotice", vo);
 	}
@@ -34,6 +30,10 @@ public class BoardFileDao {
 	public int insertEvent(BoardFileVo vo) {
 		return sqlSession.insert(MAPPER + ".insertEvent", vo);
 	}
+
+	public int insertInquiry(BoardFileVo vo) {
+		return sqlSession.insert(MAPPER + ".insertInquiry", vo);
+	}
 	
 	public List<BoardFileVo> getAllNotices(){
 		return sqlSession.selectList(MAPPER + ".getAllNotices");
@@ -43,9 +43,16 @@ public class BoardFileDao {
 		return sqlSession.selectList(MAPPER + ".getAllFaqes");
 	}
 
-
 	public List<BoardFileVo> getAllEvents(){
 		return sqlSession.selectList(MAPPER + ".getAllEvents");
+	}
+
+	public List<BoardFileVo> getAllInquiries(){
+		return sqlSession.selectList(MAPPER + ".getAllInquiries");
+	}
+
+	public List<BoardFileVo> getAllQnas(){
+		return sqlSession.selectList(MAPPER + ".getAllQnas");
 	}
 	
 	public BoardFileVo getNoticeById(int bIdx) {

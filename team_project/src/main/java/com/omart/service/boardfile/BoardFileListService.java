@@ -29,4 +29,12 @@ private BoardFileDao dao;
 	public List<BoardFileVo> getAllEvents(){
 		return dao.getAllEvents();
 	}
+
+	public List<BoardFileVo> getAllInquiries(){
+		return dao.getAllInquiries();
+	}
+	
+	public List<BoardFileVo> getAllQnas(){
+		return dao.getAllQnas();
+	}
 }
