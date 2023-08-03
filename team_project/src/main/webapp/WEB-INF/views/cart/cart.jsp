@@ -410,61 +410,24 @@
             });
         }
 
-        // sel_delete 버튼 클릭 이벤트 처리 (sel_product 체크된 항목 삭제)
+     	// sel_delete 버튼 클릭 이벤트 처리 (sel_product 체크된 항목 삭제)
         $("#sel_delete").click(function() {
-            // class가 sel_product인 체크박스 중 체크된 항목들을 선택합니다.
             let checkedProducts = $(".sel_product:checked");
             let paymentPrice = $("#payment-price");
-            
+            let orderedPrice = $("#ordered-price");
+            let shippingFee = 3000; // 배송비는 3000원으로 가정합니다.
+
             if (checkedProducts.length > 0) {
+                let totalCalPrice = 0;
+                
                 // 선택된 체크박스들이 속한 행을 모두 삭제합니다.
                 checkedProducts.each(function() {
                     var m_idx = parseInt($(this).closest("tr").find(".m_idx").val());
                     var p_id = $(this).closest("tr").find(".p_id").val();
-                    let orderPrice = parseInt($("#ordered-price").text().replace(/[^0-9]/g, ""));
                     
-                    let totalPrice = 0;
-                    
-                    let calPrice = $(this).closest("tr").find(".calprice").text().replace(/[^0-9]/g, "");
-                    alert(calPrice);
-                	let targetCalPrice = parseInt(calPrice);
-                    
-                    
-                    let targetPrice = parseInt(paymentPrice.text().replace(/[^0-9]/g, ""));
-                    let newTotalPrice = targetPrice - targetCalPrice;
-                    
-                    
-                    if(newTotalPrice != 0){ //새 결제예정금액이 0원이 아니라면 (장바구니에 품목이 1개 이상)
-                    	alert("1");
-                        if(newTotalPrice > 25000){ //25000원보다 클 시
-                        	alert("2\n현재 선택된 상품금액: "+calPriceValue);
-                        	$("#shipping-fee").text("+0 원") //배송비 0원
-                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice);
-                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
-                            
-                        }else{ //25000원보닥 작을 시
-                        	alert("3");
-                            $("#shipping-fee").text(shipping_fee+" 원") //배송비 3000원
-                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice+3000);
-                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
-                        }
-                        
-					}else{ //새 결제예정금액이 0원이라면 (장바구니에 품목 없음)
-						alert("4");
-		            	$("#shipping-fee").text("+0 원");
-		            	$("#ordered-price").text("0 원");
-		            	$("#payment-price").text("0");
-		            }
-                    
-                    let newOrderPrice = orderPrice - totalPrice;
-                    
-                    // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
-                    var formattedPrice = new Intl.NumberFormat("ko-KR").format(targetCalPrice);
-                    $("#ordered-price").text(formattedPrice + " 원");
-                    
-                    
-                    
-                    
+                    // 선택된 상품의 가격을 가져옵니다.
+                    let calPrice = parseInt($(this).closest("tr").find(".calprice").text().replace(/[^0-9]/g, ""));
+                    totalCalPrice += calPrice;
 
                     // 배열에 m_idx와 p_id 추가
                     var mIdxArray = [];
@@ -495,6 +458,17 @@
                         }
                     });
                 });
+
+                // 장바구니에 남은 상품들의 가격을 합산합니다.
+                let orderedPriceValue = totalCalPrice;
+                orderedPrice.text(new Intl.NumberFormat("ko-KR").format(orderedPriceValue) + " 원");
+
+                // 새 결제예정금액을 계산하고 표시합니다.
+                let newTotalPrice = orderedPriceValue + shippingFee;
+                let shippingText = (newTotalPrice > 25000) ? "+0 원" : (shippingFee + " 원");
+                $("#shipping-fee").text(shippingText);
+                let formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice);
+                paymentPrice.text(formattedPrice);
             } else {
                 alert("삭제할 품목을 선택해주세요.");
             }
