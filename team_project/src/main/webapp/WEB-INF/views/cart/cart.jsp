@@ -463,12 +463,19 @@
             // plist_amount_value의 모든 요소들을 선택하여 각 값들을 합산
             calculateTotal();
         });
-
+		
+        function calculateTotalPrice(amount){
+        	let price = parseInt($(this).siblings(".price").val());
+        	let calprice = price * amount;
+        	let formattedPrice = new Intl.NumberFormat("ko-KR").format(calprice);
+        	$(this).siblings(".td_odinfo_price").find(".calprice").text(formattedPrice);
+        }
+        
         function calculateTotal() {
             // plist_amount_value의 모든 요소들을 선택하여 각 값들을 합산
             let total = 0;
             $(".plist_amount_value").each(function() {
-                const amountValue = parseFloat($(this).val());
+                const amountValue = parseInt($(this).val());
                 if (!isNaN(amountValue)) {
                     total += amountValue;
                 }
@@ -480,59 +487,69 @@
         
         
         
-        
-        
-        
-        
+        $(".plist_plus-btn").click(function() {
+            // 현재 버튼이 속한 행에서 인접한 input 요소를 찾습니다.
+            var inputElement = $(this).siblings(".plist_amount_value");
+            // input 요소의 값을 가져와서 1을 더한 후 다시 설정합니다.
+            var currentAmount = parseInt(inputElement.val());
+            let M_idx = $(this).siblings(".m_idx").val();
+            let m_idx = parseInt(M_idx);
+        	let p_id = $(this).siblings(".p_id").val();
         	
+        	let amount = inputElement.val(Math.min(currentAmount + 1, 20));
         	
-        	
-            // - 버튼 클릭 이벤트 처리
-            $(document).on('click', '.plist_minus-btn', function () {
-                let amountInput = $(this).siblings('.plist_amount_value');
-                let currentAmount = parseInt(amountInput.val());
-                let m_idx = $(this).siblings(".m_idx").val();
-            	let p_id = $(this).siblings(".p_id").val();
-            	
-                console.log(currentAmount);
-                if (currentAmount > 1) {
-                    updateAmount(m_idx, p_id, currentAmount - 1);
-                }
-            });
-
-            // + 버튼 클릭 이벤트 처리
-            $(document).on('click', '.plist_plus-btn', function () {
-                let amountInput = $(this).siblings('.plist_amount_value');
-                let currentAmount = parseInt(amountInput.val());
-                let m_idx = $(this).siblings(".m_idx").val();
-            	let p_id = $(this).siblings(".p_id").val();
-            	
-                if (currentAmount < 20) {
-                    updateAmount(m_idx, p_id, currentAmount + 1);
-                }
-            });
-
-            function updateAmount(m_idx, p_id, newAmount) {
-                $.ajax({
-                    type: "POST",
-                    url: "update_cart_amount.do", // 증감된 값을 데이터베이스에 업데이트하는 서버 사이드 코드
-                    data: {
-                    	m_idx: m_idx,
-                        p_id: p_id,
-                        amount: newAmount
-                    },
-                    success: function (response) {
-                        if (response === "success") {
-                            amountInput.val(newAmount);
-                        } else {
-                            alert("수량 업데이트에 실패하였습니다.");
-                        }
-                    },
-                    error: function () {
-                        alert("오류가 발생하였습니다.");
-                    }
-                });
+        	if (currentAmount < 20) {
+                updateAmount(m_idx, p_id, currentAmount + 1);
+            } else {
+                // 값이 20이상이면 경고창을 띄웁니다.
+                alert("최대 주문 수량은 20개 입니다.");
             }
+        	calculateTotal();
+        	calculateTotalPrice(amount);
+        });
+
+        // - 버튼 클릭 이벤트 처리
+        $(".plist_minus-btn").click(function() {
+            // 현재 버튼이 속한 행에서 인접한 input 요소를 찾습니다.
+            var inputElement = $(this).siblings(".plist_amount_value");
+            // input 요소의 값을 가져와서 1을 뺀 후 다시 설정합니다. 최소값은 0으로 제한합니다.
+            var currentAmount = parseInt(inputElement.val());
+            let M_idx = $(this).siblings(".m_idx").val();
+            let m_idx = parseInt(M_idx);
+        	let p_id = $(this).siblings(".p_id").val();
+            
+        	let amount = inputElement.val(Math.max(currentAmount - 1, 1));
+        	
+            if (currentAmount > 1) {
+                updateAmount(m_idx, p_id, currentAmount - 1);
+            }
+            calculateTotal();
+            calculateTotalPrice(amount);
+        });
+        
+        
+        
+        function updateAmount(m_idx, p_id, newAmount) {
+            $.ajax({
+                type: "POST",
+                url: "update_cart_amount.do", // 증감된 값을 데이터베이스에 업데이트하는 서버 사이드 코드
+                data: {
+                	m_idx: m_idx,
+                    p_id: p_id,
+                    amount: newAmount
+                },
+                success: function (response) {
+                   if (response != null) {
+                	   	sessionStorage.setItem("cartList", response);
+                    } else {
+                        alert("수량 업데이트에 실패하였습니다.");
+                    }
+                }.bind(this),
+                error: function () {
+                    alert("오류가 발생하였습니다.");
+                }
+            });
+        }
 
     });
 </script>
@@ -598,7 +615,8 @@
 		                                        </td>
 		                                        <td class="td_odinfo">
 		                                            <span class="td_odinfo_price">
-		                                            	<fmt:formatNumber value="${c.price}" pattern="#,###" />
+		                                            	<span class="calprice"></span>
+		                                            	<input type="hidden" class="price" value="${c.price}">
 		                                            	<span>원</span>
 		                                            </span><br>
 		                                            <div class="td_odinfo_amount">

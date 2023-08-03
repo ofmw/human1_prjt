@@ -22,12 +22,6 @@ public class ProductController {
 		return "product/product_list";
 	}
 	
-	@GetMapping("/index.do")
-	public String index() {
-		
-		return "product/product_list";/* 뷰의 이름 */
-	}
-	
 	//상품페이지 -> 로그아웃
 //	@GetMapping("/logout.do")
 //	public String logout(HttpServletRequest request) {

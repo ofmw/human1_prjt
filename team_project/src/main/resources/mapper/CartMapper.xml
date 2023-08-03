@@ -11,20 +11,17 @@
         JOIN product p ON c.p_id = p.p_id
         WHERE c.m_idx = #{m_idx}
     </select>
-    
-    
-    <select id="CartList_pInfo" parameterType="java.util.List" resultType="productVo">
-	    SELECT * FROM product
-	    WHERE p_id IN
-	    <foreach item="item" collection="list" open="(" separator="," close=")">
-	        #{item}
-	    </foreach>
-	</select>
 	
 	<update id="cartUpdate_Amount" parameterType="cartVo">
 		UPDATE cart
 		SET amount = #{amount}
 		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
 	</update>
+	
+	<select id="cartUpdate_List" parameterType="cartVo" resultType="cartVo">
+		SELECT *
+		FROM cart
+		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
+	</select>
     
 </mapper>
