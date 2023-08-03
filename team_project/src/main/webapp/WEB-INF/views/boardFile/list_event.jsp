@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지사항</title>
+    <title>자주 찾는 질문 - 회원</title>
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
@@ -30,7 +30,7 @@
         display: flex;
         margin-top: 100px;
         justify-content: flex-start; /* 화면 왼쪽에 위치하도록 수정 */
-        width: 1200px; /* div_div_notice를 화면 가로 너비 100%로 설정 */
+        width: 1300px; /* div_div_notice를 화면 가로 너비 100%로 설정 */
         max-width: 1200px; /* 최대 너비 설정 */
     }
     /*---------- 사이드메뉴 ----------*/
@@ -53,7 +53,7 @@
         text-align: center;
         cursor: pointer;
     }
-    #tbl_side_menu tr:nth-child(2), #tbl_side_menu tr:nth-child(2) a{
+    #tbl_side_menu tr:nth-child(3), #tbl_side_menu tr:nth-child(3) a{
         background-color: black;
         color: white;
     }
@@ -61,60 +61,37 @@
     /*----------- 공지사항(제목) -----------*/
     #div_section {
         position: relative;
-        width: 750px;
-        margin-left: 130px; /* 왼쪽 여백 추가 */
+        width: 900px;
+        margin-left: 80px; /* 왼쪽 여백 추가 */
+        font-size: 0; /* 테이블에 inline-block 로 인한 셀 사이 간격 없애기*/
     }
-    #div_section P:first-child {
-        margin-bottom: 20px;
+    #div_section p:first-child {
+        margin-bottom: 30px;
+        width: 750px;
         float: left;
         font-size: 28px;
         font-weight: bold;
     }
     /*--------------------------------------*/
-    /*----------- 공지사항내용 -----------*/
-    #tbl_contents_menu td{
-        padding: 10px 0;
-        width: 50%;
-        text-align: center;
-        border: 1px solid black;
-        border-left: none;
-        font-size: 19px;
-        cursor: pointer;
+    /*----------- 이벤트내용 -----------*/
+    #tbl_contents{
+    	margin-right: 30px;
+    	margin-bottom: 30px;
+    	width: 270px;
+    	height: 310px;
+	    display: inline-block;
+	    font-size: 17px;
+	    font-weight: bold;
     }
-    #tbl_contents_menu td:nth-child(1), #tbl_contents_menu td:nth-child(1) a{
-        background-color: black;
-        color: white;
+    #tbl_contents img{
+    	background-size: 220px 200px;
+    	border-radius: 5px;
     }
-    #tbl_contents_menu td:nth-child(2){
-        border-right: none;
-    }
-    #tbl_contents tr:nth-child(1) td{
-        padding: 0 10px;
-        padding-top: 30px;
-        width: 673px;
-        height: 50px;
-        font-size: 18px;
-        border-bottom: 1px solid rgb(224, 224, 224);
-        line-height: 30px;
-    }
-    #tbl_contents tr:nth-child(2) td{
-    	float: left;
-        width: 710px;
-        padding: 20px;
-        background-color: rgb(224, 224, 224);
-    }
-    #tbl_contents span{
-        float: right;
-        cursor: pointer;
-        font-size: 13px;
-    }
-    #tbl_contents p{
-    	float: right;
-        padding-right: 30px; 
-        color: rgb(224, 224, 224); 
-        cursor: default;
-        font-size: 13px;
-    }
+    #tbl_contents span:nth-child(3){
+    	padding-top: 5px;
+        font-size: 15px;
+        color: rgb(190, 190, 190);
+    }   
     /*------------------------------------*/
     /*---------------footer---------------*/
     #div_footer{
@@ -161,31 +138,7 @@
         }
     }
 </style>
-<script>
-    
-    window.onload = function () {
-        let faqSees = document.querySelectorAll(".faq_see")
-        let contents = document.querySelectorAll(".close");
 
-        for (let i = 0; i < faqSees.length; i++) {
-            faqSees[i].addEventListener("click", function () {
-
-                if (!contents[i].classList.contains("close")) {
-                    contents[i].classList.add("close");
-                    return;
-                }
-
-                // 모든 FAQ 닫기
-                for (let j = 0; j < contents.length; j++) {
-                    contents[j].classList.add("close");
-                }
-
-                contents[i].classList.remove("close");
-
-            });
-        };
-    };
-</script>
 <body>
     <div id="div_notice">
         <div id="div_div_notice">
@@ -207,31 +160,19 @@
                 </table>
             </div>
             <div id="div_section">
-            	<p>공지사항</p>
-                <table id="tbl_contents_menu">
-                    <tr>
-                        <td><a href="list_faq_notice.do">공지사항</a></td>
-                        <td><a href="list_faq_notice_event.html">이벤트 당첨자 발표</a></td>
-                    </tr>
-                    <c:forEach items="${noticeList}" var="notice">
+            	<p>이벤트</p><br>
+                    <c:forEach items="${eventList}" var="event">
                         <table id="tbl_contents">
-                            <tr>
-                                <td>${notice.title}
-									<span class="faq_see">보기</span>
-                                    <p>
-                                        <fmt:formatDate value="${notice.post_date}" pattern="yyyy-MM-dd"/>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="close">
-                                    ${notice.content}
-                                </td>
-                            </tr>
+                        	<tr>
+                        		<td>
+                        			<img src="../resources/uploads/${event.saveFile}" alt="이벤트 배너 이미지" width="100%" height="200"><br>
+                        			<span>${event.period}</span><br><br>
+                        			<span>${event.title}</span>
+                        		</td>
+                        	</tr>
                         </table>
                     </c:forEach>        
-                </table>
-                <a href="list_notice_write.do"><button id="btn_write">글등록</button></a>
+                <a href="list_event_write.do"><button id="btn_write">글등록</button></a>
             </div>
         </div>
     </div>

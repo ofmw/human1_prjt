@@ -40,11 +40,11 @@
 							<c:when test="${empty member}">
             		            <span id="login_btn2">로그인</span>
     		                    <a href="member/join.do">회원가입</a>
-		                        <a href="boardFile/list_notice.do">고객센터</a>
+		                        <a href="boardFile/list_faq_member.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
 								<a href="mypage/mypage.do">${member.m_name}님</a>
-								<a href="boardFile/list_notice.do">고객센터</a>
+								<a href="boardFile/list_faq_member.do">고객센터</a>
 								<c:choose>
 									<c:when test="${member.platform eq 'kakao'}">
 										<a href="klogout.do">로그아웃</a>

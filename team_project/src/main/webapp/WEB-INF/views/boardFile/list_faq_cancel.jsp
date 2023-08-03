@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지사항</title>
+    <title>자주 찾는 질문 - 취소/환불</title>
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
@@ -53,7 +53,7 @@
         text-align: center;
         cursor: pointer;
     }
-    #tbl_side_menu tr:nth-child(2), #tbl_side_menu tr:nth-child(2) a{
+    #tbl_side_menu tr:first-child, #tbl_side_menu tr:first-child a{
         background-color: black;
         color: white;
     }
@@ -64,8 +64,9 @@
         width: 750px;
         margin-left: 130px; /* 왼쪽 여백 추가 */
     }
-    #div_section P:first-child {
+    #div_section p:first-child {
         margin-bottom: 20px;
+        width: 200px;
         float: left;
         font-size: 28px;
         font-weight: bold;
@@ -74,18 +75,18 @@
     /*----------- 공지사항내용 -----------*/
     #tbl_contents_menu td{
         padding: 10px 0;
-        width: 50%;
+        width: 20%;
         text-align: center;
         border: 1px solid black;
         border-left: none;
         font-size: 19px;
         cursor: pointer;
     }
-    #tbl_contents_menu td:nth-child(1), #tbl_contents_menu td:nth-child(1) a{
+    #tbl_contents_menu td:nth-child(3), #tbl_contents_menu td:nth-child(3) a{
         background-color: black;
         color: white;
     }
-    #tbl_contents_menu td:nth-child(2){
+    #tbl_contents_menu td:nth-child(5){
         border-right: none;
     }
     #tbl_contents tr:nth-child(1) td{
@@ -207,31 +208,36 @@
                 </table>
             </div>
             <div id="div_section">
-            	<p>공지사항</p>
+            	<p>자주 찾는 질문</p>
                 <table id="tbl_contents_menu">
+                    
                     <tr>
-                        <td><a href="list_faq_notice.do">공지사항</a></td>
-                        <td><a href="list_faq_notice_event.html">이벤트 당첨자 발표</a></td>
+                        <td><a href="list_faq_member.do">회원</a></td>
+                        <td><a href="list_faq_order.do">주문/결제/배송</a></td>
+                        <td><a href="list_faq_cancel.do">취소/환불</a></td>
+                        <td><a href="list_faq_return.do">반품/교환</a></td>
+                        <td><a href="list_faq_other.do">기타</a></td>
                     </tr>
-                    <c:forEach items="${noticeList}" var="notice">
-                        <table id="tbl_contents">
-                            <tr>
-                                <td>${notice.title}
-									<span class="faq_see">보기</span>
-                                    <p>
-                                        <fmt:formatDate value="${notice.post_date}" pattern="yyyy-MM-dd"/>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="close">
-                                    ${notice.content}
-                                </td>
-                            </tr>
+                    <c:forEach items="${faqList}" var="faq">
+                    	<table id="tbl_contents">	
+                    		<c:if test="${faq.category eq 3}">
+	                            <tr>
+	                                <td>${faq.title}
+										<span class="faq_see">보기</span>
+	                                    <p>
+	                                        <!--<fmt:formatDate value="${notice.post_date}" pattern="yyyy-MM-dd"/>-->                                    </p>
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td class="close">
+	                                    ${faq.content}
+	                                </td>
+	                            </tr>
+                        	</c:if>
                         </table>
-                    </c:forEach>        
+                    </c:forEach>         
                 </table>
-                <a href="list_notice_write.do"><button id="btn_write">글등록</button></a>
+                <a href="list_faq_write.do"><button id="btn_write">글등록</button></a>
             </div>
         </div>
     </div>

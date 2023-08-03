@@ -45,7 +45,7 @@
         text-align: center;
         cursor: pointer;
     }
-    #tbl_side_menu tr:nth-child(4), #tbl_side_menu tr:nth-child(4) a{
+    #tbl_side_menu tr:nth-child(3), #tbl_side_menu tr:nth-child(3) a{
         background-color: black;
         color: white;
     }
@@ -70,17 +70,17 @@
     #div_section td{
         border-top: 1px solid black;
     }
-    #category, #m_id, #title, #content{
+    #title, #period, #content{
         margin: 10px 20px;
         font-size: 15px;
     }
-    #m_id, #title{
+    #title, #period{
         padding: 5px 0;
         width: 560px;
         font-size: 15px;
         border: none;
     }
-    #m_id:focus,#title,#content{
+    #period:focus,#title,#content{
         outline: none;
     }
     #content{
@@ -136,48 +136,66 @@
         text-decoration: none;
         color: black;
     }
+    #upload_name{
+        margin: 10px 20px;
+        padding-left: 3px;
+        height: 30px;
+        width: 250px;
+    }
+    #div_filebox label{
+        padding: 5px 10px;
+        background-color: rgb(127, 127, 127);
+        font-size: 13px;
+        color: white;
+        border-radius: 3px;
+    }
  
 </style>
-<!-- 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 	     $(document).ready(function(){ 
-	   		var fileTarget = $('#file'); 
-	   		fileTarget.on('change', function(){ // 값이 변경되면
-	        var cur=$("#div_filebox input[type='file']").val();
-	     $("#upload_name").val(cur);
-	   }); 
+	   		
+	  
 	 }); 
 </script>
- -->
- <script src="http://code.jquery.com/jquery-latest.min.js"></script>
  <script>
  $(function(){
-	$("#smt_save").click(function(){
-		let category = $("#category").val();
-		let m_name = $("#m_name").val();
-		let title = $("#title").val();
-		let content = $("#content").val();
-		let m_idx = $("#m_idx").val();
+	 
+	 var fileTarget = $('#attachedFile');
+	 let files;	
+	 fileTarget.on('change', function(e){ // 값이 변경되면
+     	var cur=$("#div_filebox input[type='file']").val();
+		
+		files = e.target.files;
 	
-		if(category == "" || m_name == "" || title == "" || content == ""){
+ 	 	$("#upload_name").val(cur);
+	  }); 
+	 
+	$("#smt_save").click(function(){
+		let title = $("#title").val();
+		let period = $("#period").val();
+		let content = $("#content").val();
+		let attachedFile = files[0];
+			
+		if(title == "" || period == "" || content == "" || attachedFile == ""){
 			alert("모든 항목을 입력해주세요")
 		}else{
-			let formData = {
-				category: parseInt(category),
-				m_name: m_name,
-				title: title,
-				content: content,
-				m_idx: parseInt(m_idx)
-			};
+			
+			let formData = new FormData();
+				formData.append("title", title);
+				formData.append("period", period);
+				formData.append("content", content);
+				formData.append("attachedFile", attachedFile);
 			
 			$.ajax({
 				type: "post",
-				url: "insert_inquiry_process.do",
+				url: "insert_event_write_process.do",
 				data: formData,
+				contentType: false,
+				processData: false,
 				success: function(response){
 					alert("저장되었습니다.")
-					location.href = "list_notice.do"
+					location.href = "list_event.do"
 				},
 				error: function(error){
 					alert("실패했습니다.");
@@ -206,31 +224,14 @@
                         <td><a href="list_event.do">이벤트</a></td>
                     </tr>
                     <tr>
-                        <td><a href="list_inquiry.do">1:1문의하기</a></td>
+                        <td><a href="list_faq_inquiry.do">1:1문의하기</a></td>
                     </tr>
                 </table>
             </div>
     		<div id="div_section">
-			        <p>1:1문의</p>
+			        <p>이벤트</p>
+			        
 			        <table>
-			          <tr>
-			            <td>말머리</td>
-			            <td>
-			              <select id="category" name="category" required>
-			                <option value="1">문의내용</option>
-			                <option value="2">회원정보</option>
-			                <option value="3">주문/결제/배송</option>
-			                <option value="4">취소/환불</option>
-			              </select>
-			            </td>
-			          </tr>
-			          <tr>
-			            <td>작성자</td>
-			            <td>
-			              <input type="text" id="m_id" name="m_id" required value="${member.m_name}">
-			              <input type="hidden" id="m_idx" name="m_idx" value="1">
-			            </td>
-			          </tr>
 			          <tr>
 			            <td>제목</td>
 			            <td>
@@ -238,9 +239,25 @@
 			            </td>
 			          </tr>
 			          <tr>
+			            <td>기간</td>
+			            <td>
+			              <input type="text" id="period" name="period">
+			            </td>
+			          </tr>
+			          <tr>
 			            <td>본문</td>
 			            <td>
 			              <textarea id="content" name="content" required></textarea>
+			            </td>
+			          </tr>
+			          <tr>
+			            <td>첨부 파일</td>
+			            <td>
+			                <div id="div_filebox">
+			                    <input id="upload_name" name="originFile" value="파일명" disabled> 
+			                    <label for="attachedFile">파일찾기</label> 
+			                    <input type="file" id="attachedFile" name="attachedFile" style="display: none;"> 
+			                  </div>
 			            </td>
 			          </tr>
 			          
