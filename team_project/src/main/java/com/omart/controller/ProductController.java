@@ -30,6 +30,7 @@ public class ProductController {
 		
 		return "product/product_list";
 	}	
+
 	
 	//상품페이지 -> 로그아웃
 //	@GetMapping("/logout.do")

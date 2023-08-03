@@ -22,10 +22,4 @@ public class CartListService implements CartService {
 		return dao.CartList(m_idx);
 	}
 	
-	//해당 회원의 장바구니 상품의 상세 정보 가져오기
-	public List<ProductVo> CartList_pInfo(List<CartVo> CartList) {
-		
-		return dao.CartList_pInfo(CartList);
-	}
-	
 }
