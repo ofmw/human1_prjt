@@ -423,53 +423,48 @@
                     var p_id = $(this).closest("tr").find(".p_id").val();
                     let orderPrice = parseInt($("#ordered-price").text().replace(/[^0-9]/g, ""));
                     
-                    //각 상품의 가격 (판매가 * 수량)
-                	$(".calprice").each(function() {
-                		
-                		//주문금액
-                		let totalPrice = 0;
-                		
-                		
-                		//선택된 행의 각 상품의 가격 (판매가 * 수량)
-                        var calPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
-                        totalPrice += calPriceValue;
+                    let totalPrice = 0;
+                    
+                    let calPrice = $(this).closest("tr").find(".calprice").text().replace(/[^0-9]/g, "");
+                    alert(calPrice);
+                	let targetCalPrice = parseInt(calPrice);
+                    
+                    
+                    let targetPrice = parseInt(paymentPrice.text().replace(/[^0-9]/g, ""));
+                    let newTotalPrice = targetPrice - targetCalPrice;
+                    
+                    
+                    if(newTotalPrice != 0){ //새 결제예정금액이 0원이 아니라면 (장바구니에 품목이 1개 이상)
+                    	alert("1");
+                        if(newTotalPrice > 25000){ //25000원보다 클 시
+                        	alert("2\n현재 선택된 상품금액: "+calPriceValue);
+                        	$("#shipping-fee").text("+0 원") //배송비 0원
+                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice);
+                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
+                            
+                        }else{ //25000원보닥 작을 시
+                        	alert("3");
+                            $("#shipping-fee").text(shipping_fee+" 원") //배송비 3000원
+                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice+3000);
+                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
+                        }
                         
-                        //기존 결제예정금액
-                        let targetPrice = parseInt(paymentPrice.text().replace(/[^0-9]/g, ""));
-                        //새 결제예정금액 (기존 - 주문금액)
-                        let newTotalPrice = targetPrice - totalPrice;
-                        
-                        if(newTotalPrice != 0){ //새 결제예정금액이 0원이 아니라면 (장바구니에 품목이 1개 이상)
-                        	alert("1");
-	                        if(newTotalPrice > 25000){ //25000원보다 클 시
-	                        	alert("2\n현재 선택된 상품금액: "+calPriceValue);
-	                        	$("#shipping-fee").text("+0 원") //배송비 0원
-	                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice);
-	                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
-	                            
-	                        }else{ //25000원보닥 작을 시
-	                        	alert("3");
-	                            $("#shipping-fee").text(shipping_fee+" 원") //배송비 3000원
-	                        	var formattedPrice = new Intl.NumberFormat("ko-KR").format(newTotalPrice+3000);
-	                            $("#payment-price").text(formattedPrice); //새 결제예정금액 적용
-	                        }
-	                        
-						}else{ //새 결제예정금액이 0원이라면 (장바구니에 품목 없음)
-							alert("4");
-			            	$("#shipping-fee").text("+0 원");
-			            	$("#ordered-price").text("0 원");
-			            	$("#payment-price").text("0");
-			            }
-                        
-                        let newOrderPrice = orderPrice - totalPrice;
-                        
-                        // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
-                        var formattedPrice = new Intl.NumberFormat("ko-KR").format(newOrderPrice);
-                        $("#ordered-price").text(formattedPrice + " 원");
-                        
-                        
-                        
-                    });
+					}else{ //새 결제예정금액이 0원이라면 (장바구니에 품목 없음)
+						alert("4");
+		            	$("#shipping-fee").text("+0 원");
+		            	$("#ordered-price").text("0 원");
+		            	$("#payment-price").text("0");
+		            }
+                    
+                    let newOrderPrice = orderPrice - totalPrice;
+                    
+                    // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
+                    var formattedPrice = new Intl.NumberFormat("ko-KR").format(targetCalPrice);
+                    $("#ordered-price").text(formattedPrice + " 원");
+                    
+                    
+                    
+                    
 
                     // 배열에 m_idx와 p_id 추가
                     var mIdxArray = [];
