@@ -24,8 +24,6 @@
         SELECT *
         FROM member_omart
         WHERE m_id=#{m_id}
-
-
     </select>
     
     <!-- 회원정보 수정구문 -->

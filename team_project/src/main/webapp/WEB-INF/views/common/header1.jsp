@@ -74,7 +74,7 @@
 	                        		<a href="mypage/mypage.do">ㅁ</a>
 	                        	</c:otherwise>
 	                        </c:choose>
-	                        <a href="">ㅇ</a>
+	                        <a href="cart/cart.do">카</a>
 	                        <a href="">ㅇ</a>
 	                    </div>
 					</div>
