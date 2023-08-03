@@ -155,17 +155,17 @@
  $(function(){
 	$("#smt_save").click(function(){
 		let category = $("#category").val();
-		let m_name = $("#m_name").val();
+		let m_id = $("#m_id").val();
 		let title = $("#title").val();
 		let content = $("#content").val();
 		let m_idx = $("#m_idx").val();
 	
-		if(category == "" || m_name == "" || title == "" || content == ""){
+		if(category == "" || m_id == "" || title == "" || content == ""){
 			alert("모든 항목을 입력해주세요")
 		}else{
 			let formData = {
 				category: parseInt(category),
-				m_name: m_name,
+				m_id: m_id,
 				title: title,
 				content: content,
 				m_idx: parseInt(m_idx)
@@ -173,11 +173,11 @@
 			
 			$.ajax({
 				type: "post",
-				url: "insert_inquiry_process.do",
+				url: "insert_faq_write_process.do",
 				data: formData,
 				success: function(response){
 					alert("저장되었습니다.")
-					location.href = "list_notice.do"
+					location.href = "list_faq_member.do"
 				},
 				error: function(error){
 					alert("실패했습니다.");
@@ -211,23 +211,24 @@
                 </table>
             </div>
     		<div id="div_section">
-			        <p>1:1문의</p>
+			        <p>자주 찾는 질문</p>
 			        <table>
 			          <tr>
 			            <td>말머리</td>
 			            <td>
 			              <select id="category" name="category" required>
-			                <option value="1">문의내용</option>
-			                <option value="2">회원정보</option>
-			                <option value="3">주문/결제/배송</option>
-			                <option value="4">취소/환불</option>
+			                <option value="1">회원</option>
+			                <option value="2">주문/결제/배송</option>
+			                <option value="3">취소/환불</option>
+			                <option value="4">반품/교환</option>
+			                <option value="5">기타</option>
 			              </select>
 			            </td>
 			          </tr>
 			          <tr>
 			            <td>작성자</td>
 			            <td>
-			              <input type="text" id="m_id" name="m_id" required value="${member.m_name}">
+			              <input type="text" id="m_id" name="m_id" required value="${member.m_id}">
 			              <input type="hidden" id="m_idx" name="m_idx" value="1">
 			            </td>
 			          </tr>
