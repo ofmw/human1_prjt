@@ -16,6 +16,10 @@
         padding: 0;
         font-family: 'Noto Sans KR', sans-serif;
     }
+    html{
+    
+    	width: 1280px;
+    }
     /*전체 영역*/
     #div_notice {
     	height: auto;
@@ -100,7 +104,7 @@
 	    padding-top: 10px;
 	    border-top: 3px solid black;
 	    font-size: 23px;
-	    min-width: 1260px;
+	    min-width: 1270px;
 	    height: 80px;
     }
     #div_footer span{

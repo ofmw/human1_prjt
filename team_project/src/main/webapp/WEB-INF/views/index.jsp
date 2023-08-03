@@ -367,7 +367,7 @@
                     <div class="p_elements">
                         <div class="p_title">베스트 상품</div>
                         <div class="p_inner_elements">                        
-                        	<c:forEach begin="0" end="${bestList.length}" var="i">
+                        	<c:forEach begin="0" end="3" var="i">
                         		<!-- 판매중인 제품 판별 -->
                         		<c:if test="${bestList[i].post_state == 1}">                        			
 			                            <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->

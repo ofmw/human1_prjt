@@ -29,5 +29,4 @@ private BoardFileDao dao;
 	public List<BoardFileVo> getAllEvents(){
 		return dao.getAllEvents();
 	}
-	
 }
