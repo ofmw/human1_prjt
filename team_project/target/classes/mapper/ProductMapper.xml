@@ -28,6 +28,7 @@
     </select>
     
     <select id="bestList" resultType="productVo">
+
         select * from product where post_state = 1 order by total_sales desc
     </select>
     

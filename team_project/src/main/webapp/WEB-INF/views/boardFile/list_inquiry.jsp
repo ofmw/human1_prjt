@@ -120,7 +120,7 @@
 	    padding-top: 10px;
 	    border-top: 3px solid black;
 	    font-size: 23px;
-	    min-width: 1280px;
+	    min-width: 1270px;
 	    height: 80px;
     }
     #div_footer span{

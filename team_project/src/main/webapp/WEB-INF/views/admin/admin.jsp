@@ -255,6 +255,16 @@
                  </div>                    
              </li>
 	         </c:if>
+	         <c:if test="${member.grade eq 9 or member.grade eq 8}">
+	           <li>
+                 <div>
+                     <a href="${pageContext.request.contextPath}/admin/inquiry.do">
+                         <img src="" alt="">
+                         <p>문의</p>
+                     </a>
+                 </div>                    
+             </li>
+	         </c:if>
 	         
 	         <!-- <li>
 	             <div>
@@ -264,14 +274,6 @@
                      </a>
 	             </div>                    
 	         </li> -->
-	         <li>
-	             <div>
-	                 <a href="">
-                         <img src="" alt="">
-                         <p>문의</p>
-                     </a>
-	             </div>                    
-	         </li>
 	     </ul>
 	    </div>
 	    <div id="div_admin_section">
@@ -284,6 +286,9 @@
                </c:when>
                <c:when test="${status == 'authority'}">
                    <jsp:include page="authority.jsp"></jsp:include>
+               </c:when>
+               <c:when test="${status == 'inquiry'}">
+                   <jsp:include page="inquiry.jsp"></jsp:include>
                </c:when>
 	       </c:choose>	        
 	    </div>      
