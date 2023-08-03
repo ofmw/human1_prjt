@@ -55,7 +55,7 @@ public class AjaxMemberController {
 			System.out.println("회원등급: " + grade);
 			session.setAttribute("member", vo);
 			
-			if(vo.getGrade() == 9) {
+			if(vo.getGrade() == 9 || vo.getGrade() == 8 || vo.getGrade() == 7) {
 				session.setMaxInactiveInterval(60 * 60);
 				long startTime = System.currentTimeMillis();
 				session.setAttribute("startTime", startTime);

@@ -22,4 +22,8 @@ public class ProductDao{
 		return sqlSession.selectList(MAPPER+".productList");
 	}
 	
+	public List<ProductVo> bestList(){
+		return sqlSession.selectList(MAPPER+".bestList");
+	}
+	
 }

@@ -6,12 +6,12 @@
 <head>
     <title>비로그인 헤더</title>
 
-<link href="resources/css/header.css" rel="stylesheet">
+<link href="resources/css/header.css?v=1234" rel="stylesheet">
 <link href="resources/css/login.css" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="resources/js/login.js"></script>
-<script src="resources/js/header.js"></script>
+<script src="resources/js/header.js?v=1234"></script>
 
 </head>
 <body>
@@ -44,7 +44,7 @@
 								</c:when>
 								<c:otherwise>
 								     <c:choose>
-								         <c:when test="${member.grade eq 9}">
+								         <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
 								             <a href="admin/member.do">${member.m_name}님</a>
 								         </c:when>
 								         <c:otherwise>
@@ -92,7 +92,13 @@
 	                        전체 카테고리
 	                    </div>
 	                    <div id="div_category">
-	                        전체 카테고리
+	                        <a href="">전체 카테고리</a>
+	                        <ul>
+	                        	<li><a href="">육류</a></li>
+	                        	<li><a href="">가공</a></li>
+	                        	<li><a href="">수산</a></li>
+	                        	<li><a href="">야채</a></li>
+	                        </ul>	                        
 	                    </div>
 	                </div>
 	                

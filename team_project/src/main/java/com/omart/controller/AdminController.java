@@ -28,12 +28,10 @@ public class AdminController {
 	public String member(Model model) {
 		model.addAttribute("status", "member");
 		
-		List<MemberVo> memberList = mList.MemberList();
+		List<MemberVo> memberList = mList.memberList();
 		
 		model.addAttribute("memberList", memberList);
-		
-		System.out.println(memberList.get(0).getPlatform());
-		
+				
 		return "admin/admin";
 	}	
 	@GetMapping("/product.do")
@@ -42,6 +40,16 @@ public class AdminController {
 		
 		List<ProductVo> productList = pdList.ProductList();
 		model.addAttribute("productList", productList);
+		return "admin/admin";
+	}		
+	@GetMapping("/authority.do")
+	public String authority(Model model) {
+		model.addAttribute("status", "authority");
+		
+		List<MemberVo> memberList = mList.adminList();
+		
+		model.addAttribute("memberList", memberList);
+				
 		return "admin/admin";
 	}		
 		

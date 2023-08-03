@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.omart.service.admin.AdminService;
 import com.omart.service.boardfile.BoardFileService;
+import com.omart.service.member.MemberService;
 import com.omart.service.product.ProductService;
 import com.omart.vo.BoardFileVo;
+import com.omart.vo.MemberVo;
 import com.omart.vo.ProductVo;
 
 import lombok.Setter;
@@ -26,11 +28,13 @@ import lombok.Setter;
 @RestController
 public class AjaxController {
 	@Setter(onMethod_={ @Autowired })
-	private AdminService cgCount, pdInsert, pdEdit, pdChange, pdDelete;
+	private AdminService cgCount, pdInsert, pdEdit, pdChange, pdDelete, acCreate, acCheck;
 	@Setter(onMethod_= {@Autowired})
-	private ProductService pdList;
+	private ProductService pdList;	
 	@Setter(onMethod_={ @Autowired })
-	BoardFileService bfInsert, bfNotice;
+	private BoardFileService bfInsert, bfNotice;
+	@Setter(onMethod_= {@Autowired})
+	private MemberService mLogin;
 	
 	@GetMapping("/admin/countCategory.do")
 	@ResponseBody
@@ -40,16 +44,12 @@ public class AjaxController {
 	}
 	
 	@PostMapping("/admin/insertProduct.do")
-	public void insertProduct(ProductVo productVo) {
-		System.out.println("인서트프로덕트");
-		
+	public void insertProduct(ProductVo productVo) {		
 		pdInsert.insertProduct(productVo);
 	}
 	
 	@PostMapping("/admin/editProduct.do")
-	public void editProduct(ProductVo productVo) {
-		System.out.println("에딧프로덕트");
-		
+	public void editProduct(ProductVo productVo) {		
 		pdEdit.editProduct(productVo);
 	}
 	
@@ -125,4 +125,28 @@ public class AjaxController {
 //		return viewPage;
 	}
 	
+	@PostMapping("/admin/createAccount.do")
+	public void createAccount(MemberVo memberVo) {
+		System.out.println("controller에 넘어온 m_id: " + memberVo.getM_id());
+		
+		acCreate.createAccount(memberVo);
+	}
+	
+	@PostMapping("/admin/checkAccount.do")
+	public int checkAccount(String m_id) {
+		
+		return acCheck.checkAccount(m_id);
+	}
+	
+	@PostMapping("/admin/getAccount.do")
+	public int getAccount(String m_id) {
+		
+		return acCheck.getAccount(m_id);
+	}
+	
+	@PostMapping("/admin/checkPassword.do")
+	public MemberVo checkPassword(@RequestParam("m_id") String m_id, @RequestParam("m_pw") String m_pw) {
+		System.out.println("체크패스워드.두 진입확인");
+		return mLogin.login(m_id, m_pw);
+	}
 }

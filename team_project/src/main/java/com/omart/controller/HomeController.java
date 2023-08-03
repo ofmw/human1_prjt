@@ -32,8 +32,8 @@ public class HomeController {
 	@GetMapping("/")
 	public String home(Model model) {
 		
-		List<ProductVo> productList = pdList.ProductList();
-		model.addAttribute("productList", productList);
+		List<ProductVo> bestList = pdList.bestList();
+		model.addAttribute("bestList", bestList);
 		
 		return "index";/* 뷰의 이름 */
 	}

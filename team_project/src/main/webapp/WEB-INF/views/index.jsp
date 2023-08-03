@@ -366,33 +366,23 @@
                 <div class="p_best">
                     <div class="p_elements">
                         <div class="p_title">베스트 상품</div>
-                        <div class="p_inner_elements">
-                        
-                        	<!-- 판매중인 상품만 표시하는 변수 -->
-                        	<c:set var="divCount" value="0" />
-                        	<c:forEach items="${productList}" var="product">
+                        <div class="p_inner_elements">                        
+                        	<c:forEach begin="0" end="${bestList.length}" var="i">
                         		<!-- 판매중인 제품 판별 -->
-                        		<c:if test="${product.post_state == 1}">
-                        			<!-- 판매중인 상품을 최대 4개까지만 표시하는 조건 -->
-                        			<c:if test="${divCount <= 3}">
-                        		
+                        		<c:if test="${bestList[i].post_state == 1}">                        			
 			                            <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
 			                                <div class="p_img"><img src="#" alt="#"></div>
 			                                <div class="p_info">
-			                                    <div class="p_info_brand">${product.brand}</div>
-			                                    <div class="p_info_name">${product.p_name} ${product.standard}${product.unit}</div>
+			                                    <div class="p_info_brand">${bestList[i].brand}</div>
+			                                    <div class="p_info_name">${bestList[i].p_name} ${bestList[i].standard}${bestList[i].unit}</div>
 			                                    <div class="p_info_price">
-			                                    	<fmt:formatNumber value="${product.price}" pattern="#,###" />원
+			                                    	<fmt:formatNumber value="${bestList[i].price}" pattern="#,###" />원
 			                                    </div>
 			                                    <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
 			                                </div>
 			                            </a>
-									</c:if>
-									<!-- 상품 하나 출력 후 현재 표시갯수 +1 (최대 3) -->
-									<c:set var="divCount" value="${divCount + 1}" />
 	                            </c:if>
-                            </c:forEach>
-                            
+                            </c:forEach>                            
                         </div>
                         
                     </div>

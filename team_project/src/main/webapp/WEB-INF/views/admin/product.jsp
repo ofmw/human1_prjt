@@ -368,7 +368,6 @@
 
 		function applyFilter(selectedCategories, selectedBrands, selectedPostStates, selectedStocks) {
 	        $("#tbl_contents tr:not(:first-child)").each(function () {
-	        	console.log("selectedStocks:"+selectedStocks);
 	            let productId = $(this).find("td:nth-child(3)").text();
 	            let brandName = $(this).find("td:nth-child(5)").text();
 	            let postState = $(this).find("td:nth-child(12)").text();
@@ -511,6 +510,12 @@
         	
             $("#tbl_contents tr:visible input[type='checkbox']").prop("checked", this.checked);
             
+        });
+        
+        $("#tbl_contents tr:visible").on("click", "input[type='checkbox']", function() {
+            let allCheckboxes = $("#tbl_contents tr:visible input[type='checkbox']").not("#checkAll");
+            let isChecked = allCheckboxes.filter(":checked").length === allCheckboxes.length;
+            $("#checkAll").prop("checked", isChecked);
         });
         
         let btnStateTrue = document.getElementById("btn_postState_true");

@@ -5,7 +5,7 @@ $(function() {
 		$("#div_category").css("display", "block");
 	});
 
-	$("#div_category").on("mouseout", function() {
+	$("#div_category").on("mouseleave", function() {
 		$(this).css("display", "none");
 	});
 	

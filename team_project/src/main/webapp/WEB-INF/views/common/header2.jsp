@@ -6,12 +6,12 @@
 <head>
     <title>비로그인 헤더</title>
 
-<link href="../resources/css/header.css" rel="stylesheet">
+<link href="../resources/css/header.css?v=1234" rel="stylesheet">
 <link href="../resources/css/login.css" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="../resources/js/login.js"></script>
-<script src="../resources/js/header.js"></script>
+<script src="../resources/js/header.js?v=1234"></script>
 
 </head>
 <body>
@@ -78,8 +78,14 @@
                         전체 카테고리
                     </div>
                     <div id="div_category">
-                        전체 카테고리
-                    </div>
+                            <a href="">전체 카테고리</a>
+                            <ul>
+                                <li><a href="">육류</a></li>
+                                <li><a href="">가공</a></li>
+                                <li><a href="">수산</a></li>
+                                <li><a href="">야채</a></li>
+                            </ul>                           
+                        </div>
                 </div>
                 
                 <!-- 메뉴모음 -->

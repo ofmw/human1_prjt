@@ -225,30 +225,37 @@
 	    </div>
 	    <div id="div_admin_sideBar">
 	        <ul>
-	         <li>
-	             <div>
-	                 <a href="">
-		                 <img src="" alt="">
-		                 <p>권한</p>
-	                 </a>
-	             </div>                    
-	         </li>
-	         <li>
-	             <div>
-	                 <a href="${pageContext.request.contextPath}/admin/member.do">
+	        <c:if test="${member.grade eq 9}">
+	           <li>
+                 <div>
+                     <a href="${pageContext.request.contextPath}/admin/authority.do">
+                         <img src="" alt="">
+                         <p>권한</p>
+                     </a>
+                 </div>                    
+             </li>
+	        </c:if>
+	        <c:if test="${member.grade eq 9 or member.grade eq 7}">
+	           <li>
+                 <div>
+                     <a href="${pageContext.request.contextPath}/admin/member.do">
                          <img src="" alt="">
                          <p>회원</p>
                      </a>
-	             </div>                    
-	         </li>
-	         <li>
-	             <div>
-	                 <a href="${pageContext.request.contextPath}/admin/product.do">
+                 </div>                    
+             </li>
+	        </c:if>	         
+	         <c:if test="${member.grade eq 9 or member.grade eq 8}">
+	           <li>
+                 <div>
+                     <a href="${pageContext.request.contextPath}/admin/product.do">
                          <img src="" alt="">
                          <p>판매</p>
                      </a>
-	             </div>                    
-	         </li>
+                 </div>                    
+             </li>
+	         </c:if>
+	         
 	         <!-- <li>
 	             <div>
 	                 <a href="">
@@ -274,6 +281,9 @@
 	           </c:when>
 	           <c:when test="${status == 'product'}">
                    <jsp:include page="product.jsp"></jsp:include>
+               </c:when>
+               <c:when test="${status == 'authority'}">
+                   <jsp:include page="authority.jsp"></jsp:include>
                </c:when>
 	       </c:choose>	        
 	    </div>      

@@ -49,4 +49,23 @@ public class AdminDao{
 		
 		return sqlSession.selectList(MAPPER+".memberList");
 	};
+	
+	public List<MemberVo> adminList(){
+		
+		return sqlSession.selectList(MAPPER+".adminList");
+	};
+	
+	public int createAccount(MemberVo memberVo) {
+		System.out.println("dao에 넘어온 m_id: " + memberVo.getM_id());
+		return sqlSession.insert(MAPPER+".createAccount", memberVo);
+	};
+	
+	public int checkAccount(String m_id) {
+		return sqlSession.selectOne(MAPPER+".checkAccount", m_id);
+	};
+	
+	public int getAccount(String m_id) {
+		return sqlSession.selectOne(MAPPER+".getAccount", m_id);
+	};	
+	
 }

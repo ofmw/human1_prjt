@@ -143,6 +143,9 @@
         height: 25px;
         border: 1px solid lightgray;
         border-radius: 0px;
+        font-size: 12px;
+        padding-left: 5px;      
+        color: black;  
     }
     #tbl_contents_info tr:nth-child(n+4):nth-child(-n+6) td:nth-child(3) input[type="text"]{
 	   width: 220px;
@@ -185,7 +188,28 @@ $(function(){
 	memberInfoBtns.forEach(function(btn){
 		btn.addEventListener("click", function(){
 			divShadowInfo.style.display = "block";
-		})
+			
+			// 클릭된 버튼의 id를 가져옵니다.
+            let memberId = $(this).attr("id");                    
+
+            // 해당 id를 가진 상품 행(tr)을 선택합니다.
+            let memberRow = $("#tbl_contents tr").filter(function() {
+                return $(this).find("td:nth-child(2)").text() === memberId;
+            });
+            
+            $("#name_info").val(memberRow.find("td:nth-child(4)").text().trim());
+            $("#m_id_info").val(memberId);
+            $("#selNum_info").val(memberRow.find("td:nth-child(7)").text().trim());
+            $("#grade_info").val(memberRow.find("td:nth-child(3)").text().trim());
+            $("#birth_info").val(memberRow.find("td:nth-child(5)").text().trim());                
+            $("#gender_info").val(memberRow.find("td:nth-child(6)").text().trim());
+            $("#j_date_info").val(memberRow.find("td:nth-child(9)").text().trim());
+            $("#e_date_info").val(memberRow.find("td:nth-child(10)").text().trim());
+            $("#platForm_info").val(memberRow.find("td:nth-child(13)").text().trim());
+            $("#a_date_info").val(memberRow.find("td:nth-child(11)").text().trim());
+            $("#a_state_info").val(memberRow.find("td:nth-child(12)").text().trim());
+            
+        });
 	});
 	
 	let cancelBtn = document.getElementById("btn_cancel");
@@ -195,8 +219,56 @@ $(function(){
 		frm_info.reset();
 	});
 	
+	$("#btn_reset").click(function(){
+        
+        $("input[type='checkbox']").prop("checked", false);
+        $("#tbl_contents tr").show();
+        
+    });
 	
+	let stateMap = {"1": "활성", "2": "휴면"};
+	let gradeMap = {"1": "브론즈", "2": "실버", "3": "골드"};
+	let genderMap = {"1": "남자", "2": "여자"};
+    
+    $("#btn_filter").click(function () {
+        let selectedStates = [];
+        let selectedGrades = [];
+        let selectedGenders = [];
+
+        $(".checkbox_state:checked").each(function () {
+            let stateId = $(this).attr("id").replace("checkbox1_", "");
+            selectedStates.push(stateMap[stateId]);
+        });
+
+        $(".checkbox_grade:checked").each(function () {
+            let gradeId = $(this).attr("id").replace("checkbox2_", "");
+            selectedGrades.push(gradeMap[gradeId]);
+        });
+        
+        $(".checkbox_gender:checked").each(function () {
+            let genderId = $(this).attr("id").replace("checkbox3_", "");
+            selectedGenders.push(genderMap[genderId]);
+        });
+        
+        applyFilter(selectedStates, selectedGrades, selectedGenders);
+    });
 	
+    function applyFilter(selectedStates, selectedGrades, selectedGenders) {
+        $("#tbl_contents tr:not(:first-child)").each(function () {
+            let state = $(this).find("td:nth-child(12)").text();
+            let grade = $(this).find("td:nth-child(3)").text();
+            let gender = $(this).find("td:nth-child(6)").text();
+            let showState = selectedStates.length === 0 || selectedStates.includes(state.trim());
+            let showGrade = selectedGrades.length === 0 || selectedGrades.includes(grade.trim());
+            let showGender = selectedGenders.length === 0 || selectedGenders.includes(gender.trim());
+            if (showState && showGrade && showGender) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+    
 });
 </script>
 </head>
@@ -209,8 +281,8 @@ $(function(){
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox1_1"><label for="checkbox1_1">활성</label><br>
-                    <input type="checkbox" id="checkbox1_2"><label for="checkbox1_2">휴면</label><br>
+                    <input type="checkbox" id="checkbox1_1" class="checkbox_state"><label for="checkbox1_1">활성</label><br>
+                    <input type="checkbox" id="checkbox1_2" class="checkbox_state"><label for="checkbox1_2">휴면</label><br>
                 </td>
             </tr>
             <tr>
@@ -218,9 +290,9 @@ $(function(){
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox2_1"><label for="checkbox2_1">브론즈</label><br>
-                    <input type="checkbox" id="checkbox2_2"><label for="checkbox2_2">실버</label><br>
-                    <input type="checkbox" id="checkbox2_3"><label for="checkbox2_3">골드</label><br>
+                    <input type="checkbox" id="checkbox2_1" class="checkbox_grade"><label for="checkbox2_1">브론즈</label><br>
+                    <input type="checkbox" id="checkbox2_2" class="checkbox_grade"><label for="checkbox2_2">실버</label><br>
+                    <input type="checkbox" id="checkbox2_3" class="checkbox_grade"><label for="checkbox2_3">골드</label><br>
                 </td>
             </tr>
             <tr>
@@ -228,8 +300,8 @@ $(function(){
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox3_1"><label for="checkbox3_1">남자</label><br>
-                    <input type="checkbox" id="checkbox3_2"><label for="checkbox3_2">여자</label><br>
+                    <input type="checkbox" id="checkbox3_1" class="checkbox_gender"><label for="checkbox3_1">남자</label><br>
+                    <input type="checkbox" id="checkbox3_2" class="checkbox_gender"><label for="checkbox3_2">여자</label><br>
                 </td>
             </tr>
             <tr>
@@ -317,54 +389,54 @@ $(function(){
 		       <table id="tbl_contents_info">
 		           <tr>
 			           <th>이름</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="name_info" disabled/></td>
 			           <th>아이디</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="m_id_info" disabled/></td>
 		           </tr>
 		           <tr>
 			           <th>전화번호</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="selNum_info" disabled/></td>
 			           <th>등급</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="grade_info" disabled/></td>
 		           </tr>
 		           <tr>
 			           <th>생년월일</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="birth_info" disabled/></td>
 			           <th>성별</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="gender_info" disabled/></td>
 		           </tr>
 		           <tr>
 			           <th>주소지1</th>
-			           <td><input type="text" /></td>	           	
-			           <td colspan="2"><input type="text"/></td>
+			           <td><input type="text" disabled/></td>	           	
+			           <td colspan="2"><input type="text" disabled/></td>
 		           </tr>
 		           <tr>
 			           <th>주소지2</th>
-			           <td><input type="text" /></td>
-			           <td colspan="2"><input type="text" /></td>
+			           <td><input type="text" disabled/></td>
+			           <td colspan="2"><input type="text" disabled/></td>
 		           </tr>
 		           <tr>
 			           <th>주소지3</th>
-			           <td><input type="text" /></td>
-			           <td colspan="2"><input type="text" /></td>
+			           <td><input type="text" disabled/></td>
+			           <td colspan="2"><input type="text" disabled/></td>
 		           </tr>
 		           <tr>
 			           <th>가입일</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="j_date_info" disabled/></td>
 			           <th>수정일</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="e_date_info" disabled/></td>
 		           </tr>
 		           <tr>
 			           <th>최근접속일</th>
 			           <td><input type="text" /></td>
 			           <th>플랫폼</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="platForm_info" disabled/></td>
 		           </tr>
 		           <tr>
 			           <th>전환일</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="a_date_info" disabled/></td>
 			           <th>활성여부</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="a_state_info" disabled/></td>
 		           </tr>
 		           <tr>                
 		               <td colspan="2"></td>

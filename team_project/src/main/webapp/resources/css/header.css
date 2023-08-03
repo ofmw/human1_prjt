@@ -117,7 +117,7 @@
 	#div_category {
 	    position: relative;
 	    background-color: rgb(10, 155, 90);
-	    height: 400px;
+	    height: 200px;
 	    width: 204px;
 	    border-radius: 10px;
 	    line-height: 38px;
@@ -128,6 +128,11 @@
 	    user-select: none;
 	    display: none;
 	    z-index: 4000;
+	}
+	#div_category a{
+	    font-weight: bold;
+        color: white;
+        font-size: 14px;
 	}
 	/* 카테고리 */
 	#div_category_block {
