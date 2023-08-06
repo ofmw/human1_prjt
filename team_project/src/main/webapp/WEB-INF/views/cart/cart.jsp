@@ -431,18 +431,8 @@
                 // 선택된 체크박스들이 속한 행을 모두 삭제합니다.
                 checkedProducts.each(function() {
                     var m_idx = parseInt($(this).closest("tr").find(".m_idx").val());
-                    var p_id = $(this).closest("tr").find(".p_id").val();
+                    var p_id = $(this).closest("tr").find(".p_id").val();                    
                     
-                    if(calprices !== null){
-                    	//각 상품의 가격 (판매가 * 수량)
-                        calprices.each(function() {
-                            //선택된 행의 각 상품의 가격 (판매가 * 수량)
-                            var calPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
-                            totalPrice += calPriceValue;
-                         
-                        });
-                    }
-
                     // 해당 버튼이 속한 tr 요소를 삭제합니다.
                     $(this).closest("tr").remove();
 
@@ -469,9 +459,7 @@
             } else {
                 alert("삭제할 품목을 선택해주세요.");
             }
-            
-            newOrderPrice = orderPrice - totalPrice;
-            
+                        
 /*             // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
             var formattedPrice = new Intl.NumberFormat("ko-KR").format(newOrderPrice);
             $("#ordered-price").text(formattedPrice + " 원"); */
