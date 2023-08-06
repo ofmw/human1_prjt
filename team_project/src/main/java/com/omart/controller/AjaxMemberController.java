@@ -4,7 +4,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,8 +52,17 @@ public class AjaxMemberController {
 			System.out.println("가입일: " +vo.getJ_date());
 			System.out.println("활성여부: " +vo.getA_state());
 //				System.out.println("플랫폼: " +vo.getPlatform());
-			System.out.println("회원등급: " +grade);
+			System.out.println("회원등급: " + grade);
 			session.setAttribute("member", vo);
+			
+			if(vo.getGrade() == 9 || vo.getGrade() == 8 || vo.getGrade() == 7) {
+				session.setMaxInactiveInterval(60 * 60);
+				long startTime = System.currentTimeMillis();
+				session.setAttribute("startTime", startTime);
+			}else {
+				session.setMaxInactiveInterval(-1);
+			}
+			
             return "success";
         } else {
         	System.out.println("로그인 결과 : 실패(해당 계정 정보 없음)");

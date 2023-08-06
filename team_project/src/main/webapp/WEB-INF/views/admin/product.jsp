@@ -81,6 +81,9 @@
         width: 25px;
         padding: 0;
     }
+    #div_right tr td:nth-child(n + 8):nth-child(-n + 11){
+        width: 35px;
+    }
     #div_right button, #div_right img{
         width: 15px;
         height: 15px;
@@ -209,7 +212,7 @@
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
-	$(function(){
+	$(function(){		
 		
 		let categoryMap = {"1": "AA", "2": "BB", "3": "CC", "4": "DD"};
 		let brandMap = {"1": "농협", "2": "목우촌", "3": "하림", "4": "수협"};
@@ -252,14 +255,31 @@
             
         });
         
-        //상품코드 생성 로직
-        function generateProductCode(categoryCode, count){          
-            
-            let codeNumber = count.toString().padStart(4, "0");
-            
-            let generatedCode = categoryCode + codeNumber;
-            return generatedCode;
-        }
+        // 상품코드 생성 로직
+		function generateProductCode(categoryCode) {
+		    // 카테고리 내 모든 제품 코드를 가져옵니다.
+		    let productCodesInCategory = [];
+		    $("#tbl_contents tr:not(:first-child)").each(function () {
+		        let productId = $(this).find("td:nth-child(3)").text();
+		        if (productId.substring(0, 2) === categoryCode) {
+		            productCodesInCategory.push(productId);
+		        }
+		    });
+		
+		    // 카테고리 내 제품 코드들의 숫자 부분 중 최대값을 찾습니다.
+		    let maxCodeNumber = 0;
+		    productCodesInCategory.forEach(function (productCode) {
+		        let codeNumber = parseInt(productCode.substring(2));
+		        if (!isNaN(codeNumber) && codeNumber > maxCodeNumber) {
+		            maxCodeNumber = codeNumber;
+		        }
+		    });
+		
+		    // 다음 제품 코드를 최대값에 1을 더해 생성합니다.
+		    let nextCodeNumber = (maxCodeNumber + 1).toString().padStart(4, "0");
+		    let generatedCode = categoryCode + nextCodeNumber;
+		    return generatedCode;
+		}
         
 		$("#btn_add").click(function(){			
 			
@@ -268,7 +288,6 @@
 			brand = $("#brand").val();
 			price = $("#price").val();
 			cost = $("#cost").val();
-			category = $("#category").val();
 			standard = $("#standard").val();
 		    unit = $("#unit").val();
 		    stock = $("#stock").val();
@@ -286,7 +305,6 @@
 			            brand: brand,
 			            price: parseInt(price),
 			            cost: parseInt(cost),
-			            category: category,
 			            standard: parseInt(standard),
 			            unit: unit,
 			            stock: parseInt(stock),
@@ -350,7 +368,6 @@
 
 		function applyFilter(selectedCategories, selectedBrands, selectedPostStates, selectedStocks) {
 	        $("#tbl_contents tr:not(:first-child)").each(function () {
-	        	console.log("selectedStocks:"+selectedStocks);
 	            let productId = $(this).find("td:nth-child(3)").text();
 	            let brandName = $(this).find("td:nth-child(5)").text();
 	            let postState = $(this).find("td:nth-child(12)").text();
@@ -436,8 +453,183 @@
                 $("#option2_edit").prop("checked", true);
             }
         }
+        
+        let editApply = document.getElementById("btn_edit");
+        
+        
+        
+        editApply.addEventListener("click", function(){
+        	
+        	p_id = $("#p_id_edit").val();
+            p_name = $("#p_name_edit").val();
+            brand = $("#brand_edit").val();
+            price = $("#price_edit").val();
+            cost = $("#cost_edit").val();
+            standard = $("#standard_edit").val();
+            unit = $("#unit_edit").val();
+            stock = $("#stock_edit").val();
+            discount = $("#discount_edit").val();
+            post_state = $("input[name='option_edit']:checked").val() || 0;
+        	
+            if(p_name == "" || brand == "" || price == "" || cost == "" || standard == "" || unit == "" ){
+                alert("모든 항목을 입력해주세요.");
+            }else{
+                let formData = {
+                        p_id: p_id,
+                        p_name: p_name,
+                        brand: brand,
+                        price: parseInt(price),
+                        cost: parseInt(cost),
+                        standard: parseInt(standard),
+                        unit: unit,
+                        stock: parseInt(stock),
+                        discount: parseInt(discount),
+                        post_state: post_state,
+                };
+                
+                $.ajax({
+                    
+                    type: "post",
+                    url: "editProduct.do",
+                    data: formData,
+                    success: function(response){
+                        alert("상품이 성공적으로 수정되었습니다.")
+                        location.reload();
+                    },
+                    error: function(error){
+                        console.error("AJAX 오류 발생", error);
+                        alert("상품 수정 중 오류가 발생했습니다.");
+                    }                   
+                }); //end of ajax
+                
+            }
+            
+        });
+        
+        $("#checkAll").click(function(){
+        	
+            $("#tbl_contents tr:visible input[type='checkbox']").prop("checked", this.checked);
+            
+        });
+        
+        $("#tbl_contents tr:visible").on("click", "input[type='checkbox']", function() {
+            let allCheckboxes = $("#tbl_contents tr:visible input[type='checkbox']").not("#checkAll");
+            let isChecked = allCheckboxes.filter(":checked").length === allCheckboxes.length;
+            $("#checkAll").prop("checked", isChecked);
+        });
+        
+        let btnStateTrue = document.getElementById("btn_postState_true");
+        let btnStateFalse = document.getElementById("btn_postState_false");
+        let btnDelProduct = document.getElementById("btn_deleteProduct");
+        let checkedProducts = [];
+        
+        btnStateTrue.addEventListener("click", function(){
+        	
+            checkedProducts = [];
+            
+            $("#tbl_contents tr").each(function(){
+            	
+            	let checkbox = $(this).find("input[type='checkbox']");
+            	
+            	if(checkbox.is(":checked")){
+            		let productId = $(this).find("td:nth-child(3)").text();
+            		checkedProducts.push(productId);
+            	}            	
+            	
+            });
+            
+            if (checkedProducts.length > 0) {
+                $.ajax({
+                    type: "post",
+                    url: "productStateTrue.do",
+                    data: { checkedProducts: checkedProducts },
+                    success: function (response) {
+                        alert("게시 상태가 성공적으로 변경되었습니다.");
+                        location.reload();
+                    },
+                    error: function (error) {
+                        console.error("AJAX 오류 발생", error);
+                        alert("게시 상태 변경 중 오류가 발생했습니다.");
+                    }
+                }); //end of ajax
+            } else {
+                alert("선택된 상품이 없습니다.");
+            }
+        	
+        });
+        
+        btnStateFalse.addEventListener("click", function(){
+            
+            checkedProducts = [];
+            
+            $("#tbl_contents tr").each(function(){
+                
+                let checkbox = $(this).find("input[type='checkbox']");
+                
+                if(checkbox.is(":checked")){
+                    let productId = $(this).find("td:nth-child(3)").text();
+                    checkedProducts.push(productId);
+                }               
+                
+            });
+            
+            if (checkedProducts.length > 0) {
+                $.ajax({
+                    type: "post",
+                    url: "productStateFalse.do",
+                    data: { checkedProducts: checkedProducts },
+                    success: function (response) {
+                        alert("게시 상태가 성공적으로 변경되었습니다.");
+                        location.reload();
+                    },
+                    error: function (error) {
+                        console.error("AJAX 오류 발생", error);
+                        alert("게시 상태 변경 중 오류가 발생했습니다.");
+                    }
+                }); //end of ajax
+            } else {
+                alert("선택된 상품이 없습니다.");
+            }
+            
+        });
+        
+        btnDelProduct.addEventListener("click", function(){
+            
+            checkedProducts = [];
+            
+            $("#tbl_contents tr").each(function(){
+                
+                let checkbox = $(this).find("input[type='checkbox']");
+                
+                if(checkbox.is(":checked")){
+                    let productId = $(this).find("td:nth-child(3)").text();
+                    checkedProducts.push(productId);
+                }               
+                
+            });
+            
+            if (checkedProducts.length > 0) {
+                $.ajax({
+                    type: "post",
+                    url: "deleteProduct.do",
+                    data: { checkedProducts: checkedProducts },
+                    success: function (response) {
+                        alert("상품이 성공적으로 삭제되었습니다.");
+                        location.reload();
+                    },
+                    error: function (error) {
+                        console.error("AJAX 오류 발생", error);
+                        alert("상품 삭제 중 오류가 발생했습니다.");
+                    }
+                }); //end of ajax
+            } else {
+                alert("선택된 상품이 없습니다.");
+            }
+            
+        });
 						
 	});
+	
 </script>
 </head>
 <body>
@@ -494,15 +686,14 @@
     </div>
     <div id="div_productBtns">
         <input type="button" value="상품등록" id="btn_addProduct">
-        <input type="button" value="판매등록">
-        <input type="button" value="판매중단">
-        <input type="button" value="선택삭제">
-        <input type="button" value="일괄삭제">
+        <input type="button" value="판매등록" id="btn_postState_true">
+        <input type="button" value="판매중단" id="btn_postState_false">
+        <input type="button" value="선택삭제" id="btn_deleteProduct">
     </div>
     <div id="div_right">        
         <table id="tbl_contents">
             <tr>
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" id="checkAll"></td>
                 <td></td>
                 <td>코드</td>
                 <td>제품명</td>
@@ -517,7 +708,7 @@
             </tr>
             <c:forEach items="${productList}" var="product">
                 <tr>
-                    <td><input type="checkbox"></td>                    
+                    <td><input type="checkbox" value="${product.p_id}"></td>
                     <td>
                         <button class="btn_editProduct" id="${product.p_id}">
                             <img alt="" src="">

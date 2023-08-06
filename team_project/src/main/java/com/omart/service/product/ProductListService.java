@@ -15,9 +15,21 @@ public class ProductListService implements ProductService {
 	
 	private final ProductDao dao;
 	
-	public List<ProductVo> ProductList() {
+	public List<ProductVo> productList() {
 		
 		return dao.productList();
+	}
+	
+	public List<ProductVo> bestList(){
+		return dao.bestList();
+	}
+	
+	public List<ProductVo> saleList(){
+		return dao.saleList();
+	}
+	
+	public List<ProductVo> newList(){
+		return dao.newList();
 	}
 	
 }

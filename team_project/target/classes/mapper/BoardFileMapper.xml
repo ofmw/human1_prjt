@@ -5,16 +5,47 @@
   
 <mapper namespace="com.omart.BoardFileMapper">
     
-    <!-- 게시글 추가 처리구문 -->
-    <insert id="insertBoard" parameterType="boardFileVo">
+    <!-- 1:1문의 게시글 추가 처리구문 -->
+    <insert id="insertInquiry" parameterType="boardFileVo">
         insert into inquiries (m_idx, category, title, content, order_idx) values(#{m_idx}, #{category}, #{title}, #{content}, '1')
     </insert>
-    <insert id="noticeBoard" parameterType='boardFileVo'>
+    <!-- 공지사항 글 추가 처리구문 -->
+    <insert id="insertNotice" parameterType='boardFileVo'>
     	insert into notice (m_idx, m_id, title, content) values(1, #{m_id}, #{title}, #{content})
     </insert>
-    
+    <!-- FAQ 게시글 추가 처리구문 -->
+    <insert id="insertFaq" parameterType='boardFileVo'>
+    	insert into faq (m_idx, m_id, title, content, category) values(1, #{m_id}, #{title}, #{content}, #{category})
+    </insert>
+    <!-- 이벤트 게시글 추가 처리구문 -->
+    <insert id="insertEvent" parameterType='boardFileVo'>
+    	insert into event (m_idx, title, period, content, originFile, saveFile) values(1, #{title}, #{period}, #{content}, #{originFile}, #{saveFile})
+    </insert>
+    <!-- 1:1문의 글 목록 반환 -->
+    <select id="getAllInquiries" resultType="boardFileVo">
+    	select i.*, m.m_id, m.m_name
+	    from inquiries i
+	    inner join member_omart m on i.m_idx = m.m_idx
+	    order by i.b_idx desc
+    </select>
+    <!-- QnA 글 목록 반환 -->
+    <select id="getAllQnas" resultType="boardFileVo">
+	    select q.*, m.m_id, m.m_name
+	    from qna q
+	    inner join member_omart m on q.m_idx = m.m_idx
+	    order by q.b_idx desc
+	</select>
+    <!-- 공지사항 글 목록 반환 -->
     <select id="getAllNotices" resultType="boardFileVo">
     	select * from notice order by b_idx desc
+    </select>
+    <!-- FAQ 글 목록 반환 -->
+    <select id="getAllFaqes" resultType="boardFileVo">
+    	select * from faq order by b_idx desc
+    </select>
+    <!-- 이벤트 글 목록 반환 -->
+    <select id="getAllEvents" resultType="boardFileVo">
+    	select * from event order by b_idx desc
     </select>
     <!-- 검색 조건에 맞는 게시물 수 반환 -->
     <select id="selectCount" parameterType="map" resultType="_int">

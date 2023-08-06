@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>상품 페이지</title>
     
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script>
+    <!-- <script>
     
     	//표시된 상품 갯수가 4개 미만인 리스트 박스에 a태그 채우기
         $(function() {
@@ -23,7 +25,7 @@
             $targetDiv.append("<a></a>");
           }
         });
-    </script>
+    </script> -->
     
     <style>
     /* ---------------------전체 요소 공통--------------------- */
@@ -61,25 +63,26 @@
     #pl_header{
         width: 100%;
         height: 100px;
-        background-color: aquamarine;
+/*         background-color: aquamarine; */
     }
     #pl_header_btn_box{
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         align-items: center;
-
         width: 100%;
         height: 100%;
+        padding-left: 180px;
     }
     .quick_btn{
         position: relative;
         width: 70px;
         height: 70px;
         background-color: orange;
-
         border-radius: 15px;
         overflow: hidden;
+        margin-top: 35px;
+        margin-right: 20px;
     }
     .quick_btn a{
         position: absolute;
@@ -108,7 +111,6 @@
         flex-direction: row;
         justify-content: space-between;
         padding-bottom: 5px;
-
         width: 100%;
         border-bottom: 2px solid #666;
     }
@@ -176,7 +178,8 @@
     }
     .p_inner_elements_box a{
         width: 230px;
-        background-color: aliceblue;
+/*         background-color: aliceblue; */
+        min-height: 343px;
     }
     .p_inner_elements_box:not(:first-child){
         margin-top: 30px;
@@ -198,8 +201,18 @@
         font-size: 15px;
     }
     .p_info_price{
+        font-size: 13px;
+        font-weight: bold;
+        color: #8b96a1;
+        text-decoration: line-through;
+    }
+    .p_info_price_final{
         font-size: 18px;
         font-weight: bold;
+    }
+    .p_info_price_final span{
+        font-size: 20px;
+        color: rgb(255, 59, 32);
     }
     .p_info_stars{
         font-size: 13px;
@@ -222,14 +235,7 @@
                     <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
                     <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
                     <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
+                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>                    
                 </div>
             </div>
 
@@ -237,7 +243,7 @@
             <div id="pl_main">
                 <!-- 메인영역 헤더 -->
                 <div id="pl_main_header">
-                    <div class="pl_main_header_title">육류/계란</div>
+                    <div class="pl_main_header_title">전체 상품</div>
                     <div id="pl_main_header_sel_box">
                         <select id="sel1">
                             <option value="1">추천순</option>
@@ -263,7 +269,6 @@
                     <div id="pl_main_opt">
                         <form>
                             <table id="opt_table">
-
                                 <tr class="tr_title"><td colspan="2">브랜드</td></tr>
                                 <tr class="tr_contents">
                                     <td><input type="checkbox" id="opt_1"></td>
@@ -327,106 +332,39 @@
                         <div id="p_box">
                             <div class="p_elements">
                                 <div class="p_inner_elements">
-                                    <div class="p_inner_elements_box">
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">참돔</div>
-                                                <div class="p_info_price">9억원</div>
-                                                <div class="p_info_stars">★ 4.5 (1043)</div>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">돌돔</div>
-                                                <div class="p_info_price">8,700원</div>
-                                                <div class="p_info_stars">★ 4.5 (3)</div>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">문어세꼬시</div>
-                                                <div class="p_info_price">32,165달러</div>
-                                                <div class="p_info_stars">★ 4.5 (11)</div>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">참돔</div>
-                                                <div class="p_info_price">9억원</div>
-                                                <div class="p_info_stars">★ 4.5 (123)</div>
-                                            </div>
-                                        </a>
+                                    <c:forEach begin="0" end="${productList.size() div 4}" var="i">
+                                        <div class="p_inner_elements_box">
+                                            <c:forEach begin="${i*4}" end="${i*4+3}" var="j">
+                                                <a href="#">
+                                                    <c:if test="${productList[j] ne null}">
+	                                                    <div class="p_img"><img src="#" alt="#"></div>
+	                                                    <div class="p_info">
+	                                                        <div class="p_info_brand">${productList[j].brand}</div>
+	                                                        <div class="p_info_name">${productList[j].p_name}</div>
+	                                                        <c:if test="${productList[j].discount gt 0}">
+					                                           <div class="p_info_price"><fmt:formatNumber value="${productList[j].price}" pattern="#,###" />원</div>
+					                                        </c:if>
+	                                                        <div class="p_info_price_final">
+	                                                           <c:if test="${productList[j].discount gt 0}">
+					                                                <span>${productList[j].discount}% </span>
+					                                            </c:if>
+	                                                           <c:set var="discount" value="${productList[j].price*(productList[j].discount/100)}"></c:set>
+	                                                           <fmt:formatNumber value="${productList[j].price - discount}" pattern="#,###" />원
+	                                                        </div>
+	                                                        <div class="p_info_stars">★ 4.5 (1043)</div>
+	                                                    </div>
+                                                    </c:if>		                                            
+		                                        </a>
+                                            </c:forEach>                                        
+                                                                                
                                     </div>
-                                    <div class="p_inner_elements_box">
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">참돔</div>
-                                                <div class="p_info_price">9억원</div>
-                                                <div class="p_info_stars">★ 4.5 (1043)</div>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">돌돔</div>
-                                                <div class="p_info_price">8,700원</div>
-                                                <div class="p_info_stars">★ 4.5 (3)</div>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">문어세꼬시</div>
-                                                <div class="p_info_price">32,165달러</div>
-                                                <div class="p_info_stars">★ 4.5 (11)</div>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">참돔</div>
-                                                <div class="p_info_price">9억원</div>
-                                                <div class="p_info_stars">★ 4.5 (123)</div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="p_inner_elements_box">
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">참돔</div>
-                                                <div class="p_info_price">9억원</div>
-                                                <div class="p_info_stars">★ 4.5 (1043)</div>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="p_img"><img src="#" alt="#"></div>
-                                            <div class="p_info">
-                                                <div class="p_info_brand">농협</div>
-                                                <div class="p_info_name">돌돔</div>
-                                                <div class="p_info_price">8,700원</div>
-                                                <div class="p_info_stars">★ 4.5 (3)</div>
-                                            </div>
-                                        </a>
-                                    </div>
+                                    </c:forEach>
                                     
+                                                                        
                                 </div>
                                 
                             </div>
+                            
                         </div>
 
                     </div><!-- end of pl_main_products -->

@@ -27,4 +27,17 @@
         </where>
     </select>
     
+    <select id="bestList" resultType="productVo">
+
+        select * from product where post_state = 1 order by total_sales desc
+    </select>
+    
+    <select id="saleList" resultType="productVo">
+        select * from product where post_state = 1  order by discount desc
+    </select>
+    
+    <select id="newList" resultType="productVo">
+        select * from product where post_state = 1  order by add_date desc
+    </select>
+    
 </mapper>

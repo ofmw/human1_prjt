@@ -63,4 +63,9 @@ public class CartDao{
 		return vo;
 	}
 	
+	public void addCart(CartVo cartVo) {
+		System.out.println("cartVo:"+cartVo.getM_idx()+", "+cartVo.getP_id());
+		sqlSession.insert(MAPPER+".addCart", cartVo);
+	}
+	
 }

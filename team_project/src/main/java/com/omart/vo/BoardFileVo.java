@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class BoardFileVo {
 	private int b_idx;
+	private String m_name;
 	private String p_id;
 	private int m_idx;
 	private String m_id;
@@ -20,5 +21,7 @@ public class BoardFileVo {
 	private String saveFile;
 	private int stars;
 	private int category;
+	private String period;
+	private String tableName;
 	
 }

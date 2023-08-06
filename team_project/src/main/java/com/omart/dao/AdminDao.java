@@ -29,8 +29,43 @@ public class AdminDao{
 		return sqlSession.insert(MAPPER+".insertProduct", productVo);
 	};
 	
+	public int editProduct(ProductVo productVo) {
+		return sqlSession.update(MAPPER+".editProduct", productVo);
+	}
+	
+	public int stateChangeTrue(String p_id) {
+		return sqlSession.update(MAPPER+".stateChangeTrue", p_id);
+	};
+	
+	public int stateChangeFalse(String p_id) {
+		return sqlSession.update(MAPPER+".stateChangeFalse", p_id);
+	};
+	
+	public int deleteProduct(String p_id) {
+		return sqlSession.update(MAPPER+".deleteProduct", p_id);
+	}
+	
 	public List<MemberVo> memberList(){
 		
 		return sqlSession.selectList(MAPPER+".memberList");
-	}
+	};
+	
+	public List<MemberVo> adminList(){
+		
+		return sqlSession.selectList(MAPPER+".adminList");
+	};
+	
+	public int createAccount(MemberVo memberVo) {
+		System.out.println("dao에 넘어온 m_id: " + memberVo.getM_id());
+		return sqlSession.insert(MAPPER+".createAccount", memberVo);
+	};
+	
+	public int checkAccount(String m_id) {
+		return sqlSession.selectOne(MAPPER+".checkAccount", m_id);
+	};
+	
+	public int getAccount(String m_id) {
+		return sqlSession.selectOne(MAPPER+".getAccount", m_id);
+	};	
+	
 }

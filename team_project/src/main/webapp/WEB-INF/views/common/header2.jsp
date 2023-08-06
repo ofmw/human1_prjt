@@ -6,12 +6,12 @@
 <head>
     <title>비로그인 헤더</title>
 
-<link href="../resources/css/header.css" rel="stylesheet">
+<link href="../resources/css/header.css?v=1234" rel="stylesheet">
 <link href="../resources/css/login.css" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="../resources/js/login.js"></script>
-<script src="../resources/js/header.js"></script>
+<script src="../resources/js/header.js?v=1234"></script>
 
 </head>
 <body>
@@ -40,11 +40,11 @@
 							<c:when test="${empty member}">
             		            <span id="login_btn2">로그인</span>
     		                    <a href="member/join.do">회원가입</a>
-		                        <a href="list_notice.do">고객센터</a>
+		                        <a href="list_faq_member.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
 								<a href="#">${member.m_name}님</a>
-								<a href="list_notice.do">고객센터</a>
+								<a href="list_faq_member.do">고객센터</a>
 								<c:choose>
 									<c:when test="${member.platform eq 'kakao'}">
 										<a href="kakaologout.do">로그아웃</a>
@@ -78,8 +78,14 @@
                         전체 카테고리
                     </div>
                     <div id="div_category">
-                        전체 카테고리
-                    </div>
+                            <a href="">전체 카테고리</a>
+                            <ul>
+                                <li><a href="">육류</a></li>
+                                <li><a href="">가공</a></li>
+                                <li><a href="">수산</a></li>
+                                <li><a href="">야채</a></li>
+                            </ul>                           
+                        </div>
                 </div>
                 
                 <!-- 메뉴모음 -->

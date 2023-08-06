@@ -13,5 +13,6 @@ public interface CartService {
 	default void cartRemove(CartVo target) {}
 	default void cartRemove2(List<CartVo> target) {}
 	default List<CartVo> cartUpdate_List(CartVo newAmount) {return null;}
+	default void addCart(CartVo cartVo) {}
 
 }

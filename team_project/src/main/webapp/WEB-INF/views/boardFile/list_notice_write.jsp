@@ -9,56 +9,68 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
         *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
-    #div_menu{
+    /*전체 영역*/
+    #div_notice_write {
+        min-width: 1280px;
         position: relative;
-        float: left;
-        width: 200px;
-        top: 100px;
+        display: flex;
+        justify-content: center;
     }
-    #div_menu p{
+    /*사이드메뉴, 공지사항내용 엮은 영역*/
+    #div_div_notice_write {
+        position: relative;
+        display: flex;
+        margin-top: 100px;
+        justify-content: flex-start; /* 화면 왼쪽에 위치하도록 수정 */
+        width: 1200px; /* div_div_notice를 화면 가로 너비 100%로 설정 */
+        max-width: 1200px; /* 최대 너비 설정 */
+    }
+    /*---------- 사이드메뉴 ----------*/
+    #div_side_menu {
+        position: relative;
+        margin-top: 15px;
+        width: 200px;
+        height: 650px; /* 화면 세로 높이 전체로 설정 */
+    }
+    #div_side_menu p{
         padding: 6px 0;
         text-align: center;
         font-size: 20px;
         font-weight: bold;
         border-bottom: 3px solid black;
     }
-    #div_menu ul{
-        list-style: none; /* 기본 불릿 스타일 제거 */
-        display: flex;
-        flex-direction: column; /*세로 방향으로 정렬*/
-        text-align: center;
-    }
-    #div_menu li{
+    #div_side_menu td{
         padding: 12px 0;
+        width: 200px;
+        text-align: center;
         cursor: pointer;
     }
-    #div_menu ul li:nth-child(4){
+    #tbl_side_menu tr:nth-child(2), #tbl_side_menu tr:nth-child(2) a{
         background-color: black;
         color: white;
     }
-    form {
+    /*--------------------------------*/
+    /*---------- 테이블 세팅 ----------*/
+    #div_section {
         position: relative;
-        float: left;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-70%); /* 중앙 정렬을 위한 설정 */
         width: 758px;
+        margin-left: 130px; /* 왼쪽 여백 추가 */
     }
-    form p{
+    #div_section p{
         font-size: 28px;
         font-weight: bold;
         padding-bottom: 30px;
     }
-    #td_title{
+    #div_section table tr td:first-child{
         padding: 10px 0;
         padding-left: 15px;
         width: 150px;
         background-color: rgb(224, 224, 224);
     }
-    form td{
+    #div_section td{
         border-top: 1px solid black;
     }
-    #category, #m_id, #title, #content{
+    #m_id, #title, #content{
         margin: 10px 20px;
         font-size: 15px;
     }
@@ -76,18 +88,8 @@
         height: 300px;
         resize: none;
     }
-    #upload_name{
-        margin: 10px 20px;
-        padding-left: 3px;
-        height: 30px;
-    }
-    #div_filebox label{
-        padding: 5px 10px;
-        background-color: rgb(127, 127, 127);
-        font-size: 13px;
-        color: white;
-        border-radius: 3px;
-    }
+    /*------------------------------*/
+    /*---------- 이전, 저장 버튼 ----------*/
     #div_sbm{
         margin-left: 1px;
         padding-top: 20px;;
@@ -110,19 +112,29 @@
         background-color: black;
         color: white;
     }
-    #cs_info{
+    /*--------------------------------*/
+    /*---------------footer---------------*/
+    #div_footer{
+    	margin-top: 30px;
         padding-left: 10px;
-        padding-top: 10px;
-        border-top: 3px solid black;
-        position:absolute;
-        bottom: 0;
-        font-size: 23px;
-        width: 100%;
-        height: 80px;
+	    padding-top: 10px;
+	    border-top: 3px solid black;
+	    font-size: 23px;
+	    min-width: 1280px;
+	    height: 80px;
     }
-    #cs_info span{
+    #div_footer span{
         font-size: 17px;
         color: rgb(224, 224, 224);
+    }
+    /*------------------------------------*/
+    table{
+        width: 100%;
+        border-collapse: collapse;
+    }
+    a{
+        text-decoration: none;
+        color: black;
     }
  
 </style>
@@ -164,7 +176,7 @@
 				success: function(response){
 					alert("저장되었습니다.")
 					//글이 저장되면 공지사항 페이지로 이동
-					location.href = "boardFile/list_notice.jsp"
+					location.href = "list_notice.do"
 				},
 				error: function(error){
 					alert("실패했습니다.");
@@ -178,45 +190,58 @@
  
  </script>
 <body>
-    <div id="div_menu">
-        <p>고객센터</p>
-        <ul>
-            <li onclick="location.href='list_faq_member.html'">FAQ</li>
-            <li onclick="location.href='list_notice.do'">공지사항</li>
-            <li onclick="location.href='list_event.html'">이벤트</li>
-            <li onclick="location.href='list_inquiry.do'">1:1문의하기</li>
-        </ul>
+	<div id="div_notice_write">
+		<div id="div_div_notice_write">
+    		<div id="div_side_menu">
+                <table id="tbl_side_menu">
+                    <p>고객센터</p>
+                    <tr>
+                        <td><a href="list_faq_member.do">FAQ</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="list_notice.do">공지사항</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="list_event.do">이벤트</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="list_faq_inquiry.do">1:1문의하기</a></td>
+                    </tr>
+                </table>
+            </div>
+    		<div id="div_section">
+			        <p>공지사항</p>
+			        <table>
+			          
+			          <tr>
+			            <td>작성자</td>
+			            <td>
+			              <input type="text" id="m_id" name="m_id" required>
+			              <input type="hidden" id="m_idx" name="m_idx" value="2">
+			            </td>
+			          </tr>
+			          <tr>
+			            <td>제목</td>
+			            <td>
+			              <input type="text" id="title" name="title" required placeholder="제목을 입력하세요.">
+			            </td>
+			          </tr>
+			          <tr>
+			            <td>본문</td>
+			            <td>
+			              <textarea id="content" name="content" required></textarea>
+			            </td>
+			          </tr>
+			          
+			        </table>
+		        <div id="div_sbm">
+		            <input type="button" value="이전" id="btn_back">
+		            <input type="button" value="저장" id="smt_save">
+		        </div>
+      		</div>
+       </div>
     </div>
-    <form>
-        <p>공지사항</p>
-        <table>
-          
-          <tr>
-            <td id="td_title">작성자</td>
-            <td>
-              <input type="text" id="m_id" name="m_id" required>
-              <input type="hidden" id="m_idx" name="m_idx" value="2">
-            </td>
-          </tr>
-          <tr>
-            <td id="td_title">제목</td>
-            <td>
-              <input type="text" id="title" name="title" required placeholder="제목을 입력하세요.">
-            </td>
-          </tr>
-          <tr>
-            <td id="td_title">본문</td>
-            <td>
-              <textarea id="content" name="content" required></textarea>
-            </td>
-          </tr>
-          
-        </table>
-        <div id="div_sbm">
-            <input type="button" value="이전" id="btn_back">
-            <input type="button" value="저장" id="smt_save">
-        </div>
-      </form>
-      <p id="cs_info">고객센터 이용안내 <span>운영시간09:00~21:00</span></p>
-    
+    <div id="div_footer">
+        고객센터 이용안내 <span>운영시간09:00~21:00</span>
+    </div>
 </body>
