@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>상품 페이지</title>
+    <title>오!마트 - 장바구니</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     
@@ -794,6 +794,31 @@
             updateNav();
             
         });
+     	
+        /* ---------------------비회원 주문정보 내비게이션--------------------- */
+        let shadow = $("#shadow");
+        
+        function showShadow() {
+            shadow.css({
+                'display': 'block',
+                'z-index': '5000'
+            });
+            $("body").css('overflow', 'hidden');
+        }
+     	
+        $("#open_login_btn").on("click", showShadow);
+        
+        /* ---------------------배송지 변경--------------------- */
+        let ca_btn = $("#change_address");
+        
+        function openChangeAddress() {
+        	
+        	let url = "change_address.do?m_idx=" + parseInt($(".m_idx").val());
+        	window.open(url, '_blank', 'menubar=no,width=500,height=700');
+        }
+        
+        ca_btn.on("click", openChangeAddress);
+        
 
     }); // end of jqeury
 </script>
@@ -904,13 +929,36 @@
                         <div id="cart_main_order-nav">
                             
                             <!-- 배송지 -->
-                            <div id="order-nav_address">
-                                <div>
-                                    <span id="address_preset">기본배송지: 우리집</span>
-                                <span id="address_detail">[31148] 충청남도 천안시 동남구 봉서8길 13, 306동 1302호 (봉명동, 청솔3차아파트)</span>
-                                </div>
-                                <div><button type="button">배송지 변경</button></div>
-                            </div>
+                            <c:choose>
+                            	<c:when test="${!empty AddressList}">
+									<c:forEach items="${AddressList}" var="a">
+										<c:choose>
+											<c:when test="${a.def_add eq '1'}">
+					                            <div id="order-nav_address">
+					                                <div>
+					                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
+					                                	<span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
+					                                </div>
+					                                <div>
+					                                	<button type="button" id="change_address">배송지 변경</button>
+					                                </div>
+					                            </div>
+				                            </c:when>
+			                            </c:choose>
+	                            	</c:forEach>
+                            	</c:when>
+                            	<c:otherwise>
+                            		<div id="order-nav_address">
+		                                <div>
+		                                    <span id="address_preset">로그인을 해보세요</span>
+		                                	<span id="address_detail">로그인을 하시면 지금 보고있는 상품을 나중에도 확인하실 수 있습니다.</span>
+		                                </div>
+		                                <div>
+		                                	<button type="button" id="open_login_btn">로그인</button>
+		                                </div>
+		                            </div>
+                            	</c:otherwise>
+                            </c:choose>
 
                             <!-- 주문 정보 -->
                             <div id="order-nav_product">

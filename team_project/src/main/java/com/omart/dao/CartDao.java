@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.omart.vo.AddressVo;
 import com.omart.vo.CartVo;
-import com.omart.vo.ProductVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,19 +53,32 @@ public class CartDao{
 	//해당 회원의 장바구니 상품의 상세 정보 가져오기
 	public List<CartVo> cartUpdate_List(CartVo newAmount) {
 		
-		List<CartVo> vo = sqlSession.selectList(MAPPER+".cartList", newAmount);
+		System.out.println("━━━━━━━━━━━━━━━━━<장바구니 조회 요청>━━━━━━━━━━━━━━━━━");
+		System.out.println("요청 메서드: CartDao.cartUpdate_List");
+		
+		return sqlSession.selectList(MAPPER+".cartList", newAmount);
+	}
+	
+	//해당 회원의 장바구니에 상품 추가
+	public void addCart(CartVo cartVo) {
+		System.out.println("cartVo:"+cartVo.getM_idx()+", "+cartVo.getP_id());
+		sqlSession.insert(MAPPER+".addCart", cartVo);
+	}
+	
+	//해당 회원의 배송지 정보 가져오기
+	public List<AddressVo> AddressList(int m_idx){
+
+		System.out.println("━━━━━━━━━━━━━━━━━<회원 배송지 조회 요청>━━━━━━━━━━━━━━━━━");
+		System.out.println("요청 메서드: CartDao.AddressList");
+		
+		List<AddressVo> vo = sqlSession.selectList(MAPPER+".addressList", m_idx);
 		if(vo != null) {
 			System.out.println("꽉차있음@@@");
-			System.out.println("장바구니 품목 갯수"+vo.size());
+			System.out.println("배송지 개수"+vo.size());
 		}else {
 			System.out.println("비어있음@@@@@@@@@@@");
 		}
 		return vo;
-	}
-	
-	public void addCart(CartVo cartVo) {
-		System.out.println("cartVo:"+cartVo.getM_idx()+", "+cartVo.getP_id());
-		sqlSession.insert(MAPPER+".addCart", cartVo);
 	}
 	
 }

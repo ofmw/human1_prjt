@@ -10,8 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.omart.service.cart.CartService;
+import com.omart.vo.AddressVo;
 import com.omart.vo.CartVo;
 import com.omart.vo.MemberVo;
 
@@ -22,7 +24,7 @@ import lombok.Setter;
 public class CartController {
 	
 	@Setter(onMethod_= {@Autowired})	
-	private CartService cList, cAdd;
+	private CartService cList, cAdd, cAddress;
 	
 	//장바구니
 	@GetMapping("/cart.do")
@@ -33,15 +35,10 @@ public class CartController {
 			int m_idx = member.getM_idx();
 			
 			List<CartVo> CartList = cList.CartList(m_idx);
+			List<AddressVo> AddressList = cAddress.AddressList(m_idx);
 			
 			model.addAttribute("CartList", CartList);
-			
-//			if(CartList != null) {
-//				
-//				List<ProductVo> CartList_pInfo = cList.CartList_pInfo(CartList);
-//				model.addAttribute("CartList", CartList);
-//				model.addAttribute("CartList", CartList_pInfo);
-//			}
+			model.addAttribute("AddressList", AddressList);
 
 		}
 
@@ -57,6 +54,12 @@ public class CartController {
 	@GetMapping("cart/cart.do")
 	public String cart2() {
 		return "/cart";
+	}
+	
+	@GetMapping("/change_address.do")
+	public String change_address(@RequestParam("m_idx") int m_idx, Model model) {
+		model.addAttribute("m_idx", m_idx);
+		return "cart/ChangeAddress";
 	}
 	
 	@GetMapping("/index.do")

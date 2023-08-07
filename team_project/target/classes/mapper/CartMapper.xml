@@ -5,6 +5,7 @@
   
 <mapper namespace="com.omart.CartMapper">    
     
+    <!-- 해당 회원의 장바구니 정보 불러오기 -->
     <select id="cartList" parameterType="_int" resultType="cartVo">
         SELECT c.*, p.*
         FROM cart c
@@ -12,12 +13,14 @@
         WHERE c.m_idx = #{m_idx}
     </select>
 	
+	<!-- 장바구니 상품 수량 업데이트 -->
 	<update id="cartUpdate_Amount" parameterType="cartVo">
 		UPDATE cart
 		SET amount = #{amount}
 		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
 	</update>
 	
+	<!-- 장바구니에 상품 추가 -->
 	<insert id="addCart" parameterType="cartVo">
 	    
 	    insert into cart (m_idx, p_id, amount)
@@ -25,12 +28,15 @@
         on duplicate key update amount = amount + 1
 	    
 	</insert>
+	
+	<!-- 장바구니에서 상품 삭제 -->
 	<delete id="cartRemove" parameterType="cartVo">
 		DELETE
 		FROM cart
 		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
 	</delete>
 	
+	<!-- 장바구니에서 상품 삭제 -->
 	<delete id="cartRemove2" parameterType="java.util.List">
 		DELETE
 		FROM cart
@@ -49,5 +55,11 @@
 		FROM cart
 		WHERE m_idx = #{m_idx}
 	</select>
+	
+	<select id="addressList" parameterType="_int" resultType="addressVo">
+        SELECT *
+        FROM address
+        WHERE m_idx = #{m_idx}
+    </select>
     
 </mapper>
