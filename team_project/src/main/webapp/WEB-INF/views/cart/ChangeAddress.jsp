@@ -213,12 +213,19 @@
 			self.close();
 	    });
 		
+		/* ---------------------새 배송지 추가 버튼--------------------- */
+		//*** 새 배송지 추가 버튼 클릭 이벤트 처리 ***//
+		$("#btn_addNewAddr").click(function(){
+			if (countVisibleRows() < 5) {
+				location.href = "addNewAddr.do?m_idx=1"
+			}
+		});
 		
 		/* ---------------------빈 배송지 목록 표시--------------------- */
         //*** 테이블의 tr 요소 개수 확인 ***//
         function countVisibleRows() {
             // 숨김처리된 #tr_empty_address 행을 제외한 나머지 행의 개수 반환
-            return $('table tr:not(#tr_empty_address)').length;
+            return $('table tr:not(#tr_empty_address, :first-child)').length;
         }
         //*** tr_empty_address를 보이도록 처리 ***//
         function showEmptyAddressRow() {
@@ -234,7 +241,7 @@
             // 테이블의 행의 개수 확인
             let rowCount = countVisibleRows();
 
-            if (rowCount === 1) { // 배송지 목록이 비었을 경우
+            if (rowCount === 0) { // 배송지 목록이 비었을 경우
                 showEmptyAddressRow();
             } else { // 배송지 목록에 배송지가 1개 이상일 경우
                 hideEmptyAddressRow();
@@ -378,8 +385,8 @@
 						                <span>홍길동</span>
 						            </div>
 									<div id="selected_address_postnum">(${a.postnum})</div>
-									<div id="selected_address_1">도로명: ${a.address}, ${a.detail}</div>
-									<div id="selected_address_2">지번: ${a.address}, ${a.detail}</div>
+									<div id="selected_address_1">도로명: ${a.roadAddr}, ${a.detail}</div>
+									<div id="selected_address_2">지번: ${a.jibunAddr}, ${a.detail}</div>
 								</c:if>
 							</c:when>
 							<c:otherwise>
@@ -390,8 +397,8 @@
 						                <span>홍길동</span>
 						            </div>
 									<div id="selected_address_postnum">(${a.postnum})</div>
-									<div id="selected_address_1">도로명: ${a.address}, ${a.detail}</div>
-									<div id="selected_address_2">지번: ${a.address}, ${a.detail}</div>
+									<div id="selected_address_1">도로명: ${a.roadAddr}, ${a.detail}</div>
+									<div id="selected_address_2">지번: ${a.jibunAddr}, ${a.detail}</div>
 								</c:if>
 							</c:otherwise>
 						</c:choose>
@@ -405,7 +412,7 @@
 		</div>
 		
 		<div id="ca_management_area">
-			<div id="ca_m_addNewAddress"><button type="button">새 배송지 추가</button></div>
+			<div id="ca_m_addNewAddress"><button type="button" id="btn_addNewAddr">새 배송지 추가</button></div>
 			<div id="ca_m_table_box">
 				<table id="ca_m_table">
 					<colgroup>
@@ -457,8 +464,8 @@
 								<td class="td_receiver">홍길동</td>
 								<td class="td_address">
 		                            <div>(${a.postnum})</div>
-		                            <div>도로명: ${a.address}, ${a.detail}</div>
-		                            <div>지번: ${a.address}, ${a.detail}</div>
+		                            <div>도로명: ${a.roadAddr}, ${a.detail}</div>
+		                            <div>지번: ${a.jibunAddr}, ${a.detail}</div>
 		                        </td>
 								<td class="td_selnum">010-1234-1324</td>
 								<td class="td_option">

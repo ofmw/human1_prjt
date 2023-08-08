@@ -71,4 +71,19 @@
 	    WHERE m_idx = #{m_idx}
     </update>
     
+    <select id="checkAname" parameterType="addressVo" resultType="_int">
+    	SELECT COUNT(*)
+    	FROM address
+    	WHERE m_idx = #{m_idx} AND a_name = #{a_name}
+    </select>
+    
+    <select id="checkAddr" parameterType="addressVo" resultType="_int">
+    	SELECT COUNT(*)
+    	FROM address
+    	WHERE m_idx = #{m_idx} AND
+    		  roadAddr = #{roadAddr} AND
+    		  jibunAddr = #{jibunAddr} AND
+    		  detail = #{detail}
+    </select>
+    
 </mapper>

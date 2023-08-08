@@ -17,5 +17,6 @@ public interface CartService {
 	default void addCart(CartVo cartVo) {}
 	default List<AddressVo> AddressList(int m_idx) {return null;}
 	default List<AddressVo> updateDefAddress(int m_idx, String a_name) {return null;}
+	default int checkNewAddr(AddressVo newAddr) {return 0;}
 
 }

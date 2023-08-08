@@ -91,4 +91,20 @@ public class CartDao{
 		
 		sqlSession.update(MAPPER+".updateDefAddress", newDefAdd);
 	}
+	
+	public int checkAname(AddressVo vo) {
+		return sqlSession.selectOne(MAPPER+".checkAname", vo);
+	}
+	
+	public int checkAddr(AddressVo vo) {
+		return sqlSession.selectOne(MAPPER+".checkAname", vo);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -963,7 +963,7 @@
 															<div id="order-nav_address">
 								                                <div>
 								                                    <span id="address_preset">배송지: ${a.a_name}</span>
-								                                	<span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
+								                                	<span id="address_detail">[${a.postnum}] ${a.roadAddr} ${a.detail}</span>
 								                                </div>
 								                                <div>
 								                                	<button type="button" id="change_address">배송지 변경</button>
@@ -977,7 +977,7 @@
 								                            <div id="order-nav_address">
 								                                <div>
 								                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
-								                                	<span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
+								                                	<span id="address_detail">[${a.postnum}] ${a.roadAddr} ${a.detail}</span>
 								                                </div>
 								                                <div>
 								                                	<button type="button" id="change_address">배송지 변경</button>

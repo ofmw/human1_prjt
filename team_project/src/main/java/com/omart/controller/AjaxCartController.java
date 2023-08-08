@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -109,5 +110,40 @@ public class AjaxCartController {
 		
 		session.setAttribute("current_add", a_name);
 		return "success";
+	}
+	
+	@PostMapping("/checkNewAddr.do")
+	public int checkNewAddr(@RequestParam("m_idx") int m_idx,
+						    @RequestParam("a_name") String a_name,
+						    @RequestParam("receiver") String receiver,
+						    @RequestParam("selnum") String selnum,
+						    @RequestParam("postnum") String postnum,
+						    @RequestParam("roadAddr") String roadAddr,
+						    @RequestParam("jibunAddr") String jibunAddr,
+						    @RequestParam("detail") String detail) {
+		
+		AddressVo vo = new AddressVo();
+		vo.setM_idx(m_idx);
+		vo.setA_name(a_name);
+		vo.setReceiver(receiver);
+		vo.setSelnum(selnum);
+		vo.setPostnum(postnum);
+		vo.setRoadAddr(roadAddr);
+		vo.setJibunAddr(jibunAddr);
+		vo.setDetail(detail);
+		
+		int result = cAddress.checkNewAddr(vo);
+		
+		int response = 0;
+		
+		if (result == 0) {
+			response = 0; 
+		} else if (result == 1) {
+			response = 1;
+		} else if (result == 2) {
+			response = 2;
+		}
+		
+		return response;
 	}
 }

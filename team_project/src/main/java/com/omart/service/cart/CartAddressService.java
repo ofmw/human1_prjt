@@ -30,4 +30,21 @@ public class CartAddressService implements CartService {
 		return dao.AddressList(m_idx);
 	}
 	
+	//해당 회원의 배송지 추가 유효성 검사
+	public int checkNewAddr(AddressVo vo) {
+		
+		int Aname_result = dao.checkAname(vo);
+		int Addr_result = dao.checkAddr(vo);
+		
+		int result = 0;
+		
+		if (Aname_result != 0) {
+			result = 1;
+		} else if (Addr_result != 0) {
+			result = 2;
+		}
+		
+		return result;
+	}
+	
 }

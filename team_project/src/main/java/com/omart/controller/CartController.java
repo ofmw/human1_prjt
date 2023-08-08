@@ -67,6 +67,13 @@ public class CartController {
 		return "cart/ChangeAddress";
 	}
 	
+	@GetMapping("/addNewAddr.do")
+	public String addNewAddr(@RequestParam("m_idx") String m_idx, Model model) {
+		
+		model.addAttribute("m_idx", m_idx);
+		return "cart/addAddress";
+	}
+	
 	@GetMapping("/index.do")
 	public String index() {
 		
