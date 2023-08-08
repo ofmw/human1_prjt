@@ -53,4 +53,7 @@
 		VALUES(#{email}, #{nickname}, "kakao", #{gender}) 
 	</insert>
     
+    <select id="getWishList" parameterType="_int" resultType="wishVo">
+        select * from wish where m_idx = #{m_idx}
+    </select>
 </mapper>

@@ -29,7 +29,7 @@ $(function() {
 			success: function(response) {
 				//로그인 성공시
 		        if (response === "success") {
-		            location.href = "index.do";
+		            location.reload();
 		        }else{
 					//로그인 실패시
 					alert("아이디 또는 비밀번호가 일치하지 않습니다.\n다시 확인하신 후 입력해주세요.");

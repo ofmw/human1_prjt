@@ -40,4 +40,8 @@
         select * from product where post_state = 1  order by add_date desc
     </select>
     
+    <select id="getProduct" parameterType="string" resultType="productVo">
+        select * from product where p_id = #{p_id}
+    </select>
+    
 </mapper>

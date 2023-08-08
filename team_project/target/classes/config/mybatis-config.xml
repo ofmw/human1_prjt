@@ -12,6 +12,7 @@
         <typeAlias alias="boardFileVo" type="com.omart.vo.BoardFileVo"/>       
         <typeAlias alias="kakaoVo" type="com.omart.vo.KakaoVo"/>
         <typeAlias alias="cartVo" type="com.omart.vo.CartVo"/>
+        <typeAlias alias="wishVo" type="com.omart.vo.WishVo"/>
     </typeAliases>
    
 </configuration>

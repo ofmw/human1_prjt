@@ -1,5 +1,7 @@
 package com.omart.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import lombok.Setter;
 public class AjaxMemberController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mLogin;
+	private MemberService mLogin, mWish;
 
 	//로그인
 	@PostMapping("/**/login.do")
@@ -30,6 +32,8 @@ public class AjaxMemberController {
 		MemberVo vo = mLogin.login(m_id, m_pw);
 		
 		if(vo != null){
+			
+			List<String> wishList = mWish.getWishList(vo.getM_idx());
 			
 			String grade = null;
 			switch(vo.getGrade()) {
@@ -54,7 +58,8 @@ public class AjaxMemberController {
 //				System.out.println("플랫폼: " +vo.getPlatform());
 			System.out.println("회원등급: " + grade);
 			session.setAttribute("member", vo);
-			
+			session.setAttribute("wishList", wishList);
+						
 			if(vo.getGrade() == 9 || vo.getGrade() == 8 || vo.getGrade() == 7) {
 				session.setMaxInactiveInterval(60 * 60);
 				long startTime = System.currentTimeMillis();

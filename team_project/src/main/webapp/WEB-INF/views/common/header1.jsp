@@ -14,7 +14,6 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="resources/js/login.js"></script>
 <script src="resources/js/header.js?v=4567"></script>
-<script type="text/javascript"></script>
 
 </head>
 <body>

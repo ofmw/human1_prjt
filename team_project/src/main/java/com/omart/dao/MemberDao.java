@@ -1,7 +1,10 @@
 package com.omart.dao;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.omart.vo.MemberVo;
+import com.omart.vo.WishVo;
 
 @Repository
 public class MemberDao{
@@ -36,6 +40,21 @@ public class MemberDao{
 	//회원가입 처리
 	public int join(MemberVo vo) {	
 		return sqlSession.insert(MAPPER+".join", vo);
+	}	
+	
+	public List<String> getWishList(int m_idx){
+		List<String> wishList = null;
+				
+		WishVo wVo = sqlSession.selectOne(MAPPER+".getWishList", m_idx);
+		
+		System.out.println("wVo: "+wVo);
+		
+		if(wVo != null) {			
+			wishList = new ArrayList<String>();
+			wishList = Arrays.asList(wVo.getW_list().split(","));
+		}
+		
+		return wishList;
 	}
 	
 }

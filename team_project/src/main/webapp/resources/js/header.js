@@ -16,6 +16,8 @@ $(function() {
     let login_btn2 = $("#login_btn2");
     let need_login = $(".need_login"); //로그인이 필요한 서비스
     let addCart_btn = $(".btn_addCart"); //장바구니에 상품 추가
+    let addCart_btn2 = $(".btn_addCart2"); //장바구니에 상품 추가
+    let addWish_btn = $(".btn_addWish"); //찜목록 상품 추가
     
     /* 로그인 모달창 열기 메서드 */
     function showShadow() {
@@ -71,19 +73,57 @@ $(function() {
             type: "post",
             url: "cart/addCart.do",
             data: {"m_idx": m_idx, "p_id": p_id},
-            success: function(data){
+            success: function(response){
                 // 성공 시 처리할 로직
-                console.log("AJAX 요청 성공:", data);
+                console.log("AJAX 요청 성공:", response);
+                showShadow_addCart();
             },
             error: function(error){
                 // 오류 시 처리할 로직
                 console.error("AJAX 오류 발생", error);
-            },
-            complete: function(){
-                // 성공 또는 오류와 관계 없이 요청이 완료되면 실행되는 로직
-                showShadow_addCart();
             }
-        });     
+        }); <!-- end of ajax -->
+        
+    });
+    
+    addCart_btn2.on("click", function(event){        
+        
+        let m_idx = $("#m_idx").val();
+        let p_id = $("#p_id").val(); 
+
+        $.ajax({
+            type: "post",
+            url: "cart/addCart.do",
+            data: {"m_idx": m_idx, "p_id": p_id},
+            success: function(response){
+                // 성공 시 처리할 로직
+                console.log("AJAX 요청 성공:", response);
+                showShadow_addCart();
+            },
+            error: function(error){
+                // 오류 시 처리할 로직
+                console.error("AJAX 오류 발생", error);
+            }
+        }); <!-- end of ajax -->
+        
+    });
+    
+    addWish_btn.on("click", function(event){
+        let m_idx = $("#m_idx").val();
+        let p_id = $("#p_id").val();
+        
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/member/addWish.do",
+            data: {m_idx: m_idx, p_id: p_id},
+            success: function(response){
+                console.log("AJAX 요청 성공:", response);
+            },
+            error: function(error){
+                // 오류 시 처리할 로직
+                console.error("AJAX 오류 발생", error);               
+            }
+        }); <!-- end of ajax -->
         
     });
     

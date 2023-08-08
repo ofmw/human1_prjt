@@ -34,4 +34,8 @@ public class ProductDao{
 		return sqlSession.selectList(MAPPER+".newList");
 	}
 	
+	public ProductVo getProduct(String p_id) {
+		return sqlSession.selectOne(MAPPER+".getProduct", p_id);
+	}
+	
 }

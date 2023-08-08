@@ -18,7 +18,7 @@ import com.omart.vo.MemberVo;
 import lombok.Setter;
 
 @Controller
-@RequestMapping("/cart")
+@RequestMapping("/**/cart")
 public class CartController {
 	
 	@Setter(onMethod_= {@Autowired})	
@@ -51,6 +51,7 @@ public class CartController {
 	@PostMapping("/addCart.do")
 	public void addCart(CartVo cartVo) {
 		System.out.println("addCart실행");
+		System.out.println("p_id: "+cartVo.getP_id());
 		cAdd.addCart(cartVo);
 	}
 	

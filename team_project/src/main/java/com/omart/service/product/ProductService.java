@@ -10,4 +10,5 @@ public interface ProductService {
 	default List<ProductVo> bestList() {return null;}
 	default List<ProductVo> saleList() {return null;}
 	default List<ProductVo> newList() {return null;}
+	default ProductVo getProduct(String p_id) {return null;}
 }

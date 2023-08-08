@@ -395,7 +395,7 @@
                         <div class="p_inner_elements">                        
 
                         	<c:forEach begin="0" end="3" var="i">                      			
-	                            <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
+	                            <a href="product/product_view.do?p_id=${bestList[i].p_id}"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
 	                                <div class="p_img">
 		                                <img src="#" alt="상품 이미지">
 		                                <c:choose>

@@ -425,7 +425,7 @@
             //새 결제예정금액 (기존 - 주문금액)
             let newOrderPrice;
             
-            let calprices = $(".calprice");  
+            let calprices = $(".calprice");
             
             if (checkedProducts.length > 0) {
                 // 선택된 체크박스들이 속한 행을 모두 삭제합니다.
@@ -527,18 +527,11 @@
         // tr이 추가되거나 삭제될 때마다 tr_empty_cart를 체크하고 처리
         $('table').on('DOMSubtreeModified', function() {
             checkEmptyCart();
-        });
-        
+        });        
         
      	// 페이지 로드 시 기존 값들을 합산하여 #product_total에 표시
         calculateTotal();
         updateTotalOrderedPrice();
-
-        // 버튼 클릭 시 이벤트 처리
-        $(".plist_minus-btn, .plist_plus-btn").on("click", function() {
-            // plist_amount_value의 모든 요소들을 선택하여 각 값들을 합산
-            calculateTotal();
-        });
 		
         function calculateTotalPrice(price, amount){
         	let calprice = price * amount;
@@ -601,9 +594,7 @@
             // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
             var formattedPrice = new Intl.NumberFormat("ko-KR").format(totalPrice);
             $("#ordered-price").text(formattedPrice + " 원");
-        }
-        
-        
+        }        
         
         $(".plist_plus-btn").click(function() {
             // 현재 버튼이 속한 행에서 인접한 input 요소를 찾습니다.
@@ -660,8 +651,6 @@
 	            calPriceElement.text(formattedPrice);
             }
         });
-        
-        
         
         function updateAmount(m_idx, p_id, newAmount) {
             $.ajax({

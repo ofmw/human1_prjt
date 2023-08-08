@@ -1,13 +1,18 @@
 package com.omart.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.omart.service.member.MemberService;
 import com.omart.vo.MemberVo;
+import com.omart.vo.WishVo;
 
 import lombok.Setter;
 
@@ -16,7 +21,7 @@ import lombok.Setter;
 public class MemberController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mJoin;
+	private MemberService mJoin, mWish;
 	
 	@GetMapping("/join.do")
 	public String join() {
@@ -35,8 +40,8 @@ public class MemberController {
 			viewPage = "redirect:/index.do";
 		}
 		return viewPage;
-	}
-		
+	}	
+	
 	//로그아웃
 //	@GetMapping("/logout.do")
 //	public String logout(HttpServletRequest request) {
