@@ -823,7 +823,8 @@
         	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
         	let url = "change_address.do?m_idx=" + $("#session_m_idx").val();
         	// 자식창을 열고 그 여부를 변수에 저장
-        	childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
+        	childWindow = window.open(url, '_blank', 'menubar=no,width=700,height=750');
+        	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
         }
         
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
@@ -942,12 +943,12 @@
 							</c:if>
                             <!-- 배송지 -->
                           	<c:choose>
-                          		<!-- 로그인한 경우 -->
-                          		<c:when test="${!empty member}">
-                          	
+
+                          		<c:when test="${!empty member}"><!-- 로그인한 경우 -->
+                          		
 	                            	<c:choose>
-	                            		<!-- 등록된 배송지가 있을 경우 -->
-		                            	<c:when test="${!empty AddressList}">
+	                            		
+		                            	<c:when test="${!empty AddressList}"><!-- 등록된 배송지가 있을 경우 -->
 											<c:forEach items="${AddressList}" var="a">
 												<c:choose>
 													<c:when test="${a.def_add eq '1'}">
@@ -964,8 +965,8 @@
 					                            </c:choose>
 			                            	</c:forEach>
 		                            	</c:when>
-		                            	<!-- 등록된 배송지가 없을 경우 -->
-		                            	<c:otherwise>
+		                            	
+		                            	<c:otherwise><!-- 등록된 배송지가 없을 경우 -->
 		                            		<div id="order-nav_address">
 				                                <div>
 				                                    <span id="address_preset">등록된 배송지가 없습니다!</span>
@@ -976,11 +977,12 @@
 				                                </div>
 				                            </div>
 		                            	</c:otherwise>
+		                            	
 	                            	</c:choose>
 	                            	
-	                            </c:when><!-- end of 로그인한 경우 -->
-	                            <!-- 로그인하지 않은 경우 (비회원인 경우) -->
-                            	<c:otherwise>
+	                            </c:when>
+	                            
+                            	<c:otherwise><!-- 로그인하지 않은 경우 (비회원인 경우) -->
                             		<div id="order-nav_address">
 		                                <div>
 		                                    <span id="address_preset">로그인을 해보세요</span>

@@ -68,6 +68,11 @@
     #selected_address_nickname span:last-child{
         font-weight: bold;
     }
+    #empty_selected_address{
+    	text-align: center;
+    	color: #00aeef;
+    	font-size: 18px;
+    }
 
     /* ---------------------배송지 관리--------------------- */
     #ca_management_area{
@@ -97,6 +102,7 @@
 
     /* ---------------------배송지 목록 테이블--------------------- */
     #ca_m_table{
+    	width: 100%;
         border-spacing: 0;
         border-collapse: collapse;
         font-size: 12px;
@@ -120,7 +126,7 @@
     .td_sel_address, .td_selnum{
         border-right: 1px solid #e5e5e5;
     }
-    .td_address_nickname .def_add{
+    .td_address_nickname .div_def_add{
         color: #e53838;
     }
     .td_address{
@@ -263,14 +269,27 @@
 	<div id="ca_section">
 	
 		<div id="ca_selected_address">
-			<div id="selected_address_title">현재 선택된 배송지</div>
-			<div id="selected_address_nickname">
-                <span>[우리집]</span>
-                <span>홍길동</span>
-            </div>
-			<div id="selected_address_postnum">(31148)</div>
-			<div id="selected_address_1">도로명: 충청남도 천안시 동남구 ㅁㄴㅇㅁㄴㅇ</div>
-			<div id="selected_address_2">지번: 도로명: 충청남도 천안시 동남구 ㅁㄴㅇㅁㄴㅇ</div>
+			<c:choose>
+				<c:when test="${!empty AddressList}">
+				
+					<c:choose>
+						<c:when test="${a}">
+							<div id="selected_address_title">현재 선택된 배송지</div>
+							<div id="selected_address_nickname">
+				                <span>[우리집]</span>
+				                <span>홍길동</span>
+				            </div>
+							<div id="selected_address_postnum">(31148)</div>
+							<div id="selected_address_1">도로명: 충청남도 천안시 동남구 ㅁㄴㅇㅁㄴㅇ</div>
+							<div id="selected_address_2">지번: 도로명: 충청남도 천안시 동남구 ㅁㄴㅇㅁㄴㅇ</div>
+						</c:when>
+					</c:choose>
+					
+				</c:when>
+				<c:otherwise>
+					<div id="empty_selected_address">현재 선택된 배송지가 없습니다!</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		
 		<div id="ca_management_area">
@@ -294,7 +313,7 @@
 						<th>설정</th>
 					</tr>
 					<tr id="tr_empty_address" style="display: none;">
-						<td colspan="6">등록된 배송지가 없습니다!\n배송지를 등록해주세요.</td>
+						<td colspan="6">등록된 배송지가 없습니다!<br>배송지를 등록해주세요.</td>
 					</tr>
 					
 					<c:if test="${!empty AddressList}">
@@ -320,8 +339,15 @@
 		                        </td>
 								<td class="td_selnum">010-1234-1324</td>
 								<td class="td_option">
-									<button type="button">수정</button>
-									<button type="button">삭제</button>
+									<c:choose>
+										<c:when test="${a.def_add eq '1'}">
+											<button type="button">수정</button>
+										</c:when>
+										<c:otherwise>
+											<button type="button">수정</button>
+											<button type="button">삭제</button>
+										</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</c:forEach>
