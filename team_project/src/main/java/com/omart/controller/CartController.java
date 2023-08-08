@@ -57,8 +57,13 @@ public class CartController {
 	}
 	
 	@GetMapping("/change_address.do")
-	public String change_address(@RequestParam("m_idx") int m_idx, Model model) {
+	public String change_address(@RequestParam("m_idx") String m_idx, Model model) {
+		
+		List<AddressVo> AddressList = cAddress.AddressList(Integer.parseInt(m_idx));
+		
 		model.addAttribute("m_idx", m_idx);
+		model.addAttribute("AddressList", AddressList);
+		
 		return "cart/ChangeAddress";
 	}
 	
