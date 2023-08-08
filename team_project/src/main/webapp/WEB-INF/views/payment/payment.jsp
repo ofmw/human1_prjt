@@ -21,7 +21,8 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        min-width: 1280px;
+        min-width: 1240px;
+        align-items: center;
     }
     #div_payment{
         display: flex;
@@ -29,13 +30,15 @@
         justify-content: space-between;
         padding: 0 20px;
         margin-top: 20px;
+        width: 1240px;
     }
     #payment_main {
         width: 900px;
+        margin-top: 10px;
     }
     #tbl_paymentInfo{
-        width: 800px;
-        margin: 20px 0px;
+        width: 900px;
+        margin: 21px 0px;
         border-collapse: collapse;
     }
     #tbl_paymentInfo th{
@@ -43,10 +46,13 @@
         text-align: left;
         padding: 10px 0px;
     }
+    #tbl_paymentInfo tr:first-child th{
+        border-width: 2px;
+    }
     #tbl_paymentInfo tr:not(:last-child):not(:nth-last-child(2)) td {
 	    padding: 5px 0px;
 	    line-height: 20px;
- 	    border: 1px solid blue;
+/*  	    border: 1px solid blue; */
 /*         border-bottom: 1px solid lightgray; */
     }
     #tbl_paymentInfo td:first-child{
@@ -67,8 +73,8 @@
         color: gray;
     }
     #tbl_paymentInfo img{
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
     #request{
         border-color: lightgray;
@@ -402,7 +408,7 @@
 	                   <tr>
                         <td><img src="../resources/img/kakao_icon.png" alt="상품이미지" /></td>
                         <td>
-                           <h6>${c.brand}</h6>
+                           <h5>${c.brand}</h5>
                            <p>${c.p_name}</p>
                         </td>
                         <td>

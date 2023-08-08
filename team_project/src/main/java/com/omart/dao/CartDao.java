@@ -64,9 +64,11 @@ public class CartDao{
 		System.out.println("cartVo:"+cartVo.getM_idx()+", "+cartVo.getP_id()+", "+cartVo.getAmount());
 		CartVo checkVo = sqlSession.selectOne(MAPPER+".checkAmount", cartVo);
 		
-		if(cartVo.getAmount() + checkVo.getAmount() > 20) {
-			cartVo.setAmount(20 - checkVo.getAmount());
-		}
+		if(checkVo != null) {
+			if(cartVo.getAmount() + checkVo.getAmount() > 20) {
+				cartVo.setAmount(20 - checkVo.getAmount());
+			}
+		}		
 		
 		sqlSession.insert(MAPPER+".addCart", cartVo);
 	}
