@@ -115,7 +115,16 @@
         top: 50%;
         margin-top: -300px;
     }
-    #div_member_info p{
+    #div_inquiry_info{
+        position: absolute;
+	    width: 600px;
+	    height: 700px;
+	    background-color: white;
+	    left: 50%;
+	    top: 50%;
+	    transform: translate(-50%, -60%);
+    }
+    #div_member_info p, #div_inquiry_info p{
         font-size: 13px;
         line-height: 35px;      
         background-color: rgb(240, 240, 240);
@@ -124,24 +133,24 @@
         border-bottom: 1px solid lightgray;
         
     }
-    #tbl_contents_info{
+    #tbl_contents_info, #tbl_contents_inquiry {
         margin: 10px 0px;
     }    
-    #tbl_contents_info th, #tbl_contents_info td{
+    #tbl_contents_info th, #tbl_contents_info td, #tbl_contents_inquiry th, #tbl_contents_inquiry td {
 /*         border: 1px solid lightgray; */
         height: 32px;
         white-space: nowrap;
         font-size: 12px;
     }
-    #tbl_contents_info th{
+    #tbl_contents_info th, #tbl_contents_inquiry th{
         width: 80px;
         padding-right: 10px;
         text-align: right;
     }
-    #tbl_contents_info td{
+    #tbl_contents_info td, #tbl_contents_inquiry td{
         width: 150px;
     }
-    #tbl_contents_info input[type="text"]{
+    #tbl_contents_info input[type="text"], #tbl_contents_inquiry input[type="text"]{
         width: 150px;
         height: 25px;
         border: 1px solid lightgray;
@@ -161,6 +170,9 @@
 	   text-align: right;
 	   padding-top: 6px;
     }
+    #inquiry_content{
+    	resize: none;
+    }
     #btn_info, #btn_cancel{
        width: 80px;
        height: 27px;
@@ -175,53 +187,132 @@
        background-color: rgb(52, 152, 219);
        color: white;
     }
+    .btn_inquiry{
+    	background-color: transparent;
+   		min-width: 85px;
+   		border: none;
+	    cursor: pointer;
+	    color: blue;
+	    font-size: 12px;
+    }
     #btn_info:hover {
 	   background-color: rgb(42, 142, 209);
     }
     #btn_cancel:hover {
 	   background-color: rgb(230, 230, 230);
+    }
+    a{
+    	color: black;
     }    
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
-$(function(){
-	let divShadowInfo = document.getElementById("div_shadow_info");
-	let memberInfoBtns = document.querySelectorAll(".btn_memberInfo");
-	
-	memberInfoBtns.forEach(function(btn){
-		btn.addEventListener("click", function(){
-			divShadowInfo.style.display = "block";
-			
-			// 클릭된 버튼의 id를 가져옵니다.
-            let memberId = $(this).attr("id");                    
+$(function () {
+	  let divShadowInfo = document.getElementById("div_shadow_info");
+	  let memberInfoBtns = document.querySelectorAll(".btn_memberInfo");
+	  let inquiryBtns = document.querySelectorAll(".btn_inquiry");
 
-            // 해당 id를 가진 상품 행(tr)을 선택합니다.
-            let memberRow = $("#tbl_contents tr").filter(function() {
-                return $(this).find("td:nth-child(2)").text() === memberId;
-            });
-            
-            $("#name_info").val(memberRow.find("td:nth-child(4)").text().trim());
-            $("#m_id_info").val(memberId);
-            $("#selNum_info").val(memberRow.find("td:nth-child(7)").text().trim());
-            $("#grade_info").val(memberRow.find("td:nth-child(3)").text().trim());
-            $("#birth_info").val(memberRow.find("td:nth-child(5)").text().trim());                
-            $("#gender_info").val(memberRow.find("td:nth-child(6)").text().trim());
-            $("#j_date_info").val(memberRow.find("td:nth-child(9)").text().trim());
-            $("#e_date_info").val(memberRow.find("td:nth-child(10)").text().trim());
-            $("#platForm_info").val(memberRow.find("td:nth-child(13)").text().trim());
-            $("#a_date_info").val(memberRow.find("td:nth-child(11)").text().trim());
-            $("#a_state_info").val(memberRow.find("td:nth-child(12)").text().trim());
-            
-        });
+	  memberInfoBtns.forEach(function (btn) {
+	    btn.addEventListener("click", function () {
+	      // 클릭된 버튼의 id를 가져옵니다.
+	      let memberId = $(this).attr("id");
+	      // 해당 id를 가진 상품 행(tr)을 선택합니다.
+	      let memberRow = $("#tbl_contents tr").filter(function () {
+	        return $(this).find("td:nth-child(2)").text() === memberId;
+	      });
+	      // 고객 정보를 보여줍니다.
+	      $("#name_info").val(memberRow.find("td:nth-child(4)").text().trim());
+	      $("#m_id_info").val(memberId);
+	      $("#selNum_info").val(memberRow.find("td:nth-child(7)").text().trim());
+	      $("#grade_info").val(memberRow.find("td:nth-child(3)").text().trim());
+	      $("#birth_info").val(memberRow.find("td:nth-child(5)").text().trim());
+	      $("#gender_info").val(memberRow.find("td:nth-child(6)").text().trim());
+	      $("#j_date_info").val(memberRow.find("td:nth-child(9)").text().trim());
+	      $("#e_date_info").val(memberRow.find("td:nth-child(10)").text().trim());
+	      $("#platForm_info").val(memberRow.find("td:nth-child(13)").text().trim());
+	      $("#a_date_info").val(memberRow.find("td:nth-child(11)").text().trim());
+	      $("#a_state_info").val(memberRow.find("td:nth-child(12)").text().trim());
+	      divShadowInfo.style.display = "block";
+	    });
+	  });
+	  
+	  //문의 내용 보기
+	  let tableNameMap = {
+			  "inquiries" : "1:1",
+			  "qna" : "QA"
+	  }
+	  let categoryMap = {
+			  "2": "회원정보", 
+			  "3": "주문/결제/배송",
+			  "4": "취소/환불"
+	  };
+	  $(".btn_inquiry").click(function () {
+		    let tableNameId = $(this).data("table-name");
+		    let categoryId = $(this).data("category");
+		    let inquiryData = {
+		      tableName: tableNameMap[tableNameId],
+		      category: categoryMap[categoryId], //카테고리 번호 대신 카테고리 이름 가져옴
+		      p_id: $(this).data("p-id"),
+		      memberid: $(this).data("memberid"),
+		      name: $(this).data("name"),
+		      post_date: $(this).data("post-date"),
+		      title: $(this).data("title"),
+		      content: $(this).data("content")
+		    };
+
+		    // 문의 정보를 팝업 창에 표시
+		    showInquiryInfo(inquiryData);
+		    
+		 	// 제품코드 입력란의 보이거나 숨김 여부 설정
+		    if (tableNameId === "qna") {
+		        $("#tbl_contents_inquiry tr:nth-child(3)").show(); // 제품코드 행 보이기
+		    } else {
+		        $("#tbl_contents_inquiry tr:nth-child(3)").hide(); // 제품코드 행 숨기기
+		    }
+		  });
+
+		  function showInquiryInfo(inquiryData) {
+		    // 팝업 창에 문의 내용 표시
+		    $("#inquiry_table-name").val(inquiryData.tableName);
+		    $("#inquiry_category").val(inquiryData.category);
+		    $("#inquiry_p-id").val(inquiryData.p_id);
+		    $("#inquiry_id_info").val(inquiryData.memberid);
+		    $("#inquiry_name").val(inquiryData.name);
+		    $("#inquiry_post-date").val(inquiryData.post_date);
+		    $("#inquiry_title").val(inquiryData.title);
+		    $("#inquiry_content").val(inquiryData.content);
+
+		    // 팝업 창 표시
+		    $("#div_member_info").hide();
+		    $("#div_inquiry_info").show();
+		    divShadowInfo.style.display = "block";
+		  }
+
+	  let cancelBtn = document.getElementById("btn_cancel");
+	  let inquiryCancelBtn = document.getElementById("btn_save");
+	  
+	  cancelBtn.addEventListener("click", function () {
+	    divShadowInfo.style.display = "none";
+	    frm_info.reset();
+	    $("#div_member_info").show();
+	  });
+	  
+	  inquiryCancelBtn.addEventListener("click", function () {
+	    divShadowInfo.style.display = "none";
+	    frm_inquiry.reset();
+	    $("#div_inquiry_info").hide();
+	    $("#div_member_info").show();
+	  });
 	});
-	
-	let cancelBtn = document.getElementById("btn_cancel");
-	
-	cancelBtn.addEventListener("click", function(){
-		divShadowInfo.style.display = "none";
-		frm_info.reset();
-	});
-	
+///////////////////////////////////////////////////////////////////////////	
+	 $(function(){
+		 $("#btn_save").click(function(){
+			 let ans_content = $("#ans_content").val();
+			 let ans_date = $("#ans_date").val();
+		 })
+	 })
+
+///////////////////////////////////////////////////////////////////////////	
 	$("#btn_reset").click(function(){
         
         $("input[type='checkbox']").prop("checked", false);
@@ -272,7 +363,7 @@ $(function(){
         });
     }
     
-});
+
 </script>
 </head>
 <body>
@@ -354,7 +445,13 @@ $(function(){
                     <td>${item.m_id}</td>
                     <td>${item.m_name}</td>
                     <td>${item.title}</td>
-                    <td><a href="location">${item.content}</a></td>
+                    <td>
+                    	<button class="btn_inquiry" data-table-name="${item.tableName}" data-category="${item.category}" 
+                    	data-memberid="${item.m_id}" data-name="${item.m_name}" data-post-date="${item.post_date}" 
+                    	data-title="${item.title}" data-p-id="${item.p_id}" data-content="${item.content}">
+                    		문의내용 보기
+                    	</button>
+                    </td>
                     <td>
 						<c:choose>
 		                	<c:when test="${item.category eq '2'}">
@@ -373,7 +470,16 @@ $(function(){
                     </td>
                     <td></td>
                     <td><fmt:formatDate value="${item.post_date}" pattern="yyyy-MM-dd"/></td>
-                    <td>${item.p_id}</td>
+                    <td>
+						<c:choose>
+		                	<c:when test="${empty item.p_id}">
+						        -
+						    </c:when>
+						    <c:otherwise>
+						        ${item.p_id}
+						    </c:otherwise>
+		                </c:choose>
+					</td>
 	            </tr>
             </c:forEach>            
         </table>
@@ -443,6 +549,56 @@ $(function(){
 		       </table>
 	       </form>
 	    </div>
+	    
+	    <!--  문의내용 보기 폼 -->
+	    <div id="div_inquiry_info" style="display: none;">
+        <p>문의내용</p>
+	        <form action="" name="frm_inquiry">
+	            <table id="tbl_contents_inquiry">
+	                <!-- 문의내용과 관련된 필드들을 추가 -->
+	                <tr>
+	                    <th>게시판</th>
+	                    <td><input type="text" id="inquiry_table-name" disabled/></td>
+	                </tr>
+	                <tr>
+	                    <th>문의 카테고리</th>
+	                    <td><input type="text" id="inquiry_category" disabled/></td>
+	                </tr>
+	                <tr>
+	                    <th>제품코드</th>
+	                    <td><input type="text" id="inquiry_p-id" disabled/></td>
+	                </tr>
+	                <tr>
+	                    <th>아이디</th>
+	                    <td><input type="text" id="inquiry_id_info" disabled/></td>
+	                </tr>
+	                <tr>
+	                    <th>이름</th>
+	                    <td><input type="text" id="inquiry_name" disabled/></td>
+	                </tr>
+	                <tr>
+	                    <th>작성일</th>
+	                    <td><input type="text" id="inquiry_post-date" disabled/></td>
+	                </tr>
+	                <tr>
+	                    <th>제목</th>
+	                    <td><input type="text" id="inquiry_title" disabled/></td>
+	                </tr>
+	                <tr>
+	                    <th>문의 내용</th>
+	                    <td><textarea id="inquiry_content" disabled></textarea></td>
+	                </tr>
+	                <tr>
+	                	<td><input type="text"></td>
+	                </tr>
+	                <tr>
+	                	<td colspan="2">
+			               <input id="btn_save" type="button" value="확인"/>
+		               </td>
+	                </tr>
+	            </table>
+	        </form>
+    	</div>
     </div>
 </body>
 </html>

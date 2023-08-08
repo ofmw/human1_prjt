@@ -112,7 +112,7 @@ public class AjaxController {
 		int result = bfInsert.insertInquiry(boardFileVo);
 		
 		if(result == 1) {
-			viewPage = "redirect: list_faq_member.do";
+			viewPage = "redirect: list_inquiry.do";
 		}
 //		return viewPage;
 	}

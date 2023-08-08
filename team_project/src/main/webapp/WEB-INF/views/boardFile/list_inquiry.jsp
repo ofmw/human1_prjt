@@ -79,6 +79,7 @@
         width: 560px;
         font-size: 15px;
         border: none;
+        background-color: white;
     }
     #m_id:focus,#title,#content{
         outline: none;
@@ -153,7 +154,7 @@
  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
  <script>
  $(function(){
-	$("#smt_save").click(function(){
+	$("#btn_save").click(function(){
 		let category = $("#category").val();
 		let m_name = $("#m_name").val();
 		let title = $("#title").val();
@@ -177,7 +178,7 @@
 				data: formData,
 				success: function(response){
 					alert("저장되었습니다.")
-					location.href = "list_notice.do"
+					location.href = "list_faq_member.do"
 				},
 				error: function(error){
 					alert("실패했습니다.");
@@ -227,8 +228,8 @@
 			          <tr>
 			            <td>작성자</td>
 			            <td>
-			              <input type="text" id="m_id" name="m_id" required value="${member.m_name}">
-			              <input type="hidden" id="m_idx" name="m_idx" value="1">
+			              <input type="text" id="m_id" name="m_id" required value="${member.m_name}" disabled>
+			              <input type="hidden" id="m_idx" name="m_idx" value="${member.m_idx}">
 			            </td>
 			          </tr>
 			          <tr>
@@ -247,7 +248,7 @@
 			        </table>
 		        <div id="div_sbm">
 		            <input type="button" value="이전" id="btn_back">
-		            <input type="button" value="저장" id="smt_save">
+		            <input type="button" value="저장" id="btn_save">
 		        </div>
       		</div>
        </div>
