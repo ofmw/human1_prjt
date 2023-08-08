@@ -129,6 +129,9 @@
     .td_address_nickname .div_def_add{
         color: #e53838;
     }
+    .td_address_nickname .div_cur_add{
+        color: #00aeef;
+    }
     .td_address{
         padding: 15px 0;
         text-align: left;
@@ -206,6 +209,7 @@
 		let close_btn = $("#btn_close_window");
 		
 		close_btn.click(function() {
+			opener.document.location.reload();
 			self.close();
 	    });
 		
@@ -254,6 +258,97 @@
         const targetNode = document.querySelector('table'); // 감시할 DOM 요소
         const config = { childList: true }; // 감시할 변화 타입 설정
         observer.observe(targetNode, config); // Observer 시작
+        
+        /* ---------------------기본 배송지로 설정--------------------- */
+        
+        $("#btn_set_default").on("click", function(){
+        	
+        	let m_idx = parseInt($("#m_idx").val());
+        	let tr = $("input[type='radio']:checked").closest("tr");
+        	let a_name = tr.find(".a_name").val();
+        	let def_add = parseInt(tr.find(".def_add").val());
+        	
+        	if(def_add === 0) {
+				$.ajax({
+	        		type: "POST",
+	                url: "update_def_address.do", // AjaxCartController
+	                data: {
+	                	m_idx: m_idx,
+	                    a_name: a_name
+	                },
+	                success: function (response) { // 업데이트된 배송지 목록 객체 반환
+	                    if (response != null) { // 업데이트가 성공한 경우
+	                    	alert('기본 배송지가 "' +a_name+ '" (으)로 변경되었습니다.');
+	                    	checkRadio();
+	                 	    $("#ca_area").load(location.href + "#ca_m_table");
+							$("#ca_area").load(location.href + "#ca_selected_address");
+	                     } else {
+	                         alert("기본 배송지 업데이트에 실패하였습니다.");
+	                     }
+					},
+					error: function () {
+						alert("오류가 발생하였습니다.");
+					}
+				}); // end of ajax
+        	} else {
+        		alert("이미 기본배송지로 설정되어 있습니다.");
+        	}
+        });
+        
+        /* ---------------------현재 주문 배송지로 선택--------------------- */
+        $("#btn_set_current").on("click", function(){
+        	
+        	let tr = $("input[type='radio']:checked").closest("tr");
+        	let a_name = tr.find(".a_name").val();
+        	let flag = tr.find(".div_cur_add");
+        	
+        	if(flag.length === 0) {
+        	
+	        	$.ajax({
+	        		type: "POST",
+	                url: "set_cur_address.do", // AjaxCartController
+	                data: {
+	                    a_name: a_name
+	                },
+	                success: function (response) { // 업데이트된 배송지 목록 객체 반환
+	                    if (response === "success") { // 업데이트가 성공한 경우
+	                    	alert("현재 주문 배송지로 설정되었습니다.\n웹 브라우저를 종료할 경우 등록하신 기본 배송지로 재설정됩니다.");
+	                    	opener.document.location.reload();
+	                    	self.close();
+	                 	    //$("#ca_area").load(location.href + "#ca_m_table");
+							//$("#ca_area").load(location.href + "#ca_selected_address");
+	                     } else {
+	                         alert("현재 배송지로 설정에 실패하였습니다.");
+	                     }
+					},
+					error: function () {
+						alert("오류가 발생하였습니다.");
+					}
+				}); // end of ajax
+        	  	
+        	} else {
+        		alert("이미 현재 주문 배송지로 선택되었습니다.");
+        	} // end of flag
+        	
+        });
+        
+        /* ---------------------라디오 버튼 미리 선택--------------------- */
+        function checkRadio() {
+        	
+        	let divCurAdd = $(".div_cur_add");
+            let divDefAdd = $(".div_def_add");
+
+            if (divCurAdd.length === 0) {
+                let target = divDefAdd.closest("tr");
+                target.find(".sel_address").prop("checked", true);
+            } else {
+                let target = divCurAdd.closest("tr");
+                target.find(".sel_address").prop("checked", true);
+            }
+        }
+        
+        //*** 자식창이 열렸을 때 라디오 버튼 체크 확인 ***//
+        checkRadio();
 	});
 </script>
 
@@ -264,6 +359,7 @@
 
 	<div id="ca_header">
 		배송지 설정
+		<input type="hidden" id="m_idx" value="${m_idx}">
 	</div>
 
 	<div id="ca_section">
@@ -271,20 +367,36 @@
 		<div id="ca_selected_address">
 			<c:choose>
 				<c:when test="${!empty AddressList}">
-				
-					<c:choose>
-						<c:when test="${a}">
-							<div id="selected_address_title">현재 선택된 배송지</div>
-							<div id="selected_address_nickname">
-				                <span>[우리집]</span>
-				                <span>홍길동</span>
-				            </div>
-							<div id="selected_address_postnum">(31148)</div>
-							<div id="selected_address_1">도로명: 충청남도 천안시 동남구 ㅁㄴㅇㅁㄴㅇ</div>
-							<div id="selected_address_2">지번: 도로명: 충청남도 천안시 동남구 ㅁㄴㅇㅁㄴㅇ</div>
-						</c:when>
-					</c:choose>
 					
+					<c:forEach items="${AddressList}" var="a">
+						<c:choose>
+							<c:when test="${!empty current_add}">
+								<c:if test="${current_add eq a.a_name}">
+									<div id="selected_address_title">현재 선택된 배송지</div>
+									<div id="selected_address_nickname">
+						                <span>[${a.a_name}]</span>
+						                <span>홍길동</span>
+						            </div>
+									<div id="selected_address_postnum">(${a.postnum})</div>
+									<div id="selected_address_1">도로명: ${a.address}, ${a.detail}</div>
+									<div id="selected_address_2">지번: ${a.address}, ${a.detail}</div>
+								</c:if>
+							</c:when>
+							<c:otherwise>
+								<c:if test="${a.def_add eq '1'}">
+									<div id="selected_address_title">현재 선택된 배송지</div>
+									<div id="selected_address_nickname">
+						                <span>[${a.a_name}]</span>
+						                <span>홍길동</span>
+						            </div>
+									<div id="selected_address_postnum">(${a.postnum})</div>
+									<div id="selected_address_1">도로명: ${a.address}, ${a.detail}</div>
+									<div id="selected_address_2">지번: ${a.address}, ${a.detail}</div>
+								</c:if>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+										
 				</c:when>
 				<c:otherwise>
 					<div id="empty_selected_address">현재 선택된 배송지가 없습니다!</div>
@@ -321,13 +433,24 @@
 							<tr>
 								<td class="td_sel_address"><input type="radio" name="sel_address" class="sel_address"></td>
 								<td class="td_address_nickname">
+								<input type="hidden" class="a_name" value="${a.a_name}">
+								<input type="hidden" class="def_add" value="${a.def_add}">
 									<c:choose>
+										<c:when test="${a.def_add eq '1' and current_add eq a.a_name}">
+											<div class="div_def_add">기본배송지</div>
+											<div class="div_cur_add">현재배송지</div>
+											<div>${a.a_name}</div>
+										</c:when>
 										<c:when test="${a.def_add eq '1'}">
 											<div class="div_def_add">기본배송지</div>
 											<div>${a.a_name}</div>
 										</c:when>
+										<c:when test="${current_add eq a.a_name}">
+											<div class="div_cur_add">현재배송지</div>
+											<div>${a.a_name}</div>
+										</c:when>
 										<c:otherwise>
-											<div>우리집ㅁㅁㅁㅁ</div>
+											<div>${a.a_name}</div>
 										</c:otherwise>
 									</c:choose>
 								</td>

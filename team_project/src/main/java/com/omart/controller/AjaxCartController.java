@@ -3,6 +3,8 @@ package com.omart.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.omart.service.cart.CartService;
+import com.omart.vo.AddressVo;
 import com.omart.vo.CartVo;
 
 import lombok.Setter;
@@ -19,7 +22,7 @@ import lombok.Setter;
 public class AjaxCartController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private CartService cUpdate;
+	private CartService cUpdate, cAddress;
 
 	@PostMapping("/update_cart_amount.do")
 	public List<CartVo> updateCartAmount(@RequestParam("m_idx") int m_idx,
@@ -90,5 +93,21 @@ public class AjaxCartController {
 		    return null; // 또는 적절한 오류 처리를 수행한 후 리턴합니다.
 		}
 	    
+	}
+	
+	//기본 배송지 업데이트
+	@PostMapping("/update_def_address.do")
+	public List<AddressVo> updateDefAddress(@RequestParam("m_idx") int m_idx,
+											@RequestParam("a_name") String a_name) {
+		
+		cAddress.updateDefAddress(m_idx, a_name);
+		return cAddress.AddressList(m_idx);
+	}
+	
+	@PostMapping("/set_cur_address.do")
+	public String updateDefAddress(@RequestParam("a_name") String a_name, HttpSession session) {
+		
+		session.setAttribute("current_add", a_name);
+		return "success";
 	}
 }

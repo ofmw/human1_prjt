@@ -62,4 +62,13 @@
         WHERE m_idx = #{m_idx}
     </select>
     
+    <update id="updateDefAddress" parameterType="map">
+		UPDATE address
+	    SET def_add = CASE
+	        WHEN a_name = #{a_name} THEN 1
+	        ELSE 0
+	    END
+	    WHERE m_idx = #{m_idx}
+    </update>
+    
 </mapper>

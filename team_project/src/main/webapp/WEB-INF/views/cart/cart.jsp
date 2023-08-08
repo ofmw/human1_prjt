@@ -823,12 +823,17 @@
         	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
         	let url = "change_address.do?m_idx=" + $("#session_m_idx").val();
         	// 자식창을 열고 그 여부를 변수에 저장
-        	childWindow = window.open(url, '_blank', 'menubar=no,width=700,height=750');
+        	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
         	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
         }
         
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
         $("#change_address").on("click", openChangeAddress);
+        
+        //let current_add = opener.sessionStorage.getItem("current_add");
+        //sessionStorage.setItem("current_add", current_add);
+        
+        
         
 
     }); // end of jqeury
@@ -950,19 +955,38 @@
 	                            		
 		                            	<c:when test="${!empty AddressList}"><!-- 등록된 배송지가 있을 경우 -->
 											<c:forEach items="${AddressList}" var="a">
+											
 												<c:choose>
-													<c:when test="${a.def_add eq '1'}">
-							                            <div id="order-nav_address">
-							                                <div>
-							                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
-							                                	<span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
-							                                </div>
-							                                <div>
-							                                	<button type="button" id="change_address">배송지 변경</button>
-							                                </div>
-							                            </div>
-						                            </c:when>
+													<c:when test="${!empty current_add}">
+													
+														<c:if test="${current_add eq a.a_name}">
+															<div id="order-nav_address">
+								                                <div>
+								                                    <span id="address_preset">배송지: ${a.a_name}</span>
+								                                	<span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
+								                                </div>
+								                                <div>
+								                                	<button type="button" id="change_address">배송지 변경</button>
+								                                </div>
+								                            </div>
+														</c:if>
+													
+													</c:when>
+													<c:otherwise>
+														<c:if test="${a.def_add eq '1'}">
+								                            <div id="order-nav_address">
+								                                <div>
+								                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
+								                                	<span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
+								                                </div>
+								                                <div>
+								                                	<button type="button" id="change_address">배송지 변경</button>
+								                                </div>
+								                            </div>
+							                            </c:if>
+						                            </c:otherwise>
 					                            </c:choose>
+					                            
 			                            	</c:forEach>
 		                            	</c:when>
 		                            	

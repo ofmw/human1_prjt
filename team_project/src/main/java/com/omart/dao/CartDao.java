@@ -1,7 +1,9 @@
 package com.omart.dao;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -81,4 +83,12 @@ public class CartDao{
 		return vo;
 	}
 	
+	public void updateDefAddress(int m_idx, String a_name) {
+		
+		Map<String, Object> newDefAdd = new HashMap<>();
+		newDefAdd.put("m_idx", m_idx);
+		newDefAdd.put("a_name", a_name);
+		
+		sqlSession.update(MAPPER+".updateDefAddress", newDefAdd);
+	}
 }
