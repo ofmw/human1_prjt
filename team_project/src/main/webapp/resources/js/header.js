@@ -63,24 +63,28 @@ $(function() {
         showShadow();
     });
     
+    <!-- 장바구니 추가 메서드 -->
     addCart_btn.on("click", function(event){
         event.preventDefault();
         
         let m_idx = $("#m_idx").val();
-        let p_id = $(this).attr("id");        
+        let p_id = $(this).attr("id");
+        let amount = 1;
 
         $.ajax({
             type: "post",
             url: "cart/addCart.do",
-            data: {"m_idx": m_idx, "p_id": p_id},
+            data: {"m_idx": m_idx, "p_id": p_id, "amount": amount},
             success: function(response){
                 // 성공 시 처리할 로직
-                console.log("AJAX 요청 성공:", response);
-                showShadow_addCart();
+                console.log("AJAX 요청 성공:", response);                
             },
             error: function(error){
                 // 오류 시 처리할 로직
                 console.error("AJAX 오류 발생", error);
+            },
+            complete: function(complete){
+                showShadow_addCart();
             }
         }); <!-- end of ajax -->
         
@@ -90,31 +94,34 @@ $(function() {
         
         let m_idx = $("#m_idx").val();
         let p_id = $("#p_id").val(); 
+        let amount = $("#amount").val();
 
         $.ajax({
             type: "post",
             url: "cart/addCart.do",
-            data: {"m_idx": m_idx, "p_id": p_id},
+            data: {"m_idx": m_idx, "p_id": p_id, "amount": amount},
             success: function(response){
                 // 성공 시 처리할 로직
                 console.log("AJAX 요청 성공:", response);
-                showShadow_addCart();
             },
             error: function(error){
                 // 오류 시 처리할 로직
                 console.error("AJAX 오류 발생", error);
+            },
+            complete: function(complete){
+                showShadow_addCart();
             }
         }); <!-- end of ajax -->
         
     });
     
-    addWish_btn.on("click", function(event){
+    addWish_btn.on("click", function(){
         let m_idx = $("#m_idx").val();
         let p_id = $("#p_id").val();
         
         $.ajax({
             type: "post",
-            url: "${pageContext.request.contextPath}/member/addWish.do",
+            url: "/addWish.do",
             data: {m_idx: m_idx, p_id: p_id},
             success: function(response){
                 console.log("AJAX 요청 성공:", response);

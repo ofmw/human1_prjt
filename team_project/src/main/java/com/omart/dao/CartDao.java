@@ -61,7 +61,13 @@ public class CartDao{
 	
 	//해당 회원의 장바구니에 상품 추가
 	public void addCart(CartVo cartVo) {
-		System.out.println("cartVo:"+cartVo.getM_idx()+", "+cartVo.getP_id());
+		System.out.println("cartVo:"+cartVo.getM_idx()+", "+cartVo.getP_id()+", "+cartVo.getAmount());
+		CartVo checkVo = sqlSession.selectOne(MAPPER+".checkAmount", cartVo);
+		
+		if(cartVo.getAmount() + checkVo.getAmount() > 20) {
+			cartVo.setAmount(20 - checkVo.getAmount());
+		}
+		
 		sqlSession.insert(MAPPER+".addCart", cartVo);
 	}
 	

@@ -74,4 +74,9 @@ public class AjaxMemberController {
             return "failure";
         }
     }
+	
+	@PostMapping("/**/addWish.do")
+	public void addWish() {
+		
+	}
 }

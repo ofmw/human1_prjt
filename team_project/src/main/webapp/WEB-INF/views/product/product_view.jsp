@@ -317,14 +317,14 @@
 	    height: 25px;
 	    margin-left: -1px;
 	}
-	.btn_amount:nth-child(1) {
+	.btn_plus:nth-child(1), .btn_minus:nth-child(1) {
 	    width: 27px;
 	    font-size: 30px;
 	    line-height: 15px;
 	    background-color: white;     
 	    cursor: pointer;       
 	}
-	.btn_amount:nth-child(3) {
+	.btn_plus:nth-child(3), .btn_minus:nth-child(3) {
 	    width: 27px;
 	    font-size: 20px;
 	    line-height: 15px;
@@ -340,7 +340,7 @@
 	   text-align: center;
 	}
 	#div_main_price_area{
-	   border: 1px solid red;
+/* 	   border: 1px solid red; */
 	   margin-left: 10px;	
 	   font-size: 14px;
 	   width: 500px;	
@@ -392,6 +392,55 @@
         scrollProduct.addEventListener("click", function(){
             window.scrollTo({ top: 705, behavior: 'smooth' });
         });
+        
+        let minusBtn = $(".btn_minus");
+        let plusBtn = $(".btn_plus");
+        let amount = $(".input_amount");
+        
+        minusBtn.on("click",function(){
+       		if(amount.val()>1){
+       			amount.val(amount.val()-1);
+            }
+            
+        });
+        
+        plusBtn.on("click",function(){
+       		if(amount.val()<20){
+                amount.val(parseInt(amount.val())+1);
+            }else{
+                alert("상품 최대 구매갯수는 20개입니다.");
+            }            
+        });
+        
+        amount.each(function(){
+        	let p = $(this);
+        	
+        	p.on("blur", function(){
+        		if(p.val()>20){
+        			amount.val(20);
+                    alert("상품 최대 구매갯수는 20개입니다.");
+        		}else if(p.val()<1 || p.val() == ""){
+                    amount.val(1);
+        		}else{
+                    amount.val(p.val());
+                }
+        		
+        	});
+        	
+        });
+        
+        let buyThisBtn = $(".btn_buyThis");
+        
+        buyThisBtn.on("click", function(){        	
+        	
+        	let frm_buyThis = $("#frm_buyThis");
+        	
+        	frm_buyThis.attr("action", "../payment/payment.do");
+        	
+        	frm_buyThis.submit();
+        	        	
+        });
+        
     }
 </script>
 </head>
@@ -403,8 +452,7 @@
     <div id="div_preview">
         <img src="" alt="">
     </div>
-    <div id="div_buy_main">
-        <input type="hidden" id="p_id" value="${product.p_id}"/>
+    <div id="div_buy_main">        
         <p>${product.brand}</p>
         <h1>${product.p_name}</h1>
         <h3>★★★★★ 5.0</h3>
@@ -426,15 +474,18 @@
             </option>
         </select>
         <br>
-        <div id="div_main_price_area">
-            ${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}
-            <fieldset>
-                <input type="button" class="btn_amount" id="btn_minus" value="-">
-                <input type="text" value="1">
-                <input type="button" class="btn_amount" id="btn_miplus" value="+">
-            </fieldset>
-            <div><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</div>
-        </div>
+        <form id="frm_buyThis">
+            <div id="div_main_price_area">
+	            <input type="hidden" id="p_id" value="${product.p_id}"/>
+	            ${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}
+	            <fieldset>
+	                <input type="button" class="btn_minus" value="-">
+	                <input type="text" class="input_amount" value="1" id="amount">
+	                <input type="button" class="btn_plus" value="+">
+	            </fieldset>
+	            <div><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</div>
+	        </div>
+        </form>        
         <br>
         <c:choose>
             <c:when test="${empty member}">
@@ -471,9 +522,9 @@
             <h4>${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}</h4>
             <div class="div_price">
                 <fieldset>
-                    <input type="button" class="btn_amount" value="-">
-                    <input type="text" value="1">
-                    <input type="button" class="btn_amount" value="+">
+                    <input type="button" class="btn_minus" value="-">
+                    <input type="text" class="input_amount" value="1">
+                    <input type="button" class="btn_plus" value="+">
                 </fieldset>
                 <h3><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h3>
             </div>
@@ -488,7 +539,7 @@
 		        <div class="need_login btn2" id="div_buy_btn">구매하기</div>
             </c:when>
             <c:otherwise>
-                <div class="btn2" id="div_wish_btn">
+                <div class="btn_addWish btn2" id="div_wish_btn">
                     <c:choose>
                         <c:when test="${not empty wishList and wishList.contains(product.p_id)}">
                            <span style="color: red;">♥</span>
@@ -497,7 +548,7 @@
                     </c:choose>
                 </div>
 		        <div class="btn_addCart2 btn2" id="div_cart_btn">장바구니</div>
-		        <div class="btn2" id="div_buy_btn">구매하기</div>
+		        <div class="btn_buyThis btn2" id="div_buy_btn">구매하기</div>
             </c:otherwise>
         </c:choose>        
     </div>

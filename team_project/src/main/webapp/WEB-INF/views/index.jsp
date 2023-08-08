@@ -30,7 +30,6 @@
         flex-direction: column;
         align-items: center;
         margin-bottom: 100px;
-
         width: 100%;
         min-width: 1280px;
     }
@@ -478,10 +477,10 @@
                                     <div class="p_img"><img src="#" alt="상품 이미지">
                                     <c:choose>
                                             <c:when test="${empty member}">
-                                                <input class="need_login" id="${saleList[i].p_id}" type="button" value="C"/>
+                                                <input class="need_login" id="${newList[i].p_id}" type="button" value="C"/>
                                             </c:when>
                                             <c:otherwise>
-                                                <input class="btn_addCart" id="${saleList[i].p_id}" type="button" value="C"/>
+                                                <input class="btn_addCart" id="${newList[i].p_id}" type="button" value="C"/>
                                             </c:otherwise>
                                         </c:choose>                                     
                                     </div>

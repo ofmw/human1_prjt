@@ -75,4 +75,10 @@ public class HomeController {
 		return "member/logout.jsp?referer="+referer;
 	}
 	
+	//임시
+	@GetMapping("/**/payment.do")
+	public String payment() {
+		return "payment/payment";
+	}
+	
 }

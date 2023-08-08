@@ -20,7 +20,7 @@ import com.omart.vo.MemberVo;
 import lombok.Setter;
 
 @Controller
-@RequestMapping("/cart")
+@RequestMapping("**/cart")
 public class CartController {
 	
 	@Setter(onMethod_= {@Autowired})	
