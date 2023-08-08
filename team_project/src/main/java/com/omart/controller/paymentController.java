@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.omart.service.cart.CartService;
+import com.omart.service.member.MemberService;
 import com.omart.vo.AddressVo;
 import com.omart.vo.CartVo;
 import com.omart.vo.MemberVo;
@@ -23,6 +24,8 @@ public class paymentController {
 	
 	@Setter(onMethod_= {@Autowired})	
 	private CartService cList, cAdd, cAddress;
+	@Setter(onMethod_= {@Autowired})	
+	private MemberService mBenefit;
 	
 	//결제 페이지
 	@GetMapping("/payment.do")
@@ -34,10 +37,11 @@ public class paymentController {
 			
 			List<CartVo> CartList = cList.CartList(m_idx);
 			List<AddressVo> AddressList = cAddress.AddressList(m_idx);
+			member.setPoint(mBenefit.getPoint(m_idx));
 			
 			model.addAttribute("CartList", CartList);
 			model.addAttribute("AddressList", AddressList);
-
+			
 		}
 		
 		return "payment/payment";

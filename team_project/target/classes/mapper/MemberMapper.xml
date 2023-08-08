@@ -56,4 +56,8 @@
     <select id="getWishList" parameterType="_int" resultType="wishVo">
         select * from wish where m_idx = #{m_idx}
     </select>
+    
+    <select id="getPoint" parameterType="_int" resultType="_int">
+        select point from point where m_idx = #{m_idx}
+    </select>
 </mapper>

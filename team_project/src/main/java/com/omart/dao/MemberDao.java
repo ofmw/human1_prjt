@@ -32,8 +32,6 @@ public class MemberDao{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("m_id", member_id);
 		
-		MemberVo vo = sqlSession.selectOne(MAPPER+".login", map); 
-
 		return sqlSession.selectOne(MAPPER+".login", map);
 	}
 	  
@@ -55,6 +53,17 @@ public class MemberDao{
 		}
 		
 		return wishList;
+	}
+	
+	//포인트 조회
+	public int getPoint(int m_idx) {
+		int point = 0;
+		
+		if(sqlSession.selectOne(MAPPER+".getPoint", m_idx) != null) {
+			point = sqlSession.selectOne(MAPPER+".getPoint", m_idx);
+		}
+		
+		return point;
 	}
 	
 }

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,11 +52,19 @@
     #tbl_paymentInfo td:first-child{
         width: 120px;
     }
+    #tbl_paymentInfo tr td:last-child{
+        width: 150px;
+    }
+    #tbl_paymentInfo tr:not(:last-child) td:last-child *{
+        margin-left: 15px;
+    }
     #tbl_paymentInfo p{
         font-size: 12px;
     }
     #tbl_paymentInfo span{
-        font-size: 13px;
+        font-size: 12px;
+        text-decoration: line-through;
+        color: gray;
     }
     #tbl_paymentInfo img{
         width: 100px;
@@ -205,6 +214,43 @@
 	   background-color: #222 !important;
 	   color: white;
     }
+    #point_container{
+        display: flex;
+        align-items: center;
+    }
+    #point_container span:first-child {
+        border: 1px solid lightgray;
+        border-right: none;
+        border-radius: 0px;
+        width: 150px;
+        height: 25px; 
+        text-decoration: none;   
+        display: flex;
+        align-items: center;    
+    }
+    #point_container span span{
+        color: black;
+        text-decoration: none;   
+        margin-left: 5px;
+    }
+    #point_container span input{
+        outline: none;
+        width: 120px;
+        height: 22px;
+        margin-left: 5px;
+        border: none;
+        text-align: right;
+    }
+    #point_container input[type="button"]{
+        width: 100px;
+        height: 27px;
+        font-size: 12px;
+        border-radius: 0px;
+        border: 1px solid lightgray;
+        cursor: pointer;
+        background-color: rgb(245, 245, 245);
+        margin-right: 10px;
+    }
     
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -262,6 +308,48 @@
         
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
         $("#change_address").on("click", openChangeAddress);
+        
+        $("#input_point").on("input", function(){
+        	let inputValue = $(this).val().replace(/\D/g, '');
+
+            $(this).val(Number(inputValue).toLocaleString());
+        	
+        });
+        
+        $("#input_point").on("blur", function(){
+            let mPoint = parseInt($("#mPoint").val());
+            let inputValue = parseInt($(this).val().replace(/\D/g, ''));
+            
+            if(inputValue > mPoint){
+            	$(this).val(Number(mPoint).toLocaleString());
+            }
+            
+            dc_final();
+            
+        });
+        
+        $("#use_allPoint").on("click", function(){
+        	let mPoint = parseInt($("#mPoint").val());
+        	
+        	$("#input_point").val(Number(mPoint).toLocaleString());   
+        	
+        	dc_final();
+        	
+        });
+        
+        function dc_final(){
+        	let dc_product = parseInt($("#discount_product").val());
+        	let inputPoint = parseInt($("#input_point").val().replace(/\D/g, ''));
+        	let dc_final = dc_product + inputPoint;
+        	let price_before = parseInt($("#price_before").val().replace(/\D/g, ''));
+        	let price_final = price_before - dc_final;
+        	
+        	$("#dc_final").text(" -"+Number(dc_final).toLocaleString()+"원");
+        	$("#dc_final_nav").text(" -"+Number(dc_final).toLocaleString()+"원");
+        	$("#payment-price").text(Number(price_final).toLocaleString());
+        	$("#btn_payment_main").text(Number(price_final).toLocaleString()+"원 결제하기");
+        	
+        }
 		
 	});
 </script>
@@ -305,8 +393,11 @@
 	                    <td></td>
 	                </tr>
 	                <tr>
-	                    <th colspan="3"><h3>주문상품:1개</h3></th>
+	                    <th colspan="3"><h3>주문상품: ${fn:length(CartList)}개</h3></th>
 	                </tr>
+	                <c:set var="price_before" value="0"></c:set>
+	                <c:set var="price_final" value="0"></c:set>
+	                <c:set var="discount_product" value="0"></c:set>
 	                <c:forEach items="${CartList}" var="c">
 	                   <tr>
                         <td><img src="../resources/img/kakao_icon.png" alt="상품이미지" /></td>
@@ -314,7 +405,16 @@
                            <h6>${c.brand}</h6>
                            <p>${c.p_name}</p>
                         </td>
-                        <td></td>
+                        <td>
+                            <c:set var="discount" value="${(c.price*(c.discount/100))*c.amount}"></c:set>
+                            <c:set var="price_discount" value="${(c.price*c.amount)- discount}"></c:set>                            
+                            <h4><fmt:formatNumber value="${price_discount}" pattern="#,###" />원</h4>
+                            <span><fmt:formatNumber value="${c.price*c.amount}" pattern="#,###" />원</span>
+                            <p>${c.amount}개</p>
+                            <c:set var="price_before" value="${price_before+c.price*c.amount}"></c:set>
+                            <c:set var="price_final" value="${price_final+price_discount}"></c:set>
+                            <c:set var="discount_product" value="${discount_product+discount}"></c:set>
+                        </td>
                     </tr>
 	                </c:forEach>	                
 	                <tr>
@@ -322,13 +422,13 @@
 	                </tr>
 	                <tr>
 	                    <td><h6>주문금액</h6></td>
-	                    <td><h4>주문금액</h4></td>
-	                    <td></td>
+	                    <td><h4><fmt:formatNumber value="${price_before}" pattern="#,###" />원</h4></td>
+	                    <td><input id="price_before" type="hidden" value="${price_before}"/></td>
 	                </tr>
 	                <tr>
 	                    <td><h6>상품할인</h6></td>
-	                    <td><span>할인금액</span></td>
-	                    <td></td>
+	                    <td><p>- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</p></td>
+	                    <td><input id="discount_product" type="hidden" value="${discount_product}"/></td>
 	                </tr>
 	                <tr>
 	                    <td><h6>쿠폰할인</h6></td>
@@ -337,12 +437,17 @@
 	                </tr>
 	                <tr>
 	                    <td><h6>포인트사용</h6></td>
-	                    <td></td>
+	                    <td id="point_container">	                       
+	                       <span><input id="input_point" type="text"/><span>원</span></span>	                       
+	                       <input id="use_allPoint" type="button" value="전체사용"/>
+	                       <p>(잔여: <fmt:formatNumber value="${member.point}" pattern="#,###" />원)</p>
+	                       <input id="mPoint" type="hidden" value="${member.point}"/>
+	                    </td>
 	                    <td></td>
 	                </tr>
 	                <tr>
-                        <td><h6>총 할인금액</h6></td>
-                        <td></td>
+                        <td><h6>할인금액</h6></td>
+                        <td><h4 id="dc_final">- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</h4></td>
                         <td></td>
                     </tr>
 	                <tr>
@@ -357,7 +462,7 @@
 	                </tr>
 	                <tr>
                         <td colspan="3">
-                           <button id="btn_payment_main">원 결제하기</button>
+                           <button id="btn_payment_main"><fmt:formatNumber value="${price_before - discount_product}" pattern="#,###" />원 결제하기</button>
                         </td>
                         
                     </tr>
@@ -427,15 +532,15 @@
 
                 <!-- 주문 정보 -->
                 <div id="order-nav_product">
-                    <div id="product_total">전체상품: <span></span>개</div>
+                    <div id="product_total">전체상품: <span>${fn:length(CartList)}</span>개</div>
                     <div id="product_detail">
                         <div id="product_ordered-price">
                             <span>주문금액</span>
-                            <span id="ordered-price"></span>
+                            <span id="ordered-price"><fmt:formatNumber value="${price_before}" pattern="#,###" />원</span>
                         </div>
                         <div id="product_discount-price">
-                            <span>상품할인</span>
-                            <span>-0 원</span>
+                            <span>할인금액</span>
+                            <span id="dc_final_nav">- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</span>
                         </div>
                         <div id="product_shipping-fee">
                             <span>배송비</span>
@@ -445,7 +550,7 @@
                     <div id="product_payment-price">
                         <span>결제예정금액</span>
                         <span>
-                            <span id="payment-price" style="font-size:22px;font-weight:bold;"></span>
+                            <span id="payment-price" style="font-size:22px;font-weight:bold;"><fmt:formatNumber value="${price_before - discount_product}" pattern="#,###" /></span>
                             <span id="won" style="font-size:15px;font-weight:100;">원</span>
                         </span>
                     </div>
