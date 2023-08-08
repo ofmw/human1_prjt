@@ -77,14 +77,7 @@
 	                        		<a href="mypage/mypage.do">ㅁ</a>
 	                        	</c:otherwise>
 	                        </c:choose>
-	                        <c:choose>
-	                           <c:when test="${empty member}">
-	                               <a class="need_login">카</a>
-	                           </c:when>
-	                           <c:otherwise>
-	                               <a href="cart/cart.do">카</a>
-	                           </c:otherwise>
-	                        </c:choose>	                        
+	                        <a href="cart/cart.do">카</a>
 	                        <a href="">ㅇ</a>
 	                    </div>
 					</div>

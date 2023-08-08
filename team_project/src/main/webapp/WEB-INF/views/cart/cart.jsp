@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>상품 페이지</title>
+    <title>오!마트 - 장바구니</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     
@@ -78,6 +78,9 @@
     #cart_plist_header_opt_box label{
         padding-right: 10px;
         user-select: none;
+    }
+    #sel_box{
+    	user-select: none;
     }
     #sel_all{
         position: relative;
@@ -261,6 +264,11 @@
     .calprice{
         font-size: 22px;
     }
+    /* 상품 개당 가격 */
+    .td_odinfo_op{
+    	font-size: 11px;
+    	color: #888
+    }
     /* 수량 조절 */
     .td_odinfo_amount{
         display: flex;
@@ -354,65 +362,88 @@
 <script>
     $(function() {
     	
-    	//배송비
+    	//*** 배송비 (수정시 전체 반영) ***//
     	const shipping_fee = 3000;
-        /* ---------------------상품 수량 조절--------------------- */
-        // + 버튼 클릭 이벤트 처리
-        
 
         /* ---------------------상품 선택 체크박스------------------- */
-        // "전체 선택" 체크박스 클릭 이벤트 처리
+        //*** "전체선택" 체크박스 클릭 이벤트 처리 ***//
         $("#sel_all").click(function() {
-            // 전체 선택 체크박스의 상태를 가져옵니다.
-            var isChecked = $(this).prop("checked");
-            // class가 "sel_product"인 모든 체크박스를 선택 또는 해제합니다.
+
+            // "전체선택" 체크박스의 checked 속성값 가져옴 (체크여부 따라 true / false)
+            let isChecked = $(this).prop("checked");
+
+            // class가 "sel_product"인 모든 체크박스를 선택 또는 해제
             $(".sel_product").prop("checked", isChecked);
         });
 
-        // 개별 상품 체크박스 클릭 이벤트 처리 (옵션)
+
+        //*** 개별 상품 체크박스 클릭 이벤트 처리 ***//
         $(".sel_product").click(function() {
-            // 개별 상품 체크박스가 모두 선택되었는지 확인합니다.
-            var allChecked = $(".sel_product:checked").length === $(".sel_product").length;
-            // "전체 선택" 체크박스의 상태를 개별 상품 체크박스들과 동기화합니다.
+
+            // 개별 상품 체크박스가 모두 선택되었는지 확인
+            let allChecked = $(".sel_product:checked").length === $(".sel_product").length;
+
+            // "전체선택" 체크박스의 상태를 개별 상품 체크박스들과 동기화
+            // 모든 개별 상품이 체크되어 있으면 "전체선택"의 checked 속성이 true
+            // 하나라도 체크가 풀려 있으면 "전체선택"의 checked 속성이 false
             $("#sel_all").prop("checked", allChecked);
         });
 
-        // 삭제 버튼 클릭 이벤트 처리
-        $(".td_delete button").click(function() {
+        /* ---------------------장바구니 상품 삭제------------------- */
+        //*** 장바구니 테이블에서 해당 상품 삭제 메서드 ***//
+        // 매개변수로 html 테이블의 각 행의 m_idx, p_id가 담긴 배열을 사용
+        function removeCart(mIdxArray, pIdArray) {
             
-        	let m_idx = parseInt($(this).closest('tr').find('.m_idx').val());
-        	let p_id = $(this).closest('tr').find('.p_id').val();
-        	
-        	removeCart(m_idx, p_id);
-
-         	// 해당 버튼이 속한 tr 요소를 찾아서 삭제합니다.
-            $(this).closest("tr").remove();
-         	
-            updateTotalOrderedPrice();
-        });
-        
-        function removeCart(m_idx, p_id) {
             $.ajax({
                 type: "POST",
-                url: "remove_cart.do", // 증감된 값을 데이터베이스에 업데이트하는 서버 사이드 코드
+                url: "remove_cart2.do", // AjaxCartController
                 data: {
-                	"m_idx": m_idx,
-                    "p_id": p_id
+                	m_idx: mIdxArray,
+                    p_id: pIdArray
                 },
-                success: function (response) {
-                   if (response != null) {
-                	   	sessionStorage.setItem("cartList", response);
+                success: function (response) { // 해당 상품이 삭제된 새로운 장바구니 객체 반환
+                   if (response != null) { // 삭제가 성공한 경우
+                	   	sessionStorage.setItem("cartList", response); // 세션 객체 업데이트
                     } else {
                         alert("장바구니 품목 삭제에 실패하였습니다.");
                     }
-                }.bind(this),
+                }.bind(this), // "삭제하기" 버튼이 속한 행으로 한정
                 error: function () {
                     alert("오류가 발생하였습니다.");
                 }
-            });
-        }
+            }); // end of ajax
+        } // end of removeCart()
 
-        //sel_delete 버튼 클릭 이벤트 처리 (sel_product 체크된 항목 삭제)
+
+        //*** 각 행의 "삭제하기" 버튼 클릭 이벤트 처리 ***//
+        $(".td_delete button").click(function() {
+            
+            // 상품 삭제 여부 결정
+            let confirmed = confirm("해당 상품을 삭제하시겠습니까?");
+
+            // "확인" 을 눌렀을 경우
+            if (confirmed) {
+
+                // "삭제하기" 버튼이 속한 행의 장바구니 정보 저장
+                let mIdxArray = [parseInt($(this).closest('tr').find('.m_idx').val())];
+                let pIdArray = [$(this).closest('tr').find('.p_id').val()];
+                
+                // 장바구니 상품 삭제 메서드
+                removeCart(mIdxArray, pIdArray);
+
+                // 해당 버튼이 속한 tr 삭제
+                $(this).closest("tr").remove();
+                
+                /*** 삭제 후 페이지 정보 갱신 ***/
+                checkEmptyCart();           // 빈 장바구니 체크
+                updateNav();  // 주문정보 내비게이션 갱신
+
+            } // end of if (confirmed)
+
+        });
+        
+        
+        //*** "선택품목 삭제" 버튼 클릭 이벤트 처리 (.sel_product 체크된 항목 삭제) ***//
         $("#sel_delete").click(function() {
             //class가 sel_product인 체크박스 중 체크된 항목들을 선택합니다.
             let checkedProducts = $(".sel_product:checked");
@@ -436,55 +467,72 @@
                     // 해당 버튼이 속한 tr 요소를 삭제합니다.
                     $(this).closest("tr").remove();
 
-                    // AJAX를 이용하여 remove_cart.do에 삭제 요청을 보냅니다.
-                    $.ajax({
-                        type: "POST",
-                        url: "remove_cart.do",
-                        data: {
-                            m_idx: m_idx,
-                            p_id: p_id
-                        },
-                        success: function(response) {
-                            if (response != null) {
-                                sessionStorage.setItem("cartList", response);
-                            } else {
-                                alert("장바구니 품목 삭제에 실패하였습니다.");
-                            }
-                        },
-                        error: function() {
-                            alert("오류가 발생하였습니다.");
-                        }
-                    });
-                });
-            } else {
+            // class가 sel_product인 체크박스 중 체크된 항목들을 선택
+            let checkedProducts = $(".sel_product:checked");
+
+            // 체크된 항목이 있는지 확인
+            if(checkedProducts.length > 0){ // 체크된 항목이 있을 경우
+
+                // 품목 삭제 여부 결정
+                let confirmed = confirm("선택한 품목을 삭제하시겠습니까?");
+
+                // "확인" 을 눌렀을 경우
+                if (confirmed) {
+
+                    // 선택된 행들의 정보 담을 배열 초기화
+                    let mIdxArray = [];
+                    let pIdArray = [];
+
+                    // 선택된 체크박스들이 속한 각각의 행에 대한 함수
+                    checkedProducts.each(function() {
+
+                        // each()로 선택된 행의 정보 배열에 저장
+                        let m_idx = parseInt($(this).closest("tr").find(".m_idx").val());
+                        let p_id = $(this).closest("tr").find(".p_id").val();
+                        mIdxArray.push(m_idx);
+                        pIdArray.push(p_id);            
+
+                        // each()로 선택된 행을 삭제
+                        $(this).closest("tr").remove();
+
+                    }); // end of .each()
+
+                    // 장바구니 테이블에 삭제 요청
+                    removeCart(mIdxArray, pIdArray);
+
+                    /*** 삭제 후 페이지 정보 갱신 ***/
+                    checkEmptyCart();           // 빈 장바구니 체크
+                    updateNav();  // 주문정보 내비게이션 갱신
+
+                } // end of if (confirmed)
+            } else { // 체크된 항목이 없을 경우
+
                 alert("삭제할 품목을 선택해주세요.");
-            }
-                        
-/*             // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
-            var formattedPrice = new Intl.NumberFormat("ko-KR").format(newOrderPrice);
-            $("#ordered-price").text(formattedPrice + " 원"); */
-            
-            updateTotalOrderedPrice();
+            } // end of if (checkedProducts.length > 0)
             
         });
 
-        /* ---------------------주문정보 네비게이션--------------------- */
+        /* ---------------------주문정보 내비게이션--------------------- */
+        //*** 주문정보 내비게이션 상단 고정 ***//
         $(window).scroll(function() {
             let ordernav = $("#cart_main_order-nav");
 
+            // 스크롤이 헤더 높이보다 아래로 내려올 경우 (139px)
             if ($(window).scrollTop() >= 139) {
+
                 ordernav.css({
-                    "position": "sticky",
-                    "top": "0",
+                    "position": "sticky", // 내비게이션 포지션 속성 변경
+                    "top": "0", // 내비게이션 화면 상단 고정
                 });
 
-            } else {
-                ordernav.css("position", "static");
+            } else { // 스크롤이 헤더 높이보다 위에 있을 경우
+                ordernav.css("position", "static"); // 내비게이션 포지션 속성 초기화
             }
+
         });
 
         /* ---------------------버튼 색상 변경--------------------- */
-        // 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리
+        //*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
         $("button").mouseenter(function() {
             $(this).css({
                 "background-color": "#222",
@@ -492,7 +540,8 @@
                 });
         });
 
-        // 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리
+
+        //*** 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
         $("button").mouseleave(function() {
             $(this).css({
                 "background-color": "",
@@ -501,180 +550,307 @@
         });
 
         /* ---------------------빈 장바구니 표시--------------------- */
-        // 테이블의 tr 요소 개수를 확인하는 함수
+        //*** 테이블의 tr 요소 개수 확인 ***//
         function countVisibleRows() {
+            // 숨김처리된 #tr_empty_cart 행을 제외한 나머지 행의 개수 반환
             return $('table tr:not(#tr_empty_cart)').length;
         }
-        // tr_empty_cart를 보이도록 처리하는 함수
+        //*** tr_empty_cart를 보이도록 처리 ***//
         function showEmptyCartRow() {
             $('#tr_empty_cart').show();
         }
-        // tr_empty_cart를 숨기도록 처리하는 함수
+        //*** tr_empty_cart를 숨기도록 처리하는 함수 ***//
         function hideEmptyCartRow() {
             $('#tr_empty_cart').hide();
         }
-        // 페이지 로딩 시 tr_empty_cart를 체크하고 필요에 따라 보이기/숨기기 처리
+        //*** 장바구니를 품목 개수 체크 및 .tr_empty_cart 표시여부 결정 ***//
         function checkEmptyCart() {
-            var rowCount = countVisibleRows();
-            if (rowCount === 0) {
+
+            // 테이블의 행의 개수 확인
+            let rowCount = countVisibleRows();
+
+            if (rowCount === 0) { // 장바구니가 비었을 경우
                 showEmptyCartRow();
-            } else {
+            } else { // 장바구니에 상품이 1개 이상일 경우
                 hideEmptyCartRow();
             }
         }
-        // 페이지 로딩 시 tr_empty_cart를 체크하고 초기 처리
+
+        // 페이지 로드 시 장바구니 상품 개수 확인 후 초기 처리
         checkEmptyCart();
-        // tr이 추가되거나 삭제될 때마다 tr_empty_cart를 체크하고 처리
-        $('table').on('DOMSubtreeModified', function() {
-            checkEmptyCart();
-        });        
-        
-     	// 페이지 로드 시 기존 값들을 합산하여 #product_total에 표시
-        calculateTotal();
-        updateTotalOrderedPrice();
-		
-        function calculateTotalPrice(price, amount){
-        	let calprice = price * amount;
-        	console.log("가격: " +price);
-        	console.log("수량: " +amount);
-        	console.log("계산 결과: " +calprice);
-        	return calprice; 
-        }
-        
-        function calculateTotal() {
-            // plist_amount_value의 모든 요소들을 선택하여 각 값들을 합산
-            let total = 0;
-            $(".plist_amount_value").each(function() {
-            	
-                const amountValue = parseInt($(this).val());
-                if (!isNaN(amountValue)) {
-                    total += amountValue;
-                }
-                
-                var amount = parseInt($(this).val());
-                var price = parseInt($(this).siblings(".price").val());
 
-                // 계산된 가격을 구합니다.
-                var calculatedPrice = calculateTotalPrice(price, amount);
-
-                // 형식을 지정하고 값을 .calprice 요소에 설정합니다.
-                var formattedPrice = new Intl.NumberFormat("ko-KR").format(calculatedPrice);
-                $(this).closest("tr").find(".calprice").text(formattedPrice);
-            });
-            
-            // 합산 결과를 #product_total에 표시
-            $("#product_total span").text(total);
-        }
-        
-        function updateTotalOrderedPrice() {
-            let totalPrice = 0;
-            $(".calprice").each(function() {
-                var calPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
-                totalPrice += calPriceValue;
-            });
-            
-            if(totalPrice != 0){
-            	if(totalPrice > 25000){
-                	$("#shipping-fee").text("+0 원")
-                	var formattedPrice = new Intl.NumberFormat("ko-KR").format(totalPrice);
-                    $("#payment-price").text(formattedPrice);
-                    
-                }else{
-                    $("#shipping-fee").text("+3000 원")
-                	var formattedPrice = new Intl.NumberFormat("ko-KR").format(totalPrice + shipping_fee);
-                    $("#payment-price").text(formattedPrice);
+        // Mutation Observer 생성
+        const observer = new MutationObserver(function(mutationsList, observer) {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    // 테이블의 DOM 하위 트리가 변경되었을 때 처리할 내용
+                    checkEmptyCart();
                 }
-            }else{
-            	$("#shipping-fee").text("+0 원");
-            	$("#ordered-price").text("0 원");
-            	$("#payment-price").text("0");
             }
-            
+        });
 
-            // 형식을 지정하고 &nbsp;원을 붙여서 #ordered-price 요소의 내용으로 설정합니다.
-            var formattedPrice = new Intl.NumberFormat("ko-KR").format(totalPrice);
-            $("#ordered-price").text(formattedPrice + " 원");
-        }        
+        // Observer 설정
+        const targetNode = document.querySelector('table'); // 감시할 DOM 요소
+        const config = { childList: true }; // 감시할 변화 타입 설정
+        observer.observe(targetNode, config); // Observer 시작
         
+        /* ---------------------상품 수량 조절, 상품 가격 조절--------------------- */
+     	//*** 페이지 로드 시 초기 계산하여 표시 ***//
+        calculateTotal();
+        updateNav(); 
+
+        //*** 상품 가격 계산 ***//
+        function calculatePrice(price, amount){
+        	let calprice = price * amount;
+        	return calprice;
+        }
+
+        //*** 각 행의 상품 가격 계산 ***//
+        function calculateTotal() {
+
+            // 각각의 상품 수량 요소 each()로 선택
+            $(".plist_amount_value").each(function() {
+                
+                // each()로 선택된 행의 판매가격
+                let price = parseInt($(this).siblings(".price").val());
+                // each()로 선택된 행의 상품 수량
+                let amount = parseInt($(this).val());
+
+                // each()로 선택된 행의 상품 가격 계산
+                let calPrice = calculatePrice(price, amount);
+
+                // each()로 선택된 행의 상품 가격에 반영
+                $(this).closest("tr").find(".calprice").text(calPrice.toLocaleString());
+            });
+        }
+        
+        //*** 주문정보 내비게이션 갱신 ***//
+        function updateNav() {
+
+            // 빈 장바구니 체크
+            if(countVisibleRows() != 0) { // 장바구니에 상품이 있을 경우
+
+                // "주문금액" 초기화
+                let totalPrice = 0;
+
+                // 각 행의 상품 가격 each()로 선택
+                $(".calprice").each(function() {
+                    // each()로 선택된 행의 상품 가격 저장
+                    let calPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
+                    // "주문금액"에 합산
+                    totalPrice += calPriceValue;
+                });
+
+                // "주문금액" 에 주문금액 반영
+                $("#ordered-price").text(totalPrice.toLocaleString() + " 원");
+                
+                // 주문금액에 따른 배송비 계산 및 결제예정금액 계산
+                if(totalPrice != 0){ // 주문금액이 있을 경우 (장바구니에 상품이 있을 경우)
+
+                    // 주문금액이 25,000원 이상일 경우 배송비 0원
+                    // 주문금액이 25,000원 미만일 경우 배송비 = 최상단 전역 변수 (배송비)
+                    const shippingFee = (totalPrice >= 25000) ? 0 : shipping_fee;
+                    // "결제예정금액" 에 배송비 반영된 주문금액 저장
+                    const paymentPrice = totalPrice + shippingFee;
+
+                    // "배송비" 에 계산된 배송비 반영
+                    $("#shipping-fee").text('+' +shippingFee.toLocaleString() +' 원');
+                    // "결제예정금액" 에 계산된 결제예정금액 반영
+                    $("#payment-price").text(paymentPrice.toLocaleString());
+
+                }
+
+                // "전체상품" 수량 초기화
+                let totalAmount = 0;
+
+                // 각 행의 수량 each()로 선택
+                $(".plist_amount_value").each(function() {
+                
+                    // .plist_amount_value의 모든 요소들을 선택하여 각 값들을 합산
+                    let amountValue = parseInt($(this).val());
+                    // "전체상품" 수량에 합산
+                    totalAmount += amountValue;
+                });
+                
+                // "전체상품" 수량에 반영
+                $("#product_total span").text(totalAmount);
+
+            } else { // 장바구니에 상품이 있을 경우
+                $("#shipping-fee").text("+0 원");
+                $("#ordered-price").text("0 원");
+                $("#payment-price").text("0");
+                $("#product_total span").text("0");
+            }
+        }
+
+        
+        //*** '+' 버튼 클릭 이벤트 처리 ***//
         $(".plist_plus-btn").click(function() {
-            // 현재 버튼이 속한 행에서 인접한 input 요소를 찾습니다.
-            var inputElement = $(this).siblings(".plist_amount_value");
-            // input 요소의 값을 가져와서 1을 더한 후 다시 설정합니다.
-            var currentAmount = parseInt(inputElement.val());
-            let M_idx = $(this).siblings(".m_idx").val();
-            let m_idx = parseInt(M_idx);
+
+            // 현재 버튼이 속한 행의 상품 수량 선택
+            let currentAmount = $(this).siblings(".plist_amount_value");
+            // 선택된 상품 수량을 int형으로 변환하여 저장
+            let currentAmountValue = parseInt(currentAmount.val());
+
+            // 현재 버튼이 속한 행의 정보 저장
+            let m_idx = parseInt($(this).siblings(".m_idx").val());
         	let p_id = $(this).siblings(".p_id").val();
-        	let price = parseInt($(this).siblings(".price").val());
+        	let price = parseInt($(this).siblings(".price").val()); // 판매가격
         	
-        	let amount = inputElement.val(Math.min(currentAmount + 1, 20));
-        	
-        	if (currentAmount < 20) {
-                updateAmount(m_idx, p_id, currentAmount + 1);
-            } else {
+            // 장바구니 테이블의 상품 수량 갱신
+        	if (currentAmountValue < 20) { // 상품 수량이 20개 미만일 때
+                // 장바구니 테이블 amount 갱신
+                currentAmount.val(Math.min(currentAmountValue + 1, 20));
+                updateAmount(m_idx, p_id, currentAmountValue + 1);
+                let calPrice = calculatePrice(price, currentAmountValue + 1);
+	        	let calPriceElement = $(this).closest('tr').find('.calprice');
+	            calPriceElement.text(calPrice.toLocaleString());
+            } else { 
                 // 값이 20이상이면 경고창을 띄웁니다.
                 alert("최대 주문 수량은 20개 입니다.");
             }
+
+            // 페이지 값 갱신
         	calculateTotal();
-        	updateTotalOrderedPrice();
+        	updateNav();
         	
-        	if(currentAmount < 20){
-	        	let calprice = calculateTotalPrice(price, currentAmount+1);
-	        	let formattedPrice = new Intl.NumberFormat("ko-KR").format(calprice);
-	        	let calPriceElement = $(this).closest('tr').find('.calprice');
-	            calPriceElement.text(formattedPrice);
-        	}
         });
 
-        // - 버튼 클릭 이벤트 처리
+
+        //*** '-' 버튼 클릭 이벤트 처리 ***//
         $(".plist_minus-btn").click(function() {
-            // 현재 버튼이 속한 행에서 인접한 input 요소를 찾습니다.
-            var inputElement = $(this).siblings(".plist_amount_value");
-            // input 요소의 값을 가져와서 1을 뺀 후 다시 설정합니다. 최소값은 0으로 제한합니다.
-            var currentAmount = parseInt(inputElement.val());
-            let M_idx = $(this).siblings(".m_idx").val();
-            let m_idx = parseInt(M_idx);
+
+            // 현재 버튼이 속한 행의 상품 수량 선택
+            let currentAmount = $(this).siblings(".plist_amount_value");
+            // 선택된 상품 수량을 int형으로 변환하여 저장
+            let currentAmountValue = parseInt(currentAmount.val());
+
+            // 현재 버튼이 속한 행의 각 값 저장
+            let m_idx = parseInt($(this).siblings(".m_idx").val());
         	let p_id = $(this).siblings(".p_id").val();
-        	let price = parseInt($(this).siblings(".price").val());
+        	let price = parseInt($(this).siblings(".price").val()); // 판매가격
             
-        	let amount = inputElement.val(Math.max(currentAmount - 1, 1));
-        	
-            if (currentAmount > 1) {
-                updateAmount(m_idx, p_id, currentAmount - 1);
+        	 // 장바구니 테이블의 상품 수량 갱신
+             if (currentAmountValue > 1) { // 상품 수량이 20개 미만일 때
+                // 장바구니 테이블 amount 갱신
+                currentAmount.val(Math.max(currentAmountValue - 1, 1));
+                updateAmount(m_idx, p_id, currentAmountValue - 1);
+                let calPrice = calculatePrice(price, currentAmountValue - 1);
+	        	let calPriceElement = $(this).closest('tr').find('.calprice');
+	            calPriceElement.text(calPrice.toLocaleString());
             }
+
+            // 페이지 값 갱신
             calculateTotal();
-            updateTotalOrderedPrice();
+            updateNav();
             
-            if(currentAmount > 1){
-	            let calprice = calculateTotalPrice(price, currentAmount-1);
-	            let formattedPrice = new Intl.NumberFormat("ko-KR").format(calprice);
-	            let calPriceElement = $(this).closest('tr').find('.calprice');
-	            calPriceElement.text(formattedPrice);
-            }
         });
         
+        //*** 테이블 상품 수량 업데이트 ***//
         function updateAmount(m_idx, p_id, newAmount) {
+
             $.ajax({
                 type: "POST",
-                url: "update_cart_amount.do", // 증감된 값을 데이터베이스에 업데이트하는 서버 사이드 코드
+                url: "update_cart_amount.do", // AjaxCartController
                 data: {
                 	m_idx: m_idx,
                     p_id: p_id,
                     amount: newAmount
                 },
-                success: function (response) {
-                   if (response != null) {
-                	   	sessionStorage.setItem("cartList", response);
+                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+                   if (response != null) { // 수량 업데이트가 성공한 경우
+                	   	sessionStorage.setItem("cartList", response); // 세션 객체 업데이트
                     } else {
                         alert("수량 업데이트에 실패하였습니다.");
                     }
-                }.bind(this),
+                }.bind(this), // 증감 버튼이 속한 행으로 한정
                 error: function () {
                     alert("오류가 발생하였습니다.");
                 }
-            });
-        }
+            }); // end of ajax
+        } // end of updateAmount()
+        
+        
+		//*** 각 행의 기존 상품 수량 저장 ***//        
+        $(".plist_amount_value").each(function() {
+            $(this).data("prev-value", $(this).val());
+        });
+        
+        
+        
+     	//*** 각 행의 상품 수량 입력 상자의 값이 변경되었을 때 이벤트 처리 ***//
+        $(".plist_amount_value").on("change", function() {
+        	
+        	// 새로 입력된 값
+            let inputValue = parseInt($(this).val());
+        	// 기존에 입력된 값
+            let prevValue = parseInt($(this).data("prev-value"));
 
-    });
+            if (isNaN(inputValue)) {
+                // 숫자가 아닌 값을 입력한 경우 이전 값으로 복구
+                $(this).val(prevValue);
+            } else if (inputValue < 1) {
+                // 최소 주문 수량 1개로 제한
+                alert("최소 주문 수량은 1개 입니다.");
+                $(this).val(1); // 최소값으로 설정
+            } else if (inputValue > 20) {
+                // 최대 주문 수량 20개로 제한
+                alert("최대 주문 수량은 20개 입니다.");
+                $(this).val(20); // 최대값으로 설정
+            }
+
+            // 기존 값을 새로 입력된 값으로 다시 저장
+            $(this).data("prev-value", $(this).val());
+
+            // 변경된 값을 기반으로 업데이트 실행
+            let m_idx = $(this).siblings(".m_idx").val();
+            let p_id = $(this).siblings(".p_id").val();
+            let newAmount = parseInt($(this).val());
+
+            updateAmount(m_idx, p_id, newAmount);
+            
+            // 총계 및 가격 계산 함수 호출
+            calculateTotal();
+            updateNav();
+            
+        });
+     	
+        /* ---------------------비회원 주문정보 내비게이션--------------------- */
+        let shadow = $("#shadow");
+        
+        function showShadow() {
+            shadow.css({
+                'display': 'block',
+                'z-index': '5000'
+            });
+            $("body").css('overflow', 'hidden');
+        }
+     	
+        $("#open_login_btn").on("click", showShadow);
+        
+        /* ---------------------배송지 변경--------------------- */
+        // 기존에 열려있는 자식 창에 대한 변수 초기화
+        let childWindow = null;
+        
+        //*** 배송지 변경 자식창 열기 ***//
+        function openChangeAddress() {
+        	
+        	// 기존에 자식창이 열려있는지에 대한 여부
+        	if (childWindow) { // 이미 자식창이 열려있으면
+                childWindow.close(); // 자식창을 닫음
+            }
+        	
+        	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
+        	let url = "change_address.do?m_idx=" + $("#session_m_idx").val();
+        	// 자식창을 열고 그 여부를 변수에 저장
+        	childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
+        }
+        
+        //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
+        $("#change_address").on("click", openChangeAddress);
+        
+
+    }); // end of jqeury
 </script>
 </head>
 <body>
@@ -737,10 +913,15 @@
 		                                        	</a>
 		                                        </td>
 		                                        <td class="td_odinfo">
-		                                            <span class="td_odinfo_price">
+		                                            <div class="td_odinfo_price">
 		                                            	<span class="calprice"></span>
 		                                            	<span style="font-size:11px;padding-left:1px;">원</span>
-		                                            </span><br>
+		                                            </div>
+		                                            <div class="td_odinfo_op">
+		                                            	개당 가격:
+		                                            	&nbsp;<fmt:formatNumber value="${c.price}" pattern="#,###"/>
+		                                            	원
+		                                            </div>
 		                                            <div class="td_odinfo_amount">
 		                                                <button type="button" class="plist_minus-btn">-</button>
 		                                                <input type="text" class="plist_amount_value" value="${c.amount}">
@@ -776,15 +957,58 @@
 
                         <!-- 주문결제 네비게이션 창 -->
                         <div id="cart_main_order-nav">
-                            
+							<c:if test="${!empty member}">
+								<input type="hidden" id="session_m_idx" value="${member.m_idx}">
+							</c:if>
                             <!-- 배송지 -->
-                            <div id="order-nav_address">
-                                <div>
-                                    <span id="address_preset">기본배송지: 우리집</span>
-                                <span id="address_detail">[31148] 충청남도 천안시 동남구 봉서8길 13, 306동 1302호 (봉명동, 청솔3차아파트)</span>
-                                </div>
-                                <div><button type="button">배송지 변경</button></div>
-                            </div>
+                          	<c:choose>    		
+                          		<c:when test="${!empty member}">                          	
+	                            	<c:choose>                            		
+		                            	<c:when test="${!empty AddressList}">
+											<c:forEach items="${AddressList}" var="a">
+												<c:choose>
+													<c:when test="${a.def_add eq '1'}">
+							                            <div id="order-nav_address">
+							                                <div>
+							                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
+							                                	<span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
+							                                </div>
+							                                <div>
+							                                	<button type="button" id="change_address">배송지 변경</button>
+							                                </div>
+							                            </div>
+						                            </c:when>
+					                            </c:choose>
+			                            	</c:forEach>
+		                            	</c:when>                            	
+		                            	<c:otherwise>
+		                            		<div id="order-nav_address">
+				                                <div>
+				                                    <span id="address_preset">등록된 배송지가 없습니다!</span>
+				                                	<span id="address_detail">아래 배송지 설정 버튼을 눌러 배송지를 등록하거나 결제 정보 입력란에서 입력하실 수 있습니다.</span>
+				                                </div>
+				                                <div>
+				                                	<button type="button" id="change_address">배송지 등록</button>
+				                                </div>
+				                            </div>
+		                            	</c:otherwise>
+	                            	</c:choose>
+	                            	
+	                            </c:when>
+                            	<c:otherwise>
+                            		<div id="order-nav_address">
+		                                <div>
+		                                    <span id="address_preset">로그인을 해보세요</span>
+		                                	<span id="address_detail">로그인을 하시면 지금 보고있는 상품을 나중에도 확인하실 수 있습니다.</span>
+		                                </div>
+		                                <div>
+		                                	<button type="button" id="open_login_btn">로그인</button>
+		                                </div>
+		                            </div>
+                            	</c:otherwise>
+							</c:choose>
+	                            
+                            
 
                             <!-- 주문 정보 -->
                             <div id="order-nav_product">

@@ -13,6 +13,7 @@
         <typeAlias alias="kakaoVo" type="com.omart.vo.KakaoVo"/>
         <typeAlias alias="cartVo" type="com.omart.vo.CartVo"/>
         <typeAlias alias="wishVo" type="com.omart.vo.WishVo"/>
+        <typeAlias alias="addressVo" type="com.omart.vo.AddressVo"/>
     </typeAliases>
    
 </configuration>

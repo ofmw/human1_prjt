@@ -2,6 +2,7 @@ package com.omart.service.cart;
 
 import java.util.List;
 
+import com.omart.vo.AddressVo;
 import com.omart.vo.CartVo;
 import com.omart.vo.ProductVo;
 
@@ -14,5 +15,6 @@ public interface CartService {
 	default void cartRemove2(List<CartVo> target) {}
 	default List<CartVo> cartUpdate_List(CartVo newAmount) {return null;}
 	default void addCart(CartVo cartVo) {}
+	default List<AddressVo> AddressList(int m_idx) {return null;}
 
 }
