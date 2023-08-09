@@ -23,5 +23,7 @@ public class BoardFileVo {
 	private int category;
 	private String period;
 	private String tableName;
-	
+	private int reply_state;
+	private String ans_content;
+	private Timestamp ans_date;
 }

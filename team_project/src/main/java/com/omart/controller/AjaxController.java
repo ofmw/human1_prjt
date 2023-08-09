@@ -36,7 +36,7 @@ public class AjaxController {
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdList;	
 	@Setter(onMethod_={ @Autowired })
-	private BoardFileService bfInsert, bfList;
+	private BoardFileService bfInsert, bfList, bfState;
 	@Setter(onMethod_= {@Autowired})
 	private MemberService mLogin;
 
@@ -115,6 +115,31 @@ public class AjaxController {
 			viewPage = "redirect: list_inquiry.do";
 		}
 //		return viewPage;
+	}
+	
+	@PostMapping("/admin/insert_inquiry_answer_process.do")
+	public void insert_inquiry_answer_process(BoardFileVo boardFileVo) {
+		String viewPage = "admin/inquiry";
+		
+		int result = bfInsert.insertInquiryAnswer(boardFileVo);
+		
+		if(result == 1) {
+			viewPage = "redirect:inquiry.do";
+		}
+		
+     //	return viewPage;
+	}
+	
+	@PostMapping("/admin/insert_qna_answer_process.do")
+	public void insert_qna_answer_process(BoardFileVo boardFileVo) {
+		String viewPage = "admin/inquiry";
+		
+		int result = bfInsert.insertQnaAnswer(boardFileVo);
+		
+		if(result == 1) {
+			viewPage = "redirect:inquiry.do";
+		}
+     //	return viewPage;
 	}
 		
 	@PostMapping("/boardFile/insert_notice_write_process.do")

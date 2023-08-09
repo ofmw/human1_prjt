@@ -35,6 +35,14 @@ private BoardFileDao dao;
 		return dao.insertInquiry(boardFileVo);
 	}
 	
+	public int insertInquiryAnswer(BoardFileVo boardFileVo) {
+		return dao.insertInquiryAnswer(boardFileVo);
+	}
+	
+	public int insertQnaAnswer(BoardFileVo boardFileVo) {
+		return dao.insertQnaAnswer(boardFileVo);
+	}
+	
 	public int insertFaq(BoardFileVo boardFileVo) {
 		
 		return dao.insertFaq(boardFileVo);

@@ -12,6 +12,8 @@ import com.omart.vo.BoardFileVo;
 @Service
 public interface BoardFileService {
 	default int insertInquiry(BoardFileVo boardFileVo) {return 0;}
+	default int insertInquiryAnswer(BoardFileVo boardFileVo) {return 0;}
+	default int insertQnaAnswer(BoardFileVo boardFileVo) {return 0;}
 	default int insertNotice(BoardFileVo boardFileVo) {return 0;}
 	default int insertFaq(BoardFileVo boardFileVo) {return 0;}
 	default int insertEvent(MultipartFile attachedFile, String title, 

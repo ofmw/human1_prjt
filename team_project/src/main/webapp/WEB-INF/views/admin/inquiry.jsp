@@ -242,6 +242,7 @@ $(function () {
 			  "qna" : "QA"
 	  }
 	  let categoryMap = {
+			  "0": "상품문의",
 			  "2": "회원정보", 
 			  "3": "주문/결제/배송",
 			  "4": "취소/환불"
@@ -257,7 +258,8 @@ $(function () {
 		      name: $(this).data("name"),
 		      post_date: $(this).data("post-date"),
 		      title: $(this).data("title"),
-		      content: $(this).data("content")
+		      content: $(this).data("content"),
+		      b_idx: $(this).data("b-idx")
 		    };
 
 		    // 문의 정보를 팝업 창에 표시
@@ -281,6 +283,7 @@ $(function () {
 		    $("#inquiry_post-date").val(inquiryData.post_date);
 		    $("#inquiry_title").val(inquiryData.title);
 		    $("#inquiry_content").val(inquiryData.content);
+		    $("#inquiry_b-idx").val(inquiryData.b_idx);
 
 		    // 팝업 창 표시
 		    $("#div_member_info").hide();
@@ -289,7 +292,7 @@ $(function () {
 		  }
 
 	  let cancelBtn = document.getElementById("btn_cancel");
-	  let inquiryCancelBtn = document.getElementById("btn_save");
+	  /* let inquiryCancelBtn = document.getElementById("btn_save"); */
 	  
 	  cancelBtn.addEventListener("click", function () {
 	    divShadowInfo.style.display = "none";
@@ -297,22 +300,72 @@ $(function () {
 	    $("#div_member_info").show();
 	  });
 	  
-	  inquiryCancelBtn.addEventListener("click", function () {
+	  /* inquiryCancelBtn.addEventListener("click", function () {
 	    divShadowInfo.style.display = "none";
 	    frm_inquiry.reset();
 	    $("#div_inquiry_info").hide();
 	    $("#div_member_info").show();
-	  });
-	});
-///////////////////////////////////////////////////////////////////////////	
-	 $(function(){
+	  });*/
+	}); 
+	//문의내용보기 폼 확인 버튼 눌렀을 때
+	 $(document).ready(function(){
 		 $("#btn_save").click(function(){
+			 let b_idx = $("#inquiry_b-idx").val();
+			 let p_id = $("#inquiry_p-id").val();
 			 let ans_content = $("#ans_content").val();
-			 let ans_date = $("#ans_date").val();
-		 })
-	 })
+			 let formData = {
+					 b_idx: parseInt(b_idx),
+					 p_id: p_id,
+					 ans_content: ans_content
+			 };
+			 
+			 if ($("#inquiry_table-name").val() === "1:1") {
+		        saveAnswerTo1to1Table(formData);
+		   	 } else if ($("#inquiry_table-name").val() === "QA") {
+		        saveAnswerToQATable(formData);
+		 	 } else {
+		        console.log("오류");
+		  	 }
+		 });
+		 
+		 //취소 버튼 클릭 시 목록 페이지로 이동
+		 $("#btn_cancel_inquiry").click(function(){
+			 location.href = "inquiry.do"; 
+		 });
+		 
+			// 1:1 답변 저장 함수
+	        function saveAnswerTo1to1Table(formData) {
+	            $.ajax({
+	                type: "post",
+	                url: "insert_inquiry_answer_process.do", 
+	                data: formData,
+	                success: function(response){
+	                    alert("저장되었습니다.");
+	                    location.href = "inquiry.do"; 
+	                },
+	                error: function(error){
+	                    alert("실패했습니다.");
+	                }
+	            });
+	        }
 
-///////////////////////////////////////////////////////////////////////////	
+	        // Q&A 답변 저장 함수
+	        function saveAnswerToQATable(formData) {
+	        	$.ajax({
+	                type: "post",
+	                url: "insert_qna_answer_process.do", 
+	                data: formData,
+	                success: function(response){
+	                    alert("저장되었습니다.");
+	                    location.href = "inquiry.do"; 
+	                },
+	                error: function(error){
+	                    alert("실패했습니다.");
+	                }
+	            });
+	        }
+	 });
+
 	$("#btn_reset").click(function(){
         
         $("input[type='checkbox']").prop("checked", false);
@@ -320,48 +373,58 @@ $(function () {
         
     });
 	
-	let tableNameMap = {"1": "1:1", "2": "QA"};
-	let categoryMap = {"1": "회원정보", "2": "주문/결제/배송", "3": "취소/환불"};
-	let genderMap = {"1": "남자", "2": "여자"};
-    
-    $("#btn_filter").click(function () {
-        let selectedTableNames = [];
-        let selectedCategorys = [];
-        let selectedGenders = [];
+	 /* let tableNameMap = {"1": "1:1", "2": "QA"};
+	 let categoryMap = {"0": "상품문의", "1": "회원정보", "2": "주문/결제/배송", "3": "취소/환불"}; */
+	 let genderMap = {"1": "남자", "2": "여자"};
+	 let reply_stateMap = {"0": "답변대기", "1": "답변완료"};
 
-        $(".checkbox_tableName:checked").each(function () {
-            let tableNameId = $(this).attr("id").replace("checkbox1_", "");
-            selectedTableNames.push(tableNameMap[tableNameId]);
-        });
+	 $("#btn_filter").click(function () {
+	     let selectedTableNames = [];
+	     let selectedCategorys = [];
+	     let selectedGenders = [];
+	     let selectedReply_states = [];
 
-        $(".checkbox_category:checked").each(function () {
-            let categoryId = $(this).attr("id").replace("checkbox2_", "");
-            selectedCategorys.push(categoryMap[categoryId]);
-        });
-        
-        $(".checkbox_gender:checked").each(function () {
-            let genderId = $(this).attr("id").replace("checkbox3_", "");
-            selectedGenders.push(genderMap[genderId]);
-        });
-        
-        applyFilter(selectedTableNames, selectedCategorys, selectedGenders);
-    });
-	
-    function applyFilter(selectedTableNames, selectedCategorys, selectedGenders) {
-        $("#tbl_contents tr:not(:first-child)").each(function () {
-            let tableName = $(this).find("td:nth-child(2)").text();
-            let category = $(this).find("td:nth-child(7)").text();
-            let gender = $(this).find("td:nth-child(6)").text();
-            let showTableName = selectedTableNames.length === 0 || selectedTableNames.includes(tableName.trim());
-            let showCategory = selectedCategorys.length === 0 || selectedCategorys.includes(category.trim());
-            let showGender = selectedGenders.length === 0 || selectedGenders.includes(gender.trim());
-            if (showTableName && showCategory && showGender) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    }
+	     $(".checkbox_tableName:checked").each(function () {
+	         let tableNameId = $(this).attr("id").replace("checkbox1_", "");
+	         selectedTableNames.push(tableNameMap[tableNameId]);
+	     });
+
+	     $(".checkbox_category:checked").each(function () {
+	         let categoryId = $(this).attr("id").replace("checkbox2_", "");
+	         selectedCategorys.push(categoryMap[categoryId]);
+	     });
+	     
+	     $(".checkbox_gender:checked").each(function () {
+	         let genderId = $(this).attr("id").replace("checkbox3_", "");
+	         selectedGenders.push(genderMap[genderId]);
+	     });
+
+	     $(".checkbox_reply_state:checked").each(function () {
+	         let replyStateId = $(this).attr("id").replace("checkbox4_", "");
+	         selectedReply_states.push(reply_stateMap[replyStateId]);
+	     });
+	     
+	     applyFilter(selectedTableNames, selectedCategorys, selectedGenders, selectedReply_states);
+	 });
+
+	 function applyFilter(selectedTableNames, selectedCategorys, selectedGenders, selectedReply_states) {
+	     $("#tbl_contents tr:not(:first-child)").each(function () {
+	         let tableName = $(this).find("td:nth-child(2)").text();
+	         let category = $(this).find("td:nth-child(7)").text();
+	         let gender = $(this).find("td:nth-child(6)").text();
+	         let reply_state = $(this).find("td:nth-child(8)").text();
+	         let showTableName = selectedTableNames.length === 0 || selectedTableNames.includes(tableName.trim());
+	         let showCategory = selectedCategorys.length === 0 || selectedCategorys.includes(category.trim());
+	         let showGender = selectedGenders.length === 0 || selectedGenders.includes(gender.trim());
+	         let showReplyState = selectedReply_states.length === 0 || selectedReply_states.includes(reply_state.trim());
+	         if (showTableName && showCategory && showGender && showReplyState) {
+	             $(this).show();
+	         } else {
+	             $(this).hide();
+	         }
+	     });
+	 }
+
     
 
 </script>
@@ -448,12 +511,16 @@ $(function () {
                     <td>
                     	<button class="btn_inquiry" data-table-name="${item.tableName}" data-category="${item.category}" 
                     	data-memberid="${item.m_id}" data-name="${item.m_name}" data-post-date="${item.post_date}" 
-                    	data-title="${item.title}" data-p-id="${item.p_id}" data-content="${item.content}">
+                    	data-title="${item.title}" data-p-id="${item.p_id}" data-content="${item.content}"
+                    	data-content="${item.reply_state}" data-b-idx="${item.b_idx}">
                     		문의내용 보기
                     	</button>
                     </td>
                     <td>
 						<c:choose>
+							<c:when test="${item.category eq '0'}">
+						        상품문의
+						    </c:when>
 		                	<c:when test="${item.category eq '2'}">
 						        회원정보
 						    </c:when>
@@ -468,7 +535,19 @@ $(function () {
 						    </c:otherwise>
 		                </c:choose>
                     </td>
-                    <td></td>
+                    <td>
+                    	<c:choose>
+                    		<c:when test="${item.reply_state eq '0'}">
+						        답변대기
+						    </c:when>
+						    <c:when test="${item.reply_state eq '1'}">
+						        답변완료
+						    </c:when>
+						    <c:otherwise>
+						        ${item.reply_state}
+						    </c:otherwise>
+						 </c:choose>
+					</td>
                     <td><fmt:formatDate value="${item.post_date}" pattern="yyyy-MM-dd"/></td>
                     <td>
 						<c:choose>
@@ -589,11 +668,13 @@ $(function () {
 	                    <td><textarea id="inquiry_content" disabled></textarea></td>
 	                </tr>
 	                <tr>
-	                	<td><input type="text"></td>
+	                	<td><input type="text" id="ans_content"></td>
 	                </tr>
 	                <tr>
 	                	<td colspan="2">
+						   <input id="btn_cancel_inquiry" type="button" value="취소"/>
 			               <input id="btn_save" type="button" value="확인"/>
+			               <input id="inquiry_b-idx" type="hidden"/>
 		               </td>
 	                </tr>
 	            </table>
