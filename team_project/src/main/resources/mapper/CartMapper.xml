@@ -55,6 +55,13 @@
 	    </foreach>
 	</delete>
 	
+	<!-- 장바구니 상품 결제 완료 후 해당 회원의 장바구니 초기화 -->
+	<delete id="deleteCartAll" parameterType="_int">
+	   delete
+	   from cart
+	   where m_idx = #{m_idx}
+	</delete>
+	
 	<select id="cartUpdate_List" parameterType="cartVo" resultType="cartVo">
 		SELECT *
 		FROM cart

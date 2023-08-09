@@ -16,5 +16,6 @@ public interface CartService {
 	default List<CartVo> cartUpdate_List(CartVo newAmount) {return null;}
 	default void addCart(CartVo cartVo) {}
 	default List<AddressVo> AddressList(int m_idx) {return null;}
+	default void deleteCartAll(int m_idx) {}
 
 }

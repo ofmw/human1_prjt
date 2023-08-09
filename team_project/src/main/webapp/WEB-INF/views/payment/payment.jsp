@@ -38,7 +38,7 @@
     }
     #tbl_paymentInfo{
         width: 900px;
-        margin: 21px 0px;
+        margin-top: 21px;
         border-collapse: collapse;
     }
     #tbl_paymentInfo th{
@@ -88,10 +88,12 @@
         display: flex;
         align-items: center;
     }
-    #tbl_paymentInfo label{
+    #save_request input{
+        margin-top: 2px;
+    }
+    #save_request label{
         font-size: 12px;
         margin-left: 5px;
-        top: -5px;
     }
     #payment_method{
         display: flex;
@@ -109,6 +111,7 @@
         font-size: 21px;
         cursor: pointer;
         margin-top: 20px;
+        margin-bottom: 30px;
     }
 
     /* ---------------------장바구니 주문결제 네비게이션 메뉴--------------------- */
@@ -260,7 +263,8 @@
     
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script>	
 	$(function() {
 		let shadow = $("#shadow");
 		/* 로그인 모달창 열기 메서드 */
@@ -350,14 +354,76 @@
         	let price_before = parseInt($("#price_before").val().replace(/\D/g, ''));
         	let price_final = price_before - dc_final;
         	
-        	$("#dc_final").text(" -"+Number(dc_final).toLocaleString()+"원");
-        	$("#dc_final_nav").text(" -"+Number(dc_final).toLocaleString()+"원");
+        	$("#dc_final").text(" - "+Number(dc_final).toLocaleString()+"원");
+        	$("#dc_final_nav").text(" - "+Number(dc_final).toLocaleString()+"원");
         	$("#payment-price").text(Number(price_final).toLocaleString());
         	$("#btn_payment_main").text(Number(price_final).toLocaleString()+"원 결제하기");
         	
         }
-		
+        
+        
+        
 	});
+	
+/*  포트원 결제 설정   */
+	var IMP = window.IMP; 
+    IMP.init("imp18272101"); 
+    
+    //주문번호 생성용 필드
+    var today = new Date();   
+    var hours = today.getHours().toString(); // 시
+    var minutes = today.getMinutes().toString();  // 분
+    var seconds = today.getSeconds().toString();  // 초
+    var milliseconds = today.getMilliseconds().toString();
+    var makeMerchantUid = hours +  minutes + seconds + milliseconds;
+    
+    //다음 페이지로 전달해야하는 값
+    var frm, requestor, merchant_uid, name, amount, point;
+        
+    function requestPay() {
+    	frm = $("#frm_payment");
+    	orderNum = "OMT"+makeMerchantUid;
+    	name = $("#orderName").val();
+    	amount = parseInt($("#btn_payment_main").text().replace(/\D/g, ''))
+    	point = parseInt($("#input_point").val().replace(/\D/g, ''));
+    	
+    	// 가상의 숨은 input 요소를 생성하고 폼에 추가
+    	var orderNumInput = $("<input>").attr("type", "hidden").attr("name", "orderNum").val(orderNum);
+        var nameInput = $("<input>").attr("type", "hidden").attr("name", "name").val(name);
+        var amountInput = $("<input>").attr("type", "hidden").attr("name", "amount").val(amount);
+        var pointInput = $("<input>").attr("type", "hidden").attr("name", "point").val(point);
+        
+        frm.append(orderNumInput);
+        frm.append(nameInput);
+        frm.append(amountInput);
+        frm.append(pointInput);
+    	
+        IMP.request_pay({
+            pg : 'kakaopay.TC0ONETIME',
+            pay_method : 'card',
+            merchant_uid: orderNum, 
+            name : name,
+            amount : amount,
+            buyer_email : $("#m_id").val(),
+            buyer_name : $("#m_name").val(),
+            buyer_tel : $("#m_selNum").val(),
+            buyer_addr : '서울특별시 강남구 삼성동',
+            buyer_postcode : '123-456'
+        }, function (rsp) { // callback
+            if (rsp.success) { //결제 성공시 실행할 로직
+                console.log(rsp);
+                alert("결제 성공");
+                frm.submit();
+                
+            } else { //결제 실패시 실행할 로직
+                console.log(rsp);
+                alert("결제 실패");
+                alert(point);
+                
+            }
+        });
+    }
+/*  포트원 결제 설정   */    
 </script>
 </head>
 <body>
@@ -367,8 +433,15 @@
     <section>
         <div id="div_payment">
             <div id="payment_main">
-                <h2>결제하기</h2>
-	            <table id="tbl_paymentInfo">
+                <h2>결제</h2>          
+                <form id="frm_payment" action="orderCompleted.do" method="post">  
+                <input type="hidden" name="requestor" value="${requestor}"/>
+                <c:choose>
+                    <c:when test="${!empty member}">
+                        <input type="hidden" name="m_idx" value="${member.m_idx}"/>
+                    </c:when>
+                </c:choose>
+	            <table id="tbl_paymentInfo">	                
 	                <tr>
 	                    <th colspan="3"><h3>받는 분 정보</h3></th>
 	                </tr>
@@ -376,7 +449,16 @@
 	                    <td><h6>배송지 정보</h6></td>
 	                    <td>
 	                       <h6>관리자 010-1111-1111</h6>
-	                       <p>주소 띄우는 곳</p>
+	                       <c:choose>
+	                           <c:when test="${!empty AddressList}">
+	                               <c:forEach items="${AddressList}" var="a">
+	                                   <c:if test="${a.def_add eq '1'}">
+	                                       <p>${a.a_name} (기본배송지) : [${a.postnum}] ${a.address} ${a.detail}</p>
+	                                   </c:if>
+	                               </c:forEach>
+	                           </c:when>
+	                           <c:otherwise><p>등록된 배송지가 없습니다.</p></c:otherwise>
+	                       </c:choose>
 	                    </td>
 	                    <td></td>
 	                </tr>
@@ -391,37 +473,40 @@
 	                           <option value="4">배송전 연락주세요.</option>
 	                           <option value="5">직접입력</option>
 	                       </select><br>
-	                       <span id="save_request">
+	                       <p id="save_request">
 	                           <input type="checkbox"/>
 	                           <label for="save_request">다음 배송에도 계속 사용</label>
-	                       </span>
+	                       </p>
 	                    </td>
 	                    <td></td>
 	                </tr>
 	                <tr>
-	                    <th colspan="3"><h3>주문상품: ${fn:length(CartList)}개</h3></th>
+	                    <th colspan="3">
+	                       <h3>주문상품: ${fn:length(CartList)}개</h3>
+	                       <input type="hidden" id="orderName" value="${CartList[0].p_name} 외 ${fn:length(CartList)-1}개 상품"/>
+	                    </th>
 	                </tr>
 	                <c:set var="price_before" value="0"></c:set>
 	                <c:set var="price_final" value="0"></c:set>
 	                <c:set var="discount_product" value="0"></c:set>
 	                <c:forEach items="${CartList}" var="c">
 	                   <tr>
-                        <td><img src="../resources/img/kakao_icon.png" alt="상품이미지" /></td>
-                        <td>
-                           <h5>${c.brand}</h5>
-                           <p>${c.p_name}</p>
-                        </td>
-                        <td>
-                            <c:set var="discount" value="${(c.price*(c.discount/100))*c.amount}"></c:set>
-                            <c:set var="price_discount" value="${(c.price*c.amount)- discount}"></c:set>                            
-                            <h4><fmt:formatNumber value="${price_discount}" pattern="#,###" />원</h4>
-                            <span><fmt:formatNumber value="${c.price*c.amount}" pattern="#,###" />원</span>
-                            <p>${c.amount}개</p>
-                            <c:set var="price_before" value="${price_before+c.price*c.amount}"></c:set>
-                            <c:set var="price_final" value="${price_final+price_discount}"></c:set>
-                            <c:set var="discount_product" value="${discount_product+discount}"></c:set>
-                        </td>
-                    </tr>
+	                       <td><img src="../resources/img/kakao_icon.png" alt="상품이미지" /></td>
+	                       <td>
+	                          <h5>${c.brand}</h5>
+	                          <p>${c.p_name}</p>
+	                       </td>
+	                       <td>
+	                           <c:set var="discount" value="${(c.price*(c.discount/100))*c.amount}"></c:set>
+	                           <c:set var="price_discount" value="${(c.price*c.amount)- discount}"></c:set>                            
+	                           <h4><fmt:formatNumber value="${price_discount}" pattern="#,###" />원</h4>
+	                           <span><fmt:formatNumber value="${c.price*c.amount}" pattern="#,###" />원</span>
+	                           <p>${c.amount}개</p>
+	                           <c:set var="price_before" value="${price_before+c.price*c.amount}"></c:set>
+	                           <c:set var="price_final" value="${price_final+price_discount}"></c:set>
+	                           <c:set var="discount_product" value="${discount_product+discount}"></c:set>
+	                       </td>
+	                   </tr>
 	                </c:forEach>	                
 	                <tr>
 	                    <th colspan="3"><h3>할인혜택</h3></th>
@@ -444,7 +529,7 @@
 	                <tr>
 	                    <td><h6>포인트사용</h6></td>
 	                    <td id="point_container">	                       
-	                       <span><input id="input_point" type="text"/><span>원</span></span>	                       
+	                       <span><input id="input_point" type="text" value="0"/><span>원</span></span>	                       
 	                       <input id="use_allPoint" type="button" value="전체사용"/>
 	                       <p>(잔여: <fmt:formatNumber value="${member.point}" pattern="#,###" />원)</p>
 	                       <input id="mPoint" type="hidden" value="${member.point}"/>
@@ -452,27 +537,25 @@
 	                    <td></td>
 	                </tr>
 	                <tr>
-                        <td><h6>할인금액</h6></td>
-                        <td><h4 id="dc_final">- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</h4></td>
-                        <td></td>
-                    </tr>
+	                       <td><h6>할인금액</h6></td>
+	                       <td><h4 id="dc_final">- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</h4></td>
+	                       <td></td>
+	                   </tr>
 	                <tr>
 	                    <th colspan="3"><h3>결제방법</h3></th>
 	                </tr>
 	                <tr>
 	                    <td id="payment_method">
-	                       <input type="radio" checked disabled/><h4>일반결제</h4>
+	                       <input type="radio" checked disabled/><h4>카카오페이</h4>
 	                    </td>
 	                    <td></td>
 	                    <td></td>
 	                </tr>
-	                <tr>
-                        <td colspan="3">
-                           <button id="btn_payment_main"><fmt:formatNumber value="${price_before - discount_product}" pattern="#,###" />원 결제하기</button>
-                        </td>
-                        
-                    </tr>
+
 	            </table>
+	            </form>
+	            <button id="btn_payment_main" onclick="requestPay()"><fmt:formatNumber value="${price_before - discount_product}" pattern="#,###" />원 결제하기</button>
+	            
             </div>
             
             <!-- 주문결제 네비게이션 창 -->
@@ -503,8 +586,7 @@
                                         </c:when>
                                     </c:choose>
                                 </c:forEach>
-                            </c:when>
-                            
+                            </c:when>                            
                             <c:otherwise><!-- 등록된 배송지가 없을 경우 -->
                                 <div id="order-nav_address">
                                     <div>
@@ -564,7 +646,7 @@
 
                 <!-- 주문하기 버튼 -->
                 <div id="order-nav_btn">
-                    <button>결제하기</button>
+                    <button onclick="requestPay()">결제하기</button>
                 </div>
 
             </div><!-- end of 네비게이션 창 -->

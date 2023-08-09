@@ -830,7 +830,7 @@
         $("#change_address").on("click", openChangeAddress);
         
         $("#order-nav_btn").on("click", function(){
-        	window.location.href = "../payment/payment.do";
+        	window.location.href = "../payment/payment.do?requestor=cart";
         });
         
 
