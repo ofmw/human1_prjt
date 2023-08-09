@@ -11,12 +11,17 @@ public interface CartService {
 	default List<CartVo> CartList(int m_idx) {return null;}
 	default List<ProductVo> cartList_pInfo(List<CartVo> CartList) {return null;}
 	default void cartUpdate_Amount(CartVo newAmount) {}
-	default void cartRemove(CartVo target) {}
-	default void cartRemove2(List<CartVo> target) {}
+	default void cartRemove(List<CartVo> target) {}
 	default List<CartVo> cartUpdate_List(CartVo newAmount) {return null;}
 	default void addCart(CartVo cartVo) {}
 	default List<AddressVo> AddressList(int m_idx) {return null;}
 	default List<AddressVo> updateDefAddress(int m_idx, String a_name) {return null;}
 	default int checkNewAddr(AddressVo newAddr) {return 0;}
+	default int checkAddrCount(int m_idx) {return 0;}
+	default void addNewAddr(AddressVo newAddr) {}
+	default int deleteAddr(int m_idx, String a_name) {return 0;}
+	default AddressVo getAddrInfo(int m_idx, String a_name) {return null;}
+	default int checkEditAddr(AddressVo vo) {return 0;}
+	default void editAddr(AddressVo vo) {}
 
 }

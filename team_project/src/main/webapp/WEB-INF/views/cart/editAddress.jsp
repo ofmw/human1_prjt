@@ -21,14 +21,14 @@
     }
 
     /* ---------------------배송지 추가 메인영역--------------------- */
-    #aa_area{
+    #ea_area{
         width: 100%;
         height: 100%;
         color: #222;
     }
 
     /* ---------------------배송지 추가 헤더--------------------- */
-    #aa_header{
+    #ea_header{
         border-bottom: 2px solid #222;
         padding: 10px 0;
         text-align: center;
@@ -37,7 +37,7 @@
     }
     
     /* ---------------------배송지 추가 섹션--------------------- */
-    #aa_section{
+    #ea_section{
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -47,7 +47,7 @@
     }
 
     /* ---------------------배송지 관리--------------------- */
-    #aa_management_area{
+    #ea_management_area{
         display: flex;
         flex-direction: column;
         width: 95%;
@@ -71,7 +71,7 @@
     }
 
     /* ---------------------배송지 추가 테이블--------------------- */
-    #aa_m_table{
+    #ea_m_table{
         width: 100%;
         border-spacing: 0;
         border-collapse: collapse;
@@ -81,26 +81,26 @@
         border-top: 1px solid #222;
         border-bottom: 1px solid #222;
     }
-    #aa_m_table tr:not(:last-child){
+    #ea_m_table tr:not(:last-child){
         border-bottom: 1px solid #e5e5e5;
         
         
     }
-    #aa_m_table tr th{
+    #ea_m_table tr th{
         height: 60px;
         font-size: 13px;
         color: #222;
         background-color: #f2f2f2;
     }
-    #aa_m_table tr:not(:last-child){
+    #ea_m_table tr:not(:last-child){
         border-bottom: 1px solid #e5e5e5;
     }
-    #aa_m_table tr td{
+    #ea_m_table tr td{
         padding-left: 10px;
         text-align: left;
         box-sizing: border-box;
     }
-    #aa_m_table tr td input{
+    #ea_m_table tr td input{
         width: 150px;
         height: 30px;
         padding: 3px 10px;
@@ -153,18 +153,18 @@
     }
 
     /* ---------------------배송지 설정 안내문구--------------------- */
-    #aa_m_notice{
+    #ea_m_notice{
         margin: 10px 0;
         padding: 0 10px;
         font-size: 12px;
         color: #777777;
     }
-    #aa_m_notice ul{
+    #ea_m_notice ul{
         list-style: none;
     }
 
     /* ---------------------배송지 설정 버튼 박스--------------------- */
-    #aa_m_btn_box{
+    #ea_m_btn_box{
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -172,7 +172,7 @@
         margin-top: 25px;
     }
     /* 버튼 공통 */
-    #aa_m_btn_box button{
+    #ea_m_btn_box button{
         width: 150px;
         height: 45px;
         margin: 0 5px;
@@ -209,13 +209,12 @@
 	        self.close();
 	    });
 
-        /* ---------------------초기화 버튼------------------- */
-        $("#btn_reset").click(function(){
-            $("#div_Addr").hide();
-        });
-
-
         /* ---------------------주소 찾기------------------- */
+        //*** 주소 입력 영역 초기처리 ***//
+        if($("#input_postnum").val() !== "") {
+        	$("#div_Addr").show();
+        }
+        
         //*** 우편번호찾기 버튼 클릭 이벤트 처리 ***//
         $("#search_btn").click(function(){
             search_address();
@@ -287,6 +286,7 @@
         function checkInput() {
 			
         	let m_idx = $("#m_idx");
+        	let original_a_name = $("#original_a_name"); 
 			let a_name = $("#input_a_name");
 			let receiver = $("#input_receiver");
 			let selnum = $("#input_selnum");
@@ -315,9 +315,10 @@
 				
 				$.ajax({
 	        		type: "POST",
-	                url: "checkNewAddr.do", // AjaxCartController
+	                url: "checkEditAddr.do", // AjaxCartController
 	                data: {
 	                	m_idx: parseInt(m_idx.val()),
+	                	original_a_name: original_a_name.val(),
 	                	a_name: a_name.val(),
 	                	receiver: receiver.val(),
 	                	selnum: selnum.val(),
@@ -328,7 +329,7 @@
 	                },
 	                success: function (response) { // 업데이트된 배송지 목록 객체 반환
 	                    if (response === 0) { // 업데이트가 성공한 경우
-	                    	alert("배송지 등록이 완료되었습니다.");
+	                    	alert("배송지 수정이 완료되었습니다.");
 	                    	// 배송지 등록 후 이전 페이지로 복귀 + 새로고침
 	                    	location.href = document.referrer;
 	                     } else if (response === 1) { // 주소별칭 중복
@@ -359,53 +360,52 @@
 </head>
 <body>
 	
-<div id="aa_area">
+<div id="ea_area">
 
-	<div id="aa_header">
-		배송지 추가
+	<div id="ea_header">
+		배송지 수정
 		<input type="hidden" id="m_idx" value="${param.m_idx}">
+		<input type="hidden" id="original_a_name" value="${param.a_name}">
 	</div>
 
-	<div id="aa_section">
-	
-		
-		
-		<div id="aa_management_area">
-            <form id="aa_form">
+	<div id="ea_section">
+
+		<div id="ea_management_area">
+            <form id="ea_form">
                 <button type="reset" id="btn_reset">초기화</button>
-                <div id="aa_m_table_box">
-                    <table id="aa_m_table">
+                <div id="ea_m_table_box">
+                    <table id="ea_m_table">
                         <colgroup>
                             <col style="width:15%;">
                             <col style="width:85%;">
                         </colgroup>
                         <tr id="tr_a_name">
                             <th>주소별칭</th>
-                            <td><input type="text" id="input_a_name" maxlength="7"><span>7자 이내</span></td>
+                            <td><input type="text" id="input_a_name" maxlength="7" value="${addrInfo.a_name}"><span>7자 이내</span></td>
                         </tr>
                         <tr id="tr_receiver">
                             <th>받는분</th>
-                            <td><input type="text" id="input_receiver" maxlength="5"><span>5자 이내</span></td>
+                            <td><input type="text" id="input_receiver" maxlength="5" value="${addrInfo.receiver}"><span>5자 이내</span></td>
                         </tr>
                         <tr id="tr_selnum">
                             <th>휴대폰</th>
-                            <td><input type="text" id="input_selnum" maxlength="11"><span>- 없이 입력</span></td>
+                            <td><input type="text" id="input_selnum" maxlength="11" value="${addrInfo.selnum}"><span>- 없이 입력</span></td>
                         </tr>
                         <tr id="tr_address">
                             <th>배송주소</th>
                             <td>
                                 <div style="display: flex;">
-                                    <input type="text" id="input_postnum" readonly>
+                                    <input type="text" id="input_postnum" value="${addrInfo.postnum}" readonly>
                                     <button type="button" id="search_btn">우편번호찾기</button>
                                 </div>
                                 <div id="div_Addr" style="display: none;">
                                     <div class="div_Addr_contents" id="div_roadAddr">
-                                        <div class="Addr_title">도로명</div><div id="roadAddr_contents"></div>
+                                        <div class="Addr_title">도로명</div><div id="roadAddr_contents">${addrInfo.roadAddr}</div>
                                     </div>
                                     <div class="div_Addr_contents" id="div_jibunAddr">
-                                        <div class="Addr_title">지번</div><div id="jibunAddr_contents"></div>
+                                        <div class="Addr_title">지번</div><div id="jibunAddr_contents">${addrInfo.jibunAddr}</div>
                                     </div>
-                                    <input type="text" id="input_detail" placeholder="상세주소 입력" maxlength="100">
+                                    <input type="text" id="input_detail" placeholder="상세주소 입력" maxlength="100" value="${addrInfo.detail}">
                                     <span id="guide" style="color:#999;display:none"></span>
                                 </div>
                             </td>
@@ -414,16 +414,15 @@
                 </div>
             </form>
 			
-			<div id="aa_m_notice">
+			<div id="ea_m_notice">
 				<ul>
-					<li>·&nbsp;&nbsp;배송지는 최대 5개 까지 저장 가능합니다.</li>
 					<li>·&nbsp;&nbsp;배송지 수정 시 이미 존재하는 주소별칭 또는 주소와 중복될 수 없습니다.</li>
 					<li>·&nbsp;&nbsp;휴대폰 번호는 연락 가능한 번호여야 합니다.</li>
 					<li>·&nbsp;&nbsp;상세주소를 정확하게 입력해주세요.</li>
 				</ul>
 			</div>
 			
-			<div id="aa_m_btn_box">
+			<div id="ea_m_btn_box">
 				<button type="button" id="btn_confirm">확인</button>
 				<button type="button" id="btn_cancel" onclick="history.back()">취소</button>
 			</div>

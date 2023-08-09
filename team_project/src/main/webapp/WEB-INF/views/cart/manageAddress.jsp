@@ -217,7 +217,9 @@
 		//*** 새 배송지 추가 버튼 클릭 이벤트 처리 ***//
 		$("#btn_addNewAddr").click(function(){
 			if (countVisibleRows() < 5) {
-				location.href = "addNewAddr.do?m_idx=1"
+				location.href = "addNewAddr.do?m_idx=" +$("#m_idx").val();
+			} else {
+				alert("배송지는 최대 5개까지 추가 가능합니다.");
 			}
 		});
 		
@@ -267,7 +269,7 @@
         observer.observe(targetNode, config); // Observer 시작
         
         /* ---------------------기본 배송지로 설정--------------------- */
-        
+        //*** 기본 배송지로 설정 버튼 클릭 이벤트 처리 ***//
         $("#btn_set_default").on("click", function(){
         	
         	let m_idx = parseInt($("#m_idx").val());
@@ -275,7 +277,7 @@
         	let a_name = tr.find(".a_name").val();
         	let def_add = parseInt(tr.find(".def_add").val());
         	
-        	if(def_add === 0) {
+        	if(def_add === 0) { // 기본 배송지가 아닐 경우
 				$.ajax({
 	        		type: "POST",
 	                url: "update_def_address.do", // AjaxCartController
@@ -297,19 +299,20 @@
 						alert("오류가 발생하였습니다.");
 					}
 				}); // end of ajax
-        	} else {
+        	} else { // 이미 기본 배송지로 설정되어 있을 경우
         		alert("이미 기본배송지로 설정되어 있습니다.");
         	}
         });
         
         /* ---------------------현재 주문 배송지로 선택--------------------- */
+        //*** 현재 주문 배송지로 설정 버튼 클릭 이벤트 처리 ***//
         $("#btn_set_current").on("click", function(){
         	
         	let tr = $("input[type='radio']:checked").closest("tr");
         	let a_name = tr.find(".a_name").val();
         	let flag = tr.find(".div_cur_add");
         	
-        	if(flag.length === 0) {
+        	if(flag.length === 0) { // 현재 주문 배송지가 아닌 경우
         	
 	        	$.ajax({
 	        		type: "POST",
@@ -320,10 +323,9 @@
 	                success: function (response) { // 업데이트된 배송지 목록 객체 반환
 	                    if (response === "success") { // 업데이트가 성공한 경우
 	                    	alert("현재 주문 배송지로 설정되었습니다.\n웹 브라우저를 종료할 경우 등록하신 기본 배송지로 재설정됩니다.");
+	                    	// 현재 주문 배송지로 설정 후 자식창을 닫고 부모창 새로고침
 	                    	opener.document.location.reload();
 	                    	self.close();
-	                 	    //$("#ca_area").load(location.href + "#ca_m_table");
-							//$("#ca_area").load(location.href + "#ca_selected_address");
 	                     } else {
 	                         alert("현재 배송지로 설정에 실패하였습니다.");
 	                     }
@@ -333,7 +335,7 @@
 					}
 				}); // end of ajax
         	  	
-        	} else {
+        	} else { // 이미 현재 주문 배송지로 설정되어 있는 경우
         		alert("이미 현재 주문 배송지로 선택되었습니다.");
         	} // end of flag
         	
@@ -356,6 +358,50 @@
         
         //*** 자식창이 열렸을 때 라디오 버튼 체크 확인 ***//
         checkRadio();
+        
+        /* ---------------------설정 버튼--------------------- */
+        //*** 수정 버튼 클릭 이벤트 처리 ***//
+        $(".btn_edit").click(function () {
+        	
+        	let a_name = $(this).closest("tr").find(".a_name").val();
+        	location.href = "editAddr.do?m_idx=" +$("#m_idx").val() +"&a_name=" +a_name;
+        });
+        
+        //*** 삭제 버튼 클릭 이벤트 처리 ***//
+        $(".btn_delete").click(function () {
+        	
+        	let flag = confirm("선택하신 배송지를 삭제하시겠습니까?");
+        	
+        	if (flag) {
+        		
+        		let m_idx = parseInt($("#m_idx").val());
+        		let a_name = $(this).closest("tr").find(".a_name").val();
+        		
+        		$.ajax({
+	        		type: "POST",
+	                url: "delete_address.do", // AjaxCartController
+	                data: {
+	                	m_idx: m_idx,
+	                    a_name: a_name
+	                },
+	                success: function (response) { // 업데이트된 배송지 목록 객체 반환
+	                    if (response === "success") { // 업데이트가 성공한 경우
+	                    	alert('"' +a_name+ '" 배송지가 성공적으로 삭제되었습니다.');
+	                    	checkRadio();
+	                 	    $("#ca_area").load(location.href + "#ca_m_table");
+							$("#ca_area").load(location.href + "#ca_selected_address");
+	                     } else {
+	                         alert("배송지 삭제에 실패하였습니다.");
+	                     }
+					},
+					error: function () {
+						alert("오류가 발생하였습니다.");
+					}
+				}); // end of ajax
+        	}
+        	
+        });
+        
 	});
 </script>
 
@@ -470,12 +516,12 @@
 								<td class="td_selnum">010-1234-1324</td>
 								<td class="td_option">
 									<c:choose>
-										<c:when test="${a.def_add eq '1'}">
-											<button type="button">수정</button>
+										<c:when test="${a.def_add eq '1' or a.a_name eq current_add}">
+											<button type="button" class="btn_edit">수정</button>
 										</c:when>
 										<c:otherwise>
-											<button type="button">수정</button>
-											<button type="button">삭제</button>
+											<button type="button" class="btn_edit">수정</button>
+											<button type="button" class="btn_delete">삭제</button>
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -488,8 +534,9 @@
 			<div id="ca_m_notice">
 				<ul>
 					<li>·&nbsp;&nbsp;배송지는 최대 5개 까지 저장 가능합니다.</li>
-					<li>·&nbsp;&nbsp;기본 배송지로 설정할 경우 주문결제 시 자동으로 해당 주소로 자동 설정됩니다.</li>
-                    <li>·&nbsp;&nbsp;기본 배송지는 삭제할 수 없습니다.</li>
+					<li>·&nbsp;&nbsp;기본 배송지로 설정된 배송지는 주문시 기본값으로 적용됩니다.</li>
+                    <li>·&nbsp;&nbsp;기본 배송지 및 현재 주문 배송지는 삭제할 수 없습니다.</li>
+                    <li>·&nbsp;&nbsp;배송지는 마이페이지에서도 관리 가능합니다.</li>
 					<li>·&nbsp;&nbsp;결제 전 배송지를 반드시 확인해주세요.</li>
 				</ul>
 			</div>

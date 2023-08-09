@@ -396,7 +396,7 @@
             
             $.ajax({
                 type: "POST",
-                url: "remove_cart2.do", // AjaxCartController
+                url: "remove_cart.do", // AjaxCartController
                 data: {
                 	m_idx: mIdxArray,
                     p_id: pIdArray
@@ -435,8 +435,8 @@
                 $(this).closest("tr").remove();
                 
                 /*** 삭제 후 페이지 정보 갱신 ***/
-                checkEmptyCart();           // 빈 장바구니 체크
-                updateNav();  // 주문정보 내비게이션 갱신
+                checkEmptyCart(); // 빈 장바구니 체크
+                updateNav(); // 주문정보 내비게이션 갱신
 
             } // end of if (confirmed)
 
@@ -821,14 +821,14 @@
             }
         	
         	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
-        	let url = "change_address.do?m_idx=" + $("#session_m_idx").val();
+        	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val();
         	// 자식창을 열고 그 여부를 변수에 저장
         	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
         	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
         }
         
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
-        $("#change_address").on("click", openChangeAddress);
+        $("#manage_address").on("click", openChangeAddress);
         
         //let current_add = opener.sessionStorage.getItem("current_add");
         //sessionStorage.setItem("current_add", current_add);
@@ -966,7 +966,7 @@
 								                                	<span id="address_detail">[${a.postnum}] ${a.roadAddr} ${a.detail}</span>
 								                                </div>
 								                                <div>
-								                                	<button type="button" id="change_address">배송지 변경</button>
+								                                	<button type="button" id="manage_address">배송지 변경</button>
 								                                </div>
 								                            </div>
 														</c:if>
@@ -980,7 +980,7 @@
 								                                	<span id="address_detail">[${a.postnum}] ${a.roadAddr} ${a.detail}</span>
 								                                </div>
 								                                <div>
-								                                	<button type="button" id="change_address">배송지 변경</button>
+								                                	<button type="button" id="manage_address">배송지 변경</button>
 								                                </div>
 								                            </div>
 							                            </c:if>
@@ -997,7 +997,7 @@
 				                                	<span id="address_detail">아래 배송지 설정 버튼을 눌러 배송지를 등록하거나 결제 정보 입력란에서 입력하실 수 있습니다.</span>
 				                                </div>
 				                                <div>
-				                                	<button type="button" id="change_address">배송지 등록</button>
+				                                	<button type="button" id="manage_address">배송지 등록</button>
 				                                </div>
 				                            </div>
 		                            	</c:otherwise>
