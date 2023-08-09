@@ -20,12 +20,17 @@
 		WHERE m_idx = #{m_idx} AND p_id = #{p_id}
 	</update>
 	
+	<select id="checkAmount" parameterType="cartVo" resultType="cartVo">
+        select * from cart where m_idx = #{m_idx} and p_id = #{p_id}
+	</select>
+	
+	
 	<!-- 장바구니에 상품 추가 -->
 	<insert id="addCart" parameterType="cartVo">
 	    
 	    insert into cart (m_idx, p_id, amount)
-        values (#{m_idx}, #{p_id}, 1)
-        on duplicate key update amount = amount + 1
+        values (#{m_idx}, #{p_id}, #{amount})
+        on duplicate key update amount = amount + #{amount}
 	    
 	</insert>
 	

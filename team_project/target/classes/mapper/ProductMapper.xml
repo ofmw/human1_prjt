@@ -40,4 +40,22 @@
         select * from product where post_state = 1  order by add_date desc
     </select>
     
+    <select id="getProduct" parameterType="string" resultType="productVo">
+        select * from product where p_id = #{p_id}
+    </select>
+    
+    <!-- 찜목록 추가 -->
+    <update id="addWishList" parameterType="map">
+    	UPDATE wish
+    	SET w_list = CONCAT(w_list, ',', #{p_id})
+    	WHERE m_idx = #{m_idx}
+    </update>
+    
+    <!-- 찜목록 삭제 -->
+    <update id="removeWishList" parameterType="map">
+	    UPDATE wish
+	    SET w_list = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', w_list, ','), CONCAT(',', #{p_id}, ','), ','))
+	    WHERE m_idx = #{m_idx}
+	</update>
+    
 </mapper>

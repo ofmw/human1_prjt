@@ -115,6 +115,25 @@ $(function() {
         
     });
     
+    addWish_btn.on("click", function(){
+        let m_idx = $("#m_idx").val();
+        let p_id = $("#p_id").val();
+        
+        $.ajax({
+            type: "post",
+            url: "/addWish.do",
+            data: {m_idx: m_idx, p_id: p_id},
+            success: function(response){
+                console.log("AJAX 요청 성공:", response);
+            },
+            error: function(error){
+                // 오류 시 처리할 로직
+                console.error("AJAX 오류 발생", error);               
+            }
+        }); <!-- end of ajax -->
+        
+    });
+    
     /* 비밀번호 입력 CapsLock 감지 */
     let checkCapsLock = document.getElementById('m_pw');
     checkCapsLock.addEventListener('keydown', function(e){

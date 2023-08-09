@@ -2,21 +2,21 @@ $(function() {
 
     //---------------일반 로그인 처리 메서드---------------//
 	$("#login_btn").click(function() {
-    let memberId = $("#m_id").val();
-    let memberPw = $("#m_pw").val();
+	    let memberId = $("#m_id").val();
+	    let memberPw = $("#m_pw").val();
     
-    /* 아이디, 비밀번호 공란 체크 메서드 */
-    if(memberId == "") {
-    	alert("아이디를 입력해주세요");
-    	$("#m_id").focus();
-    	return false;
-    	
-    }else if(memberPw == "") {
-    	alert("비밀번호를 입력해주세요");
-    	$("#m_pw").focus();
-    	return false;
-    	
-    }else {
+	    /* 아이디, 비밀번호 공란 체크 메서드 */
+	    if(memberId == "") {
+	    	alert("아이디를 입력해주세요");
+	    	$("#m_id").focus();
+	    	return false;
+	    	
+	    }else if(memberPw == "") {
+	    	alert("비밀번호를 입력해주세요");
+	    	$("#m_pw").focus();
+	    	return false;
+	    	
+	    }else {
     
     	/* ajax 통신 */
 		$.ajax({
@@ -29,7 +29,7 @@ $(function() {
 			success: function(response) {
 				//로그인 성공시
 		        if (response === "success") {
-		            location.href = "index.do";
+		            location.reload();
 		        }else{
 					//로그인 실패시
 					alert("아이디 또는 비밀번호가 일치하지 않습니다.\n다시 확인하신 후 입력해주세요.");

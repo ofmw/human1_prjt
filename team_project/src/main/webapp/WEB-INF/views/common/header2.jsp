@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.omart.vo.MemberVo" %>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +12,7 @@
 <link href="../resources/css/login.css" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="../resources/js/login.js"></script>
+<script src="../resources/js/login.js?v=1234"></script>
 <script src="../resources/js/header.js?v=1234"></script>
 
 </head>
@@ -39,28 +41,36 @@
 						<c:choose>
 							<c:when test="${empty member}">
             		            <span id="login_btn2">로그인</span>
-    		                    <a href="member/join.do">회원가입</a>
-		                        <a href="list_faq_member.do">고객센터</a>
+    		                    <a href="../member/join.do">회원가입</a>
+		                        <a href="../boardFile/list_faq_member.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
-								<a href="#">${member.m_name}님</a>
-								<a href="list_faq_member.do">고객센터</a>
-								<c:choose>
-									<c:when test="${member.platform eq 'kakao'}">
-										<a href="kakaologout.do">로그아웃</a>
-									</c:when>
-									<c:when test="${member.platform eq 'omart'}">
-										<a href="logout.do">로그아웃</a>
-									</c:when>
-								</c:choose>
-							</c:otherwise>
+                                    <input type="hidden" id="m_idx" value="${member.m_idx}"/>
+                                     <c:choose>
+                                         <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
+                                             <a href="../admin/member.do">${member.m_name}님</a>
+                                         </c:when>
+                                         <c:otherwise>
+                                             <a href="../mypage/mypage.do">${member.m_name}님</a>
+                                         </c:otherwise>
+                                     </c:choose>                                
+                                    <a href="../boardFile/list_notice.do">고객센터</a>
+                                    <c:choose>
+                                        <c:when test="${member.platform eq 'kakao'}">
+                                            <a href="kakaologout.do">로그아웃</a>
+                                        </c:when>
+                                        <c:when test="${member.platform eq 'omart'}">
+                                            <a href="member/logout.do">로그아웃</a>
+                                        </c:when>
+                                    </c:choose>
+                                </c:otherwise>
 						</c:choose>
 					</div>
 	                    	
                     <div id="div_persnal_menu">
                         <a href="">ㅇ</a>
                         <a href="member/mypage.do">ㅁ</a>
-                        <a href="cart/cart.do">카</a>
+                        <a href="../cart/cart.do">카</a>
                         <a href="">ㅇ</a>
                     </div>
 				</div>
@@ -142,5 +152,10 @@
             </div><!-- end of 로그인창 내부요소 -->
         </div><!-- end of login container -->
     </div><!-- end of shadow -->
+    <div id="shadow_addCart">
+        <div id="addCart_container">
+            제품이 장바구니에 추가되었습니다.
+        </div>
+    </div>
 </body>
 </html>

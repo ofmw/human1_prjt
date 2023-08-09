@@ -6,8 +6,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script>
+	let referer = '<%= request.getParameter("referer")%>';
 	alert('로그아웃되었습니다.');
-	window.location.href = '../index.do'; // 로그아웃 후 리다이렉트할 경로
+	window.location.href = referer.replace(".jsp", ""); // 로그아웃 후 리다이렉트할 경로
 </script>
 </head>
 <body>

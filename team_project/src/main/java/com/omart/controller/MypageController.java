@@ -37,6 +37,12 @@ public class MypageController {
 		return "mypage/inquiry";
 	}
 	
+	//마이페이지 - 찜목록
+	@GetMapping("/wish.do")
+	public String wish() {
+		return "mypage/wish";
+	}
+	
 	//마이페이지 -> 인덱스
 	@GetMapping("/index.do")
 	public String mypage_index() {

@@ -16,7 +16,7 @@ import lombok.Setter;
 public class MemberController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mJoin;
+	private MemberService mJoin, mWish;
 	
 	@GetMapping("/join.do")
 	public String join() {
@@ -36,7 +36,7 @@ public class MemberController {
 		}
 		return viewPage;
 	}
-		
+	
 	//로그아웃
 //	@GetMapping("/logout.do")
 //	public String logout(HttpServletRequest request) {
