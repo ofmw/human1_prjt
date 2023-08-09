@@ -435,6 +435,10 @@
         	
         	let frm_buyThis = $("#frm_buyThis");
         	
+        	var requestor = $("<input>").attr("type", "hidden").attr("name", "requestor").val("buyThis");
+        	
+        	frm_buyThis.append(requestor);
+        	
         	frm_buyThis.attr("action", "../payment/payment.do");
         	
         	frm_buyThis.submit();

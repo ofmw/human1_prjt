@@ -45,25 +45,28 @@
 		                        <a href="../boardFile/list_faq_member.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
-                                    <input type="hidden" id="m_idx" value="${member.m_idx}"/>
-                                     <c:choose>
-                                         <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
-                                             <a href="../admin/member.do">${member.m_name}님</a>
-                                         </c:when>
-                                         <c:otherwise>
-                                             <a href="../mypage/mypage.do">${member.m_name}님</a>
-                                         </c:otherwise>
-                                     </c:choose>                                
-                                    <a href="../boardFile/list_notice.do">고객센터</a>
-                                    <c:choose>
-                                        <c:when test="${member.platform eq 'kakao'}">
-                                            <a href="kakaologout.do">로그아웃</a>
-                                        </c:when>
-                                        <c:when test="${member.platform eq 'omart'}">
-                                            <a href="member/logout.do">로그아웃</a>
-                                        </c:when>
-                                    </c:choose>
-                                </c:otherwise>
+                                <input type="hidden" id="m_idx" value="${member.m_idx}"/>
+                                <input type="hidden" id="m_id" value="${member.m_id}"/>
+                                <input type="hidden" id="m_name" value="${member.m_name}"/>
+                                <input type="hidden" id="selNum" value="${member.selNum}"/>
+                                <c:choose>
+                                    <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
+                                        <a href="../admin/member.do">${member.m_name}님</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="../mypage/mypage.do">${member.m_name}님</a>
+                                    </c:otherwise>
+                                </c:choose>                                
+                                <a href="../boardFile/list_notice.do">고객센터</a>
+                                <c:choose>
+                                    <c:when test="${member.platform eq 'kakao'}">
+                                        <a href="kakaologout.do">로그아웃</a>
+                                    </c:when>
+                                    <c:when test="${member.platform eq 'omart'}">
+                                        <a href="member/logout.do">로그아웃</a>
+                                    </c:when>
+                                </c:choose>
+                            </c:otherwise>
 						</c:choose>
 					</div>
 	                    	

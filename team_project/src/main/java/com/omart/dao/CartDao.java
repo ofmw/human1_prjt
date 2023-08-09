@@ -74,6 +74,11 @@ public class CartDao{
 		sqlSession.insert(MAPPER+".addCart", cartVo);
 	}
 	
+	//장바구니 상품 결제 완료 후 해당 회원의 장바구니에 상품 제거
+		public void deleteCartAll(int m_idx) {		
+			sqlSession.delete(MAPPER+".deleteCartAll", m_idx);
+		}
+	
 	//해당 회원의 배송지 정보 가져오기
 	public List<AddressVo> AddressList(int m_idx){
 
