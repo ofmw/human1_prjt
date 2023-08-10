@@ -6,7 +6,11 @@
 <mapper namespace="com.omart.OrderMapper">    
     
     <insert id="createOrder" parameterType="orderVo">
-        insert into order_list (order_idx, m_idx, products, amounts) values (#{order_idx}, #{m_idx}, #{products}, #{amounts})
+        insert into order_list (order_idx, m_idx, products, amounts, products_price) values (#{order_idx}, #{m_idx}, #{products}, #{amounts}, #{products_price})
     </insert>
+    
+    <select id="selectOrder" parameterType="string" resultType="orderVo">
+        select * from order_list where order_idx = #{orderNum}
+    </select>
     
 </mapper>

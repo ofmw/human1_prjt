@@ -24,6 +24,43 @@
         min-width: 1240px;
         align-items: center;
     }
+    #div_orderCompleted{
+        display: flex;
+        flex-direction: column;
+        padding: 0 20px;
+        margin-top: 20px;
+        width: 1240px;
+        align-items: center;
+    }
+    #orderCompleted_main {
+        width: 900px;
+        margin-top: 10px;
+        border: 1px solid red;
+    }
+    #tbl_orderCompleted{
+        width: 860px;
+        margin: 20px;
+        border-collapse: collapse;
+    }
+    #tbl_orderCompleted th, #tbl_orderCompleted td{
+        border: 1px solid blue;
+    }
+    #tbl_orderCompleted th{
+        width: 150px;
+    }
+    #tbl_orderCompleted td{
+        padding: 0px 10px;
+        font-size: 14px;
+    }
+    #tbl_orderCompleted tr td:nth-child(4) {
+	   text-align: right;
+	   padding-right: 10px;
+	   width: 120px;
+    }
+    #tbl_orderCompleted tr td:nth-child(3) {
+        width: 60px;
+        text-align: center;
+    }
 </style>    
 </head>
 <body>
@@ -31,7 +68,34 @@
 	<header><jsp:include page="../common/header2.jsp"></jsp:include></header>
 
     <section>
-        주문번호 : ${orderNum}
+        <div id="div_orderCompleted">
+            <div id="orderCompleted_main">
+                <h2>주문완료</h2>
+                <table id="tbl_orderCompleted">
+                    <tr>
+                    	<th>주문번호</th>
+                    	<td colspan="3">${orderVo.order_idx}</td>
+                    </tr>
+                    <tr>
+                    	<th>배송지정보</th>
+                    	<td colspan="3"></td>
+                    </tr>
+                    <tr>
+                    	<th>결제정보</th>
+                    	<td colspan="3"></td>
+                    </tr>
+                    <c:forEach items="${orderList}" var="product">
+                        <tr>
+	                        <th></th>
+	                        <td>${product.brand} ${product.p_name} ${product.standard}${product.unit}</td>
+	                        <td>${product.amount}개</td>
+	                        <td><fmt:formatNumber value="${product.price * product.amount}" pattern="#,###" />원</td>
+	                    </tr>
+                    </c:forEach>
+                    
+                </table>
+            </div>
+        </div>
     </section>
 
     <!-- 푸터 -->

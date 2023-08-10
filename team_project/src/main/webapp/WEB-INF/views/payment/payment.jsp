@@ -402,12 +402,10 @@
     	// 가상의 숨은 input 요소를 생성하고 폼에 추가
     	var orderNumInput = $("<input>").attr("type", "hidden").attr("name", "orderNum").val(orderNum);
         var nameInput = $("<input>").attr("type", "hidden").attr("name", "name").val(name);
-        var amountInput = $("<input>").attr("type", "hidden").attr("name", "amount").val(amount);
         var pointInput = $("<input>").attr("type", "hidden").attr("name", "point").val(point);
         
         frm.append(orderNumInput);
         frm.append(nameInput);
-        frm.append(amountInput);
         frm.append(pointInput);
     	
         IMP.request_pay({
@@ -466,7 +464,7 @@
 	                           <c:when test="${!empty AddressList}">
 	                               <c:forEach items="${AddressList}" var="a">
 	                                   <c:if test="${a.def_add eq '1'}">
-	                                       <p>${a.a_name} (기본배송지) : [${a.postnum}] ${a.address} ${a.detail}</p>
+	                                       <p>${a.a_name} (기본배송지) : [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
 	                                   </c:if>
 	                               </c:forEach>
 	                           </c:when>
