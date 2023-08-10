@@ -27,4 +27,6 @@ public class ProductVo {
 	private int discount;					//할인율
 	private int post_state;					//제품 게시여부(판매 등록여부)
 	private List<String> selectedCategories;//
+	
+	private int salesAmount; // 주문 판매량
 }

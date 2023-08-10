@@ -14,4 +14,5 @@ public interface ProductService {
 	default ProductVo getProduct(String p_id) {return null;}
 	default int addWishList(int m_idx, String p_id) {return 0;}
 	default int removeWishList(int m_idx, String p_id) {return 0;}
+	default void updateTotalSales(ProductVo pVo) {}
 }

@@ -55,7 +55,7 @@ public class HomeController {
 		List<ProductVo> bestList = pdList.bestList();
 		List<ProductVo> saleList = pdList.saleList();
 		List<ProductVo> newList = pdList.newList();
-				
+						
 		model.addAttribute("bestList", bestList);
 		model.addAttribute("saleList", saleList);
 		model.addAttribute("newList", newList);

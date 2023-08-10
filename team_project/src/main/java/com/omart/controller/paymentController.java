@@ -77,7 +77,7 @@ public class paymentController {
 			List<String> productIds = new ArrayList<String>();
 			List<String> productAmounts = new ArrayList<String>();
 			List<String> productsPrice = new ArrayList<String>();
-			for(CartVo product : OrderDetails) {	
+			for(CartVo product : OrderDetails) {
 				productIds.add(product.getP_id());
 				productAmounts.add(Integer.toString(product.getAmount()));
 				int price = product.getPrice();
@@ -97,6 +97,15 @@ public class paymentController {
 			orderVo.setAddress(address);
 			
 			pmOrder.createOrder(orderVo);
+			
+			for(CartVo product : OrderDetails) {
+				String p_id = product.getP_id();
+				int amount = product.getAmount();
+				ProductVo pVo = new ProductVo();
+				pVo.setP_id(p_id);
+				pVo.setSalesAmount(amount);
+				pdInfo.updateTotalSales(pVo);
+			}
 			
 			MemberVo mVo = new MemberVo();
 			

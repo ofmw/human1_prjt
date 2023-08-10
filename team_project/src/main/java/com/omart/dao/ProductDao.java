@@ -61,4 +61,8 @@ public class ProductDao{
 		return sqlSession.update(MAPPER+".removeWishList", target);
 	}
 	
+	public void updateTotalSales(ProductVo pVo) {
+		sqlSession.update(MAPPER+".updateTotalSales", pVo);
+	}
+	
 }
