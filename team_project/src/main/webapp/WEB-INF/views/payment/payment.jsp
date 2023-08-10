@@ -372,6 +372,7 @@
     IMP.init("imp18272101"); 
     
     //주문번호 생성용 필드
+<<<<<<< HEAD
     // 현재 날짜와 시간을 얻습니다.
 	var today = new Date();
 	
@@ -388,6 +389,14 @@
 	
 	// 주문번호 생성용 문자열을 만듭니다.
 	var makeMerchantUid = year + month + day + hours + minutes + seconds + milliseconds;
+=======
+    var today = new Date();   
+    var hours = today.getHours().toString(); // 시
+    var minutes = today.getMinutes().toString();  // 분
+    var seconds = today.getSeconds().toString();  // 초
+    var milliseconds = today.getMilliseconds().toString();
+    var makeMerchantUid = hours +  minutes + seconds + milliseconds;
+>>>>>>> branch 'main' of https://github.com/ofmw/human1_prjt.git
     
     //다음 페이지로 전달해야하는 값
     var frm, requestor, merchant_uid, name, amount, point;
@@ -446,7 +455,11 @@
         <div id="div_payment">
             <div id="payment_main">
                 <h2>결제</h2>          
+<<<<<<< HEAD
                 <form id="frm_payment" action="orderProcess.do" method="post">  
+=======
+                <form id="frm_payment" action="orderCompleted.do" method="post">  
+>>>>>>> branch 'main' of https://github.com/ofmw/human1_prjt.git
                 <input type="hidden" name="requestor" value="${requestor}"/>
                 <c:choose>
                     <c:when test="${!empty member}">
@@ -626,6 +639,7 @@
 	                                
 	                            </c:forEach>
 	                        </c:when>                           
+
                             <c:otherwise><!-- 등록된 배송지가 없을 경우 -->
                                 <div id="order-nav_address">
                                     <div>
