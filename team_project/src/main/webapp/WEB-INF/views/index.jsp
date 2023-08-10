@@ -489,7 +489,7 @@
                                         <div class="p_info_name">${newList[i].p_name} ${newList[i].standard}${newList[i].unit}</div>
                                         <c:if test="${newList[i].discount gt 0}">
                                            <div class="p_info_price"><fmt:formatNumber value="${newList[i].price}" pattern="#,###" />원</div>
-                                        </c:if>                                     
+                                        </c:if>
                                         <div class="p_info_price_final">
                                             <c:if test="${newList[i].discount gt 0}">
                                                 <span>${newList[i].discount}% </span>

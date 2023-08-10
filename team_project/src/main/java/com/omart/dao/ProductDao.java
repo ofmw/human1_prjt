@@ -44,6 +44,7 @@ public class ProductDao{
 	//찜목록 추가
 	public int addWishList(int m_idx, String p_id) {
 		
+		System.out.println("addWishList 메서드 실행");
 		Map<String, Object> target = new HashMap<>();
 		target.put("m_idx", m_idx);
 		target.put("p_id", p_id);

@@ -25,4 +25,13 @@ public class MemberWishService implements MemberService {
 		return dao.getP_info(wish);
 	}
 	
+	public void insertWish(int m_idx) {
+		dao.insertWish(m_idx);
+	}
+	
+	//찜목록 삭제
+	public int removeWishList(int m_idx, String [] p_id) {
+		return dao.removeWishList(m_idx, p_id);
+	}
+	
 }

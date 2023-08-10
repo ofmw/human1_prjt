@@ -41,6 +41,10 @@ public class MemberDao{
 		return sqlSession.insert(MAPPER+".join", vo);
 	}	
 	
+	public void insertWish(int m_idx) {
+		sqlSession.insert(MAPPER+".insertWish", m_idx);
+	}
+	
 	public List<String> getWishList(int m_idx){
 		List<String> wishList = null;
 				
@@ -71,6 +75,33 @@ public class MemberDao{
 	public List<ProductVo> getP_info(List<String> wish) {
 		
 		return sqlSession.selectList(MAPPER+".getP_info", wish);
+	}
+	
+	//찜목록 삭제
+	public int removeWishList(int m_idx, String [] p_id) {
+		
+		System.out.println("회원번호: " +m_idx);
+		System.out.println("삭제할 품목 번호: " +Arrays.toString(p_id));
+		String modified = String.join(",", p_id);
+		System.out.println("변환된 품목 번호: " +modified);
+		
+		int result = 0;
+		
+		for (int i=0; i<p_id.length; i++) {
+			Map<String, Object> target = new HashMap<>();
+			target.put("p_id", p_id[i]);
+			target.put("m_idx", m_idx);
+			
+			System.out.println("삭제 시도 p_id: " +target.get("p_id"));
+			
+			
+			result += sqlSession.update(MAPPER+".removeWishList", target);
+			System.out.println("실행된 행 갯수 누적: " +result);
+		}
+		
+		
+		
+		return result; 
 	}
 	
 }

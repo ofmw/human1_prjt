@@ -13,5 +13,7 @@ public interface MemberService {
 	default List<String> getWishList(int m_idx){return null;}
 	default int getPoint(int m_idx){return 0;}
 	default List<ProductVo> getP_info(List<String> wish) {return null;}
+	default void insertWish(int m_idx) {}
+	default int removeWishList(int m_idx, String [] p_id) {return 0;}
 
 }

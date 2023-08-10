@@ -29,15 +29,24 @@ public class AjaxProductController {
 							   @RequestParam("p_id") String p_id,
 							   HttpSession session) {
 		
-		//찜목록에 해당 p_id를 추가하고 테이블 업데이트 결과 반환
-		int result = pdWish.addWishList(m_idx, p_id);
-		if (result == 1) { //업데이트에 성공했을 경우
+		List<String> checkWish = mWish.getWishList(m_idx);
+		
+		if(checkWish == null) {
+			System.out.println("찜목록 비어있음");
+			mWish.insertWish(m_idx);
 			
-			List<String> wishList = mWish.getWishList(m_idx);
-			//기존의 찜목록 객체 삭제 및 저장
-			session.removeAttribute("wishList");
-			session.setAttribute("wishList", wishList);
 		}
+			System.out.println("찜목록 차있음");
+			//찜목록에 해당 p_id를 추가하고 테이블 업데이트 결과 반환
+			int result = pdWish.addWishList(m_idx, p_id);
+			if (result == 1) { //업데이트에 성공했을 경우
+				
+				List<String> wishList = mWish.getWishList(m_idx);
+				//기존의 찜목록 객체 삭제 및 저장
+				session.removeAttribute("wishList");
+				session.setAttribute("wishList", wishList);
+			}
+		
 		
 		return "success";
 	}

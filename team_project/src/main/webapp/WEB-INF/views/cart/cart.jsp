@@ -834,6 +834,9 @@
         //sessionStorage.setItem("current_add", current_add);
         
         
+        $("#order-nav_btn").on("click", function(){
+        	window.location.href = "../payment/payment.do?requestor=cart";
+        });
         
 
     }); // end of jqeury

@@ -176,10 +176,10 @@
         width: 100%;
         box-sizing: border-box;
     }
-    .p_inner_elements_box a{
+    .p_products{
         width: 230px;
 /*         background-color: aliceblue; */
-        min-height: 343px;
+        min-height: 350px;
     }
     .p_inner_elements_box:not(:first-child){
         margin-top: 30px;
@@ -335,8 +335,10 @@
                                     <c:forEach begin="0" end="${productList.size() div 4}" var="i">
                                         <div class="p_inner_elements_box">
                                             <c:forEach begin="${i*4}" end="${i*4+3}" var="j">
-                                                <a href="#">
+	                                            <div class="p_products">
+	                                                
                                                     <c:if test="${productList[j] ne null}">
+                                                    <a href="product_view.do?p_id=${productList[j].p_id}">
 	                                                    <div class="p_img"><img src="#" alt="#"></div>
 	                                                    <div class="p_info">
 	                                                        <div class="p_info_brand">${productList[j].brand}</div>
@@ -353,9 +355,11 @@
 	                                                        </div>
 	                                                        <div class="p_info_stars">★ 4.5 (1043)</div>
 	                                                    </div>
+	                                                    </a>
                                                     </c:if>		                                            
-		                                        </a>
-                                            </c:forEach>                                        
+			                                        
+												</div>
+											</c:forEach>                                        
                                                                                 
                                     </div>
                                     </c:forEach>
