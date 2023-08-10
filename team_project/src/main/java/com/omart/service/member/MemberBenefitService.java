@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.omart.dao.MemberDao;
+import com.omart.vo.MemberVo;
 
 import lombok.Setter;
 
@@ -15,6 +16,10 @@ public class MemberBenefitService implements MemberService {
 	
 	public int getPoint(int m_idx){
 		return dao.getPoint(m_idx);
+	}
+	
+	public void setPoint(MemberVo memberVo){
+		dao.setPoint(memberVo);
 	}
 	
 }

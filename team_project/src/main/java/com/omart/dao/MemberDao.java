@@ -70,4 +70,9 @@ public class MemberDao{
 		return point;
 	}
 	
+	//포인트 사용
+		public void setPoint(MemberVo mVo) {			
+			sqlSession.update(MAPPER+".setPoint", mVo);
+		}
+	
 }
