@@ -310,9 +310,7 @@
 				alert("상세주소를 입력해주세요.");
 				detail.focus();
 			} else {
-				
-				alert("테이블 조회 요청");
-				
+								
 				$.ajax({
 	        		type: "POST",
 	                url: "checkNewAddr.do", // AjaxCartController

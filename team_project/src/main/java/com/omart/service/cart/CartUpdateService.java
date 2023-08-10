@@ -25,7 +25,7 @@ public class CartUpdateService implements CartService {
 	}
 	
 	//장바구니 선택된 품목 삭제
-	public void cartRemove2(List<CartVo> target) {
+	public void cartRemove(List<CartVo> target) {
 		dao.cartRemove(target);
 	}
 	

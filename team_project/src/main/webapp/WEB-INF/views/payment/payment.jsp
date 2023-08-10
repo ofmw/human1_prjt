@@ -252,7 +252,7 @@
     }
     #point_container input[type="button"]{
         width: 100px;
-        height: 27px;
+        height: 28px;
         font-size: 12px;
         border-radius: 0px;
         border: 1px solid lightgray;
@@ -354,7 +354,8 @@
         	let inputPoint = parseInt($("#input_point").val().replace(/\D/g, ''));
         	let dc_final = dc_product + inputPoint;
         	let price_before = parseInt($("#price_before").val().replace(/\D/g, ''));
-        	let price_final = price_before - dc_final;
+        	let shipping_fee = parseInt($("#shipping-fee").text().replace(/\D/g, ''));
+        	let price_final = price_before - dc_final + shipping_fee;
         	
         	$("#dc_final").text(" - "+Number(dc_final).toLocaleString()+"원");
         	$("#dc_final_nav").text(" - "+Number(dc_final).toLocaleString()+"원");
@@ -363,7 +364,7 @@
         	
         }
         
-        
+        dc_final();
         
 	});
 	
@@ -557,7 +558,7 @@
 	                </tr>
 	                <tr>
 	                       <td><h6>할인금액</h6></td>
-	                       <td><h4 id="dc_final">- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</h4></td>
+	                       <td><h4 id="dc_final"></h4></td>
 	                       <td></td>
 	                   </tr>
 	                <tr>
@@ -573,7 +574,7 @@
 
 	            </table>
 	            </form>
-	            <button id="btn_payment_main" onclick="requestPay()"><fmt:formatNumber value="${price_before - discount_product}" pattern="#,###" />원 결제하기</button>
+	            <button id="btn_payment_main" onclick="requestPay()"></button>
 	            
             </div>
             
@@ -667,17 +668,23 @@
                         </div>
                         <div id="product_discount-price">
                             <span>할인금액</span>
-                            <span id="dc_final_nav">- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</span>
+                            <span id="dc_final_nav"></span>
                         </div>
                         <div id="product_shipping-fee">
                             <span>배송비</span>
-                            <span id="shipping-fee"></span>
+                            <span id="shipping-fee">
+                                <c:choose>
+                                    <c:when test="${price_before - discount_product ge 25000}">0</c:when>
+                                    <c:otherwise>3,000</c:otherwise>
+                                </c:choose>
+                                원
+                            </span>
                         </div>
                     </div>
                     <div id="product_payment-price">
                         <span>결제예정금액</span>
                         <span>
-                            <span id="payment-price" style="font-size:22px;font-weight:bold;"><fmt:formatNumber value="${price_before - discount_product}" pattern="#,###" /></span>
+                            <span id="payment-price" style="font-size:22px;font-weight:bold;"></span>
                             <span id="won" style="font-size:15px;font-weight:100;">원</span>
                         </span>
                     </div>
