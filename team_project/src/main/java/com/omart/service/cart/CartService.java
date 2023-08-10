@@ -24,5 +24,6 @@ public interface CartService {
 	default int checkEditAddr(AddressVo vo) {return 0;}
 	default void editAddr(AddressVo vo) {}
 	default void deleteCartAll(int m_idx) {}
+	default int addCart2(int m_idx, String [] p_id) {return 0;}
 
 }

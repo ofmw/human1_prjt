@@ -5,12 +5,13 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.omart.service.cart.CartService;
 import com.omart.service.member.MemberService;
-import com.omart.service.product.ProductService;
 import com.omart.vo.MemberVo;
 import com.omart.vo.ProductVo;
 
@@ -22,9 +23,11 @@ public class AjaxMypageController {
 	
 	@Setter(onMethod_={ @Autowired })
 	private MemberService mWish;
+	@Setter(onMethod_={ @Autowired })
+	private CartService cAdd;
 	
-	//찜목록 삭제
-	@RequestMapping("/remove_wishList.do")
+	//찜목록 선택 상품 삭제
+	@PostMapping("/remove_wishList.do")
 	public String remove_wishList(@RequestParam("p_id[]") String [] p_id,
 								  HttpSession session) {
 		
@@ -46,5 +49,23 @@ public class AjaxMypageController {
 		}
 		
 		return "success";
+	}
+	
+	//장바구니 선택 상품 추가
+	@PostMapping("/addCart.do")
+	public String addCart(@RequestParam("p_id[]") String [] p_id,
+			 			  HttpSession session) {
+		
+		MemberVo member = (MemberVo) session.getAttribute("member");
+		int m_idx = member.getM_idx();
+		
+		int result = cAdd.addCart2(m_idx, p_id);
+		
+		if (result != 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+		
 	}
 }

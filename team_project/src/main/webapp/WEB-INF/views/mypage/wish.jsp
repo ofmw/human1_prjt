@@ -327,7 +327,7 @@
                 }); // 원래 배경색 및 폰트 색상으로 되돌리기
             });
             
-            /* ---------------------찜한 상품 관리--------------------- */
+            /* ---------------------찜한 상품 삭제 관리--------------------- */
             //*** 찜목록 상품 삭제 메서드 ***//
             function removeWish(p_idArray) {
             	
@@ -354,7 +354,7 @@
             }
             
             
-         	// 찜 버튼 클릭 이벤트 처리
+         	//*** 찜 버튼 클릭 이벤트 처리 ***//
             $(".w_btn").click(function() {
             	let p_idArray = [$(this).siblings(".p_id").val()];
             	console.log(p_id);
@@ -409,9 +409,80 @@
                 } // end of if (checkedProducts.length > 0)
                 
             });
+          	
+            /* ---------------------찜한 상품 관리--------------------- */
+            //*** 장바구니에 선택한 상품 추가 ***//
+            function addCart(p_idArray) {
             	
+            	$.ajax({
+	                type: "POST",
+	                url: "addCart.do",
+	                data: {
+	                    p_id: p_idArray,
+	                },
+	                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+	                   if (response === "success") { // 수량 업데이트가 성공한 경우
+	                	   	alert('장바구니에 상품이 추가되었습니다.');
+	                	  	//페이지 새로고침
+	                	   	location.reload();
+	                    } else {
+	                        alert("장바구니 상품 추가에 실패했습니다.");
+	                    }
+	                },
+	                error: function () {
+	                    alert("오류가 발생하였습니다.");
+	                }
+            	}); // end of ajax
             	
+            }
+            
+            
+          	//*** 장바구니 버튼 클릭 이벤트 처리 ***//
+            $(".c_btn").click(function() {
+            	let p_idArray = [$(this).siblings(".p_id").val()];
+            	console.log(p_idArray);
             	
+            	addCart(p_idArray);
+            	
+            });
+          	
+         	//*** "선택품목 장바구니 추가" 버튼 클릭 이벤트 처리 (.sel_product 체크된 항목 추가) ***//
+            $("#sel-addcart").click(function() {
+
+                // class가 sel_product인 체크박스 중 체크된 항목들을 선택
+                let target = $(".w_checkbox:checked");
+
+                // 체크된 항목이 있는지 확인
+                if(target.length > 0){ // 체크된 항목이 있을 경우
+
+                    // 품목 삭제 여부 결정
+                    let confirmed = confirm("선택한 품목을 장바구니에 추가하시겠습니까?");
+
+                    // "확인" 을 눌렀을 경우
+                    if (confirmed) {
+
+                        // 선택된 품목들의 정보 담을 배열 초기화
+                        let p_idArray = [];
+
+                        // 선택된 체크박스들이 속한 각각의 행에 대한 함수
+                        target.each(function() {
+
+                            // each()로 선택된 행의 정보 배열에 저장
+                            let p_id = $(this).siblings('.w_img').find('.p_id').val();
+                            p_idArray.push(p_id);       
+
+                        }); // end of .each()
+
+                        // 장바구니 테이블에 추가 요청
+                        addCart(p_idArray);
+
+                    } // end of if (confirmed)
+                } else { // 체크된 항목이 없을 경우
+
+                    alert("추가할 품목을 선택해주세요.");
+                } // end of if (checkedProducts.length > 0)
+                
+            });
             
             
             
@@ -536,7 +607,7 @@
 								                <div class="w_img">
 								                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
 								                	<div style="display:none" class="w_img_opt-box">
-								                		<button type="button">카</button>
+								                		<button type="button" class="c_btn">카</button>
 								                		<button type="button" class="w_btn">♥</button>
 								                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
 								                	</div>
