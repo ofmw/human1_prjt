@@ -250,6 +250,9 @@ $(function () {
 	  $(".btn_inquiry").click(function () {
 		    let tableNameId = $(this).data("table-name");
 		    let categoryId = $(this).data("category");
+		    let replyState = $(this).data("reply-state");
+		    console.log(replyState);
+		    
 		    let inquiryData = {
 		      tableName: tableNameMap[tableNameId],
 		      category: categoryMap[categoryId], //카테고리 번호 대신 카테고리 이름 가져옴
@@ -271,6 +274,13 @@ $(function () {
 		    } else {
 		        $("#tbl_contents_inquiry tr:nth-child(3)").hide(); // 제품코드 행 숨기기
 		    }
+		 	
+		    if (replyState === 1) {
+		        $(this).addClass("answered-color").removeClass("unanswered-color");
+		    } else {
+		        $(this).addClass("unanswered-color").removeClass("answered-color");
+		    }
+		    
 		  });
 
 		  function showInquiryInfo(inquiryData) {
@@ -309,6 +319,8 @@ $(function () {
 	}); 
 	//문의내용보기 폼 확인 버튼 눌렀을 때
 	 $(document).ready(function(){
+		 
+		 
 		 $("#btn_save").click(function(){
 			 let b_idx = $("#inquiry_b-idx").val();
 			 let p_id = $("#inquiry_p-id").val();
@@ -321,8 +333,10 @@ $(function () {
 			 
 			 if ($("#inquiry_table-name").val() === "1:1") {
 		        saveAnswerTo1to1Table(formData);
+		        
 		   	 } else if ($("#inquiry_table-name").val() === "QA") {
 		        saveAnswerToQATable(formData);
+		        
 		 	 } else {
 		        console.log("오류");
 		  	 }
@@ -341,6 +355,7 @@ $(function () {
 	                data: formData,
 	                success: function(response){
 	                    alert("저장되었습니다.");
+	                    changeInquiryState(formData.b_idx);
 	                    location.href = "inquiry.do"; 
 	                },
 	                error: function(error){
@@ -357,10 +372,49 @@ $(function () {
 	                data: formData,
 	                success: function(response){
 	                    alert("저장되었습니다.");
+	                    changeQnaState(formData.b_idx);
 	                    location.href = "inquiry.do"; 
 	                },
 	                error: function(error){
 	                    alert("실패했습니다.");
+	                }
+	            });
+	        }
+	        
+	        // 1:1문의 답변여부
+			function changeInquiryState(b_idx){
+	        	$.ajax({
+	                type: "POST",
+	                url: "changeInquiryState",
+	                data: {
+	                    reply_state: 1,
+	                    b_idx: parseInt(b_idx)
+	                },
+	                success: function(response) {
+						alert("답변완료.");
+	                	location.href = "inquiry.do";
+	                },
+	                error: function(xhr, status, error) {
+						alert("실패했습니다.")
+	                }
+	            });
+	        }
+			
+	        // qna문의 답변여부
+			function changeQnaState(b_idx){
+	        	$.ajax({
+	                type: "POST",
+	                url: "changeQnaState",
+	                data: {
+	                    reply_state: 1,
+	                    b_idx: parseInt(b_idx)
+	                },
+	                success: function(response) {
+						alert("답변완료.");
+	                	location.href = "inquiry.do";
+	                },
+	                error: function(xhr, status, error) {
+						alert("실패했습니다.")
 	                }
 	            });
 	        }
@@ -512,7 +566,7 @@ $(function () {
                     	<button class="btn_inquiry" data-table-name="${item.tableName}" data-category="${item.category}" 
                     	data-memberid="${item.m_id}" data-name="${item.m_name}" data-post-date="${item.post_date}" 
                     	data-title="${item.title}" data-p-id="${item.p_id}" data-content="${item.content}"
-                    	data-content="${item.reply_state}" data-b-idx="${item.b_idx}">
+                    	data-reply-state="${item.reply_state}" data-b-idx="${item.b_idx}">
                     		문의내용 보기
                     	</button>
                     </td>

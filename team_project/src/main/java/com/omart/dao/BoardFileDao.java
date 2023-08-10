@@ -70,4 +70,8 @@ public class BoardFileDao {
 	public void changeInquiryState(int b_idx) {
 		sqlSession.update(MAPPER + ".changeInquiryState", b_idx);
 	}
+
+	public void changeQnaState(int b_idx) {
+		sqlSession.update(MAPPER + ".changeQnaState", b_idx);
+	}
 }

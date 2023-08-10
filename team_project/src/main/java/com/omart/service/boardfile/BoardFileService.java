@@ -18,6 +18,8 @@ public interface BoardFileService {
 	default int insertFaq(BoardFileVo boardFileVo) {return 0;}
 	default int insertEvent(MultipartFile attachedFile, String title, 
 			String period, String content,  HttpServletRequest request) {return 0;}
+	default void changeInquiryState(int b_idx) {}
+	default void changeQnaState(int b_idx) {}
 	default List<BoardFileVo> getAllFaqes()	{return null;}
 	default List<BoardFileVo> getAllNotices() {return null;}
 	default List<BoardFileVo> getAllEvents() {return null;}

@@ -62,7 +62,13 @@
     <!-- 1:1게시판 답변여부 -->
     <update id="changeInquiryState" parameterType="_int">
     	update inquiries
-    	set state = #{state}
+    	set reply_state = 1
+    	where b_idx = #{b_idx}
+    </update>
+    <!-- QnA게시판 답변여부 -->
+    <update id="changeQnaState" parameterType="_int">
+    	update qna
+    	set reply_state = 1
     	where b_idx = #{b_idx}
     </update>
     <!-- 검색 조건에 맞는 게시물 수 반환 -->

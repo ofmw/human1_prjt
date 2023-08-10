@@ -18,4 +18,8 @@ private BoardFileDao dao;
 	public void changeInquiryState(int b_idx) {
 		dao.changeInquiryState(b_idx);
 	}
+
+	public void changeQnaState(int b_idx) {
+		dao.changeQnaState(b_idx);
+	}
 }
