@@ -29,6 +29,12 @@ public class AjaxProductController {
 							   @RequestParam("p_id") String p_id,
 							   HttpSession session) {
 		
+		List<String> checkWish = mWish.getWishList(m_idx);
+		
+		if(checkWish == null) {
+			mWish.insertWish(m_idx);
+		}
+		
 		//찜목록에 해당 p_id를 추가하고 테이블 업데이트 결과 반환
 		int result = pdWish.addWishList(m_idx, p_id);
 		if (result == 1) { //업데이트에 성공했을 경우

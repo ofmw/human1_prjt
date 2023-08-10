@@ -20,4 +20,8 @@ public class MemberWishService implements MemberService {
 		return dao.getWishList(m_idx);
 	}
 	
+	public void insertWish(int m_idx) {
+		dao.insertWish(m_idx);
+	}
+	
 }

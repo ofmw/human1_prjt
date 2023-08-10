@@ -46,11 +46,19 @@
     
     <!-- 찜목록 추가 -->
     <update id="addWishList" parameterType="map">
-    	UPDATE wish
-    	SET w_list = CONCAT(w_list, ',', #{p_id})
-    	WHERE m_idx = #{m_idx}
-    </update>
-    
+	    UPDATE wish
+	    SET w_list = 
+	    <choose>
+	        <when test="w_list != null">
+	            CONCAT(w_list, ',', #{p_id})
+	        </when>
+	        <otherwise>
+	            #{p_id}
+	        </otherwise>
+	    </choose>
+	    WHERE m_idx = #{m_idx}
+	</update>
+
     <!-- 찜목록 삭제 -->
     <update id="removeWishList" parameterType="map">
 	    UPDATE wish

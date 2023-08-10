@@ -41,7 +41,7 @@ public class CartDao{
 	//해당 회원의 장바구니 상품의 수량 변경하기
 	public void cartRemove(List<CartVo> target) {
 
-		sqlSession.delete(MAPPER+".cartRemove2", target);
+		sqlSession.delete(MAPPER+".cartRemove", target);
 	}
 	
 	//해당 회원의 장바구니 상품의 상세 정보 가져오기

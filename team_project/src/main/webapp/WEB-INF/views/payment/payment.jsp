@@ -310,22 +310,24 @@
             }
             
             // 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
-            let url = "../cart/change_address.do?m_idx=" + $("#session_m_idx").val();
+            let url = "../cart/manage_address.do?m_idx=" + $("#session_m_idx").val();
             // 자식창을 열고 그 여부를 변수에 저장
-            childWindow = window.open(url, '_blank', 'menubar=no,width=700,height=750');
+            childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
             //childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
         }
         
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
-        $("#change_address").on("click", openChangeAddress);
+        $("#manage_address").on("click", openChangeAddress);
         
-        $("#input_point").on("input", function(){
-        	let inputValue = $(this).val().replace(/\D/g, '');
-
-            $(this).val(Number(inputValue).toLocaleString());
-        	
+        //let current_add = opener.sessionStorage.getItem("current_add");
+        //sessionStorage.setItem("current_add", current_add);
+        
+        /* 결제페이지 호출 */
+        $("#order-nav_btn").on("click", function(){
+            window.location.href = "../payment/payment.do?requestor=cart";
         });
         
+        /* 포인트 입력창을 벗어날때 */
         $("#input_point").on("blur", function(){
             let mPoint = parseInt($("#mPoint").val());
             let inputValue = parseInt($(this).val().replace(/\D/g, ''));
@@ -370,12 +372,22 @@
     IMP.init("imp18272101"); 
     
     //주문번호 생성용 필드
-    var today = new Date();   
-    var hours = today.getHours().toString(); // 시
-    var minutes = today.getMinutes().toString();  // 분
-    var seconds = today.getSeconds().toString();  // 초
-    var milliseconds = today.getMilliseconds().toString();
-    var makeMerchantUid = hours +  minutes + seconds + milliseconds;
+    // 현재 날짜와 시간을 얻습니다.
+	var today = new Date();
+	
+	// 년, 월, 일 정보를 얻습니다.
+	var year = today.getFullYear().toString().slice(-2); // 뒷 2자리만 사용
+	var month = (today.getMonth() + 1).toString().padStart(2, '0'); // 월 (0부터 시작하므로 1을 더함)
+	var day = today.getDate().toString().padStart(2, '0'); // 일
+	
+	// 시, 분, 초, 밀리초 정보를 얻습니다.
+	var hours = today.getHours().toString().padStart(2, '0'); // 시
+	var minutes = today.getMinutes().toString().padStart(2, '0'); // 분
+	var seconds = today.getSeconds().toString().padStart(2, '0'); // 초
+	var milliseconds = today.getMilliseconds().toString().padStart(3, '0'); // 밀리초
+	
+	// 주문번호 생성용 문자열을 만듭니다.
+	var makeMerchantUid = year + month + day + hours + minutes + seconds + milliseconds;
     
     //다음 페이지로 전달해야하는 값
     var frm, requestor, merchant_uid, name, amount, point;
@@ -434,7 +446,7 @@
         <div id="div_payment">
             <div id="payment_main">
                 <h2>결제</h2>          
-                <form id="frm_payment" action="orderCompleted.do" method="post">  
+                <form id="frm_payment" action="orderProcess.do" method="post">  
                 <input type="hidden" name="requestor" value="${requestor}"/>
                 <c:choose>
                     <c:when test="${!empty member}">
@@ -483,7 +495,15 @@
 	                <tr>
 	                    <th colspan="3">
 	                       <h3>주문상품: ${fn:length(CartList)}개</h3>
-	                       <input type="hidden" id="orderName" value="${CartList[0].p_name} 외 ${fn:length(CartList)-1}개 상품"/>
+	                       <c:choose>
+	                           <c:when test="${fn:length(CartList) gt 1}">
+	                               <input type="hidden" id="orderName" value="${CartList[0].p_name} 외 ${fn:length(CartList)-1}개 상품"/>
+	                           </c:when>
+	                           <c:otherwise>
+	                               <input type="hidden" id="orderName" value="${CartList[0].p_name} ${CartList[0].standard}${CartList[0].unit}"/>
+	                           </c:otherwise>
+	                       </c:choose>
+	                       
 	                    </th>
 	                </tr>
 	                <c:set var="price_before" value="0"></c:set>
@@ -571,22 +591,41 @@
                         <c:choose>
                             
                             <c:when test="${!empty AddressList}"><!-- 등록된 배송지가 있을 경우 -->
-                                <c:forEach items="${AddressList}" var="a">
-                                    <c:choose>
-                                        <c:when test="${a.def_add eq '1'}">
-                                            <div id="order-nav_address">
-                                                <div>
-                                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
-                                                    <span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
-                                                </div>
-                                                <div>
-                                                    <button type="button" id="change_address">배송지 변경</button>
-                                                </div>
-                                            </div>
-                                        </c:when>
-                                    </c:choose>
-                                </c:forEach>
-                            </c:when>                            
+	                            <c:forEach items="${AddressList}" var="a">
+	                            
+	                                <c:choose>
+	                                    <c:when test="${!empty current_add}">
+	                                    
+	                                        <c:if test="${current_add eq a.a_name}">
+	                                            <div id="order-nav_address">
+	                                                <div>
+	                                                    <span id="address_preset">배송지: ${a.a_name}</span>
+	                                                    <span id="address_detail">[${a.postnum}] ${a.roadAddr} ${a.detail}</span>
+	                                                </div>
+	                                                <div>
+	                                                    <button type="button" id="manage_address">배송지 변경</button>
+	                                                </div>
+	                                            </div>
+	                                        </c:if>
+	                                    
+	                                    </c:when>
+	                                    <c:otherwise>
+	                                        <c:if test="${a.def_add eq '1'}">
+	                                            <div id="order-nav_address">
+	                                                <div>
+	                                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
+	                                                    <span id="address_detail">[${a.postnum}] ${a.roadAddr} ${a.detail}</span>
+	                                                </div>
+	                                                <div>
+	                                                    <button type="button" id="manage_address">배송지 변경</button>
+	                                                </div>
+	                                            </div>
+	                                        </c:if>
+	                                    </c:otherwise>
+	                                </c:choose>
+	                                
+	                            </c:forEach>
+	                        </c:when>                           
                             <c:otherwise><!-- 등록된 배송지가 없을 경우 -->
                                 <div id="order-nav_address">
                                     <div>
@@ -594,7 +633,7 @@
                                         <span id="address_detail">아래 배송지 설정 버튼을 눌러 배송지를 등록하거나 결제 정보 입력란에서 입력하실 수 있습니다.</span>
                                     </div>
                                     <div>
-                                        <button type="button" id="change_address">배송지 등록</button>
+                                        <button type="button" id="manage_address">배송지 등록</button>
                                     </div>
                                 </div>
                             </c:otherwise>

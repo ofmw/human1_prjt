@@ -52,6 +52,10 @@
 		INSERT INTO member_kakao(m_id, m_name, platform, gender)
 		VALUES(#{email}, #{nickname}, "kakao", #{gender}) 
 	</insert>
+	
+	<insert id="insertWish" parameterType="_int">
+	   insert into wish (m_idx) values(#{m_idx})
+	</insert>
     
     <select id="getWishList" parameterType="_int" resultType="wishVo">
         select * from wish where m_idx = #{m_idx}

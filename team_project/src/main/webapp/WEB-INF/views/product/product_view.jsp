@@ -126,13 +126,13 @@
 	    font-size: 20px;
 	    font-weight: bold;
 	}
-	#div_buy_main #div_wish_btn, #aaa {
+	#div_buy_main #div_wish_btn, #div_wish_btn2 {
 	    margin-left: 10px;
 	    font-size: 35px;
 	    border: 1px solid rgb(200, 200, 200);
 	    color: rgb(64, 64, 64);
 	}
-	#div_buy_quick #div_wish_btn, #aaa {
+	#div_buy_quick #div_wish_btn, #div_wish_btn2 {
 	    margin-left: 30px;
 	    font-size: 30px;
 	    border: 1px solid rgb(200, 200, 200);
@@ -445,13 +445,8 @@
         	        	
         });
         
-        
-        
-        
-        
-        
         // 찜 버튼 클릭 이벤터 처리
-        $("#aaa").click(function() {
+        $("#div_wish_btn").click(function() {
         	
         	// 로그인 상태 판멸
         	if ($("#m_idx").val() !== "") { // 로그인한 경우
@@ -461,12 +456,15 @@
         	}
         	
         });
-       	
+        
+       	$("#div_wish_btn2").click(function(){
+       		$("#div_wish_btn").click()
+       	});
         
         // 찜 여부 체크
         function checkWish() {
         	
-        	let flag = $("#aaa input").val();
+        	let flag = $("#div_wish_btn input").val();
         	console.log(flag);
         	// 찜 여부 체크
         	if (flag === "Y") { // 이미 찜한 상품인 경우
@@ -588,7 +586,7 @@
                 <div class="need_login btn1" id="div_buy_btn">구매하기</div>
             </c:when>
             <c:otherwise>
-                <div class="btn_addWish btn1" id="aaa">
+                <div class="btn_addWish btn1" id="div_wish_btn">
 	                <c:choose>
 	                    <c:when test="${not empty wishList and wishList.contains(product.p_id)}">
 	                       <span style="color: red; padding-left: 10px;">♥</span>
@@ -629,12 +627,12 @@
         </div>
         <c:choose>
             <c:when test="${empty member}">
-                <div class="need_login btn2" id="div_wish_btn">♡</div>
+                <div class="need_login btn2" id="div_wish_btn2">♡</div>
 		        <div class="need_login btn2" id="div_cart_btn">장바구니</div>
 		        <div class="need_login btn2" id="div_buy_btn">구매하기</div>
             </c:when>
             <c:otherwise>
-                <div class="btn_addWish btn2" id="div_wish_btn">
+                <div class="btn_addWish btn2" id="div_wish_btn2">
                     <c:choose>
                         <c:when test="${not empty wishList and wishList.contains(product.p_id)}">
                            <span style="color: red;">♥</span>

@@ -40,6 +40,10 @@ public class MemberDao{
 		return sqlSession.insert(MAPPER+".join", vo);
 	}	
 	
+	public void insertWish(int m_idx) {
+		sqlSession.insert(MAPPER+".insertWish", m_idx);
+	}
+	
 	public List<String> getWishList(int m_idx){
 		List<String> wishList = null;
 				
