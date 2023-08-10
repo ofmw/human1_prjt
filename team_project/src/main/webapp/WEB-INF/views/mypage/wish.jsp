@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -186,6 +187,7 @@
         }
         .w_inner_elements_box a{
             width: 230px;
+            min-height: 321px;
             background-color: aliceblue;
         }
         .w_inner_elements_box:not(:first-child){
@@ -313,17 +315,29 @@
 
                     <div id="w_box">
                         <div class="w_inner_elements">
-                            <div class="w_inner_elements_box">
-                                <a href="#">
-                                    <div class="w_img"><img src="#" alt="#"></div>
-                                    <div class="w_info">
-                                        <div class="w_info_brand">농협</div>
-                                        <div class="w_info_name">참돔</div>
-                                        <div class="w_info_price">9억원</div>
-                                        <div class="w_info_stars">★ 4.5 (1043)</div>
-                                    </div>
-                                </a>
-                            </div>
+							
+							<c:forEach begin="0" end="${wishList.size() div 4}" var="i">
+	                            <div class="w_inner_elements_box">
+	                            	<c:forEach begin="${i*4}" end="${i*4+3}" var="j">
+									
+							            <a href="#">
+							            	<c:if test="${!empty wishList[j]}">
+								                <div class="w_img"><img src="#" alt="#"></div>
+								                <div class="w_info">
+								                    <div class="w_info_brand">${wishList[j]}</div>
+								                    <div class="w_info_name">${}</div>
+								                    <div class="w_info_price">
+								                        <fmt:formatNumber value="12345" pattern="#,###"/>원
+								                    </div>
+								                    <div class="w_info_stars">★ 4.5 (1043)</div>
+								                </div>
+							                </c:if>
+							            </a>
+			
+									</c:forEach>
+	                            </div>
+                            </c:forEach>
+
                         </div>
                     </div>
 

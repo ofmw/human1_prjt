@@ -60,4 +60,17 @@
     <select id="getPoint" parameterType="_int" resultType="_int">
         select point from point where m_idx = #{m_idx}
     </select>
+    
+    
+    
+    
+    <!-- 찜목록 페이지 정보 -->
+    <select id="getP_info" parameterType="java.util.List" resultType="productVo">
+    	SELECT *
+    	FROM product
+    	WHERE p_id IN
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+    </select>
 </mapper>

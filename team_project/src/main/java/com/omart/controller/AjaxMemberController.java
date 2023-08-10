@@ -34,6 +34,8 @@ public class AjaxMemberController {
 		if(vo != null){
 			
 			List<String> wishList = mWish.getWishList(vo.getM_idx());
+
+			System.out.println(wishList);
 			
 			String grade = null;
 			switch(vo.getGrade()) {

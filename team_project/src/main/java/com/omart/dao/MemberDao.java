@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.omart.vo.MemberVo;
+import com.omart.vo.ProductVo;
 import com.omart.vo.WishVo;
 
 @Repository
@@ -64,6 +65,12 @@ public class MemberDao{
 		}
 		
 		return point;
+	}
+	
+	//찜목록 조회
+	public List<ProductVo> getP_info(List<String> wish) {
+		
+		return sqlSession.selectList(MAPPER+".getP_info", wish);
 	}
 	
 }
