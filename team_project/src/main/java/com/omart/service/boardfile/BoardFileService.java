@@ -25,4 +25,6 @@ public interface BoardFileService {
 	default List<BoardFileVo> getAllEvents() {return null;}
 	default List<BoardFileVo> getAllInquiries() {return null;}
 	default List<BoardFileVo> getAllQnas() {return null;}
+	default List<BoardFileVo> getInquiryAns(int bIdx) {return null;}
+	default List<BoardFileVo> getQnaAns(int bIdx) {return null;}
 }

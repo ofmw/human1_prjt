@@ -135,6 +135,11 @@
     }
     #tbl_contents_info, #tbl_contents_inquiry {
         margin: 10px 0px;
+    }
+    #tbl_contents_inquiry{
+    	width: 500px;
+    	margin-left: auto;
+    	margin-right: auto;    	
     }    
     #tbl_contents_info th, #tbl_contents_info td, #tbl_contents_inquiry th, #tbl_contents_inquiry td {
 /*         border: 1px solid lightgray; */
@@ -142,10 +147,32 @@
         white-space: nowrap;
         font-size: 12px;
     }
-    #tbl_contents_info th, #tbl_contents_inquiry th{
+    #tbl_contents_info th{
         width: 80px;
         padding-right: 10px;
         text-align: right;
+    }
+    #tbl_contents_inquiry th{
+    	width: 50px;
+    	padding-right: 10px;
+        text-align: right;
+    }
+    #tbl_contents_inquiry tr:nth-child(2) th, #tbl_contents_inquiry tr:nth-child(2) td, #tbl_contents_inquiry tr:nth-child(2) th, #tbl_contents_inquiry tr:nth-child(3) td
+    #tbl_contents_inquiry tr:nth-child(4) th, #tbl_contents_inquiry tr:nth-child(4) td, #tbl_contents_inquiry tr:nth-child(5) th, #tbl_contents_inquiry tr:nth-child(5) td,
+    #tbl_contents_inquiry tr:nth-child(6) th, #tbl_contents_inquiry tr:nth-child(6) td{
+    	padding-top: 10px;
+    }
+    #tbl_contents_inquiry input[type="button"]{
+    	float: right;
+    	margin-top: 10px;
+    	margin-right: 14px;
+    	width: 80px;
+       	height: 27px;
+       	font-size: 11px;
+       	font-weight: bold;
+       	border: 1px solid lightgray;
+       	border-radius: 3px;
+       	cursor: pointer;
     }
     #tbl_contents_info td, #tbl_contents_inquiry td{
         width: 150px;
@@ -170,9 +197,18 @@
 	   text-align: right;
 	   padding-top: 6px;
     }
-    #inquiry_content{
-    	resize: none;
+    #ans_content{
+    	height: 200px;
     }
+    #inquiry_content{
+    	height: 150px;
+    }
+    #inquiry_content, #ans_content{
+    	padding-left: 5px;
+    	padding-right: 5px;
+    	width: 407px;
+    	resize: none;
+    }    	
     #btn_info, #btn_cancel{
        width: 80px;
        height: 27px;
@@ -191,8 +227,8 @@
     	background-color: transparent;
    		min-width: 85px;
    		border: none;
+   		color: blue;
 	    cursor: pointer;
-	    color: blue;
 	    font-size: 12px;
     }
     #btn_info:hover {
@@ -247,11 +283,31 @@ $(function () {
 			  "3": "주문/결제/배송",
 			  "4": "취소/환불"
 	  };
+	  // 답변완료 시 문의내용 보기 글자 색상 변경
+	  $(".btn_inquiry").each(function(){
+		  let replyState = $(this).data("reply-state");
+		  
+		  if (replyState === 1){
+			  $(this).css("color", "gray");  
+		  }
+		  	
+	  });
+	  
 	  $(".btn_inquiry").click(function () {
 		    let tableNameId = $(this).data("table-name");
 		    let categoryId = $(this).data("category");
 		    let replyState = $(this).data("reply-state");
-		    console.log(replyState);
+		    
+		    //답변완료 상태일때 답변 내용이랑 확인 버튼 disabled
+		    if (replyState === 1) {
+	            // reply_state가 1인 경우에 처리할 작업
+	            $("#ans_content").prop("disabled", true); // ans_content를 비활성화
+	            $("#btn_save").prop("disabled", true);     // btn_save를 비활성화
+	        } else {
+	            // reply_state가 0인 경우에 처리할 작업 (필요에 따라 추가 가능)
+	            $("#ans_content").prop("disabled", false); // ans_content를 활성화
+	            $("#btn_save").prop("disabled", false);     // btn_save를 활성화
+	        }
 		    
 		    let inquiryData = {
 		      tableName: tableNameMap[tableNameId],
@@ -270,20 +326,15 @@ $(function () {
 		    
 		 	// 제품코드 입력란의 보이거나 숨김 여부 설정
 		    if (tableNameId === "qna") {
-		        $("#tbl_contents_inquiry tr:nth-child(3)").show(); // 제품코드 행 보이기
+		        $("#tbl_contents_inquiry tr:nth-child(5)").show(); // 제품코드 행 보이기
 		    } else {
-		        $("#tbl_contents_inquiry tr:nth-child(3)").hide(); // 제품코드 행 숨기기
-		    }
-		 	
-		    if (replyState === 1) {
-		        $(this).addClass("answered-color").removeClass("unanswered-color");
-		    } else {
-		        $(this).addClass("unanswered-color").removeClass("answered-color");
+		        $("#tbl_contents_inquiry tr:nth-child(5)").hide(); // 제품코드 행 숨기기
 		    }
 		    
 		  });
 
 		  function showInquiryInfo(inquiryData) {
+			  
 		    // 팝업 창에 문의 내용 표시
 		    $("#inquiry_table-name").val(inquiryData.tableName);
 		    $("#inquiry_category").val(inquiryData.category);
@@ -294,21 +345,21 @@ $(function () {
 		    $("#inquiry_title").val(inquiryData.title);
 		    $("#inquiry_content").val(inquiryData.content);
 		    $("#inquiry_b-idx").val(inquiryData.b_idx);
-
 		    // 팝업 창 표시
 		    $("#div_member_info").hide();
 		    $("#div_inquiry_info").show();
 		    divShadowInfo.style.display = "block";
+		   
 		  }
 
-	  let cancelBtn = document.getElementById("btn_cancel");
-	  /* let inquiryCancelBtn = document.getElementById("btn_save"); */
-	  
-	  cancelBtn.addEventListener("click", function () {
-	    divShadowInfo.style.display = "none";
-	    frm_info.reset();
-	    $("#div_member_info").show();
-	  });
+		  let cancelBtn = document.getElementById("btn_cancel");
+		  /* let inquiryCancelBtn = document.getElementById("btn_save"); */
+		  
+		  cancelBtn.addEventListener("click", function () {
+		    divShadowInfo.style.display = "none";
+		    frm_info.reset();
+		  /*   $("#div_member_info").show(); */
+		  });
 	  
 	  /* inquiryCancelBtn.addEventListener("click", function () {
 	    divShadowInfo.style.display = "none";
@@ -316,11 +367,11 @@ $(function () {
 	    $("#div_inquiry_info").hide();
 	    $("#div_member_info").show();
 	  });*/
-	}); 
-	//문의내용보기 폼 확인 버튼 눌렀을 때
-	 $(document).ready(function(){
-		 
-		 
+  		 }); 
+	
+	  //문의내용보기 폼 확인 버튼 눌렀을 때
+	  $(document).ready(function(){
+		
 		 $("#btn_save").click(function(){
 			 let b_idx = $("#inquiry_b-idx").val();
 			 let p_id = $("#inquiry_p-id").val();
@@ -330,6 +381,10 @@ $(function () {
 					 p_id: p_id,
 					 ans_content: ans_content
 			 };
+			 if (ans_content == ""){
+				 alert("답변 내용을 작성해주세요")
+				 return; // 답변 내용이 비어있으면 여기서 함수 종료
+			 }
 			 
 			 if ($("#inquiry_table-name").val() === "1:1") {
 		        saveAnswerTo1to1Table(formData);
@@ -340,8 +395,9 @@ $(function () {
 		 	 } else {
 		        console.log("오류");
 		  	 }
+		
 		 });
-		 
+		 		 
 		 //취소 버튼 클릭 시 목록 페이지로 이동
 		 $("#btn_cancel_inquiry").click(function(){
 			 location.href = "inquiry.do"; 
@@ -419,7 +475,8 @@ $(function () {
 	            });
 	        }
 	 });
-
+	$(document).ready(function(){
+	
 	$("#btn_reset").click(function(){
         
         $("input[type='checkbox']").prop("checked", false);
@@ -427,15 +484,13 @@ $(function () {
         
     });
 	
-	 /* let tableNameMap = {"1": "1:1", "2": "QA"};
-	 let categoryMap = {"0": "상품문의", "1": "회원정보", "2": "주문/결제/배송", "3": "취소/환불"}; */
-	 let genderMap = {"1": "남자", "2": "여자"};
-	 let reply_stateMap = {"0": "답변대기", "1": "답변완료"};
+	 let tableNameMap = {"1": "1:1", "2": "QA"};
+	 let categoryMap = {"1": "상품문의", "2": "회원정보", "3": "주문/결제/배송", "4": "취소/환불"};
+	 let reply_stateMap = {"1": "답변대기", "2": "답변완료"};
 
 	 $("#btn_filter").click(function () {
 	     let selectedTableNames = [];
 	     let selectedCategorys = [];
-	     let selectedGenders = [];
 	     let selectedReply_states = [];
 
 	     $(".checkbox_tableName:checked").each(function () {
@@ -448,38 +503,30 @@ $(function () {
 	         selectedCategorys.push(categoryMap[categoryId]);
 	     });
 	     
-	     $(".checkbox_gender:checked").each(function () {
-	         let genderId = $(this).attr("id").replace("checkbox3_", "");
-	         selectedGenders.push(genderMap[genderId]);
-	     });
-
 	     $(".checkbox_reply_state:checked").each(function () {
-	         let replyStateId = $(this).attr("id").replace("checkbox4_", "");
+	         let replyStateId = $(this).attr("id").replace("checkbox3_", "");
 	         selectedReply_states.push(reply_stateMap[replyStateId]);
 	     });
 	     
-	     applyFilter(selectedTableNames, selectedCategorys, selectedGenders, selectedReply_states);
+	     applyFilter(selectedTableNames, selectedCategorys, selectedReply_states);
 	 });
 
-	 function applyFilter(selectedTableNames, selectedCategorys, selectedGenders, selectedReply_states) {
+	 function applyFilter(selectedTableNames, selectedCategorys, selectedReply_states) {
 	     $("#tbl_contents tr:not(:first-child)").each(function () {
 	         let tableName = $(this).find("td:nth-child(2)").text();
 	         let category = $(this).find("td:nth-child(7)").text();
-	         let gender = $(this).find("td:nth-child(6)").text();
 	         let reply_state = $(this).find("td:nth-child(8)").text();
 	         let showTableName = selectedTableNames.length === 0 || selectedTableNames.includes(tableName.trim());
 	         let showCategory = selectedCategorys.length === 0 || selectedCategorys.includes(category.trim());
-	         let showGender = selectedGenders.length === 0 || selectedGenders.includes(gender.trim());
 	         let showReplyState = selectedReply_states.length === 0 || selectedReply_states.includes(reply_state.trim());
-	         if (showTableName && showCategory && showGender && showReplyState) {
+	         if (showTableName && showCategory && showReplyState) {
 	             $(this).show();
 	         } else {
 	             $(this).hide();
 	         }
 	     });
 	 }
-
-    
+	});
 
 </script>
 </head>
@@ -501,9 +548,10 @@ $(function () {
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox2_1" class="checkbox_category"><label for="checkbox2_1">회원정보</label><br>
-                    <input type="checkbox" id="checkbox2_2" class="checkbox_category"><label for="checkbox2_2">주문/결제/배송</label><br>
-                    <input type="checkbox" id="checkbox2_3" class="checkbox_category"><label for="checkbox2_3">취소/환불</label><br>
+                	<input type="checkbox" id="checkbox2_1" class="checkbox_category"><label for="checkbox2_1">상품문의</label><br>
+                    <input type="checkbox" id="checkbox2_2" class="checkbox_category"><label for="checkbox2_2">회원정보</label><br>
+                    <input type="checkbox" id="checkbox2_3" class="checkbox_category"><label for="checkbox2_3">주문/결제/배송</label><br>
+                    <input type="checkbox" id="checkbox2_4" class="checkbox_category"><label for="checkbox2_4">취소/환불</label><br>
                 </td>
             </tr>
             <tr>
@@ -511,8 +559,8 @@ $(function () {
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" id="checkbox3_1" class="checkbox_gender"><label for="checkbox3_1">답변대기</label><br>
-                    <input type="checkbox" id="checkbox3_2" class="checkbox_gender"><label for="checkbox3_2">답변완료</label><br>
+                    <input type="checkbox" id="checkbox3_1" class="checkbox_reply_state"><label for="checkbox3_1">답변대기</label><br>
+                    <input type="checkbox" id="checkbox3_2" class="checkbox_reply_state"><label for="checkbox3_2">답변완료</label><br>
                 </td>
             </tr>
             <tr>
@@ -692,42 +740,37 @@ $(function () {
 	                <tr>
 	                    <th>게시판</th>
 	                    <td><input type="text" id="inquiry_table-name" disabled/></td>
-	                </tr>
-	                <tr>
 	                    <th>문의 카테고리</th>
 	                    <td><input type="text" id="inquiry_category" disabled/></td>
 	                </tr>
 	                <tr>
-	                    <th>제품코드</th>
-	                    <td><input type="text" id="inquiry_p-id" disabled/></td>
-	                </tr>
-	                <tr>
+	                    <th>제목</th>
+	                    <td><input type="text" id="inquiry_title" disabled/></td>
 	                    <th>아이디</th>
 	                    <td><input type="text" id="inquiry_id_info" disabled/></td>
 	                </tr>
 	                <tr>
 	                    <th>이름</th>
 	                    <td><input type="text" id="inquiry_name" disabled/></td>
-	                </tr>
-	                <tr>
 	                    <th>작성일</th>
 	                    <td><input type="text" id="inquiry_post-date" disabled/></td>
 	                </tr>
 	                <tr>
-	                    <th>제목</th>
-	                    <td><input type="text" id="inquiry_title" disabled/></td>
+	                	<th>문의 내용</th>
+	                    <td colspan="3"><textarea id="inquiry_content" disabled></textarea></td>
 	                </tr>
 	                <tr>
-	                    <th>문의 내용</th>
-	                    <td><textarea id="inquiry_content" disabled></textarea></td>
+	                	<th>제품코드</th>
+	                    <td><input type="text" id="inquiry_p-id" disabled/></td>
 	                </tr>
 	                <tr>
-	                	<td><input type="text" id="ans_content"></td>
+	                	<th>답변 내용</th>
+	                	<td colspan="3"><textarea id="ans_content"></textarea></td>
 	                </tr>
 	                <tr>
-	                	<td colspan="2">
+	                	<td colspan="4">
+						   <input id="btn_save" type="button" value="확인"/>
 						   <input id="btn_cancel_inquiry" type="button" value="취소"/>
-			               <input id="btn_save" type="button" value="확인"/>
 			               <input id="inquiry_b-idx" type="hidden"/>
 		               </td>
 	                </tr>

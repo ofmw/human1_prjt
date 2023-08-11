@@ -47,6 +47,16 @@
 	    inner join member_omart m on q.m_idx = m.m_idx
 	    order by q.b_idx desc
 	</select>
+	<select id="getInquiryAns" resultType="boardFileVo">
+		select ans_content
+		from inquiry_ans
+		where b_idx = #{bIdx}
+	</select>
+	<select id="getQnaAns" resultType="boardFileVo">
+		select ans_content
+		from qna_ans
+		where b_idx = #{bIdx}
+	</select>
     <!-- 공지사항 글 목록 반환 -->
     <select id="getAllNotices" resultType="boardFileVo">
     	select * from notice order by b_idx desc

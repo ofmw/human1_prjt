@@ -74,4 +74,12 @@ public class BoardFileDao {
 	public void changeQnaState(int b_idx) {
 		sqlSession.update(MAPPER + ".changeQnaState", b_idx);
 	}
+	
+	public List<BoardFileVo> getInquiryAns(int bIdx){
+		return sqlSession.selectList(MAPPER + "getInquiryAns", bIdx);
+	}
+
+	public List<BoardFileVo> getQnaAns(int bIdx){
+		return sqlSession.selectList(MAPPER + "getQnaAns", bIdx);
+	}
 }

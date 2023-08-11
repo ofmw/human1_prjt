@@ -37,4 +37,5 @@ private BoardFileDao dao;
 	public List<BoardFileVo> getAllQnas(){
 		return dao.getAllQnas();
 	}
+
 }
