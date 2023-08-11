@@ -45,6 +45,7 @@ public class CartController {
 		return "cart/cart";
 	}
 	
+	// 장바구니에 상품 추가
 	@PostMapping("/addCart.do")
 	public void addCart(CartVo cartVo) {
 		System.out.println("addCart실행");

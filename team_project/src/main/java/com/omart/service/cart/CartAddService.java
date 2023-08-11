@@ -1,5 +1,7 @@
 package com.omart.service.cart;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.omart.dao.CartDao;
@@ -18,4 +20,8 @@ public class CartAddService implements CartService {
 		dao.addCart(cartVo);
 	}	
 	
+	//마이페이지 찜목록 장바구니 추가 (임시)
+	public int addCart2(int m_idx, String [] p_id) {
+		return dao.addCart2(m_idx, p_id);
+	}
 }

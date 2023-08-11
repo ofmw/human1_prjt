@@ -113,7 +113,7 @@
     </div><!-- end of header -->
     
     <!-- 로그인 모달창 -->
-    <div id="shadow">
+    <div id="shadow" style="display:none;">
         <div id="login_container">
             <div id="login_close_button"><img src="../resources/img/close3.png" alt="닫기" id="close_btn"></div>
             
@@ -155,7 +155,7 @@
             </div><!-- end of 로그인창 내부요소 -->
         </div><!-- end of login container -->
     </div><!-- end of shadow -->
-    <div id="shadow_addCart">
+    <div id="shadow_addCart" style="display: none;">
         <div id="addCart_container">
             제품이 장바구니에 추가되었습니다.
         </div>

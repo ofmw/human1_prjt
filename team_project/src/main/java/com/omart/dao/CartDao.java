@@ -74,10 +74,43 @@ public class CartDao{
 		sqlSession.insert(MAPPER+".addCart", cartVo);
 	}
 	
-	//장바구니 상품 결제 완료 후 해당 회원의 장바구니에 상품 제거
-		public void deleteCartAll(int m_idx) {		
-			sqlSession.delete(MAPPER+".deleteCartAll", m_idx);
+	//해당 회원의 장바구니에 상품 추가 (마이페이지용.. 임시)
+	public int addCart2(int m_idx, String [] p_id) {
+		
+		CartVo target = new CartVo();
+		target.setM_idx(m_idx);
+		target.setAmount(1);
+		
+		int result = 0;
+		
+		for (int i=0; i<p_id.length; i++) {
+			
+			target.setP_id(p_id[i]);
+			CartVo check = sqlSession.selectOne(MAPPER+".checkAmount", target);
+			
+			// 장바구니에 해당 상품이 담겨있는지 체크
+			if(check != null) { // 해당 상품이 이미 존재한다면
+				// 장바구니에 해당 품목 수량 + 추가하는 수량(여기서는 1) 체크
+				if(target.getAmount() + check.getAmount() > 20) { // 제한 수량인 20개를 초과하는 경우
+					System.out.println(target.getP_id() +" 상품은 제한 수량을 초과했습니다");
+				} else {
+					result += sqlSession.update(MAPPER+".cartUpdate_Amount2", target);
+					System.out.println(target.getP_id() +" 상품 수량 업데이트 완료");
+					System.out.println("현재 갯수: " +(check.getAmount()+1));
+				}
+			} else { // 해당 상품이 없다면
+				// 장바구니에 해당 상품 새로 추가
+				result += sqlSession.insert(MAPPER+".addCart2", target);
+			}
 		}
+		
+		return result;
+	}
+	
+	//장바구니 상품 결제 완료 후 해당 회원의 장바구니에 상품 제거
+	public void deleteCartAll(int m_idx) {		
+		sqlSession.delete(MAPPER+".deleteCartAll", m_idx);
+	}
 	
 	//해당 회원의 배송지 정보 가져오기
 	public List<AddressVo> AddressList(int m_idx){

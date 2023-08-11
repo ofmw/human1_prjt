@@ -47,14 +47,10 @@
     <update id="addWishList" parameterType="map">
 	    UPDATE wish
 	    SET w_list = 
-	    <choose>
-	        <when test="w_list != null">
-	            CONCAT(w_list, ',', #{p_id})
-	        </when>
-	        <otherwise>
-	            #{p_id}
-	        </otherwise>
-	    </choose>
+	        CASE
+	            WHEN w_list IS NULL OR w_list = '' THEN #{p_id}
+	            ELSE CONCAT(w_list, ',', #{p_id})
+	        END
 	    WHERE m_idx = #{m_idx}
 	</update>
 

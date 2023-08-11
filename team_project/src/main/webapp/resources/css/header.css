@@ -164,7 +164,6 @@
 	}
 	/* 장바구니 추가 알림창 */
 	#shadow_addCart{
-	    display: none;
 	    position: fixed;
 	    top: 0;
 	    left: 0;

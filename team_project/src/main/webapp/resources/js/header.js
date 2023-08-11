@@ -21,19 +21,15 @@ $(function() {
     
     /* 로그인 모달창 열기 메서드 */
     function showShadow() {
-        shadow.css({
-            'display': 'block',
-            'z-index': '5000'
-        });
+    	shadow.css('z-index', '5000');
+        shadow.fadeIn(100);
         $("body").css('overflow', 'hidden');
     }
     
     /* 로그인 모달창 닫기 메서드 */
     close_btn.on("click", function() {
-        shadow.css({
-            'display': 'none',
-            'z-index': '0'
-        });
+    	shadow.css('z-index', '5000');
+        shadow.fadeOut(100);
         $("body").css('overflow-y', 'visible');
     });
     
@@ -48,7 +44,7 @@ $(function() {
 
     /* 장바구니 추가 알림창 닫기 메서드 */
     function hideShadow_addCart() {
-        shadow_addCart.fadeOut(1200, function() {
+        shadow_addCart.fadeOut(500, function() {
             $(this).css({
                 'display': 'none',
                 'z-index': '0'
@@ -57,7 +53,7 @@ $(function() {
         $("body").css('overflow-y', 'visible');
     };
 
-    login_btn2.on("click", showShadow);    
+    login_btn2.on("click", showShadow);
     need_login.on("click", function(event){
         event.preventDefault();
         showShadow();

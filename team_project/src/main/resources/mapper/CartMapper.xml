@@ -34,6 +34,19 @@
 	    
 	</insert>
 	
+	<!-- 장바구니에 상품 추가(마이페이지용 임시) -->
+	<insert id="addCart2" parameterType="cartVo">
+	    INSERT INTO cart
+        VALUES (#{m_idx}, #{p_id}, #{amount})
+	</insert>
+	
+	<!-- 장바구니에 상품 수량 업데이트(마이페이지용 임시) -->
+	<update id="cartUpdate_Amount2" parameterType="cartVo">
+	    UPDATE cart
+	    SET amount = amount + 1
+        WHERE m_idx = #{m_idx} AND p_id = #{p_id}
+	</update>
+	
 	<!-- 장바구니에서 품목 삭제 -->
 	<delete id="cartRemove" parameterType="java.util.List">
 		DELETE
