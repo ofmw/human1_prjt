@@ -267,7 +267,8 @@
     /* 상품 개당 가격 */
     .td_odinfo_op{
     	font-size: 11px;
-    	color: #888
+    	color: #888;
+    	text-decoration: line-through;
     }
     /* 수량 조절 */
     .td_odinfo_amount{
@@ -594,12 +595,19 @@
                 let price = parseInt($(this).siblings(".price").val());
                 // each()로 선택된 행의 상품 수량
                 let amount = parseInt($(this).val());
+                
+                let discount = parseInt($(this).siblings(".discount").val());
 
                 // each()로 선택된 행의 상품 가격 계산
                 let calPrice = calculatePrice(price, amount);
+                
+                let dcPrice = calculatePrice(price*(100-discount)/100, amount);
 
                 // each()로 선택된 행의 상품 가격에 반영
-                $(this).closest("tr").find(".calprice").text(calPrice.toLocaleString());
+                $(this).closest("tr").find(".calprice").text(dcPrice.toLocaleString());
+                
+                $(this).closest("tr").find(".td_odinfo_op").text(calPrice.toLocaleString()+"원");
+                
             });
         }
         
@@ -621,7 +629,17 @@
                 });
 
                 // "주문금액" 에 주문금액 반영
-                $("#ordered-price").text(totalPrice.toLocaleString() + " 원");
+                $("#ordered-price").text(totalPrice.toLocaleString() + " 원");       
+                
+                let beforePrice = 0;
+                
+                $(".td_odinfo_op").each(function() {
+                	let bfPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
+                	
+                	beforePrice += bfPriceValue;
+                });
+                
+                $("#discount-price").text("- " + (beforePrice-totalPrice).toLocaleString() + " 원");   
                 
                 // 주문금액에 따른 배송비 계산 및 결제예정금액 계산
                 if(totalPrice != 0){ // 주문금액이 있을 경우 (장바구니에 상품이 있을 경우)
@@ -655,7 +673,7 @@
                 $("#product_total span").text(totalAmount);
 
             } else { // 장바구니에 상품이 있을 경우
-                $("#shipping-fee").text("+0 원");
+                $("#shipping-fee").text("0 원");
                 $("#ordered-price").text("0 원");
                 $("#payment-price").text("0");
                 $("#product_total span").text("0");
@@ -835,7 +853,14 @@
         
         
         $("#order-nav_btn").on("click", function(){
-        	window.location.href = "../payment/payment.do?requestor=cart";
+        	if($("#product_total span").text() == "0"){
+                alert("장바구니에 담긴 상품이 없습니다.");
+        	}else if($("#manage_address").text() == "배송지 등록"){
+        		alert("배송지를 등록해주세요.");        		
+        	}else{
+        		window.location.href = "../payment/payment.do?requestor=cart";
+        	}
+        	
         });
         
 
@@ -906,10 +931,8 @@
 		                                            	<span class="calprice"></span>
 		                                            	<span style="font-size:11px;padding-left:1px;">원</span>
 		                                            </div>
-		                                            <div class="td_odinfo_op">
-		                                            	개당 가격:
-		                                            	&nbsp;<fmt:formatNumber value="${c.price}" pattern="#,###"/>
-		                                            	원
+		                                            <div class="td_odinfo_op">		                                            	
+		                                            	&nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원		                                            	
 		                                            </div>
 		                                            <div class="td_odinfo_amount">
 		                                                <button type="button" class="plist_minus-btn">-</button>
@@ -918,6 +941,7 @@
 		                                                <input type="hidden" class="m_idx" value="${c.m_idx}">
 		                                                <input type="hidden" class="p_id" value="${c.p_id}">
 		                                                <input type="hidden" class="price" value="${c.price}">
+		                                                <input type="hidden" class="discount" value="${c.discount}"/>
 		                                            </div>
 		                                        </td>
 		                                        <td class="td_delete"><button type="button">삭제하기</button></td>
@@ -1034,7 +1058,7 @@
                                     </div>
                                     <div id="product_discount-price">
                                         <span>상품할인</span>
-                                        <span>-0 원</span>
+                                        <span id="discount-price">-0 원</span>
                                     </div>
                                     <div id="product_shipping-fee">
                                         <span>배송비</span>

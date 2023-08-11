@@ -27,6 +27,9 @@ public class ProductController {
 		
 		List<ProductVo> productList = pdList.productList();
 		
+		// post_state가 1이 아닌 제품 제거
+	    productList.removeIf(product -> product.getPost_state() != 1);
+		
 		model.addAttribute("productList", productList);
 		
 		return "product/product_list";

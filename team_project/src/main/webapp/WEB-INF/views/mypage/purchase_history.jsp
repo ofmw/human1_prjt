@@ -97,7 +97,7 @@
                 <div class="mp_main_menu_title">나의 활동관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <li><a href="mypage 찜목록.html">찜목록</a></li>
+                        <li><a href="wish.do">찜목록</a></li>
                         <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
                         <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>

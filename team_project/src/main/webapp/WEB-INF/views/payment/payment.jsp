@@ -65,7 +65,8 @@
         margin-left: 15px;
     }
     #tbl_paymentInfo p{
-        font-size: 12px;
+        font-size: 13px;
+        line-height: 20px;
     }
     #tbl_paymentInfo span{
         font-size: 12px;
@@ -252,7 +253,7 @@
     }
     #point_container input[type="button"]{
         width: 100px;
-        height: 27px;
+        height: 28px;
         font-size: 12px;
         border-radius: 0px;
         border: 1px solid lightgray;
@@ -321,12 +322,7 @@
         
         //let current_add = opener.sessionStorage.getItem("current_add");
         //sessionStorage.setItem("current_add", current_add);
-        
-        /* 결제페이지 호출 */
-        $("#order-nav_btn").on("click", function(){
-            window.location.href = "../payment/payment.do?requestor=cart";
-        });
-        
+          
         /* 포인트 입력창을 벗어날때 */
         $("#input_point").on("blur", function(){
             let mPoint = parseInt($("#mPoint").val());
@@ -354,7 +350,8 @@
         	let inputPoint = parseInt($("#input_point").val().replace(/\D/g, ''));
         	let dc_final = dc_product + inputPoint;
         	let price_before = parseInt($("#price_before").val().replace(/\D/g, ''));
-        	let price_final = price_before - dc_final;
+        	let shipping_fee = parseInt($("#shipping-fee").text().replace(/\D/g, ''));
+        	let price_final = price_before - dc_final + shipping_fee;
         	
         	$("#dc_final").text(" - "+Number(dc_final).toLocaleString()+"원");
         	$("#dc_final_nav").text(" - "+Number(dc_final).toLocaleString()+"원");
@@ -363,7 +360,11 @@
         	
         }
         
+        dc_final();
         
+        $("#order-nav_btn").click(function(){
+        	$("#btn_payment_main").click();
+        });
         
 	});
 	
@@ -390,25 +391,33 @@
 	var makeMerchantUid = year + month + day + hours + minutes + seconds + milliseconds;
     
     //다음 페이지로 전달해야하는 값
-    var frm, requestor, merchant_uid, name, amount, point;
+    var frm, requestor, merchant_uid, name, amount, point, receiver, selnum, address;
         
     function requestPay() {
     	frm = $("#frm_payment");
     	orderNum = "OMT"+makeMerchantUid;
     	name = $("#orderName").val();
-    	amount = parseInt($("#btn_payment_main").text().replace(/\D/g, ''))
+    	amount = parseInt($("#btn_payment_main").text().replace(/\D/g, ''));
     	point = parseInt($("#input_point").val().replace(/\D/g, ''));
+    	receiver = $("#receiver").text().replace('받는분 : ','');
+    	selnum = $("#selnum").text().replace('연락처 : ','').replace(/\-/g, '').trim();
+    	address = $("#address").text().replace('주소 : ','');
     	
-    	// 가상의 숨은 input 요소를 생성하고 폼에 추가
+    	
+    	// 가상의 input 요소를 생성하고 폼에 추가
     	var orderNumInput = $("<input>").attr("type", "hidden").attr("name", "orderNum").val(orderNum);
         var nameInput = $("<input>").attr("type", "hidden").attr("name", "name").val(name);
-        var amountInput = $("<input>").attr("type", "hidden").attr("name", "amount").val(amount);
         var pointInput = $("<input>").attr("type", "hidden").attr("name", "point").val(point);
+        var receiverInput = $("<input>").attr("type", "hidden").attr("name", "receiver").val(receiver);
+        var selnumInput = $("<input>").attr("type", "hidden").attr("name", "selnum").val(selnum);
+        var addressInput = $("<input>").attr("type", "hidden").attr("name", "address").val(address);
         
         frm.append(orderNumInput);
         frm.append(nameInput);
-        frm.append(amountInput);
         frm.append(pointInput);
+        frm.append(receiverInput);
+        frm.append(selnumInput);
+        frm.append(addressInput);
     	
         IMP.request_pay({
             pg : 'kakaopay.TC0ONETIME',
@@ -459,14 +468,35 @@
 	                    <th colspan="3"><h3>받는 분 정보</h3></th>
 	                </tr>
 	                <tr>
-	                    <td><h6>배송지 정보</h6></td>
-	                    <td>
-	                       <h6>관리자 010-1111-1111</h6>
+	                    <td><h5>배송지 정보</h5></td>
+	                    <td>	                       
 	                       <c:choose>
 	                           <c:when test="${!empty AddressList}">
 	                               <c:forEach items="${AddressList}" var="a">
 	                                   <c:if test="${a.def_add eq '1'}">
+<<<<<<< HEAD
+	                                       <c:set var="phoneNumber" value="${a.selnum}" />
+											<c:set var="formattedPhoneNumber" value="" />											
+											<c:forEach var="i" begin="0" end="${fn:length(phoneNumber) / 4 - 1}">
+											    <c:set var="startIdx" value="${fn:length(phoneNumber) - (i + 1) * 4}" />
+											    <c:set var="endIdx" value="${fn:length(phoneNumber) - i * 4}" />
+											    <c:set var="chunk" value="${phoneNumber.substring(startIdx, endIdx)}" />
+											    <c:choose>
+											        <c:when test="${fn:length(formattedPhoneNumber) eq 0}">
+											            <c:set var="formattedPhoneNumber" value="${chunk}" />
+											        </c:when>
+											        <c:otherwise>
+											            <c:set var="formattedPhoneNumber" value="${chunk}-${formattedPhoneNumber}" />
+											        </c:otherwise>
+											    </c:choose>
+											</c:forEach>
+											<c:set var="formattedPhoneNumber" value="010-${formattedPhoneNumber}" />
+	                                       <p id="receiver">받는분 : ${a.receiver}</p>
+	                                       <p id="selnum">연락처 : ${formattedPhoneNumber}</p>
+	                                       <p id="address">배송지 : (${a.a_name}) [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
+=======
 	                                       <p>${a.a_name} (기본배송지) : [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
+>>>>>>> branch 'inhyeok' of https://github.com/ofmw/human1_prjt.git
 	                                   </c:if>
 	                               </c:forEach>
 	                           </c:when>
@@ -476,7 +506,7 @@
 	                    <td></td>
 	                </tr>
 	                <tr>
-	                    <td><h6>배송 요청사항</h6></td>
+	                    <td><h5>배송 요청사항</h5></td>
 	                    <td>
 	                       <select id="request">
 	                           <option value="0">배송기사에게 전달되는 메시지입니다. 선택해주세요.</option>
@@ -533,22 +563,22 @@
 	                    <th colspan="3"><h3>할인혜택</h3></th>
 	                </tr>
 	                <tr>
-	                    <td><h6>주문금액</h6></td>
+	                    <td><h5>주문금액</h5></td>
 	                    <td><h4><fmt:formatNumber value="${price_before}" pattern="#,###" />원</h4></td>
 	                    <td><input id="price_before" type="hidden" value="${price_before}"/></td>
 	                </tr>
 	                <tr>
-	                    <td><h6>상품할인</h6></td>
+	                    <td><h5>상품할인</h5></td>
 	                    <td><p>- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</p></td>
 	                    <td><input id="discount_product" type="hidden" value="${discount_product}"/></td>
 	                </tr>
 	                <tr>
-	                    <td><h6>쿠폰할인</h6></td>
+	                    <td><h5>쿠폰할인</h5></td>
 	                    <td></td>
 	                    <td></td>
 	                </tr>
 	                <tr>
-	                    <td><h6>포인트사용</h6></td>
+	                    <td><h5>포인트사용</h5></td>
 	                    <td id="point_container">	                       
 	                       <span><input id="input_point" type="text" value="0"/><span>원</span></span>	                       
 	                       <input id="use_allPoint" type="button" value="전체사용"/>
@@ -558,8 +588,8 @@
 	                    <td></td>
 	                </tr>
 	                <tr>
-	                       <td><h6>할인금액</h6></td>
-	                       <td><h4 id="dc_final">- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</h4></td>
+	                       <td><h5>할인금액</h5></td>
+	                       <td><h4 id="dc_final"></h4></td>
 	                       <td></td>
 	                   </tr>
 	                <tr>
@@ -575,7 +605,7 @@
 
 	            </table>
 	            </form>
-	            <button id="btn_payment_main" onclick="requestPay()"><fmt:formatNumber value="${price_before - discount_product}" pattern="#,###" />원 결제하기</button>
+	            <button id="btn_payment_main" onclick="requestPay()"></button>
 	            
             </div>
             
@@ -669,17 +699,23 @@
                         </div>
                         <div id="product_discount-price">
                             <span>할인금액</span>
-                            <span id="dc_final_nav">- <fmt:formatNumber value="${discount_product}" pattern="#,###" />원</span>
+                            <span id="dc_final_nav"></span>
                         </div>
                         <div id="product_shipping-fee">
                             <span>배송비</span>
-                            <span id="shipping-fee"></span>
+                            <span id="shipping-fee">
+                                <c:choose>
+                                    <c:when test="${price_before - discount_product ge 25000}">0</c:when>
+                                    <c:otherwise>3,000</c:otherwise>
+                                </c:choose>
+                                원
+                            </span>
                         </div>
                     </div>
                     <div id="product_payment-price">
                         <span>결제예정금액</span>
                         <span>
-                            <span id="payment-price" style="font-size:22px;font-weight:bold;"><fmt:formatNumber value="${price_before - discount_product}" pattern="#,###" /></span>
+                            <span id="payment-price" style="font-size:22px;font-weight:bold;"></span>
                             <span id="won" style="font-size:15px;font-weight:100;">원</span>
                         </span>
                     </div>
@@ -687,7 +723,7 @@
 
                 <!-- 주문하기 버튼 -->
                 <div id="order-nav_btn">
-                    <button onclick="requestPay()">결제하기</button>
+                    <button>결제하기</button>
                 </div>
 
             </div><!-- end of 네비게이션 창 -->

@@ -335,8 +335,8 @@
                                     <c:forEach begin="0" end="${productList.size() div 4}" var="i">
                                         <div class="p_inner_elements_box">
                                             <c:forEach begin="${i*4}" end="${i*4+3}" var="j">
-	                                            <div class="p_products">
-	                                                
+                                                <a href="product_view.do?p_id=${productList[j].p_id}">
+	                                            <div class="p_products">	                                                
                                                     <c:if test="${productList[j] ne null}">
                                                     <a href="product_view.do?p_id=${productList[j].p_id}">
 	                                                    <div class="p_img"><img src="#" alt="#"></div>

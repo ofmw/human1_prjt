@@ -28,7 +28,6 @@
     </select>
     
     <select id="bestList" resultType="productVo">
-
         select * from product where post_state = 1 order by total_sales desc
     </select>
     
@@ -60,6 +59,12 @@
 	    UPDATE wish
 	    SET w_list = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', w_list, ','), CONCAT(',', #{p_id}, ','), ','))
 	    WHERE m_idx = #{m_idx}
+	</update>
+	
+	<update id="updateTotalSales" parameterType="productVo">
+	   update product
+	   set total_sales = total_sales + #{salesAmount}
+	   where p_id = #{p_id}
 	</update>
     
 </mapper>

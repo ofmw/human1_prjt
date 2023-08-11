@@ -40,7 +40,7 @@ public class CartDao{
 	
 	//해당 회원의 장바구니 상품의 수량 변경하기
 	public void cartRemove(List<CartVo> target) {
-
+		System.out.println("카트 리무브 진입");
 		sqlSession.delete(MAPPER+".cartRemove", target);
 	}
 	

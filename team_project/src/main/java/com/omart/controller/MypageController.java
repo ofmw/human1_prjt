@@ -29,7 +29,29 @@ public class MypageController {
 	
 	//마이페이지
 	@GetMapping("/mypage.do")
-	public String mypage() {
+	public String mypage(HttpSession session) {
+		
+		MemberVo member = (MemberVo) session.getAttribute("member");
+		int m_idx = member.getM_idx();
+		List<String> wishList = mWish.getWishList(m_idx);
+		
+		// 로그인 풀렸을 경우 대비 member 객체 체크
+		if (member != null) {
+			
+			/* 찜목록 페이지에서 찜한 상품과 해당 상품 정보를 매칭시키기 위해
+			   product 테이블에서 찜목록의 p_id 정보를 이용하여 상품 정보를 가져옴 */
+			List<ProductVo> p_info = mWish.getP_info(wishList);
+			
+			// post_state가 1이 아닌 제품 제거
+			p_info.removeIf(product -> product.getPost_state() != 1);
+		    
+			session.removeAttribute("wishList");
+			session.removeAttribute("p_info");
+			session.setAttribute("wishList", wishList);
+			session.setAttribute("p_info", p_info);
+			
+		}
+		
 		return "mypage/mypage";
 	}
 	
@@ -65,6 +87,11 @@ public class MypageController {
 			/* 찜목록 페이지에서 찜한 상품과 해당 상품 정보를 매칭시키기 위해
 			   product 테이블에서 찜목록의 p_id 정보를 이용하여 상품 정보를 가져옴 */
 			List<ProductVo> p_info = mWish.getP_info(wish);
+			
+			// post_state가 1이 아닌 제품 제거
+			p_info.removeIf(product -> product.getPost_state() != 1);
+			System.out.println(p_info);
+		    
 			session.setAttribute("p_info", p_info);
 			
 		}

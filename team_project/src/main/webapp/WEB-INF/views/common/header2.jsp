@@ -91,7 +91,7 @@
                         전체 카테고리
                     </div>
                     <div id="div_category">
-                            <a href="">전체 카테고리</a>
+                            <a href="../product/product_list.do">전체 카테고리</a>
                             <ul>
                                 <li><a href="">육류</a></li>
                                 <li><a href="">가공</a></li>

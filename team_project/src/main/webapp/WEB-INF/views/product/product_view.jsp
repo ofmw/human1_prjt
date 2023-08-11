@@ -490,7 +490,7 @@
                 },
                 success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
                    if (response != null) { // 수량 업데이트가 성공한 경우
-                	   	alert("찜 추가됨!");
+                	   	alert("찜목록에 추가되었습니다!");
                    		//찜 버튼 새로고침
                 	   	location.reload();
                     } else {
@@ -519,7 +519,7 @@
                 },
                 success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
                    if (response != null) { // 수량 업데이트가 성공한 경우
-                	   	alert("찜 삭제됨!");
+                	   	alert("찜목록에서 삭제되었습니다!");
                 	  	//찜 버튼 새로고침
                 	   	location.reload();
                     } else {

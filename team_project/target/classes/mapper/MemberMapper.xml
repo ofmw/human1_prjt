@@ -65,8 +65,11 @@
         select point from point where m_idx = #{m_idx}
     </select>
     
-    
-    
+    <update id="setPoint" parameterType="memberVo">
+        UPDATE point
+        SET point = point - #{point}
+        WHERE m_idx=#{m_idx}
+    </update>
     
     <!-- 찜목록 페이지 정보 -->
     <select id="getP_info" parameterType="java.util.List" resultType="productVo">

@@ -37,6 +37,9 @@ public class CartController {
 			List<CartVo> CartList = cList.CartList(m_idx);
 			List<AddressVo> AddressList = cAddress.AddressList(m_idx);
 			
+			// post_state가 1이 아닌 제품 제거
+			CartList.removeIf(product -> product.getPost_state() != 1);
+			
 			model.addAttribute("CartList", CartList);
 			model.addAttribute("AddressList", AddressList);
 

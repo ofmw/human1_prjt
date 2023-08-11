@@ -17,4 +17,8 @@ public class ProductInfoService implements ProductService {
 		return dao.getProduct(p_id);
 	}	
 	
+	public void updateTotalSales(ProductVo pVo) {
+		dao.updateTotalSales(pVo);
+	}	
+	
 }

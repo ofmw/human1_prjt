@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -149,8 +150,6 @@
             flex-direction: column;
             padding-bottom: 5px;
             border-bottom: 2px solid #222;
-            
-            background-color: yellowgreen;
         }
         .mp_w_main_header_title{
             padding-bottom: 15px;
@@ -162,10 +161,8 @@
         	flex-direction: row;
         	justify-content: space-between;
         	
-        	font-size: 14px;
-        	
+        	font-size: 12px;
         	user-select: none;
-        	background-color: aquamarine;
         }
         #mp_w_main_header_btn-box{
         	display: flex;
@@ -175,16 +172,22 @@
 	        position: relative;
 	        top: 1.5px;
 	    }
-	    #mp_w_main_header_btn-box button{
-	    	margin-left: 5px;
-	    	font-size: 14px;
-	    	border: 0;
-	    }
-        #mp_w_main_header_sel-box{
-            
+	    #mp_w_main_header_btn-box button {
+		    margin-left: 10px;
+		    font-size: 12px;
+		    padding: 2px 5px;
+			border: 1px solid #ddd;
+		    border-radius: 3px;
+		    background-color: #fcfcfc;
+		}
+        #sel_box{
+            background-color: #fcfcfc;
+		    padding: 2px 5px;
+		    border: 1px solid #ddd;
+		    border-radius: 3px;
         }
         #mp_main_wish_notice{
-            border-top: 2px solid #666;
+            border-top: 1px solid #e5e5e5;
             padding-top: 10px;
             font-size: 13px;
             color: #777;
@@ -197,7 +200,13 @@
         #w_box{
             width: 100%;
         }
-
+		#w_empty{
+			height: 367px;
+			font-size: 20px;
+			line-height: 367px;
+			text-align: center;
+			user-select: none;
+		}
         .w_inner_elements_box{
             display: flex;
             flex-flow: row wrap;
@@ -269,6 +278,19 @@
             font-size: 13px;
             color: #8b96a1;
         }
+        
+        /* ---------------------페이지 내비게이션--------------------- */
+        #mp_main_wish_p-nav{
+        	margin: 10px 0;
+        	text-align: center;
+        	background-color: limegreen;
+        	user-select: none;
+        }
+        #mp_main_wish_p-nav button{
+        	width: 25px;
+        	height: 25px;
+        	margin: 0 5px;	
+        }
     </style>
     
     <script>
@@ -310,21 +332,44 @@
             });
             
             /* ---------------------버튼 색상 변경--------------------- */
-            //*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
-            $("button").mouseenter(function() {
-                $(this).css({
+            //*** 마우스 커서가 올라갔을 때 ***//
+            function mouseenter(target) {
+                target.css({
                     "background-color": "#222",
                     "color": "white"
-                    });
-            });
-
-
-            //*** 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
-            $("button").mouseleave(function() {
-                $(this).css({
+                });
+            }
+        
+			//*** 마우스 커서가 벗어났을 때 ***//
+	        function mouseleave(target) {
+	        	target.css({
                     "background-color": "",
                     "color": ""
                 }); // 원래 배경색 및 폰트 색상으로 되돌리기
+	        }
+            
+            //*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
+            $("button").mouseenter(function() {
+            	let target = $(this);
+            	mouseenter(target);
+            });
+
+            //*** 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
+            $("button").mouseleave(function() {
+            	let target = $(this);
+            	mouseleave(target);
+            });
+            
+          	//*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
+            $("#sel_box").mouseenter(function() {
+            	let target = $(this);
+            	mouseenter(target);
+            });
+
+            //*** 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
+            $("#sel_box").mouseleave(function() {
+            	let target = $(this);
+            	mouseleave(target);
             });
             
             /* ---------------------찜한 상품 삭제 관리--------------------- */
@@ -357,7 +402,7 @@
          	//*** 찜 버튼 클릭 이벤트 처리 ***//
             $(".w_btn").click(function() {
             	let p_idArray = [$(this).siblings(".p_id").val()];
-            	console.log(p_id);
+            	console.log(p_idArray);
             	
             	// 상품 삭제 여부 결정
                 let confirmed = confirm("해당 상품을 찜목록에서 삭제하시겠습니까?");
@@ -365,7 +410,7 @@
                 // "확인" 을 눌렀을 경우
                 if (confirmed) {
 
-                	removeWish(p_ids);
+                	removeWish(p_idArray);
 
                 } // end of if (confirmed)
             	
@@ -484,9 +529,140 @@
                 
             });
             
+            /* ---------------------찜목록 정렬--------------------- */
+            //*** 찜목록 정렬 기준 설정 ***//
+            function sortElements(option) {
+                
+            	$.ajax({
+	                type: "POST",
+	                url: "sort_wishList.do",
+	                data: {
+	                    option: option
+	                },
+	                success: function (response) { // 새로 정렬한 찜목록 객체 반환
+	                   if (response === "success") {
+							//페이지 새로고침
+	                	   location.reload();
+	                    } else {
+	                        alert("찜목록 정렬에 실패했습니다.");
+	                    }
+	                },
+	                error: function () {
+	                    alert("오류가 발생하였습니다.");
+	                }
+            	}); // end of ajax
+            }
             
+            //*** sel1 정렬 옵션 선택 이벤트 처리 ***//
+            $("#sel1").change(function() {
+                var selectedOption = $(this).val();
+
+                let option;
+                
+                if (selectedOption === "name") { // 이름순 정렬
+                    sortElements("name");
+                } else if (selectedOption === "date") { // 추가순 정렬
+                	sortElements("date");
+                }
+            });
             
+            /* ---------------------찜목록 표시 갯수--------------------- */
+            //*** 표시 갯수 설정 ***//
+            function showElements(option) {
+                
+            	console.log("표시 갯수: "+option);
+            	
+            	let elements = $(".w_products");
+            	let page = 0;
+            	
+            	if (elements.length > option) {
+                	    
+            		page = Math.ceil(elements.length / option);
+            		
+            		console.log("찜 갯수: "+elements.length);
+                    console.log("박스 및 페이지 수: "+page);
+                    
+                    setNav(page);
+                } else {
+                	page = 1;
+                	
+                	console.log("찜 갯수: "+elements.length);
+                    console.log("박스 및 페이지 수: "+page);
+                    
+                    setNav(page);
+                }
+            }
             
+          	//*** sel2 표시 옵션 선택 이벤트 처리 ***//
+            $("#sel2").change(function() {
+                let selectedOption = parseInt($(this).val());
+                
+                if (selectedOption === 4) { // 4개씩 표시
+                    showElements(4);
+                } else if (selectedOption === 8) { // 8개씩 표시
+                	showElements(8);
+                } else if (selectedOption === 100) { // 100개씩 표시
+                	showElements(100);
+                }
+            });
+            
+            /* ---------------------페이지 내비게이션------------------- */
+            //*** 페이지 내비게이션 버튼 생성 ***//
+            function setNav(page) {
+				console.log("내비게이션 메서드 표시 값: " + page);
+			
+				let navDiv = $("#mp_main_wish_p-nav"); // id가 mp_main_wish_p-nav인 div 선택
+				navDiv.empty(); // 기존 버튼 삭제
+			
+				for (var i = 1; i <= page; i++) {
+					let pagebtn = $("<button>", {
+						class: "p-nav",
+						type: "button",
+						value: i,
+						text: i
+					});
+				
+					navDiv.append(pagebtn);
+				}
+				
+			}
+            
+          	//*** 페이지 변환 ***//
+            function changePage(pageNum) {
+            
+          		// 찜목록 박스
+          		let elements = $(".w_inner_elements_box");
+          		// 한 페이지에 표시할 품목 박스 개수
+          		let aaa = parseInt($("#sel2").val());
+          		//let selectedOption = (aaa / 4); //2, 4, 25
+          		let selectedOption = 1;
+          		console.log("한 페이지에 표시할 박스 수: " +selectedOption);
+          		
+          		let startIndex = (pageNum - 1) * selectedOption;
+          		let endIndex = startIndex + selectedOption - 1;
+          		console.log("해당 페이지 박스 인덱스 시작값: " +startIndex);
+          		console.log("해당 페이지 박스 인덱스 끝값: " +endIndex);
+          		
+          		for (let i=0; i<elements.length; i++) {
+          			if (i >= startIndex && i <= endIndex) {
+          				console.log("현재 인덱스: " +i)
+          	            $(elements[i]).show();
+          	        } else {
+          	        	console.log("else 현재 인덱스: " +i)
+          	            $(elements[i]).hide();
+          	        }
+				}
+          	}
+          	
+          	//*** 페이지 내비게이션 버튼 클릭 이벤트 처리 ***//
+          	$(".p-nav").click(function () {
+          		
+          		// 클릭한 페이지 내비게이션 버튼 값
+          		let pageNum = parseInt($(this).val());
+          		console.log(pageNum);
+          		changePage(pageNum);
+          		
+          	});
         });
     </script>
 
@@ -553,10 +729,10 @@
                 <div class="mp_main_menu_title">나의 활동관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <li><a href="mypage 찜목록.html">찜목록</a></li>
+                        <li><a href="wish.do">찜목록</a></li>
                         <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
                         <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
-                        <li><a href="wish.do">1:1 문의</a></li>
+                        <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>
             </div>
@@ -578,13 +754,14 @@
                     	</div>
 	                    <div id="mp_w_main_header_sel-box">
 	                        <select id="sel1">
-	                            <option value="1">이름순</option>
-	                            <option value="2">추가날짜순</option>
+	                        	<option value="">더미</option>
+		                        <option value="date">추가순</option>
+	                            <option value="name">이름순</option>
 	                        </select>
 	                        <select id="sel2">
-	                            <option value="40">40개씩</option>
-	                            <option value="60">60개씩</option>
-	                            <option value="80">80개씩</option>
+	                        	<option value="">더미</option>
+	                            <option value="4">4개씩</option>
+	                            <option value="8">8개씩</option>
 	                            <option value="100">100개씩</option>
 	                        </select>
 	                    </div>
@@ -596,57 +773,69 @@
 
                     <div id="w_box">
                         <div class="w_inner_elements">
-							
-							<c:forEach begin="0" end="${wishList.size() div 4}" var="i">
-	                            <div class="w_inner_elements_box">
-	                            	<c:forEach begin="${i*4}" end="${i*4+3}" var="j">
-										
-							            <div class="w_products">
-							            	<c:if test="${!empty wishList[j]}">
-							            		<input type="checkbox" class="w_checkbox">
-								                <div class="w_img">
-								                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
-								                	<div style="display:none" class="w_img_opt-box">
-								                		<button type="button" class="c_btn">카</button>
-								                		<button type="button" class="w_btn">♥</button>
-								                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
-								                	</div>
-								                </div>
-								                <div class="w_info">
-								                    <div class="w_info_brand">${p_info[j].brand}</div>
-								                    <div class="w_info_name">
-								                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name}</a>
-								                    </div>
-								                    <c:if test="${p_info[j].discount gt 0}">
-									                    <div class="w_info_price">
-									                        <fmt:formatNumber value="${p_info[j].price}" pattern="#,###"/>원
+							<c:choose>
+								<c:when test="${!empty wishList[0]}">
+								<c:forEach begin="0" end="${(fn:length(wishList) - 1) div 4}" var="i">
+		                            <div class="w_inner_elements_box">
+		                            	<c:forEach begin="${i*4}" end="${i*4+3}" var="j">
+								            <div class="w_products">
+								            	<c:if test="${!empty wishList[j] and !empty p_info[j]}">
+								            		<input type="checkbox" class="w_checkbox">
+									                <div class="w_img">
+									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
+									                	<div style="display:none" class="w_img_opt-box">
+									                		<button type="button" class="c_btn">카</button>
+									                		<button type="button" class="w_btn">♥</button>
+									                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
+									                	</div>
+									                </div>
+									                <div class="w_info">
+									                    <div class="w_info_brand">${p_info[j].brand}</div>
+									                    <div class="w_info_name">
+									                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name}</a>
 									                    </div>
-								                    </c:if>
-								                    <div class="w_info_price_final">
-			                                            <c:if test="${p_info[j].discount gt 0}">
-			                                                <span>${p_info[j].discount}% </span>
-			                                            </c:if>
-			                                            <c:set var="discount_new" value="${p_info[j].price*(p_info[j].discount/100)}"></c:set>
-			                                            <fmt:formatNumber value="${p_info[j].price - discount_new}" pattern="#,###" />원
-			                                        </div>
-								                    <div class="w_info_stars">★ 4.5 (1043)</div>
-								                </div>
-							                </c:if>
-							            </div>
-							            
-									</c:forEach>
-	                            </div>
-                            </c:forEach>
+									                    <c:if test="${p_info[j].discount gt 0}">
+										                    <div class="w_info_price">
+										                        <fmt:formatNumber value="${p_info[j].price}" pattern="#,###"/>원
+										                    </div>
+									                    </c:if>
+									                    <div class="w_info_price_final">
+				                                            <c:if test="${p_info[j].discount gt 0}">
+				                                                <span>${p_info[j].discount}% </span>
+				                                            </c:if>
+				                                            <c:set var="discount_new" value="${p_info[j].price*(p_info[j].discount/100)}"></c:set>
+				                                            <fmt:formatNumber value="${p_info[j].price - discount_new}" pattern="#,###" />원
+				                                        </div>
+									                    <div class="w_info_stars">★ 4.5 (1043)</div>
+									                </div>
+								                </c:if>
+								            </div>
+										</c:forEach>
+		                            </div>
+	                            </c:forEach>
+	                            
+	                            </c:when>
+								<c:otherwise>
+									<div id="w_empty">찜목록에 상품이 없습니다!</div>
+								</c:otherwise>
+							</c:choose>
 
                         </div>
                     </div>
 
                 </div><!-- end of mp_w_main_products -->
+                
+                <!-- 페이지 내비게이션 -->
+                <div id="mp_main_wish_p-nav">
+                	<button class="p-nav" type="button" value="1">1</button>
+                	<button class="p-nav" type="button" value="2">2</button>
+                	<button class="p-nav" type="button" value="3">3</button>
+                </div>
 
                 <div id="mp_main_wish_notice">
                     <ul>
                         <li>·&nbsp;&nbsp;찜목록은 최대 xx개까지 저장 가능합니다.</li>
-                        <li>·&nbsp;&nbsp;품절 및 판매중단 상품은 표시되지 않습니다?</li>
+                        <li>·&nbsp;&nbsp;품절 및 판매중단 상품은 표시되지 않습니다.</li>
                         <li>·&nbsp;&nbsp;추가할 내용</li>
                     </ul>
                 </div>

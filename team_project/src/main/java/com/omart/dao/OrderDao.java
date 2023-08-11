@@ -16,7 +16,12 @@ public class OrderDao{
 	private final SqlSession sqlSession;
 	
 	public void createOrder(OrderVo orderVo) {
+		System.out.println("DAO 주문번호 확인:"+orderVo.getOrder_idx());
 		sqlSession.insert(MAPPER+".createOrder", orderVo);
+	}
+	
+	public OrderVo selectOrder(String OrderNum) {
+		return sqlSession.selectOne(MAPPER+".selectOrder", OrderNum);
 	}
 	
 }
