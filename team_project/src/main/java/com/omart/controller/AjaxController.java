@@ -4,8 +4,8 @@ package com.omart.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.omart.service.admin.AdminService;
 import com.omart.service.boardfile.BoardFileService;
 import com.omart.service.member.MemberService;
-
 import com.omart.service.product.ProductService;
 import com.omart.vo.BoardFileVo;
 import com.omart.vo.MemberVo;
@@ -36,7 +35,7 @@ public class AjaxController {
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdList;	
 	@Setter(onMethod_={ @Autowired })
-	private BoardFileService bfInsert, bfList;
+	private BoardFileService bfInsert, bfList, bfState;
 	@Setter(onMethod_= {@Autowired})
 	private MemberService mLogin;
 
@@ -116,7 +115,64 @@ public class AjaxController {
 		}
 //		return viewPage;
 	}
+	
+	@PostMapping("/admin/insert_inquiry_answer_process.do")
+	public void insert_inquiry_answer_process(BoardFileVo boardFileVo) {
+		String viewPage = "admin/inquiry";
 		
+		int result = bfInsert.insertInquiryAnswer(boardFileVo);
+		
+		if(result == 1) {
+			viewPage = "redirect:inquiry.do";
+		}
+		
+     //	return viewPage;
+	}
+	
+	@PostMapping("/admin/insert_qna_answer_process.do")
+	public void insert_qna_answer_process(BoardFileVo boardFileVo) {
+		String viewPage = "admin/inquiry";
+		
+		int result = bfInsert.insertQnaAnswer(boardFileVo);
+		
+		if(result == 1) {
+			viewPage = "redirect:inquiry.do";
+		}
+     //	return viewPage;
+	}
+	
+	@PostMapping("/admin/changeInquiryState")
+    @ResponseBody
+    public Map<String, Object> changeInquiryState(@RequestParam("b_idx") int b_idx) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            bfState.changeInquiryState(b_idx);  // 상태 변경 메서드 호출
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+        
+        return response;
+    }
+
+	@PostMapping("/admin/changeQnaState")
+    @ResponseBody
+    public Map<String, Object> changeQnaState(@RequestParam("b_idx") int b_idx) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            bfState.changeQnaState(b_idx);  // 상태 변경 메서드 호출
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+        
+        return response;
+    }
+	
 	@PostMapping("/boardFile/insert_notice_write_process.do")
 	public void insert_notice_write_process(BoardFileVo boardFileVo) {
 		String viewPage = "boardFile/list_notice";

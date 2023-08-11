@@ -7,8 +7,16 @@
     
     <!-- 1:1문의 게시글 추가 처리구문 -->
     <insert id="insertInquiry" parameterType="boardFileVo">
-        insert into inquiries (m_idx, category, title, content, order_idx) values(#{m_idx}, #{category}, #{title}, #{content}, '1')
-    </insert>
+    insert into inquiries (m_idx, category, title, content, order_idx) values(#{m_idx}, #{category}, #{title}, #{content}, '1')
+	</insert>
+    <!-- 1:1문의답변 게시글 추가 처리구문 -->
+    <insert id="insertInquiryAnswer" parameterType="boardFileVo">
+	    insert into inquiry_ans (b_idx, ans_content) values (#{b_idx}, #{ans_content})
+	</insert>
+	<!-- QnA문의답변 게시글 추가 처리구문 -->
+    <insert id="insertQnaAnswer" parameterType="boardFileVo">
+	    insert into qna_ans (b_idx, p_id, ans_content) values (#{b_idx}, #{p_id}, #{ans_content})
+	</insert>
     <!-- 공지사항 글 추가 처리구문 -->
     <insert id="insertNotice" parameterType='boardFileVo'>
     	insert into notice (m_idx, m_id, title, content) values(#{m_idx}, #{m_id}, #{title}, #{content})
@@ -23,17 +31,31 @@
     </insert>
     <!-- 1:1문의 글 목록 반환 -->
     <select id="getAllInquiries" resultType="boardFileVo">
-    	select i.*, m.m_id, m.m_name
+    	select i.*, m.m_id, m.m_name, i.b_idx
 	    from inquiries i
 	    inner join member_omart m on i.m_idx = m.m_idx
 	    order by i.b_idx desc
     </select>
+    <!-- QnA 답변 게시글 추가 처리구문
+    <insert id="insertQnaAnswer" parameterType="boardFileVo">
+	    insert into inquiries (b_idx, m_idx, ans_content, ans_date) values (#{b_idx}, #{m_idx}, #{ans_content}, #{ans_date})
+	</insert> -->
     <!-- QnA 글 목록 반환 -->
     <select id="getAllQnas" resultType="boardFileVo">
-	    select q.*, m.m_id, m.m_name
+	    select q.*, m.m_id, m.m_name, q.b_idx
 	    from qna q
 	    inner join member_omart m on q.m_idx = m.m_idx
 	    order by q.b_idx desc
+	</select>
+	<select id="getInquiryAns" resultType="boardFileVo">
+		select ans_content
+		from inquiry_ans
+		where b_idx = #{bIdx}
+	</select>
+	<select id="getQnaAns" resultType="boardFileVo">
+		select ans_content
+		from qna_ans
+		where b_idx = #{bIdx}
 	</select>
     <!-- 공지사항 글 목록 반환 -->
     <select id="getAllNotices" resultType="boardFileVo">
@@ -47,6 +69,18 @@
     <select id="getAllEvents" resultType="boardFileVo">
     	select * from event order by b_idx desc
     </select>
+    <!-- 1:1게시판 답변여부 -->
+    <update id="changeInquiryState" parameterType="_int">
+    	update inquiries
+    	set reply_state = 1
+    	where b_idx = #{b_idx}
+    </update>
+    <!-- QnA게시판 답변여부 -->
+    <update id="changeQnaState" parameterType="_int">
+    	update qna
+    	set reply_state = 1
+    	where b_idx = #{b_idx}
+    </update>
     <!-- 검색 조건에 맞는 게시물 수 반환 -->
     <select id="selectCount" parameterType="map" resultType="_int">
         select count(*) from board_file

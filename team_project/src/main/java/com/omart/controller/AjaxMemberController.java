@@ -47,7 +47,7 @@ public class AjaxMemberController {
 			System.out.println("로그인 결과 : 성공");
 			System.out.println("----------회원 개인정보----------");
 			System.out.println("이름: " +vo.getM_name());
-			System.out.println("성별: " +((vo.getGender() == "male") ? "남자":"여자"));
+			System.out.println("성별: " +((vo.getGender() == 1 || vo.getGender() == 3) ? "남자":"여자"));
 			System.out.println("전화번호: " +vo.getSelNum());
 			System.out.println("회원번호: " +vo.getM_idx());
 			System.out.println("생년월일: " +vo.getBirth());

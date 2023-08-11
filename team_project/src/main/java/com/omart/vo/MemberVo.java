@@ -26,7 +26,7 @@ public class MemberVo {
 	
 	//회원 개인정보
 	private String m_name;			//이름
-	private String gender;			//성별
+	private int gender;			//성별
 	private String selNum;			//전화번호
 	private String birth;			//생년월일
 	private int point;				//포인트

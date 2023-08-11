@@ -35,6 +35,14 @@ public class BoardFileDao {
 		return sqlSession.insert(MAPPER + ".insertInquiry", vo);
 	}
 	
+	public int insertInquiryAnswer(BoardFileVo vo) {
+		return sqlSession.insert(MAPPER + ".insertInquiryAnswer", vo);
+	}
+
+	public int insertQnaAnswer(BoardFileVo vo) {
+		return sqlSession.insert(MAPPER + ".insertQnaAnswer", vo);
+	}
+	
 	public List<BoardFileVo> getAllNotices(){
 		return sqlSession.selectList(MAPPER + ".getAllNotices");
 	}
@@ -57,5 +65,21 @@ public class BoardFileDao {
 	
 	public BoardFileVo getNoticeById(int bIdx) {
 		return sqlSession.selectOne(MAPPER + ".getNoticeById", bIdx);
+	}
+	
+	public void changeInquiryState(int b_idx) {
+		sqlSession.update(MAPPER + ".changeInquiryState", b_idx);
+	}
+
+	public void changeQnaState(int b_idx) {
+		sqlSession.update(MAPPER + ".changeQnaState", b_idx);
+	}
+	
+	public List<BoardFileVo> getInquiryAns(int bIdx){
+		return sqlSession.selectList(MAPPER + "getInquiryAns", bIdx);
+	}
+
+	public List<BoardFileVo> getQnaAns(int bIdx){
+		return sqlSession.selectList(MAPPER + "getQnaAns", bIdx);
 	}
 }
