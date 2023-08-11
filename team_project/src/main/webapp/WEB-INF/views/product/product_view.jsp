@@ -315,7 +315,8 @@
 	fieldset input[type="text"] {
 	    width: 50px;
 	    height: 25px;
-	    margin-left: -1px;
+	    border-left: none;
+	    border-right: none;
 	}
 	.btn_plus:nth-child(1), .btn_minus:nth-child(1) {
 	    width: 27px;

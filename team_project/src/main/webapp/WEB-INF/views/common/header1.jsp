@@ -95,10 +95,10 @@
                  	<div id="div_category">
                      	<a href="product/product_list.do">전체 카테고리</a>
                      	<ul>
-                     		<li><a href="">육류</a></li>
-                     		<li><a href="">가공</a></li>
-                     		<li><a href="">수산</a></li>
-                     		<li><a href="">야채</a></li>
+                     		<li><a href="product/product_list.do?category=AA">육류</a></li>
+                     		<li><a href="product/product_list.do?category=BB">가공</a></li>
+                     		<li><a href="product/product_list.do?category=CC">수산</a></li>
+                     		<li><a href="product/product_list.do?category=DD">야채</a></li>
                     	</ul>	                        
                 	</div>
              	</div>

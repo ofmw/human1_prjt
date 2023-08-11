@@ -209,12 +209,17 @@
     }
     </style>
 <script>
-	$(function(){		
+	$(function(){
+		
+		let category = '${param.category}';		
+		
 		$(".opt_checkbox").change(function(){
 			  let checkedItems = $(".opt_checkbox:checked");
 			  
-			  let checkedMap = {};			  
+			  let checkedMap = {};
 			  
+			  
+
 			  checkedItems.each(function(){
 				  let key = this.id.charAt(0);
 				  let value = this.value;				  
@@ -231,7 +236,7 @@
 			  
 			  $.ajax({
 				 type: "post",
-				 url: "update_product_list.do?category="+encodeURIComponent('<%= request.getParameter("category") %>'),
+				 url: "update_product_list.do?category="+category,
 				 data : JSON.stringify(checkedMap),
 				 dataType: "json",
 				 contentType:"application/json;charset=UTF-8",
@@ -312,6 +317,7 @@
             <!-- 상단 버튼 모음 -->
             <div id="pl_header">
                 <div id="pl_header_btn_box">
+                    <div class="quick_btn"><a href="product_list.do?"><img src="#" alt="#"></a></div>
                     <div class="quick_btn"><a href="product_list.do?category=AA"><img src="#" alt="#"></a></div>
                     <div class="quick_btn"><a href="product_list.do?category=BB"><img src="#" alt="#"></a></div>
                     <div class="quick_btn"><a href="product_list.do?category=CC"><img src="#" alt="#"></a></div>
@@ -370,8 +376,6 @@
 	                                   </tr>
 	                                </c:forEach>
                                 </c:forEach>
-                                
-
                             </table>
                         </form>
 

@@ -79,7 +79,7 @@ public class AjaxProductController {
 	}
 
 	@RequestMapping("/update_product_list.do")
-	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, HttpServletRequest request, String category){
+	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, String category){
 		
 		String[] checked_brand = checkedMap.get("1");
 		String[] checked_sub_category = checkedMap.get("2");
