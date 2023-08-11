@@ -113,7 +113,7 @@
     </div><!-- end of header -->
     
     <!-- 로그인 모달창 -->
-    <div id="shadow">
+    <div id="shadow" style="display:none;">
         <div id="login_container">
             <div id="login_close_button"><img src="../resources/img/close3.png" alt="닫기" id="close_btn"></div>
             

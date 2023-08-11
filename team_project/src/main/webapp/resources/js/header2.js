@@ -21,19 +21,15 @@ $(function() {
     
     /* 로그인 모달창 열기 메서드 */
     function showShadow() {
-        shadow.css({
-            'display': 'block',
-            'z-index': '5000'
-        });
+    	shadow.css('z-index', '5000');
+        shadow.fadeIn(100);
         $("body").css('overflow', 'hidden');
     }
     
     /* 로그인 모달창 닫기 메서드 */
     close_btn.on("click", function() {
-        shadow.css({
-            'display': 'none',
-            'z-index': '0'
-        });
+    	shadow.css('z-index', '5000');
+        shadow.fadeOut(100);
         $("body").css('overflow-y', 'visible');
     });
     
