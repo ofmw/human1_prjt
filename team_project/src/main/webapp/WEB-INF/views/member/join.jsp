@@ -163,68 +163,68 @@
 </style>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 
 <script>
 
-	function smsConfirmNum(){
-		const min = 10000;
-		const max = 99999;
-		return Math.floor(Math.random()*(max - min +1))+min;
-	}
-	
-	$(function(){
-		
-		$("#btn_get_aNum").click(function(){
-			let serviceId = "ncp:sms:kr:312456196439:team";
-			let accessKey = "h4BjwmodGCWHpW6lxoPj";
-			let secretKey = "zLhbW5OTd6ShI0Ls4t3jTFhZff2HcyiFifkymgql";
-			let selNum = $("#selNum").val();
-			let content = "[Omart] 인증번호 [" + smsConfirmNum() + "]를 입력해주세요"
-			let auth_code = smsConfirmNum(); //인증코드
-			let url = "https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages";
-			let time = Date.now().toString();
-			let signature = makeSignature(url, time, accessKey, secretKey); //시그너처
-			
-			let requestData = {
-			          type: "SMS", // 메시지 유형 SMS
-			          contentType: "COMM", 
-			          countryCode: "82", // 국가 코드 (한국은 82)
-			          from: "01092370589", // 발신자의 전화번호
-			          content: content, // 전송할 메시지 내용
-			          messages: [
-			            {
-			              to: selNum, // 수신자의 전화번호
-			              content: content // 전송할 메시지 내용
-			            }
-			          ]
-			        };
-			
-	        $.ajax({
-		          type: "POST", // POST 방식으로 서버로 요청
-		          url: "https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages", // Sens API의 메시지 전송 URL
-		          dataType: "jsonp",
-		          contentType: "application/json; charset=utf-8", // 요청 데이터의 컨텐츠 타입
-		          headers: {
-		        	"x-ncp-apigw-timestamp": time,
-		            "x-ncp-iam-access-key": accessKey, // 액세스 키 헤더
-		            "x-ncp-apigw-signature-v2": signature
-		          },
-		          data: JSON.stringify(requestData), // JSON 형태로 요청 데이터 변환
-		          success: function(data) { // 서버로부터 성공적인 응답을 받았을 때 실행
-		            $("#result").text("SMS가 성공적으로 전송되었습니다.");
-		          },
-		          error: function(error) { // AJAX 통신 중 에러가 발생했을 때 실행
-		            $("#result").text("SMS 전송에 실패하였습니다.");
-		          }
-	        });//end of ajax
-		});
+function smsConfirmNum() {
+    const min = 10000;
+    const max = 99999;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+$(function () {
+    $("#btn_get_aNum").click(function () {
+        let serviceId = "ncp:sms:kr:312456196439:team";
+        let accessKey = "h4BjwmodGCWHpW6lxoPj";
+        let secretKey = "zLhbW5OTd6ShI0Ls4t3jTFhZff2HcyiFifkymgql";
+        let selNum = $("#selNum").val();
+        let content = "[Omart] 인증번호 [" + smsConfirmNum() + "]를 입력해주세요";
+        let auth_code = smsConfirmNum(); //인증코드
+        let url = "https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages";
+        let time = Date.now().toString(); // 현재 밀리초 단위 시간
+        let signature = makeSignature(url, time, accessKey, secretKey); //시그너처
+
+        let requestData = {
+            type: "SMS",
+            contentType: "COMM",
+            countryCode: "82", // 국가 코드 (한국은 82)
+            from: "01012345678",
+            content: content,
+            messages: [
+                {
+                    to: "82" + selNum, // 전화번호 형식 조합
+                    content: content
+                }
+            ]
+        };
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            headers: {
+                "x-ncp-apigw-timestamp": time,
+                "x-ncp-iam-access-key": accessKey,
+                "x-ncp-apigw-signature-v2": signature
+            },
+            data: JSON.stringify(requestData),
+            success: function (data) {
+                $("#result").text("SMS가 성공적으로 전송되었습니다.");
+            },
+            error: function (error) {
+                $("#result").text("SMS 전송에 실패하였습니다.");
+            }
+        });
+    });
 	});
 	
 	//시그너처 생성구문
 	function makeSignature(url_signature, time, accessKey, s_Key) {
 		var space = " ";				// one space
 		var newLine = "\n";				// new line
-		var method = "POST";				// method
+		var method = "GET";				// method
 		var url = url_signature;	// url (include query string)
 		var timestamp = time;			// current timestamp (epoch)
 		var accessKey = accessKey;			// access key id (from portal or Sub Account)

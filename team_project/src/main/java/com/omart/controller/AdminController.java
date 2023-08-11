@@ -97,9 +97,15 @@ public class AdminController {
 	    combinedList.addAll(inquiryList);
 	    combinedList.addAll(qnaList);
 	    
+	    for(BoardFileVo vo : combinedList) {
+	    	System.out.println("ans_content: "+vo.getAns_content());
+	    }
+	    
 	    Collections.sort(combinedList, (bf1, bf2) -> bf2.getPost_date().compareTo(bf1.getPost_date()));
 	    
-	    System.out.println("test"+combinedList.get(0).getB_idx());
+	    System.out.println("test: "+combinedList.get(0).getB_idx());
+	    
+	   	    
 	    // 합쳐진 데이터를 JSP로 전달
 	    model.addAttribute("combinedList", combinedList);
 		

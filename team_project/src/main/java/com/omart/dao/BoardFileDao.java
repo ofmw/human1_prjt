@@ -75,11 +75,11 @@ public class BoardFileDao {
 		sqlSession.update(MAPPER + ".changeQnaState", b_idx);
 	}
 	
-	public List<BoardFileVo> getInquiryAns(int bIdx){
-		return sqlSession.selectList(MAPPER + "getInquiryAns", bIdx);
+	public BoardFileVo getInquiryAns(int b_idx){
+		return sqlSession.selectOne(MAPPER + "getInquiryAns", b_idx);
 	}
 
-	public List<BoardFileVo> getQnaAns(int bIdx){
-		return sqlSession.selectList(MAPPER + "getQnaAns", bIdx);
+	public BoardFileVo getQnaAns(int b_idx){
+		return sqlSession.selectOne(MAPPER + "getQnaAns", b_idx);
 	}
 }

@@ -1,18 +1,16 @@
 package com.omart.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.omart.service.member.MemberService;
 import com.omart.vo.MemberVo;
-import com.omart.vo.WishVo;
 
 import lombok.Setter;
 
@@ -42,6 +40,18 @@ public class MemberController {
 		return viewPage;
 	}	
 	
+	 @GetMapping("/sendSms")
+	    @CrossOrigin(origins = "http://localhost:9090") // 허용할 Origin을 설정
+	    @ResponseBody
+	    public String sendSMS(@RequestParam("selNum") String selNum) {
+	        // 문자 인증 로직 구현
+	        // ...
+
+	        return "문자 인증 완료";
+	    }
+	 
+	 
+	 
 	//로그아웃
 //	@GetMapping("/logout.do")
 //	public String logout(HttpServletRequest request) {

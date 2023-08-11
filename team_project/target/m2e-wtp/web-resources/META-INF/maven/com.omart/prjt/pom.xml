@@ -104,13 +104,12 @@
             <version>1</version>
         </dependency>
 
-    	<!-- 네이버 SMS API 클라이언트 라이브러리 의존성 추가 
+    	<!-- CoolSms 문자 인증관련 라이브러리 -->
     	<dependency>
-	        <groupId>com.naver.cloud.openapi</groupId>
-	        <artifactId>sens-sms-client</artifactId>
-	        <version>4.5.13</version>
+    		<groupId>net.nurigo</groupId>
+			   <artifactId>sdk</artifactId>
+			   <version>4.2.7</version>
     	</dependency>
-    	-->
         
         <!-- gson 추가 -->
         <dependency>

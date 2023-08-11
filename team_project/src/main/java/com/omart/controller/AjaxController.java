@@ -173,6 +173,7 @@ public class AjaxController {
         return response;
     }
 	
+	
 	@PostMapping("/boardFile/insert_notice_write_process.do")
 	public void insert_notice_write_process(BoardFileVo boardFileVo) {
 		String viewPage = "boardFile/list_notice";

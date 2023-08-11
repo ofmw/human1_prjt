@@ -10,5 +10,5 @@ public interface MemberService {
 	default MemberVo klogin(String m_id) {return null;}
 	default int join(MemberVo memberVo) {return 0;}
 	default List<String> getWishList(int m_idx){return null;}
-
+	
 }
