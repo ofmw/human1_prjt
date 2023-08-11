@@ -10,9 +10,10 @@ public class ProductVo {
 	/* 제품 정보 DTO */
 	
 	//제품 기본정보
-	private String p_id;					//제품코드
+	private String p_id;					//제품코드 //제품코드 앞 두자리는 카테고리 대분류 ex)AA = 육류, BB = 가공...
 	private String p_name;					//제품명
 	private String brand;					//브랜드명
+	private String sub_category;			//카테고리 소분류
 	
 	//제품 가격
 	private int cost;						//원가
