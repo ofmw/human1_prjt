@@ -66,20 +66,15 @@ public class HomeController {
 	//로그아웃
 	@GetMapping("/**/logout.do")
 	public String logout(String requestor, HttpServletRequest request) {
-		
-		String result = "member/logout";
-		
+				
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		if(requestor == null) {
 
 			String referer = request.getHeader("referer");
 			System.out.println(referer);
-			result = "member/logout.jsp?referer="+referer;
-		}
 		
-		return result;
+		return "member/logout.jsp?referer="+referer;
 	}
 	
 	//임시
