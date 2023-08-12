@@ -62,7 +62,7 @@ public class paymentController {
 	@PostMapping("/orderProcess.do")
 	public String orderProcess(@RequestParam String requestor, @RequestParam int m_idx, @RequestParam String orderNum, 
 			@RequestParam String name, @RequestParam int point, @RequestParam String receiver, @RequestParam String selnum, 
-			@RequestParam String address, Model model) {
+			@RequestParam String address, @RequestParam int paid_price, Model model) {
 		
 		System.out.println(requestor);
 		
@@ -95,6 +95,7 @@ public class paymentController {
 			orderVo.setReceiver(receiver);
 			orderVo.setSelnum(selnum);
 			orderVo.setAddress(address);
+			orderVo.setPaid_price(paid_price);
 			
 			pmOrder.createOrder(orderVo);
 			

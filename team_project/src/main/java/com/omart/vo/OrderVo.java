@@ -23,5 +23,5 @@ public class OrderVo {
 	private String receiver;
 	private String selnum;
 	private String address;
-	
+	private int paid_price;
 }
