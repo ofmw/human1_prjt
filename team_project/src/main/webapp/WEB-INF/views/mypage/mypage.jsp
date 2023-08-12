@@ -299,7 +299,7 @@
             </div>
 
             <div id="mp_main_wish" class="mp_main_obj">
-                <div class="mp_main_title"><a href="wish.do">찜목록</a></div>
+                <div class="mp_main_title"><a href="wish.do?option1=none">찜목록</a></div>
                 <div id="mp_w_main_products">
 
                     <div id="w_box">

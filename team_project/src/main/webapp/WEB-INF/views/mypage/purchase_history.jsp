@@ -3,36 +3,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>mypage</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <title>주문/배송조회</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link href="../resources/css/purchase_history.css" rel="stylesheet">
+    
     <style>
-        
+        /* ---------------------페이지 내비게이션--------------------- */
+        .p-nav{
+        	width: 25px;
+        	height: 25px;
+        	margin: 0 5px;
+        	padding: 2px 5px;
+        	
+		    font-size: 14px;
+		    cursor: pointer;
+		    
+		    border: 1px solid #ddd;
+		    border-radius: 3px;
+		    background-color: #fcfcfc;
+        }
+        #mp_main_ph_search_quicksel{
+        	user-select: none;
+        }
     </style>
+    
     <script>
         $(function() {
-            $("input[name=dates]").daterangepicker({
-                locale: {
-                "format": 'YYYY-MM-DD',                  // 일시 노출 포맷
-                "applyLabel": "확인",                    // 확인 버튼 텍스트
-                "cancelLabel": "취소",                   // 취소 버튼 텍스트
-                "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
-                "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-                },
-                showDropdowns: true,                     // 년월 수동 설정 여부
-                autoApply: true,                         // 확인/취소 버튼 사용여부
-                singleDatePicker: true                   // 하나의 달력 사용 여부
-            });
-            $("input[name=dates]").on('show.daterangepicker', function (ev, picker) {
-                $(".yearselect").css("float", "left");
-                $(".monthselect").css("float", "right");
-                $(".cancelBtn").css("float", "right");
-            });
+        	
+            /* ---------------------버튼 색상 변경--------------------- */
+            //*** 마우스 커서가 올라갔을 때 ***//
+            function mouseenter(target) {
+                target.css({
+                    "background-color": "#222",
+                    "color": "white"
+                });
+            }
+        
+			//*** 마우스 커서가 벗어났을 때 ***//
+	        function mouseleave(target) {
+	        	target.css({
+                    "background-color": "",
+                    "color": ""
+                }); // 원래 배경색 및 폰트 색상으로 되돌리기
+	        }
+            
+	      	//*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
+	        $(document).on("mouseenter", ".button", function() {
+	        	let target = $(this);
+            	mouseenter(target);
+			});
+	        
+	      	//*** 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
+	        $(document).on("mouseleave", ".button", function() {
+	        	let target = $(this);
+            	mouseleave(target);
+			});
+	      	
+	      	//*** 기간조회 라디오 버튼 클릭 이벤트 처리 ***//
+	        $('.quicksel_radio').change(function() {
+	            // 모든 radio를 순회한다.
+	            $('.quicksel_radio').each(function() {
+	            	
+	                let checked = $(this).prop('checked');
+	                let label = $(this).next();
+	        
+	                if(checked) {
+	                	
+	                    label.css({
+	                    	'background-color': '#222',
+	                    	'color': 'white'
+	                    });
+	                } else {
+	                	
+	                	label.css({
+	                    	'background-color': '',
+	                    	'color': ''
+	                    });
+	                }
+	            });
+	        });
+
         });
     </script>
+    <script>
+	    
+    </script>
+    
 </head>
 <body>
 
@@ -86,9 +142,7 @@
                 <div class="mp_main_menu_title">나의 주문관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <!-- <li><a href="mypage 주문배송.html">주문/배송조회</a></li> -->
                         <li><a href="purchase_history.do">주문/배송조회</a></li>
-                        <!-- <li><a href="#">자주 구매한 상품</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -128,15 +182,10 @@
                         </div>
 
                         <div class="mp_main_ph_search_detail">
-                            <span class="mp_main_ph_search_calbox">
-                                <input type="text" name="" class="cal_date" value="">
-                                <span class="mp_main_ph_search_calbox_icon"></span>
-                            </span>
+                            <input type="date" class="cal_date" id="cal_start">
                             <span id="cal_hipen">~</span>
-                            <span class="mp_main_ph_search_calbox">
-                                <input type="text" name="" class="cal_date">
-                            </span>
-                            <span><input type="button" value="조회하기" id="mp_main_ph_search_detail_btn"></span>
+                            <input type="date" class="cal_date" id="cal_end">
+                            <div><input type="button" value="조회하기" id="mp_main_ph_search_detail_btn"></div>
                         </div>
 
                     </div>
@@ -163,31 +212,34 @@
                                 <td class="td_ordernum">20230717-00000012</td>
                                 <td class="td_pname">[국산] 고구마500kg <span>외 8건</span></td>
                                 <td class="td_shipstate">결제완료</td>
-                                <td><a href="order_detail.do" class="ph_detail_btn">주문상세내역</a></td>
+                                <td><a href="order_detail.do" class="ph_detail_btn button">주문상세내역</a></td>
                             </tr>
                             <tr>
                                 <td class="td_date">2023-07-14</td>
                                 <td class="td_ordernum">20230714-00000001</td>
                                 <td class="td_pname">[오뚜기] 삼양라면 <span>외 5건</span></td>
                                 <td>상품준비중</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn">주문상세내역</a></td>
+                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
                             </tr>
                             <tr>
                                 <td class="td_date">2023-05-29</td>
                                 <td class="td_ordernum">20230529-00012351</td>
                                 <td class="td_pname">[풀무원] AA건전지 X 20입 <span>외 14건</span></td>
                                 <td>베송중</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn">주문상세내역</a></td>
+                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
                             </tr>
                             <tr>
                                 <td class="td_date">2023-04-01</td>
                                 <td class="td_ordernum">20230401-00037541</td>
                                 <td class="td_pname">불스원 와이퍼 외 <span>외 2건</span></td>
                                 <td>배송완료</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn">주문상세내역</a></td>
+                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
                             </tr>
                             <tr>
-                                <td colspan="5" id="td_pnav">네비게이션</td>
+                                <td colspan="5" id="td_pnav">
+                                	<button type="button" class="p-nav button" value="">1</button>
+                                	<button type="button" class="p-nav button" value="">2</button>
+                                </td>
                             </tr>
                         </table>
                     </div>

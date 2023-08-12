@@ -55,62 +55,6 @@ public class AjaxMypageController {
 		return "success";
 	}
 	
-	//찜목록 상품 정렬
-	@PostMapping("/sort_wishList.do")
-	public String sort_wishList(@RequestParam("option") String option,
-								HttpSession session,
-								Model model) {
-		
-		MemberVo member = (MemberVo) session.getAttribute("member");
-		int m_idx = member.getM_idx();
-		
-		@SuppressWarnings("unchecked")
-		List<ProductVo> p_info = (List<ProductVo>) session.getAttribute("p_info");
-		System.out.println(p_info);
-		System.out.println(option);
-		
-		if (option.equals("name")) {
-			// 세션에서 가져온 p_info 리스트를 p_name 순으로 정렬
-			Collections.sort(p_info, Comparator.comparing(ProductVo::getP_name));
-			System.out.println("수정된 리스트: "+p_info);
-			
-			// 수정된 p_info에서 p_id를 추출하여 wishList 배열에 저장
-			List<String> wishList = new ArrayList<>();
-	        for (ProductVo product : p_info) {
-	            wishList.add(product.getP_id());
-	        }
-			
-			System.out.println("수정된 찜목록: "+wishList);
-			
-			session.removeAttribute("wishList");
-			session.removeAttribute("p_info");
-			session.setAttribute("wishList", wishList);
-			session.setAttribute("p_info", p_info);
-			
-		} else if (option.equals("date")) {
-			
-		    List<String> wishList = mWish.getWishList(m_idx);
-
-		    // 세션에서 가져온 p_info 리스트에서 wishList의 순서대로 p_id를 기준으로 정렬
-		    List<ProductVo> sortedPInfo = new ArrayList<>();
-		    for (String productId : wishList) {
-		        for (ProductVo product : p_info) {
-		            if (product.getP_id().equals(productId)) {
-		                sortedPInfo.add(product);
-		                break;
-		            }
-		        }
-		    }
-		    
-		    // 세션에서 수정된 p_info와 wishList를 저장
-		    session.removeAttribute("wishList");
-		    session.removeAttribute("p_info");
-		    session.setAttribute("wishList", wishList);
-		    session.setAttribute("p_info", sortedPInfo);
-		}
-		
-		return "success";
-	}
 	
 	//찜목록 선택 상품 장바구니 추가
 	@PostMapping("/addCart.do")
