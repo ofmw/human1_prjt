@@ -440,7 +440,7 @@
         	
         	frm_buyThis.append(requestor);
         	
-        	frm_buyThis.attr("action", "../payment/payment.do");
+        	frm_buyThis.attr("action", "../payment/buyThis.do");
         	
         	frm_buyThis.submit();
         	        	
@@ -568,12 +568,12 @@
         <br>
         <form id="frm_buyThis">
             <div id="div_main_price_area">
-	            <input type="hidden" id="p_id" value="${product.p_id}"/>
-	            <input type="hidden" id="m_idx" value="${member.m_idx}">
+	            <input type="hidden" id="p_id" name="p_id" value="${product.p_id}"/>
+	            <input type="hidden" id="m_idx" name="m_idx" value="${member.m_idx}">
 	            ${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}
 	            <fieldset>
 	                <input type="button" class="btn_minus" value="-">
-	                <input type="text" class="input_amount" value="1" id="amount">
+	                <input type="text" class="input_amount" value="1" id="amount" name="amount">
 	                <input type="button" class="btn_plus" value="+">
 	            </fieldset>
 	            <div><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</div>
@@ -659,7 +659,7 @@
                         <h5>제품의 유형</h5>
                     </td>
                     <td>
-                        <p>과자(유탕처리제품)</p>
+                        <p>${product.sub_category}</p>
                     </td>
                 </tr>
                 <tr>
@@ -680,10 +680,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <h5>제조연월일/유통기한,소비기한 또는 품질유지기한</h5>
+                        <h5>제조연월일/유통기한, 소비기한 또는 품질유지기한</h5>
                     </td>
                     <td>
-                        <p>점포 배송 상품으로 각 점포별 제조일과 입고일이 상이하여, 유통기한이 다릅니다. 이마트 점포상품과 동일한 품질을 유지한 상품이 배송됩니다. ※ 해당 정보에 대한 문의는 고객센터(1577-3419)로 문의해주세요. 유통기한-점포 배송 상품으로 각 점포별 제조일과 입고일이 상이하여, 유통기한이 다릅니다. 이마트 점포상품과 동일한 품질을 유지한 상품이 배송됩니다. ※ 해당 정보에 대한 문의는 고객센터(1577-3419)로 문의해주세요.</p>
+                        <p>점포 배송 상품으로 각 점포별 제조일과 입고일이 상이하여, 유통기한이 다릅니다. 오마트 점포상품과 동일한 품질을 유지한 상품이 배송됩니다. ※ 해당 정보에 대한 문의는 고객센터(1577-3419)로 문의해주세요.</p>
                     </td>
                 </tr>
                 <tr>
@@ -691,7 +691,7 @@
                         <h5>포장 단위별 내용물의 용량 (중량), 수량, 크기</h5>
                     </td>
                     <td>
-                        <p>134g</p>
+                        <p>${product.standard}${product.unit}</p>
                     </td>
                 </tr>
                 <tr>

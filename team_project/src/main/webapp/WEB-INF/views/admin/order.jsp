@@ -651,10 +651,10 @@
 </head>
 <body>
     <div id="div_left">
-        <h3>제품관리</h3>
+        <h3>주문관리</h3>
         <table>
             <tr>
-                <td>분류</td>
+                <td>처리상태</td>
             </tr>
             <tr>
                 <td>

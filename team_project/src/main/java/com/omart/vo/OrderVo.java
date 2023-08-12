@@ -25,4 +25,5 @@ public class OrderVo {
 	private String address;
 	private int paid_price;
 	private int order_state;
+	private String paymentInfo;
 }

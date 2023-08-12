@@ -391,7 +391,7 @@
 	var makeMerchantUid = year + month + day + hours + minutes + seconds + milliseconds;
     
     //다음 페이지로 전달해야하는 값
-    var frm, requestor, merchant_uid, name, amount, point, receiver, selnum, address;
+    var frm, requestor, merchant_uid, name, amount, point, receiver, selnum, address, request, pgName;
         
     function requestPay() {
     	frm = $("#frm_payment");
@@ -402,7 +402,8 @@
     	receiver = $("#receiver").text().replace('받는분 : ','');
     	selnum = $("#selnum").text().replace('연락처 : ','').replace(/\-/g, '').trim();
     	address = $("#address").text().replace('주소 : ','');
-    	
+    	requestMessage = $("#request option:selected").text().replace('배송기사에게 전달되는 메시지입니다. 선택해주세요.','');
+    	paymentInfo = "카카오페이";
     	
     	// 가상의 input 요소를 생성하고 폼에 추가
     	var orderNumInput = $("<input>").attr("type", "hidden").attr("name", "orderNum").val(orderNum);
@@ -412,6 +413,8 @@
         var selnumInput = $("<input>").attr("type", "hidden").attr("name", "selnum").val(selnum);
         var addressInput = $("<input>").attr("type", "hidden").attr("name", "address").val(address);
         var paid_priceInput = $("<input>").attr("type", "hidden").attr("name", "paid_price").val(amount);
+        var requestMessageInput = $("<input>").attr("type", "hidden").attr("name", "requestMessage").val(requestMessage);
+        var paymentInfoInput = $("<input>").attr("type", "hidden").attr("name", "paymentInfo").val(paymentInfo);
         
         frm.append(orderNumInput);
         frm.append(nameInput);
@@ -420,6 +423,8 @@
         frm.append(selnumInput);
         frm.append(addressInput);
         frm.append(paid_priceInput);
+        frm.append(requestMessageInput);
+        frm.append(paymentInfoInput);
     	
         IMP.request_pay({
             pg : 'kakaopay.TC0ONETIME',
