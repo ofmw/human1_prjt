@@ -18,108 +18,104 @@
 </head>
 <body>
 
-    <!-- 헤더 -->
-    <div id="div_header">
-        <!-- <div id="div_header_contents"> -->
-        	<!-- 헤더 윗부분 -->
-	        <div id="div_header_upper">
-	            <!-- 헤더 윗부분 내부요소 -->
-	            <div id="div_header_upper_elements">
-	
-	                <!-- 사이트 로고 -->
-	                <div id="div_omart_logo">
-	                    <a href="index.do"><img id="omart_logo" src="resources/img/omart.png" alt="omart로고"></a>
-	                </div>
-	                <!-- 검색 -->
-	                <div id="input_search_area">
-	                    <input id="input_search" type="search">
-	                </div>
-	                
-	                <!-- ㅁㄴㅇㄹ -->
-					<div id="div_persnal">
-						<div id="div_member_menu">
-							<c:choose>
-								<c:when test="${empty member}">
-	            		            <span id="login_btn2">로그인</span>
-	    		                    <a href="member/join.do">회원가입</a>
-			                        <a href="boardFile/list_faq_member.do">고객센터</a>
-								</c:when>
-								<c:otherwise>
-								    <input type="hidden" id="m_idx" value="${member.m_idx}"/>
-								     <c:choose>
-								         <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
-								             <a href="admin/member.do">${member.m_name}님</a>
-								         </c:when>
-								         <c:otherwise>
-								             <a href="mypage/mypage.do">${member.m_name}님</a>
-								         </c:otherwise>
-								     </c:choose>								
-									<a href="boardFile/list_faq_member.do">고객센터</a>
-									<c:choose>
-										<c:when test="${member.platform eq 'kakao'}">
-											<a href="kakaologout.do">로그아웃</a>
-										</c:when>
-										<c:when test="${member.platform eq 'omart'}">
-											<a href="member/logout.do">로그아웃</a>
-										</c:when>
-									</c:choose>
-								</c:otherwise>
-							</c:choose>
-						</div>
-		                    	
-	                    <div id="div_persnal_menu">
-	                        <a href="">ㅇ</a>
-	                        <c:choose>
-	                        	<c:when test="${empty member}">
-	                        		<a class="need_login" href="#">ㅁ</a>
-	                        	</c:when>
-	                        	<c:otherwise>
-	                        		<a href="mypage/mypage.do">ㅁ</a>
-	                        	</c:otherwise>
-	                        </c:choose>
-	                        <a href="cart/cart.do">카</a>
-	                        <a href="">ㅇ</a>
-	                    </div>
+	<!-- 헤더 -->
+	<div id="div_header">
+    	<!-- 헤더 윗부분 -->
+     	<div id="div_header_upper">
+			<!-- 헤더 윗부분 내부요소 -->
+			<div id="div_header_upper_elements">
+
+				<!-- 사이트 로고 -->
+	            <div id="div_omart_logo">
+	            	<a href="index.do"><img id="omart_logo" src="resources/img/omart.png" alt="omart로고"></a>
+	            </div>
+	            <!-- 검색 -->
+	            <div id="input_search_area">
+	                <input id="input_search" type="search">
+	            </div>
+             
+				<!-- ㅁㄴㅇㄹ -->
+				<div id="div_persnal">
+					<div id="div_member_menu">
+						<c:choose>
+							<c:when test="${empty member}">
+			         		    <span id="login_btn2">로그인</span>
+								<a href="member/join.do">회원가입</a>
+								<a href="boardFile/list_faq_member.do">고객센터</a>
+							</c:when>
+							<c:otherwise>
+							    <input type="hidden" id="m_idx" value="${member.m_idx}"/>
+								<c:choose>
+							        <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
+							            <a href="admin/member.do">${member.m_name}님</a>
+							        </c:when>
+							        <c:otherwise>
+										<a href="mypage/mypage.do">${member.m_name}님</a>
+									</c:otherwise>
+							    </c:choose>								
+								<a href="boardFile/list_faq_member.do">고객센터</a>
+								<c:choose>
+									<c:when test="${member.platform eq 'kakao'}">
+										<a href="kakaologout.do">로그아웃</a>
+									</c:when>
+									<c:when test="${member.platform eq 'omart'}">
+										<a href="member/logout.do">로그아웃</a>
+									</c:when>
+								</c:choose>
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div id="div_persnal_menu">
+						<a href="">ㅇ</a>
+						<c:choose>
+							<c:when test="${empty member}">
+	                     		<a class="need_login" href="#">ㅁ</a>
+	                     	</c:when>
+	                     	<c:otherwise>
+	                     		<a href="mypage/mypage.do">ㅁ</a>
+	                    	</c:otherwise>
+						</c:choose>
+						<a href="cart/cart.do">카</a>
+						<a href="">ㅇ</a>
 					</div>
 				</div>
 			</div>
-	
-	        <!-- 헤더 아랫부분 -->
-	        <div id="div_header_lower">
-	            <!-- 헤더 아랫부분 내부요소 -->
-	            <div id="div_header_lower_elements">
-	
-	                <!-- 카테고리 -->
-	                <div>
-	                    <div id="div_category_block">
-	                        전체 카테고리
-	                    </div>
-	                    <div id="div_category">
-	                        <a href="product/product_list.do">전체 카테고리</a>
-	                        <ul>
-	                        	<li><a href="">육류</a></li>
-	                        	<li><a href="">가공</a></li>
-	                        	<li><a href="">수산</a></li>
-	                        	<li><a href="">야채</a></li>
-	                        </ul>	                        
-	                    </div>
-	                </div>
-	                
-	                <!-- 메뉴모음 -->
-	                <div id="div_quick_menu">
-	                    <a href="">베스트</a>
-	                    <a href="">할인</a>
-	                    <a href="">신상품</a>
-	                    <a href="">이벤트</a>
-	                </div>
-	            </div>
-	        </div>
-        </div>
-        
-    </div><!-- end of header -->
+		</div>
+
+		<!-- 헤더 아랫부분 -->
+		<div id="div_header_lower">
+			<!-- 헤더 아랫부분 내부요소 -->
+			<div id="div_header_lower_elements">
+
+             	<!-- 카테고리 -->
+				<div>
+                 	<div id="div_category_block">
+                    	전체 카테고리
+                 	</div>
+                 	<div id="div_category">
+                     	<a href="product/product_list.do">전체 카테고리</a>
+                     	<ul>
+                     		<li><a href="product/product_list.do?category=AA">육류</a></li>
+                     		<li><a href="product/product_list.do?category=BB">가공</a></li>
+                     		<li><a href="product/product_list.do?category=CC">수산</a></li>
+                     		<li><a href="product/product_list.do?category=DD">야채</a></li>
+                    	</ul>	                        
+                	</div>
+             	</div>
+             
+             	<!-- 메뉴모음 -->
+            	<div id="div_quick_menu">
+                	<a href="">베스트</a>
+                	<a href="">할인</a>
+                	<a href="">신상품</a>
+                	<a href="">이벤트</a>
+				</div>
+			</div>
+		</div>
+    </div>
     
     <!-- 로그인 모달창 -->
-    <div id="shadow">
+    <div id="shadow" style="display:none;">
         <div id="login_container">
             <div id="login_close_button"><img src="resources/img/close3.png" alt="닫기" id="close_btn"></div>
             
@@ -161,7 +157,7 @@
             </div><!-- end of 로그인창 내부요소 -->
         </div><!-- end of login container -->
     </div><!-- end of shadow -->
-    <div id="shadow_addCart">
+    <div id="shadow_addCart" style="display:none;">
         <div id="addCart_container">
             제품이 장바구니에 추가되었습니다.
         </div>

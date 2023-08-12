@@ -20,7 +20,7 @@ import com.omart.vo.MemberVo;
 import lombok.Setter;
 
 @Controller
-@RequestMapping("/cart")
+@RequestMapping("**/cart")
 public class CartController {
 	
 	@Setter(onMethod_= {@Autowired})	
@@ -45,6 +45,7 @@ public class CartController {
 		return "cart/cart";
 	}
 	
+	// 장바구니에 상품 추가
 	@PostMapping("/addCart.do")
 	public void addCart(CartVo cartVo) {
 		System.out.println("addCart실행");
@@ -57,7 +58,7 @@ public class CartController {
 		return "/cart";
 	}
 	
-	@GetMapping("/change_address.do")
+	@GetMapping("/manage_address.do")
 	public String change_address(@RequestParam("m_idx") String m_idx, Model model) {
 		
 		List<AddressVo> AddressList = cAddress.AddressList(Integer.parseInt(m_idx));
@@ -65,7 +66,31 @@ public class CartController {
 		model.addAttribute("m_idx", m_idx);
 		model.addAttribute("AddressList", AddressList);
 		
-		return "cart/ChangeAddress";
+		return "cart/manageAddress";
+	}
+	
+	//배송지 수정 페이지 이동
+	@GetMapping("/editAddr.do")
+	public String eidtAddr(@RequestParam("m_idx")String m_idx,
+						   @RequestParam("a_name")String a_name,
+						   Model model) {
+		
+		AddressVo vo = cAddress.getAddrInfo(Integer.parseInt(m_idx), a_name);
+		if (vo != null) {
+			System.out.println("수정할 배송지 정보 가져오기 성공");
+			model.addAttribute("addrInfo", vo);
+		} else {
+			System.out.println("수정할 배송지 정보 가져오기 실패");
+		}
+		
+		return "cart/editAddress";
+	}
+	
+	@GetMapping("/addNewAddr.do")
+	public String addNewAddr(@RequestParam("m_idx") String m_idx, Model model) {
+		
+		model.addAttribute("m_idx", m_idx);
+		return "cart/addAddress";
 	}
 	
 	@GetMapping("/index.do")

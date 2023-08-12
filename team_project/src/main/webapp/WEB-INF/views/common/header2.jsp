@@ -45,17 +45,28 @@
 		                        <a href="../boardFile/list_faq_member.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
-								<a href="#">${member.m_name}님</a>
-								<a href="../boardFile/list_faq_member.do">고객센터</a>
-								<c:choose>
-									<c:when test="${member.platform eq 'kakao'}">
-										<a href="kakaologout.do">로그아웃</a>
-									</c:when>
-									<c:when test="${member.platform eq 'omart'}">
-										<a href="logout.do">로그아웃</a>
-									</c:when>
-								</c:choose>
-							</c:otherwise>
+                                <input type="hidden" id="m_idx" value="${member.m_idx}"/>
+                                <input type="hidden" id="m_id" value="${member.m_id}"/>
+                                <input type="hidden" id="m_name" value="${member.m_name}"/>
+                                <input type="hidden" id="selNum" value="${member.selNum}"/>
+                                <c:choose>
+                                    <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
+                                        <a href="../admin/member.do">${member.m_name}님</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="../mypage/mypage.do">${member.m_name}님</a>
+                                    </c:otherwise>
+                                </c:choose>                                
+                                <a href="../boardFile/list_notice.do">고객센터</a>
+                                <c:choose>
+                                    <c:when test="${member.platform eq 'kakao'}">
+                                        <a href="kakaologout.do">로그아웃</a>
+                                    </c:when>
+                                    <c:when test="${member.platform eq 'omart'}">
+                                        <a href="member/logout.do">로그아웃</a>
+                                    </c:when>
+                                </c:choose>
+                            </c:otherwise>
 						</c:choose>
 					</div>
 	                    	
@@ -80,12 +91,12 @@
                         전체 카테고리
                     </div>
                     <div id="div_category">
-                            <a href="">전체 카테고리</a>
+                            <a href="../product/product_list.do">전체 카테고리</a>
                             <ul>
-                                <li><a href="">육류</a></li>
-                                <li><a href="">가공</a></li>
-                                <li><a href="">수산</a></li>
-                                <li><a href="">야채</a></li>
+                                <li><a href="../product/product_list.do?category=AA">육류</a></li>
+	                            <li><a href="../product/product_list.do?category=BB">가공</a></li>
+	                            <li><a href="../product/product_list.do?category=CC">수산</a></li>
+	                            <li><a href="../product/product_list.do?category=DD">야채</a></li>
                             </ul>                           
                         </div>
                 </div>
@@ -102,7 +113,7 @@
     </div><!-- end of header -->
     
     <!-- 로그인 모달창 -->
-    <div id="shadow">
+    <div id="shadow" style="display:none;">
         <div id="login_container">
             <div id="login_close_button"><img src="../resources/img/close3.png" alt="닫기" id="close_btn"></div>
             
@@ -144,5 +155,10 @@
             </div><!-- end of 로그인창 내부요소 -->
         </div><!-- end of login container -->
     </div><!-- end of shadow -->
+    <div id="shadow_addCart" style="display: none;">
+        <div id="addCart_container">
+            제품이 장바구니에 추가되었습니다.
+        </div>
+    </div>
 </body>
 </html>

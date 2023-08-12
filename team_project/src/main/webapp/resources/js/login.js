@@ -1,30 +1,47 @@
 $(function() {
 
     //---------------일반 로그인 처리 메서드---------------//
+    //*** 로그인 버튼 클릭 이벤트 처리 ***//
 	$("#login_btn").click(function() {
-    let memberId = $("#m_id").val();
-    let memberPw = $("#m_pw").val();
+	    let m_id = $("#m_id").val();
+	    let m_pw = $("#m_pw").val();
+	    
+	    login_process(m_id, m_pw);
+	});
+	
+	//*** 로그인 버튼 클릭 이벤트 처리 ***//
+    $(".input_object").keydown(function(event) {
+	    if (event.keyCode === 13) { // 13은 엔터 키의 keyCode 값
+	        let m_id = $("#m_id").val();
+	        let m_pw = $("#m_pw").val();
+	        
+	        login_process(m_id, m_pw);
+	    }
+	});
     
-    /* 아이디, 비밀번호 공란 체크 메서드 */
-    if(memberId == "") {
-    	alert("아이디를 입력해주세요");
-    	$("#m_id").focus();
-    	return false;
-    	
-    }else if(memberPw == "") {
-    	alert("비밀번호를 입력해주세요");
-    	$("#m_pw").focus();
-    	return false;
-    	
-    }else {
+    //*** 로그인 처리 ***///
+    function login_process(m_id, m_pw) {
+    
+	    // 아이디, 비밀번호 공란 체크
+	    if (m_id === "") {
+	    	alert("아이디를 입력해주세요");
+	    	$("#m_id").focus();
+	    	return false;
+	    	
+	    } else if(m_pw === "") {
+	    	alert("비밀번호를 입력해주세요");
+	    	$("#m_pw").focus();
+	    	return false;
+	    	
+	    } else {
     
     	/* ajax 통신 */
 		$.ajax({
 			type: "POST", // 또는 "GET", 서버에서 지원하는 방식에 따라 변경 가능
 			url: "login.do",
 			data: {
-			m_id: memberId,
-			m_pw: memberPw
+			m_id: m_id,
+			m_pw: m_pw
 			},
 			success: function(response) {
 				//로그인 성공시
@@ -44,7 +61,7 @@ $(function() {
 			
     	} //end of 아이디, 비밀번호 공란 체크
     	
-    }); //end of 로그인 처리 메서드
+    }
 
     
     

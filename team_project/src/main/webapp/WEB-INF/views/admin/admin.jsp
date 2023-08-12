@@ -215,7 +215,7 @@
                 <span>${member.m_name}님</span>
                 <div id="div_admin_topMenu_btns">
                     <a href="../index.do">메인으로 가기</a><p> | </p>
-                    <a href="../member/logout.do">로그아웃</a>
+                    <a href="../member/logout.do?requestor=admin">로그아웃</a>
                 </div>
                 <div id="div_admin_timeout">
                     <p></p>

@@ -21,19 +21,15 @@ $(function() {
     
     /* 로그인 모달창 열기 메서드 */
     function showShadow() {
-        shadow.css({
-            'display': 'block',
-            'z-index': '5000'
-        });
+    	shadow.css('z-index', '5000');
+        shadow.fadeIn(100);
         $("body").css('overflow', 'hidden');
     }
     
     /* 로그인 모달창 닫기 메서드 */
     close_btn.on("click", function() {
-        shadow.css({
-            'display': 'none',
-            'z-index': '0'
-        });
+    	shadow.css('z-index', '5000');
+        shadow.fadeOut(100);
         $("body").css('overflow-y', 'visible');
     });
     
@@ -48,7 +44,7 @@ $(function() {
 
     /* 장바구니 추가 알림창 닫기 메서드 */
     function hideShadow_addCart() {
-        shadow_addCart.fadeOut(1200, function() {
+        shadow_addCart.fadeOut(500, function() {
             $(this).css({
                 'display': 'none',
                 'z-index': '0'
@@ -57,30 +53,34 @@ $(function() {
         $("body").css('overflow-y', 'visible');
     };
 
-    login_btn2.on("click", showShadow);    
+    login_btn2.on("click", showShadow);
     need_login.on("click", function(event){
         event.preventDefault();
         showShadow();
     });
     
+    <!-- 장바구니 추가 메서드 -->
     addCart_btn.on("click", function(event){
         event.preventDefault();
         
         let m_idx = $("#m_idx").val();
-        let p_id = $(this).attr("id");        
+        let p_id = $(this).attr("id");
+        let amount = 1;
 
         $.ajax({
             type: "post",
             url: "cart/addCart.do",
-            data: {"m_idx": m_idx, "p_id": p_id},
+            data: {"m_idx": m_idx, "p_id": p_id, "amount": amount},
             success: function(response){
                 // 성공 시 처리할 로직
-                console.log("AJAX 요청 성공:", response);
-                showShadow_addCart();
+                console.log("AJAX 요청 성공:", response);                
             },
             error: function(error){
                 // 오류 시 처리할 로직
                 console.error("AJAX 오류 발생", error);
+            },
+            complete: function(complete){
+                showShadow_addCart();
             }
         }); <!-- end of ajax -->
         
@@ -90,38 +90,22 @@ $(function() {
         
         let m_idx = $("#m_idx").val();
         let p_id = $("#p_id").val(); 
+        let amount = $("#amount").val();
 
         $.ajax({
             type: "post",
             url: "cart/addCart.do",
-            data: {"m_idx": m_idx, "p_id": p_id},
+            data: {"m_idx": m_idx, "p_id": p_id, "amount": amount},
             success: function(response){
                 // 성공 시 처리할 로직
                 console.log("AJAX 요청 성공:", response);
-                showShadow_addCart();
             },
             error: function(error){
                 // 오류 시 처리할 로직
                 console.error("AJAX 오류 발생", error);
-            }
-        }); <!-- end of ajax -->
-        
-    });
-    
-    addWish_btn.on("click", function(event){
-        let m_idx = $("#m_idx").val();
-        let p_id = $("#p_id").val();
-        
-        $.ajax({
-            type: "post",
-            url: "${pageContext.request.contextPath}/member/addWish.do",
-            data: {m_idx: m_idx, p_id: p_id},
-            success: function(response){
-                console.log("AJAX 요청 성공:", response);
             },
-            error: function(error){
-                // 오류 시 처리할 로직
-                console.error("AJAX 오류 발생", error);               
+            complete: function(complete){
+                showShadow_addCart();
             }
         }); <!-- end of ajax -->
         

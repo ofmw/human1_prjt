@@ -34,6 +34,8 @@ public class AjaxMemberController {
 		if(vo != null){
 			
 			List<String> wishList = mWish.getWishList(vo.getM_idx());
+
+			System.out.println(wishList);
 			
 			String grade = null;
 			switch(vo.getGrade()) {
@@ -55,8 +57,9 @@ public class AjaxMemberController {
 			System.out.println("비밀번호 (복호화): " +m_pw);
 			System.out.println("가입일: " +vo.getJ_date());
 			System.out.println("활성여부: " +vo.getA_state());
-//				System.out.println("플랫폼: " +vo.getPlatform());
+//			System.out.println("플랫폼: " +vo.getPlatform());
 			System.out.println("회원등급: " + grade);
+			
 			session.setAttribute("member", vo);
 			session.setAttribute("wishList", wishList);
 						
@@ -74,4 +77,5 @@ public class AjaxMemberController {
             return "failure";
         }
     }
+
 }

@@ -28,7 +28,6 @@
     </select>
     
     <select id="bestList" resultType="productVo">
-
         select * from product where post_state = 1 order by total_sales desc
     </select>
     
@@ -43,5 +42,29 @@
     <select id="getProduct" parameterType="string" resultType="productVo">
         select * from product where p_id = #{p_id}
     </select>
+    
+    <!-- 찜목록 추가 -->
+    <update id="addWishList" parameterType="map">
+	    UPDATE wish
+	    SET w_list = 
+	        CASE
+	            WHEN w_list IS NULL OR w_list = '' THEN #{p_id}
+	            ELSE CONCAT(w_list, ',', #{p_id})
+	        END
+	    WHERE m_idx = #{m_idx}
+	</update>
+
+    <!-- 찜목록 삭제 -->
+    <update id="removeWishList" parameterType="map">
+	    UPDATE wish
+	    SET w_list = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', w_list, ','), CONCAT(',', #{p_id}, ','), ','))
+	    WHERE m_idx = #{m_idx}
+	</update>
+	
+	<update id="updateTotalSales" parameterType="productVo">
+	   update product
+	   set total_sales = total_sales + #{salesAmount}
+	   where p_id = #{p_id}
+	</update>
     
 </mapper>

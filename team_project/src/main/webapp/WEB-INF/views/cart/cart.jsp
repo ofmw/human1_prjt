@@ -267,7 +267,8 @@
     /* 상품 개당 가격 */
     .td_odinfo_op{
     	font-size: 11px;
-    	color: #888
+    	color: #888;
+    	text-decoration: line-through;
     }
     /* 수량 조절 */
     .td_odinfo_amount{
@@ -396,7 +397,7 @@
             
             $.ajax({
                 type: "POST",
-                url: "remove_cart2.do", // AjaxCartController
+                url: "remove_cart.do", // AjaxCartController
                 data: {
                 	m_idx: mIdxArray,
                     p_id: pIdArray
@@ -435,8 +436,8 @@
                 $(this).closest("tr").remove();
                 
                 /*** 삭제 후 페이지 정보 갱신 ***/
-                checkEmptyCart();           // 빈 장바구니 체크
-                updateNav();  // 주문정보 내비게이션 갱신
+                checkEmptyCart(); // 빈 장바구니 체크
+                updateNav(); // 주문정보 내비게이션 갱신
 
             } // end of if (confirmed)
 
@@ -445,27 +446,6 @@
         
         //*** "선택품목 삭제" 버튼 클릭 이벤트 처리 (.sel_product 체크된 항목 삭제) ***//
         $("#sel_delete").click(function() {
-            //class가 sel_product인 체크박스 중 체크된 항목들을 선택합니다.
-            let checkedProducts = $(".sel_product:checked");
-            //결제예정금액
-            let paymentPrice = parseInt($("#payment-price").text().replace(/[^0-9]/g, ""));
-            //주문금액
-            let orderPrice = parseInt($("#ordered-price").text().replace(/[^0-9]/g, ""));
-            //삭제될 품목들의 총 금액
-            let totalPrice;
-            //새 결제예정금액 (기존 - 주문금액)
-            let newOrderPrice;
-            
-            let calprices = $(".calprice");
-            
-            if (checkedProducts.length > 0) {
-                // 선택된 체크박스들이 속한 행을 모두 삭제합니다.
-                checkedProducts.each(function() {
-                    var m_idx = parseInt($(this).closest("tr").find(".m_idx").val());
-                    var p_id = $(this).closest("tr").find(".p_id").val();                    
-                    
-                    // 해당 버튼이 속한 tr 요소를 삭제합니다.
-                    $(this).closest("tr").remove();
 
             // class가 sel_product인 체크박스 중 체크된 항목들을 선택
             let checkedProducts = $(".sel_product:checked");
@@ -615,12 +595,19 @@
                 let price = parseInt($(this).siblings(".price").val());
                 // each()로 선택된 행의 상품 수량
                 let amount = parseInt($(this).val());
+                
+                let discount = parseInt($(this).siblings(".discount").val());
 
                 // each()로 선택된 행의 상품 가격 계산
                 let calPrice = calculatePrice(price, amount);
+                
+                let dcPrice = calculatePrice(price*(100-discount)/100, amount);
 
                 // each()로 선택된 행의 상품 가격에 반영
-                $(this).closest("tr").find(".calprice").text(calPrice.toLocaleString());
+                $(this).closest("tr").find(".calprice").text(dcPrice.toLocaleString());
+                
+                $(this).closest("tr").find(".td_odinfo_op").text(calPrice.toLocaleString()+"원");
+                
             });
         }
         
@@ -642,7 +629,17 @@
                 });
 
                 // "주문금액" 에 주문금액 반영
-                $("#ordered-price").text(totalPrice.toLocaleString() + " 원");
+                $("#ordered-price").text(totalPrice.toLocaleString() + " 원");       
+                
+                let beforePrice = 0;
+                
+                $(".td_odinfo_op").each(function() {
+                	let bfPriceValue = parseInt($(this).text().replace(/[^0-9]/g, ""));
+                	
+                	beforePrice += bfPriceValue;
+                });
+                
+                $("#discount-price").text("- " + (beforePrice-totalPrice).toLocaleString() + " 원");   
                 
                 // 주문금액에 따른 배송비 계산 및 결제예정금액 계산
                 if(totalPrice != 0){ // 주문금액이 있을 경우 (장바구니에 상품이 있을 경우)
@@ -676,7 +673,7 @@
                 $("#product_total span").text(totalAmount);
 
             } else { // 장바구니에 상품이 있을 경우
-                $("#shipping-fee").text("+0 원");
+                $("#shipping-fee").text("0 원");
                 $("#ordered-price").text("0 원");
                 $("#payment-price").text("0");
                 $("#product_total span").text("0");
@@ -745,6 +742,7 @@
             updateNav();
             
         });
+        
         
         //*** 테이블 상품 수량 업데이트 ***//
         function updateAmount(m_idx, p_id, newAmount) {
@@ -841,13 +839,29 @@
             }
         	
         	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
-        	let url = "change_address.do?m_idx=" + $("#session_m_idx").val();
+        	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val();
         	// 자식창을 열고 그 여부를 변수에 저장
-        	childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
+        	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
+        	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
         }
         
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
-        $("#change_address").on("click", openChangeAddress);
+        $("#manage_address").on("click", openChangeAddress);
+        
+        //let current_add = opener.sessionStorage.getItem("current_add");
+        //sessionStorage.setItem("current_add", current_add);
+        
+        
+        $("#order-nav_btn").on("click", function(){
+        	if($("#product_total span").text() == "0"){
+                alert("장바구니에 담긴 상품이 없습니다.");
+        	}else if($("#manage_address").text() == "배송지 등록"){
+        		alert("배송지를 등록해주세요.");        		
+        	}else{
+        		window.location.href = "../payment/payment.do?requestor=cart";
+        	}
+        	
+        });
         
 
     }); // end of jqeury
@@ -917,10 +931,8 @@
 		                                            	<span class="calprice"></span>
 		                                            	<span style="font-size:11px;padding-left:1px;">원</span>
 		                                            </div>
-		                                            <div class="td_odinfo_op">
-		                                            	개당 가격:
-		                                            	&nbsp;<fmt:formatNumber value="${c.price}" pattern="#,###"/>
-		                                            	원
+		                                            <div class="td_odinfo_op">		                                            	
+		                                            	&nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원		                                            	
 		                                            </div>
 		                                            <div class="td_odinfo_amount">
 		                                                <button type="button" class="plist_minus-btn">-</button>
@@ -929,6 +941,7 @@
 		                                                <input type="hidden" class="m_idx" value="${c.m_idx}">
 		                                                <input type="hidden" class="p_id" value="${c.p_id}">
 		                                                <input type="hidden" class="price" value="${c.price}">
+		                                                <input type="hidden" class="discount" value="${c.discount}"/>
 		                                            </div>
 		                                        </td>
 		                                        <td class="td_delete"><button type="button">삭제하기</button></td>
@@ -961,41 +974,66 @@
 								<input type="hidden" id="session_m_idx" value="${member.m_idx}">
 							</c:if>
                             <!-- 배송지 -->
-                          	<c:choose>    		
-                          		<c:when test="${!empty member}">                          	
-	                            	<c:choose>                            		
-		                            	<c:when test="${!empty AddressList}">
+                          	<c:choose>
+
+                          		<c:when test="${!empty member}"><!-- 로그인한 경우 -->
+                          		
+	                            	<c:choose>
+	                            		
+		                            	<c:when test="${!empty AddressList}"><!-- 등록된 배송지가 있을 경우 -->
 											<c:forEach items="${AddressList}" var="a">
+											
 												<c:choose>
-													<c:when test="${a.def_add eq '1'}">
-							                            <div id="order-nav_address">
-							                                <div>
-							                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
-							                                	<span id="address_detail">[${a.postnum}] ${a.address} ${a.detail}</span>
-							                                </div>
-							                                <div>
-							                                	<button type="button" id="change_address">배송지 변경</button>
-							                                </div>
-							                            </div>
-						                            </c:when>
+													<c:when test="${!empty current_add}">
+													
+														<c:if test="${current_add eq a.a_name}">
+															<div id="order-nav_address">
+								                                <div>
+								                                    <span id="address_preset">배송지: ${a.a_name}</span>
+								                                	<span id="address_detail">[${a.postnum}] ${a.roadAddr} ${a.detail}</span>
+								                                </div>
+								                                <div>
+								                                	<button type="button" id="manage_address">배송지 변경</button>
+								                                </div>
+								                            </div>
+														</c:if>
+													
+													</c:when>
+													<c:otherwise>
+														<c:if test="${a.def_add eq '1'}">
+								                            <div id="order-nav_address">
+								                                <div>
+								                                    <span id="address_preset">배송지: ${a.a_name} (기본배송지)</span>
+								                                	<span id="address_detail">[${a.postnum}] ${a.roadAddr} ${a.detail}</span>
+								                                </div>
+								                                <div>
+								                                	<button type="button" id="manage_address">배송지 변경</button>
+								                                </div>
+								                            </div>
+							                            </c:if>
+						                            </c:otherwise>
 					                            </c:choose>
+					                            
 			                            	</c:forEach>
-		                            	</c:when>                            	
-		                            	<c:otherwise>
+		                            	</c:when>
+		                            	
+		                            	<c:otherwise><!-- 등록된 배송지가 없을 경우 -->
 		                            		<div id="order-nav_address">
 				                                <div>
 				                                    <span id="address_preset">등록된 배송지가 없습니다!</span>
 				                                	<span id="address_detail">아래 배송지 설정 버튼을 눌러 배송지를 등록하거나 결제 정보 입력란에서 입력하실 수 있습니다.</span>
 				                                </div>
 				                                <div>
-				                                	<button type="button" id="change_address">배송지 등록</button>
+				                                	<button type="button" id="manage_address">배송지 등록</button>
 				                                </div>
 				                            </div>
 		                            	</c:otherwise>
+		                            	
 	                            	</c:choose>
 	                            	
 	                            </c:when>
-                            	<c:otherwise>
+	                            
+                            	<c:otherwise><!-- 로그인하지 않은 경우 (비회원인 경우) -->
                             		<div id="order-nav_address">
 		                                <div>
 		                                    <span id="address_preset">로그인을 해보세요</span>
@@ -1020,7 +1058,7 @@
                                     </div>
                                     <div id="product_discount-price">
                                         <span>상품할인</span>
-                                        <span>-0 원</span>
+                                        <span id="discount-price">-0 원</span>
                                     </div>
                                     <div id="product_shipping-fee">
                                         <span>배송비</span>

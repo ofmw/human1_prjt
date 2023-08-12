@@ -38,18 +38,19 @@ public class MemberController {
 			viewPage = "redirect:/index.do";
 		}
 		return viewPage;
-	}	
+	}
 	
-	 @GetMapping("/sendSms")
-	    @CrossOrigin(origins = "http://localhost:9090") // 허용할 Origin을 설정
-	    @ResponseBody
-	    public String sendSMS(@RequestParam("selNum") String selNum) {
-	        // 문자 인증 로직 구현
-	        // ...
-
-	        return "문자 인증 완료";
-	    }
-	 
+	@PostMapping("/checkId")
+	@CrossOrigin(origins = "http://localhost:9090")
+	@ResponseBody
+	public String checkId(@RequestParam("m_id") String m_id) {
+		boolean isDuplicate = mJoin.checkDuplicateId(m_id);
+		if(isDuplicate) {
+			return "DUPLICATE";
+		} else {
+			return "AVAILABLE";
+		}
+	}
 	 
 	 
 	//로그아웃

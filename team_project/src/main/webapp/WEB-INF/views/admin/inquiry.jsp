@@ -232,13 +232,13 @@
 	    font-size: 12px;
     }
     #btn_info:hover {
-	   background-color: rgb(42, 142, 209);
+	    background-color: rgb(42, 142, 209);
     }
     #btn_cancel:hover {
-	   background-color: rgb(230, 230, 230);
+	    background-color: rgb(230, 230, 230);
     }
-    a{
-    	color: black;
+    #tbl_contents a{
+        color: black;
     }    
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -587,10 +587,9 @@ $(function () {
                 <td>문의목록</td>
                 <td>답변여부</td>
                 <td>작성일</td>
-         		<td>제품코드</td>
-                             
+         		<td>제품코드</td>                             
             </tr>
-
+            <c:if test="${combinedList ne null}">
             <c:forEach items="${combinedList}" var="item">
                 <tr>
                     <td>
@@ -667,7 +666,8 @@ $(function () {
 		                </c:choose>
 					</td>
 	            </tr>
-            </c:forEach>            
+            </c:forEach>
+            </c:if>            
         </table>
     </div>
     <div id="div_shadow_info">

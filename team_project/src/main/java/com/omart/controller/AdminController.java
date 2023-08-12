@@ -62,16 +62,11 @@ public class AdminController {
 	@GetMapping("/inquiry.do")
 	public String inquiry(@RequestParam(value = "b_idx", required = false) String b_idxStr, Model model) {
 		
-		if (b_idxStr != null) {
-	        try {
-	            int b_idx = Integer.parseInt(b_idxStr);
-	            // b_idx 값을 이용해 처리할 로직 추가
-	            // ...
-	        } catch (NumberFormatException e) {
-	            // b_idx 값을 숫자로 변환할 수 없는 경우에 대한 처리
-	            // ...
-	        }
-	    }
+		/*
+		 * if (b_idxStr != null) { try { int b_idx = Integer.parseInt(b_idxStr); //
+		 * b_idx 값을 이용해 처리할 로직 추가 // ... } catch (NumberFormatException e) { // b_idx 값을
+		 * 숫자로 변환할 수 없는 경우에 대한 처리 // ... } }
+		 */
 		
 		model.addAttribute("status", "inquiry");
 		
@@ -79,35 +74,32 @@ public class AdminController {
 	    List<BoardFileVo> inquiryList = bfList.getAllInquiries();
 	    
 	    // qna 데이터 가져오기
-	    List<BoardFileVo> qnaList = bfList.getAllQnas(); // 여기서 getAllQna()는 qna 테이블 데이터를 가져오는 메서드라고 가정합니다.
-
+	    List<BoardFileVo> qnaList = bfList.getAllQnas();
+	    
 		// inquiries 데이터에 tableName 설정
-		for (BoardFileVo inquiry : inquiryList) {
-		    inquiry.setTableName("inquiries");
-		}
+	    if(inquiryList != null) {
+	    	for (BoardFileVo inquiry : inquiryList) {
+			    inquiry.setTableName("inquiries");
+			}
+	    }
 
 		// qna 데이터에 tableName 설정
-		for (BoardFileVo qna : qnaList) {
-		    qna.setTableName("qna");
-		}
+	    if(qnaList != null) {
+	    	for (BoardFileVo qna : qnaList) {
+			    qna.setTableName("qna");
+			}
+	    }		
 	    
-	    // inquiries와 qna 데이터를 합친 리스트 생성
-	    List<BoardFileVo> combinedList = new ArrayList<>();
-	    
-	    combinedList.addAll(inquiryList);
-	    combinedList.addAll(qnaList);
-	    
-	    for(BoardFileVo vo : combinedList) {
-	    	System.out.println("ans_content: "+vo.getAns_content());
-	    }
-	    
-	    Collections.sort(combinedList, (bf1, bf2) -> bf2.getPost_date().compareTo(bf1.getPost_date()));
-	    
-	    System.out.println("test: "+combinedList.get(0).getB_idx());
-	    
-	   	    
-	    // 합쳐진 데이터를 JSP로 전달
-	    model.addAttribute("combinedList", combinedList);
+	    // inquiries와 qna 데이터를 합친 리스트 생성	    
+	    if(inquiryList != null && qnaList != null) {
+	    	List<BoardFileVo> combinedList = new ArrayList<>();
+	    	combinedList.addAll(inquiryList);
+		    combinedList.addAll(qnaList);
+		    Collections.sort(combinedList, (bf1, bf2) -> bf2.getPost_date().compareTo(bf1.getPost_date()));
+		    // 합쳐진 데이터를 JSP로 전달
+		    model.addAttribute("combinedList", combinedList);
+		    
+	    }	   
 		
 		return "admin/admin";
 	}	

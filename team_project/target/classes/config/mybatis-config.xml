@@ -14,6 +14,7 @@
         <typeAlias alias="cartVo" type="com.omart.vo.CartVo"/>
         <typeAlias alias="wishVo" type="com.omart.vo.WishVo"/>
         <typeAlias alias="addressVo" type="com.omart.vo.AddressVo"/>
+        <typeAlias alias="orderVo" type="com.omart.vo.OrderVo"/>
     </typeAliases>
    
 </configuration>

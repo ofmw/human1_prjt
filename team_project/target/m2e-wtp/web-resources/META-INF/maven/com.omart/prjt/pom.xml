@@ -103,13 +103,6 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
-
-    	<!-- CoolSms 문자 인증관련 라이브러리 -->
-    	<dependency>
-    		<groupId>net.nurigo</groupId>
-			   <artifactId>sdk</artifactId>
-			   <version>4.2.7</version>
-    	</dependency>
         
         <!-- gson 추가 -->
         <dependency>

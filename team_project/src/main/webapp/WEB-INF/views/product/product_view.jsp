@@ -126,13 +126,13 @@
 	    font-size: 20px;
 	    font-weight: bold;
 	}
-	#div_buy_main #div_wish_btn {
+	#div_buy_main #div_wish_btn, #div_wish_btn2 {
 	    margin-left: 10px;
 	    font-size: 35px;
 	    border: 1px solid rgb(200, 200, 200);
 	    color: rgb(64, 64, 64);
 	}
-	#div_buy_quick #div_wish_btn {
+	#div_buy_quick #div_wish_btn, #div_wish_btn2 {
 	    margin-left: 30px;
 	    font-size: 30px;
 	    border: 1px solid rgb(200, 200, 200);
@@ -315,16 +315,17 @@
 	fieldset input[type="text"] {
 	    width: 50px;
 	    height: 25px;
-	    margin-left: -1px;
+	    border-left: none;
+	    border-right: none;
 	}
-	.btn_amount:nth-child(1) {
+	.btn_plus:nth-child(1), .btn_minus:nth-child(1) {
 	    width: 27px;
 	    font-size: 30px;
 	    line-height: 15px;
 	    background-color: white;     
 	    cursor: pointer;       
 	}
-	.btn_amount:nth-child(3) {
+	.btn_plus:nth-child(3), .btn_minus:nth-child(3) {
 	    width: 27px;
 	    font-size: 20px;
 	    line-height: 15px;
@@ -340,7 +341,7 @@
 	   text-align: center;
 	}
 	#div_main_price_area{
-	   border: 1px solid red;
+/* 	   border: 1px solid red; */
 	   margin-left: 10px;	
 	   font-size: 14px;
 	   width: 500px;	
@@ -372,11 +373,11 @@
                 productBar.style.top = "0";
                 buy_quick.style.position = "fixed";
                 buy_quick.style.top = "0";
-                detail.style.marginTop = "55px";
+                //detail.style.marginTop = "55px";
             }else{
                 productBar.style.position = "static";
                 buy_quick.style.position = "static";
-                detail.style.marginTop = "0px";
+                //detail.style.marginTop = "0px";
             }
         });
 
@@ -392,6 +393,146 @@
         scrollProduct.addEventListener("click", function(){
             window.scrollTo({ top: 705, behavior: 'smooth' });
         });
+        
+        let minusBtn = $(".btn_minus");
+        let plusBtn = $(".btn_plus");
+        let amount = $(".input_amount");
+        
+        minusBtn.on("click",function(){
+       		if(amount.val()>1){
+       			amount.val(amount.val()-1);
+            }
+            
+        });
+        
+        plusBtn.on("click",function(){
+       		if(amount.val()<20){
+                amount.val(parseInt(amount.val())+1);
+            }else{
+                alert("상품 최대 구매갯수는 20개입니다.");
+            }            
+        });
+        
+        amount.each(function(){
+        	let p = $(this);
+        	
+        	p.on("blur", function(){
+        		if(p.val()>20){
+        			amount.val(20);
+                    alert("상품 최대 구매갯수는 20개입니다.");
+        		}else if(p.val()<1 || p.val() == ""){
+                    amount.val(1);
+        		}else{
+                    amount.val(p.val());
+                }
+        		
+        	});
+        	
+        });
+        
+        let buyThisBtn = $(".btn_buyThis");
+        
+        buyThisBtn.on("click", function(){        	
+        	
+        	let frm_buyThis = $("#frm_buyThis");
+        	
+        	var requestor = $("<input>").attr("type", "hidden").attr("name", "requestor").val("buyThis");
+        	
+        	frm_buyThis.append(requestor);
+        	
+        	frm_buyThis.attr("action", "../payment/payment.do");
+        	
+        	frm_buyThis.submit();
+        	        	
+        });
+        
+        // 찜 버튼 클릭 이벤터 처리
+        $("#div_wish_btn").click(function() {
+        	
+        	// 로그인 상태 판멸
+        	if ($("#m_idx").val() !== "") { // 로그인한 경우
+        		checkWish();	
+        	} else { // 비로그인 상태인 경우
+        		alert("로그인 후 사용 가능한 기능입니다.");
+        	}
+        	
+        });
+        
+       	$("#div_wish_btn2").click(function(){
+       		$("#div_wish_btn").click()
+       	});
+        
+        // 찜 여부 체크
+        function checkWish() {
+        	
+        	let flag = $("#div_wish_btn input").val();
+        	console.log(flag);
+        	// 찜 여부 체크
+        	if (flag === "Y") { // 이미 찜한 상품인 경우
+        		removeWish();
+        	} else { // 찜하지 않은 상품인 경우
+        		addWish();
+        	}
+        	
+        }
+        
+        // 찜목록 추가
+        function addWish() {
+        	
+        	let m_idx = parseInt($("#m_idx").val());
+        	let p_id = $("#p_id").val();
+        	
+        	$.ajax({
+                type: "POST",
+                url: "add_wishList.do",
+                data: {
+                	m_idx: m_idx,
+                    p_id: p_id,
+                },
+                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+                   if (response != null) { // 수량 업데이트가 성공한 경우
+                	   	alert("찜 추가됨!");
+                   		//찜 버튼 새로고침
+                	   	location.reload();
+                    } else {
+                        alert("찜목록 추가에 실패했습니다.");
+                    }
+                }.bind(this), // 증감 버튼이 속한 행으로 한정
+                error: function () {
+                    alert("오류가 발생하였습니다.");
+                }
+            }); // end of ajax
+        }
+        
+        
+        //찜목록 삭제
+        function removeWish() {
+        	
+        	let m_idx = parseInt($("#m_idx").val());
+        	let p_id = $("#p_id").val();
+        	
+        	$.ajax({
+                type: "POST",
+                url: "remove_wishList.do",
+                data: {
+                	m_idx: m_idx,
+                    p_id: p_id,
+                },
+                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+                   if (response != null) { // 수량 업데이트가 성공한 경우
+                	   	alert("찜 삭제됨!");
+                	  	//찜 버튼 새로고침
+                	   	location.reload();
+                    } else {
+                        alert("찜목록 삭제에 실패했습니다.");
+                    }
+                }.bind(this), // 증감 버튼이 속한 행으로 한정
+                error: function () {
+                    alert("오류가 발생하였습니다.");
+                }
+            }); // end of ajax
+        }
+        
     }
 </script>
 </head>
@@ -403,8 +544,7 @@
     <div id="div_preview">
         <img src="" alt="">
     </div>
-    <div id="div_buy_main">
-        <input type="hidden" id="p_id" value="${product.p_id}"/>
+    <div id="div_buy_main">        
         <p>${product.brand}</p>
         <h1>${product.p_name}</h1>
         <h3>★★★★★ 5.0</h3>
@@ -426,15 +566,19 @@
             </option>
         </select>
         <br>
-        <div id="div_main_price_area">
-            ${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}
-            <fieldset>
-                <input type="button" class="btn_amount" id="btn_minus" value="-">
-                <input type="text" value="1">
-                <input type="button" class="btn_amount" id="btn_miplus" value="+">
-            </fieldset>
-            <div><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</div>
-        </div>
+        <form id="frm_buyThis">
+            <div id="div_main_price_area">
+	            <input type="hidden" id="p_id" value="${product.p_id}"/>
+	            <input type="hidden" id="m_idx" value="${member.m_idx}">
+	            ${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}
+	            <fieldset>
+	                <input type="button" class="btn_minus" value="-">
+	                <input type="text" class="input_amount" value="1" id="amount">
+	                <input type="button" class="btn_plus" value="+">
+	            </fieldset>
+	            <div><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</div>
+	        </div>
+        </form>        
         <br>
         <c:choose>
             <c:when test="${empty member}">
@@ -447,8 +591,9 @@
 	                <c:choose>
 	                    <c:when test="${not empty wishList and wishList.contains(product.p_id)}">
 	                       <span style="color: red; padding-left: 10px;">♥</span>
+	                       <input type="hidden" value="Y">
 	                    </c:when>
-	                    <c:otherwise>♡</c:otherwise>
+	                    <c:otherwise>♡<input type="hidden" value="N"></c:otherwise>
 	                </c:choose>
                 </div>
                 <div class="btn_addCart2 btn1" id="div_cart_btn">장바구니</div>
@@ -471,9 +616,9 @@
             <h4>${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}</h4>
             <div class="div_price">
                 <fieldset>
-                    <input type="button" class="btn_amount" value="-">
-                    <input type="text" value="1">
-                    <input type="button" class="btn_amount" value="+">
+                    <input type="button" class="btn_minus" value="-">
+                    <input type="text" class="input_amount" value="1">
+                    <input type="button" class="btn_plus" value="+">
                 </fieldset>
                 <h3><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h3>
             </div>
@@ -483,12 +628,12 @@
         </div>
         <c:choose>
             <c:when test="${empty member}">
-                <div class="need_login btn2" id="div_wish_btn">♡</div>
+                <div class="need_login btn2" id="div_wish_btn2">♡</div>
 		        <div class="need_login btn2" id="div_cart_btn">장바구니</div>
 		        <div class="need_login btn2" id="div_buy_btn">구매하기</div>
             </c:when>
             <c:otherwise>
-                <div class="btn2" id="div_wish_btn">
+                <div class="btn_addWish btn2" id="div_wish_btn2">
                     <c:choose>
                         <c:when test="${not empty wishList and wishList.contains(product.p_id)}">
                            <span style="color: red;">♥</span>
@@ -497,7 +642,7 @@
                     </c:choose>
                 </div>
 		        <div class="btn_addCart2 btn2" id="div_cart_btn">장바구니</div>
-		        <div class="btn2" id="div_buy_btn">구매하기</div>
+		        <div class="btn_buyThis btn2" id="div_buy_btn">구매하기</div>
             </c:otherwise>
         </c:choose>        
     </div>

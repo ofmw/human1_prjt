@@ -55,7 +55,7 @@ public class HomeController {
 		List<ProductVo> bestList = pdList.bestList();
 		List<ProductVo> saleList = pdList.saleList();
 		List<ProductVo> newList = pdList.newList();
-				
+						
 		model.addAttribute("bestList", bestList);
 		model.addAttribute("saleList", saleList);
 		model.addAttribute("newList", newList);
@@ -65,14 +65,23 @@ public class HomeController {
 	
 	//로그아웃
 	@GetMapping("/**/logout.do")
-	public String logout(HttpServletRequest request) {
+	public String logout(String requestor, HttpServletRequest request) {
 		
-		String referer = request.getHeader("referer");
-		System.out.println(referer);
+		
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
+
+			String referer = request.getHeader("referer");
+			System.out.println(referer);
+		
 		return "member/logout.jsp?referer="+referer;
+	}
+	
+	//임시
+	@GetMapping("/**/payment.do")
+	public String payment() {
+		return "payment/payment";
 	}
 	
 }

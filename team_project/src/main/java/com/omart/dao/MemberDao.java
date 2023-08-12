@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.omart.vo.MemberVo;
+import com.omart.vo.ProductVo;
 import com.omart.vo.WishVo;
 
 @Repository
@@ -32,8 +33,6 @@ public class MemberDao{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("m_id", member_id);
 		
-		MemberVo vo = sqlSession.selectOne(MAPPER+".login", map); 
-
 		return sqlSession.selectOne(MAPPER+".login", map);
 	}
 	  
@@ -41,6 +40,10 @@ public class MemberDao{
 	public int join(MemberVo vo) {	
 		return sqlSession.insert(MAPPER+".join", vo);
 	}	
+	
+	public void insertWish(int m_idx) {
+		sqlSession.insert(MAPPER+".insertWish", m_idx);
+	}
 	
 	public List<String> getWishList(int m_idx){
 		List<String> wishList = null;
@@ -55,6 +58,55 @@ public class MemberDao{
 		}
 		
 		return wishList;
+	}
+	
+	//포인트 조회
+	public int getPoint(int m_idx) {
+		int point = 0;
+		
+		if(sqlSession.selectOne(MAPPER+".getPoint", m_idx) != null) {
+			point = sqlSession.selectOne(MAPPER+".getPoint", m_idx);
+		}
+		
+		return point;
+	}
+	
+	//포인트 사용
+		public void setPoint(MemberVo mVo) {			
+			sqlSession.update(MAPPER+".setPoint", mVo);
+		}
+		
+	//찜목록 조회
+	public List<ProductVo> getP_info(List<String> wish) {
+		
+		return sqlSession.selectList(MAPPER+".getP_info", wish);
+	}
+	
+	//찜목록 삭제
+	public int removeWishList(int m_idx, String [] p_id) {
+		
+		System.out.println("회원번호: " +m_idx);
+		System.out.println("삭제할 품목 번호: " +Arrays.toString(p_id));
+		String modified = String.join(",", p_id);
+		System.out.println("변환된 품목 번호: " +modified);
+		
+		int result = 0;
+		
+		for (int i=0; i<p_id.length; i++) {
+			Map<String, Object> target = new HashMap<>();
+			target.put("p_id", p_id[i]);
+			target.put("m_idx", m_idx);
+			
+			System.out.println("삭제 시도 p_id: " +target.get("p_id"));
+			
+			
+			result += sqlSession.update(MAPPER+".removeWishList", target);
+			System.out.println("실행된 행 갯수 누적: " +result);
+		}
+		
+		
+		
+		return result; 
 	}
 	
 }

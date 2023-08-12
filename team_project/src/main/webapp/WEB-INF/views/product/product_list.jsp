@@ -8,24 +8,6 @@
     <title>상품 페이지</title>
     
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <!-- <script>
-    
-    	//표시된 상품 갯수가 4개 미만인 리스트 박스에 a태그 채우기
-        $(function() {
-          let $targetDiv = $(".p_inner_elements_box").last();
-        
-          // a 태그 개수 확인
-          let aTagCount = $targetDiv.find("a").length;
-        
-          // 부족한 개수 계산
-          let missingCount = 4 - aTagCount;
-        
-          // 부족한 개수만큼 a 태그 추가
-          for (let i = 0; i < missingCount; i++) {
-            $targetDiv.append("<a></a>");
-          }
-        });
-    </script> -->
     
     <style>
     /* ---------------------전체 요소 공통--------------------- */
@@ -145,21 +127,28 @@
         width: 150px;
         /* background-color: aquamarine; */
     }
-    .tr_title td{
+        
+    #opt_table th{
+        text-align: left;
         font-size: 17px;
+        padding: 5px 0px;
     }
-    .tr_title:first-child td{
-        padding-bottom: 10px;
+    #opt_table tr:not(:first-child) th{
+        border-top: 1px solid lightgray;
     }
-    .tr_title:not(:first-child) td{
-        padding: 10px 0;
+    #opt_table td{
+        padding-bottom: 3px;
+    }    
+    #opt_table td input{
+        margin-top: 6px;
+        width: 14px;
+        height: 14px;
+        
     }
-    .tr_contents td, .tr_contents_last td{
+    #opt_table td label{
         font-size: 14px;
-    }
-    .tr_contents_last td{
-        border-bottom: 2px solid #eee;
-        padding-bottom: 15px;
+        position: absolute;
+        margin: 1px 5px;
     }
 
     /* ---------------------섹션 상품 표시 영역--------------------- */
@@ -169,17 +158,17 @@
 
     .p_inner_elements_box{
         display: flex;
-        flex-flow: row wrap;
-        justify-content: space-between;
-        align-items: center;
-    
+        flex-flow: row;
+        justify-content: flex-start;
+        align-items: center;    
         width: 100%;
         box-sizing: border-box;
     }
-    .p_inner_elements_box a{
+    .p_products{
         width: 230px;
 /*         background-color: aliceblue; */
-        min-height: 343px;
+        min-height: 350px;
+        margin-right: 40px;
     }
     .p_inner_elements_box:not(:first-child){
         margin-top: 30px;
@@ -219,6 +208,102 @@
         color: #8b96a1;
     }
     </style>
+<script>
+	$(function(){
+		
+		let category = '${param.category}';		
+		
+		$(".opt_checkbox").change(function(){
+			  let checkedItems = $(".opt_checkbox:checked");
+			  
+			  let checkedMap = {};
+			  
+			  
+
+			  checkedItems.each(function(){
+				  let key = this.id.charAt(0);
+				  let value = this.value;				  
+
+		            if (!checkedMap[key]) {
+		                checkedMap[key] = [];  // 배열 초기화
+		            }
+
+		            checkedMap[key].push(value);  // 배열에 값 추가
+			  });
+			  
+			  console.log(checkedMap);
+			  console.log(checkedMap[1]);
+			  
+			  $.ajax({
+				 type: "post",
+				 url: "update_product_list.do?category="+category,
+				 data : JSON.stringify(checkedMap),
+				 dataType: "json",
+				 contentType:"application/json;charset=UTF-8",
+				 success: function(response){					 					 
+					 updateProduct(response);
+					 console.log("ajax 통신 성공");
+				 },
+				 error: function(error){
+					 alert("ajax 통신 테스트 실패")
+				 }
+			  });
+			  
+		});
+	});
+	
+	function updateProduct(response) {
+	    var pl_main_products = $("#pl_main_products");
+	    
+	    pl_main_products.empty();
+
+	    var rebuilding = "<div id='p_box'><div class='p_elements'><div class='p_inner_elements'>";
+	    
+	    for (var i = 0; i < response.length; i++) {
+	        rebuilding += "<div class='p_inner_elements_box'>";
+	        
+	        for (var j = i * 4; j < Math.min((i + 1) * 4, response.length); j++) {
+	            var product = response[j];
+	            if (product !== null) {
+	                rebuilding += "<div class='p_products'>";
+	                rebuilding += "<a href='product_view.do?p_id=" + product.p_id + "'>";
+	                rebuilding += "<div class='p_img'><img src='#' alt='#'></div>";
+	                rebuilding += "<div class='p_info'>";
+	                rebuilding += "<div class='p_info_brand'>" + product.brand + "</div>";
+	                rebuilding += "<div class='p_info_name'>" + product.p_name + "</div>";
+	                
+	                if (product.discount > 0) {
+	                    rebuilding += "<div class='p_info_price'>" + formatNumber(product.price) + "원</div>";
+	                }
+	                
+	                rebuilding += "<div class='p_info_price_final'>";
+	                
+	                if (product.discount > 0) {
+	                    var discount = product.price * (product.discount / 100);
+	                    rebuilding += "<span>" + product.discount + "% </span>";
+	                    rebuilding += formatNumber(product.price - discount) + "원";
+	                }else{
+	                	rebuilding += formatNumber(product.price) + "원";
+	                }
+	                
+	                rebuilding += "</div>";
+	                rebuilding += "<div class='p_info_stars'>★ 4.5 (1043)</div>";
+	                rebuilding += "</div></a></div>";
+	            }
+	        }
+	        
+	        rebuilding += "</div>";
+	    }
+	    
+	    rebuilding += "</div></div></div></div>";
+	    
+	    pl_main_products.append(rebuilding);
+	}
+
+	function formatNumber(number) {
+	    return new Intl.NumberFormat('ko-KR').format(number);
+	}
+</script>
 </head>
 <body>
 
@@ -232,10 +317,11 @@
             <!-- 상단 버튼 모음 -->
             <div id="pl_header">
                 <div id="pl_header_btn_box">
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="#"><img src="#" alt="#"></a></div>                    
+                    <div class="quick_btn"><a href="product_list.do?"><img src="#" alt="#"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="#" alt="#"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="#" alt="#"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="#" alt="#"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="#" alt="#"></a></div>                    
                 </div>
             </div>
 
@@ -243,7 +329,15 @@
             <div id="pl_main">
                 <!-- 메인영역 헤더 -->
                 <div id="pl_main_header">
-                    <div class="pl_main_header_title">전체 상품</div>
+                    <div class="pl_main_header_title">
+                        <c:choose>
+                            <c:when test="${param.category eq 'AA'}">육류</c:when>
+                            <c:when test="${param.category eq 'BB'}">가공</c:when>
+                            <c:when test="${param.category eq 'CC'}">수산</c:when>
+                            <c:when test="${param.category eq 'DD'}">야채</c:when>
+                            <c:otherwise>전체상품</c:otherwise>
+                        </c:choose>                    
+                    </div>
                     <div id="pl_main_header_sel_box">
                         <select id="sel1">
                             <option value="1">추천순</option>
@@ -269,64 +363,24 @@
                     <div id="pl_main_opt">
                         <form>
                             <table id="opt_table">
-                                <tr class="tr_title"><td colspan="2">브랜드</td></tr>
-                                <tr class="tr_contents">
-                                    <td><input type="checkbox" id="opt_1"></td>
-                                    <td><label for="opt_1">목우촌</label></td>
-                                </tr>
-                                <tr class="tr_contents">
-                                    <td><input type="checkbox" id="opt_2"></td>
-                                    <td><label for="opt_2">하림</label></td>
-                                </tr>
-                                <tr class="tr_contents_last">
-                                    <td><input type="checkbox" id="opt_3"></td>
-                                    <td><label for="opt_3">농협</label></td>
-                                </tr>
-
-                                <tr class="tr_title"><td colspan="2">분류</td></tr>
-                                <tr class="tr_contents">
-                                    <td><input type="checkbox" id="opt_4"></td>
-                                    <td>소고기</td>
-                                </tr>
-                                <tr class="tr_contents">
-                                    <td><input type="checkbox" id="opt_5"></td>
-                                    <td>돼지고기</td>
-                                </tr>
-                                <tr class="tr_contents">
-                                    <td><input type="checkbox" id="opt_6"></td>
-                                    <td>닭고기</td>
-                                </tr>
-                                <tr class="tr_contents_last">
-                                    <td><input type="checkbox" id="opt_7"></td>
-                                    <td>달걀</td>
-                                </tr>
-
-                                <tr class="tr_title"><td colspan="2">보관유형</td></tr>
-                                <tr class="tr_contents">
-                                    <td><input type="checkbox" id="opt_8"></td>
-                                    <td>냉장</td>
-                                </tr>
-                                <tr class="tr_contents_last">
-                                    <td><input type="checkbox" id="opt_9"></td>
-                                    <td>냉동</td>
-                                </tr>
-
-                                <tr class="tr_title"><td colspan="2">혜택</td></tr>
-                                <tr class="tr_contents">
-                                    <td><input type="checkbox" id="opt_8"></td>
-                                    <td>특가상품</td>
-                                </tr>
-                                <tr class="tr_contents_last">
-                                    <td><input type="checkbox" id="opt_9"></td>
-                                    <td>쿠폰</td>
-                                </tr>
-
+                                <c:forEach items="${categoryList}" var="category" varStatus="status">
+	                                <tr>
+	                                    <th>${category.key}</th>
+	                                </tr>
+	                                <c:forEach items="${category.value}" var="item" varStatus="s">
+	                                   <tr>
+	                                       <td>
+	                                           <input type="checkbox" id="${status.index+1}_${s.index+1}" class="opt_checkbox" value="${item}"/>
+	                                           <label for="${status.index+1}_${s.index+1}">${item}</label>
+	                                       </td>
+	                                   </tr>
+	                                </c:forEach>
+                                </c:forEach>
                             </table>
                         </form>
 
                     </div><!-- end of pl_main_opt -->
 
-                    <!-- 상품 게시 영역 -->
                     <div id="pl_main_products">
 
                         <div id="p_box">
@@ -335,8 +389,9 @@
                                     <c:forEach begin="0" end="${productList.size() div 4}" var="i">
                                         <div class="p_inner_elements_box">
                                             <c:forEach begin="${i*4}" end="${i*4+3}" var="j">
-                                                <a href="#">
+	                                            <div class="p_products">	                                                
                                                     <c:if test="${productList[j] ne null}">
+                                                    <a href="product_view.do?p_id=${productList[j].p_id}">
 	                                                    <div class="p_img"><img src="#" alt="#"></div>
 	                                                    <div class="p_info">
 	                                                        <div class="p_info_brand">${productList[j].brand}</div>
@@ -353,11 +408,12 @@
 	                                                        </div>
 	                                                        <div class="p_info_stars">★ 4.5 (1043)</div>
 	                                                    </div>
+	                                                    </a>
                                                     </c:if>		                                            
-		                                        </a>
-                                            </c:forEach>                                        
-                                                                                
-                                    </div>
+			                                        
+												</div>
+											</c:forEach>                                                                                
+                                        </div>
                                     </c:forEach>
                                     
                                                                         

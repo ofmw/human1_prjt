@@ -21,22 +21,12 @@ public class CartUpdateService implements CartService {
 	}
 	
 	public List<CartVo> cartUpdate_List(CartVo newAmount) {
-		System.out.println("서비스까지");
 		return dao.cartUpdate_List(newAmount);
 	}
 	
-	//장바구니 해당 품목 삭제
-	public void cartRemove(CartVo target) {
-		System.out.println("서비스@@@@@"+target.getM_idx());
-		System.out.println("서비스@@@@@"+target.getP_id());
-		dao.cartRemove(target);
-	}
-	
 	//장바구니 선택된 품목 삭제
-	public void cartRemove2(List<CartVo> target) {
-//		System.out.println("서비스@@@@@"+target.get[0].getM_idx());
-//		System.out.println("서비스@@@@@"+target.getP_id());
-		dao.cartRemove2(target);
+	public void cartRemove(List<CartVo> target) {
+		dao.cartRemove(target);
 	}
 	
 	
