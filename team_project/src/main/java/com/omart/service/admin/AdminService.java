@@ -3,6 +3,7 @@ package com.omart.service.admin;
 import java.util.List;
 
 import com.omart.vo.MemberVo;
+import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
 
 public interface AdminService {
@@ -18,5 +19,6 @@ public interface AdminService {
 	default int createAccount(MemberVo memberVo) {return 0;}
 	default int checkAccount(String m_id) {return 0;}
 	default int getAccount(String m_id) {return 0;}
+	default List<OrderVo> orderList() {return null;}
 	
 }

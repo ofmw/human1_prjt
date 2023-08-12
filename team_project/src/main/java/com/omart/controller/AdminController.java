@@ -16,6 +16,7 @@ import com.omart.service.boardfile.BoardFileListService;
 import com.omart.service.product.ProductService;
 import com.omart.vo.BoardFileVo;
 import com.omart.vo.MemberVo;
+import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
 
 import lombok.Setter;
@@ -27,7 +28,7 @@ public class AdminController {
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdList;
 	@Setter(onMethod_= {@Autowired})	
-	private AdminService mList;
+	private AdminService mList, odrList;
 	@Setter(onMethod_= {@Autowired})
 	private BoardFileListService bfList;
 	
@@ -103,5 +104,14 @@ public class AdminController {
 		
 		return "admin/admin";
 	}	
+	
+	@GetMapping("/order.do")
+	public String order(Model model) {
+		model.addAttribute("status", "order");
+		
+		List<OrderVo> orderList = odrList.orderList();
+		model.addAttribute("orderList", orderList);
+		return "admin/admin";
+	}		
 		
 }

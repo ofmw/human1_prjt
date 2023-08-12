@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.omart.vo.MemberVo;
+import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
 
 import lombok.RequiredArgsConstructor;
@@ -67,5 +68,9 @@ public class AdminDao{
 	public int getAccount(String m_id) {
 		return sqlSession.selectOne(MAPPER+".getAccount", m_id);
 	};	
+	
+	public List<OrderVo> orderList(){
+		return sqlSession.selectList(MAPPER+".orderList");
+	}
 	
 }

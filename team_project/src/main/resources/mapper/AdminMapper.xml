@@ -55,6 +55,10 @@
         select * from member_omart where grade in (7, 8, 9)
     </select>
     
+    <select id="orderList" resultType="orderVo">
+        select * from order_list
+    </select>
+    
     <insert id="createAccount" parameterType="memberVo">
         insert into member_omart (m_id, m_pw, grade, m_name) values (#{m_id}, #{m_pw}, #{grade}, #{m_name})
     </insert>
