@@ -34,6 +34,13 @@ public class KakaoDao {
 	
 	//새 가입정보 저장
 	public void kakaoinsert(HashMap<String, Object> userInfo) {
+		
+		String gender = (String) userInfo.get("gender");
+		if (gender.equals("male")) {
+			userInfo.put("gender", 0);
+		} else {
+			userInfo.put("gender", 1);
+		}
 		sqlSession.insert(MAPPER+".kjoin", userInfo);
 	}
 }

@@ -52,7 +52,7 @@ ul{list-style: none;}
     margin-top: 40px;
 }
 #mp_header_user_menu li{margin: 10px 0;}
-#mp_header_user_menu a{color: #222;}
+#mp_header_user_menu a, #mp_header_user_menu span{color: #222;}
 
 /* 마이페이지 헤더 쿠폰 공통 */
 #mp_header_coupon{color: #222;}

@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.omart.dao.KakaoDao;
 import com.omart.dao.MemberDao;
+import com.omart.service.member.MemberWishService;
 import com.omart.vo.MemberVo;
 
 import lombok.Setter;
@@ -26,6 +27,8 @@ public class KakaoTokenService implements KakaoService {
 	
 	@Setter(onMethod_={ @Autowired })
 	private KakaoDao kd;
+	@Setter(onMethod_={ @Autowired })
+	private MemberDao dao;
 	
 	//엑세스 토큰 얻어오는 메서드
 	public String getKakaoAccessToken (String code) {
@@ -148,7 +151,9 @@ public class KakaoTokenService implements KakaoService {
 			kd.kakaoinsert(userInfo);
 			//회원가입 후 테이블 조회 재실행
 			System.out.println("----------카카오 회원가입 완료 후 테이블 재조회----------");
-			return kd.findkakao(userInfo);
+			MemberVo vo = kd.findkakao(userInfo);
+			dao.insertWish(vo.getM_idx());
+			return vo;
 		}else {
 			return result;
 			//이미 가입되어 있으므로 MemberVo 객체 리턴

@@ -14,6 +14,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
         *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
 
+		body{min-width: 1280px;}
+
         /* 섹션 */
         section{
             display: flex;
@@ -23,8 +25,14 @@
 
         /* a태그 공통 */
         a{text-decoration: none; color: black;}
+        a:hover{text-decoration: underline;}
         /* list 공통 */
         ul{list-style: none;}
+        /* 버튼 및 선택 요소 공통 */
+        button:hover, #sel_box:hover{
+        	background-color: #222 !important;
+        	color: white;
+        }
 
         /* ---------------------마이페이지 헤더--------------------- */
         #mp_header_area{
@@ -172,9 +180,6 @@
 	        position: relative;
 	        top: 1.5px;
 	    }
-	    select option[value=""][disabled] {
-			display: none;
-		}
 	    #mp_w_main_header_btn-box button {
 		    margin-left: 10px;
 		    font-size: 12px;
@@ -253,11 +258,13 @@
             line-height: 40px;
             bottom: 0;
             left: 0;
+            user-select: none;
             
             background-color: rgba(255,255,255,0.9);
         }
         .w_img_opt-box button{
         	margin: auto 0;
+        	background-color: #fcfcfc;
         }
         .w_info_brand{
             font-size: 14px;
@@ -341,47 +348,6 @@
                 // 모든 개별 상품이 체크되어 있으면 "전체선택"의 checked 속성이 true
                 // 하나라도 체크가 풀려 있으면 "전체선택"의 checked 속성이 false
                 $("#sel-all").prop("checked", allChecked);
-            });
-            
-            /* ---------------------버튼 색상 변경--------------------- */
-            //*** 마우스 커서가 올라갔을 때 ***//
-            function mouseenter(target) {
-                target.css({
-                    "background-color": "#222",
-                    "color": "white"
-                });
-            }
-        
-			//*** 마우스 커서가 벗어났을 때 ***//
-	        function mouseleave(target) {
-	        	target.css({
-                    "background-color": "",
-                    "color": ""
-                }); // 원래 배경색 및 폰트 색상으로 되돌리기
-	        }
-            
-	      	//*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
-	        $(document).on("mouseenter", "button", function() {
-	        	let target = $(this);
-            	mouseenter(target);
-			});
-	        
-	      	//*** 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
-	        $(document).on("mouseleave", "button", function() {
-	        	let target = $(this);
-            	mouseleave(target);
-			});
-	        
-          	//*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
-            $(document).on("mouseenter", "#sel-box", function() {
-            	let target = $(this);
-            	mouseenter(target);
-            });
-
-          	//*** 버튼에 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
-            $(document).on("mouseleave", "#sel-box", function() {
-            	let target = $(this);
-            	mouseenter(target);
             });
             
             /* ---------------------찜한 상품 삭제 관리--------------------- */
@@ -729,7 +695,7 @@
     <div id="mp_header_area">
 
         <div id="mp_header_user" class="mp_header_obj">
-            <div id="mp_header_user_name">홍길동님</div>
+            <div id="mp_header_user_name">${member.m_name}님</div>
             <div id="mp_header_user_menu">
                 <ul>
                     <li><a href="#">회원정보 변경</a></li>

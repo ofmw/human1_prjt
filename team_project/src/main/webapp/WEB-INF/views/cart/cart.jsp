@@ -673,7 +673,7 @@
                 $("#product_total span").text(totalAmount);
 
             } else { // 장바구니에 상품이 있을 경우
-                $("#shipping-fee").text("0 원");
+                $("#shipping-fee").text("+0 원");
                 $("#ordered-price").text("0 원");
                 $("#payment-price").text("0");
                 $("#product_total span").text("0");
@@ -831,7 +831,7 @@
         let childWindow = null;
         
         //*** 배송지 변경 자식창 열기 ***//
-        function openChangeAddress() {
+        function openManageAddress() {
         	
         	// 기존에 자식창이 열려있는지에 대한 여부
         	if (childWindow) { // 이미 자식창이 열려있으면
@@ -839,14 +839,14 @@
             }
         	
         	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
-        	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val();
+        	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=2";
         	// 자식창을 열고 그 여부를 변수에 저장
         	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
         	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
         }
         
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
-        $("#manage_address").on("click", openChangeAddress);
+        $("#manage_address").on("click", openManageAddress);
         
         //let current_add = opener.sessionStorage.getItem("current_add");
         //sessionStorage.setItem("current_add", current_add);

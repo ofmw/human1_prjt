@@ -39,7 +39,12 @@ public class MemberDao{
 	//회원가입 처리
 	public int join(MemberVo vo) {	
 		return sqlSession.insert(MAPPER+".join", vo);
-	}	
+	}
+	
+	//가입회원 m_idx 조회
+	public int checkM_idx(MemberVo vo) {
+		return sqlSession.selectOne(MAPPER+".checkM_idx", vo);
+	}
 	
 	public void insertWish(int m_idx) {
 		sqlSession.insert(MAPPER+".insertWish", m_idx);
@@ -52,7 +57,7 @@ public class MemberDao{
 		
 		System.out.println("wVo: "+wVo);
 		
-		if(wVo != null) {			
+		if(wVo.getW_list() != null) {
 			wishList = new ArrayList<String>();
 			wishList = Arrays.asList(wVo.getW_list().split(","));
 		}

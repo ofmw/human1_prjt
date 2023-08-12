@@ -62,38 +62,15 @@ public class CartController {
 	}
 	
 	@GetMapping("/manage_address.do")
-	public String change_address(@RequestParam("m_idx") String m_idx, Model model) {
+	public String change_address(@RequestParam("m_idx") String m_idx, @RequestParam("page") String page, Model model) {
 		
 		List<AddressVo> AddressList = cAddress.AddressList(Integer.parseInt(m_idx));
 		
 		model.addAttribute("m_idx", m_idx);
+		model.addAttribute("page", page);
 		model.addAttribute("AddressList", AddressList);
 		
-		return "cart/manageAddress";
-	}
-	
-	//배송지 수정 페이지 이동
-	@GetMapping("/editAddr.do")
-	public String eidtAddr(@RequestParam("m_idx")String m_idx,
-						   @RequestParam("a_name")String a_name,
-						   Model model) {
-		
-		AddressVo vo = cAddress.getAddrInfo(Integer.parseInt(m_idx), a_name);
-		if (vo != null) {
-			System.out.println("수정할 배송지 정보 가져오기 성공");
-			model.addAttribute("addrInfo", vo);
-		} else {
-			System.out.println("수정할 배송지 정보 가져오기 실패");
-		}
-		
-		return "cart/editAddress";
-	}
-	
-	@GetMapping("/addNewAddr.do")
-	public String addNewAddr(@RequestParam("m_idx") String m_idx, Model model) {
-		
-		model.addAttribute("m_idx", m_idx);
-		return "cart/addAddress";
+		return "redirect:/mypage/manage_address.do";
 	}
 	
 	@GetMapping("/index.do")
