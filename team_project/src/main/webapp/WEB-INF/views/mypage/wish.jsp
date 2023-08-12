@@ -33,6 +33,11 @@
         	background-color: #222 !important;
         	color: white;
         }
+        
+        #mp_header_area li span:hover{
+	    	text-decoration: underline;
+	    	cursor: pointer;
+	    }
 
         /* ---------------------마이페이지 헤더--------------------- */
         #mp_header_area{
@@ -315,6 +320,29 @@
     
     <script>
         $(function() {
+        	/* ---------------------배송지 변경--------------------- */
+            // 기존에 열려있는 자식 창에 대한 변수 초기화
+            let childWindow = null;
+            
+            //*** 배송지 변경 자식창 열기 ***//
+            function openManageAddress() {
+            	
+            	// 기존에 자식창이 열려있는지에 대한 여부
+            	if (childWindow) { // 이미 자식창이 열려있으면
+                    childWindow.close(); // 자식창을 닫음
+                }
+            	
+            	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
+            	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=1";
+            	// 자식창을 열고 그 여부를 변수에 저장
+            	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
+            	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
+            }
+            
+            //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
+            $("#manage_address").on("click", function(){
+            	openManageAddress();
+            });
         	
         	/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
         	//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
@@ -696,11 +724,12 @@
 
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
+            <input type="hidden" id="session_m_idx" value="${member.m_idx}">
             <div id="mp_header_user_menu">
                 <ul>
                     <li><a href="#">회원정보 변경</a></li>
                     <li><a href="#">비밀번호 변경</a></li>
-                    <li><a href="#">배송지 관리</a></li>
+                    <li><span id="manage_address">배송지 관리</span></li>
                 </ul>
             </div>
         </div>
