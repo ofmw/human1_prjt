@@ -474,7 +474,6 @@
 	                           <c:when test="${!empty AddressList}">
 	                               <c:forEach items="${AddressList}" var="a">
 	                                   <c:if test="${a.def_add eq '1'}">
-<<<<<<< HEAD
 	                                       <c:set var="phoneNumber" value="${a.selnum}" />
 											<c:set var="formattedPhoneNumber" value="" />											
 											<c:forEach var="i" begin="0" end="${fn:length(phoneNumber) / 4 - 1}">
@@ -494,9 +493,6 @@
 	                                       <p id="receiver">받는분 : ${a.receiver}</p>
 	                                       <p id="selnum">연락처 : ${formattedPhoneNumber}</p>
 	                                       <p id="address">배송지 : (${a.a_name}) [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
-=======
-	                                       <p>${a.a_name} (기본배송지) : [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
->>>>>>> branch 'inhyeok' of https://github.com/ofmw/human1_prjt.git
 	                                   </c:if>
 	                               </c:forEach>
 	                           </c:when>

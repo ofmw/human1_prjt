@@ -135,6 +135,20 @@
             $("#manage_address").on("click", function(){
             	openManageAddress();
             });
+            
+            /* ---------------------회원 탈퇴--------------------- */
+            //*** 회원탈퇴 버튼 클릭 이벤트 처리 ***//
+            $("#cancel").on("click", function(){
+            	
+            	let platform = $("#session_platform").val();
+            	
+            	if (platform === "omart") {
+            		location.href = "omartCancel.do";
+            	} else if (platform === "kakao") {
+            		location.href = "kakaoCancel.do";
+            	}
+            	
+            });
         	
         	/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
         	//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
@@ -240,18 +254,25 @@
     <!-- 마이페이지 헤더부분 -->
     <div id="mp_header_area">
 
+		<!-- 회원 정보 영역 -->
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
             <input type="hidden" id="session_m_idx" value="${member.m_idx}">
+            <input type="hidden" id="session_platform" value="${member.platform}">
+            
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="#">회원정보 변경</a></li>
-                    <li><a href="#">비밀번호 변경</a></li>
+                	<c:if test="${member.platform eq 'omart'}">
+	                    <li><a href="#">회원정보 변경</a></li>
+	                    <li><a href="#">비밀번호 변경</a></li>
+	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
+                    <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
 
+		<!-- 쿠폰 영역 -->
         <div id="mp_header_coupon" class="mp_header_obj">
             <div class="mp_header_obj_title">쿠폰</div>
             <div id="mp_header_coupon_num"><span>2198419841657</span>장</div>
@@ -267,6 +288,7 @@
             </div>
         </div>
 
+		<!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
             <div id="mp_header_point_num">30 P</div>
@@ -277,14 +299,13 @@
     <!-- 마이페이지 내용부분 -->
     <div id="mp_main_area">
 
+		<!-- 좌측 메뉴 영역 -->
         <div id="mp_main_menu">
             <div id="mp_main_menu_order">
                 <div class="mp_main_menu_title">나의 주문관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <!-- <li><a href="mypage 주문배송.html">주문/배송조회</a></li> -->
                         <li><a href="purchase_history.do">주문/배송조회</a></li>
-                        <!-- <li><a href="#">자주 구매한 상품</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -301,7 +322,8 @@
                 </div>
             </div>
         </div>
-
+		
+		<!-- 중앙 본문 영역 -->
         <div id="mp_main">
             <div id="mp_main_osc" class="mp_main_obj">
                 <div id="mp_main_osc_title"><a href="purchase_history.do">주문/배송 조회</a></div>

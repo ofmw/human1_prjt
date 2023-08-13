@@ -931,9 +931,11 @@
 		                                            	<span class="calprice"></span>
 		                                            	<span style="font-size:11px;padding-left:1px;">원</span>
 		                                            </div>
-		                                            <div class="td_odinfo_op">		                                            	
-		                                            	&nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원		                                            	
-		                                            </div>
+		                                            <c:if test="${c.discount ne '0'}">
+			                                            <div class="td_odinfo_op">
+			                                            	&nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원		                                            	
+			                                            </div>
+		                                            </c:if>
 		                                            <div class="td_odinfo_amount">
 		                                                <button type="button" class="plist_minus-btn">-</button>
 		                                                <input type="text" class="plist_amount_value" value="${c.amount}">

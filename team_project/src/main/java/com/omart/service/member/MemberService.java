@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.omart.vo.AddressVo;
 import com.omart.vo.MemberVo;
+import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
 
 public interface MemberService {
@@ -27,5 +28,7 @@ public interface MemberService {
 	default AddressVo getAddrInfo(int m_idx, String a_name) {return null;}
 	default int checkEditAddr(AddressVo vo) {return 0;}
 	default void editAddr(AddressVo vo) {}
+	default int cancel(int m_idx) {return 0;}
+	default List<OrderVo> get_ph_info(int m_idx) {return null;}
 
 }

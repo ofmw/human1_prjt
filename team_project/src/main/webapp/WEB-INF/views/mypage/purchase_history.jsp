@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -215,34 +216,36 @@
                                 <th scope="col">배송상태</th>
                                 <th scope="col">선택</th>
                             </tr>
-                            <tr>
-                                <td class="td_date">2023-07-17</td>
-                                <td class="td_ordernum">20230717-00000012</td>
-                                <td class="td_pname">[국산] 고구마500kg <span>외 8건</span></td>
-                                <td class="td_shipstate">결제완료</td>
-                                <td><a href="order_detail.do" class="ph_detail_btn button">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-07-14</td>
-                                <td class="td_ordernum">20230714-00000001</td>
-                                <td class="td_pname">[오뚜기] 삼양라면 <span>외 5건</span></td>
-                                <td>상품준비중</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-05-29</td>
-                                <td class="td_ordernum">20230529-00012351</td>
-                                <td class="td_pname">[풀무원] AA건전지 X 20입 <span>외 14건</span></td>
-                                <td>베송중</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-04-01</td>
-                                <td class="td_ordernum">20230401-00037541</td>
-                                <td class="td_pname">불스원 와이퍼 외 <span>외 2건</span></td>
-                                <td>배송완료</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
-                            </tr>
+                            <c:forEach items="${phInfo}" var="p">
+	                            <tr>
+	                                <td class="td_date">${p.order_date}</td>
+	                                <td class="td_ordernum">${p.order_idx}</td>
+	                                <td class="td_pname">[국산] 고구마500kg <span>외 8건</span></td>
+	                                <td class="td_shipstate">결제완료</td>
+	                                <td><a href="order_detail.do" class="ph_detail_btn button">주문상세내역</a></td>
+	                            </tr>
+	                            <tr>
+	                                <td class="td_date">2023-07-14</td>
+	                                <td class="td_ordernum">20230714-00000001</td>
+	                                <td class="td_pname">[오뚜기] 삼양라면 <span>외 5건</span></td>
+	                                <td>상품준비중</td>
+	                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
+	                            </tr>
+	                            <tr>
+	                                <td class="td_date">2023-05-29</td>
+	                                <td class="td_ordernum">20230529-00012351</td>
+	                                <td class="td_pname">[풀무원] AA건전지 X 20입 <span>외 14건</span></td>
+	                                <td>베송중</td>
+	                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
+	                            </tr>
+	                            <tr>
+	                                <td class="td_date">2023-04-01</td>
+	                                <td class="td_ordernum">20230401-00037541</td>
+	                                <td class="td_pname">불스원 와이퍼 외 <span>외 2건</span></td>
+	                                <td>배송완료</td>
+	                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
+	                            </tr>
+                            </c:forEach>
                             <tr>
                                 <td colspan="5" id="td_pnav">
                                 	<button type="button" class="p-nav button" value="">1</button>

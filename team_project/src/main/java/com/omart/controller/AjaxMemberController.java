@@ -5,10 +5,12 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.omart.service.kakao.KakaoService;
 import com.omart.service.member.MemberService;
 import com.omart.vo.MemberVo;
 
@@ -18,7 +20,9 @@ import lombok.Setter;
 public class AjaxMemberController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mLogin, mWish;
+	private MemberService mLogin, mCancel, mWish;
+	@Setter(onMethod_={ @Autowired })
+	private KakaoService kCancel;
 
 	//로그인
 	@PostMapping("/**/login.do")
@@ -77,5 +81,53 @@ public class AjaxMemberController {
             return "failure";
         }
     }
+	
+	//회원탈퇴
+	@PostMapping("/mypage/omartCancel.do")
+	public String omartCancel(HttpSession session) {
+		System.out.println("━━━━━━━━━━━━━━━━━<일반 회원탈퇴 요청>━━━━━━━━━━━━━━━━━");
+		
+		MemberVo vo = (MemberVo) session.getAttribute("member");
+		int m_idx = vo.getM_idx();
+		System.out.println("m_idx: " +m_idx);
+		
+		int result = mCancel.cancel(m_idx);
+		
+		if (result != 0) {
+			
+			session.invalidate();
+			System.out.println("회원탈퇴 성공");
+			return "success";
+		} else {
+			System.out.println("회원탈퇴 실패");
+			return "fail";
+		}
+		
+	}
+	
+	//카카오 회원탈퇴
+	@PostMapping("/mypage/kakaoCancel.do")
+	public String kakaoCancel(HttpSession session) {
+		System.out.println("━━━━━━━━━━━━━━━━━<카카오 회원탈퇴 요청>━━━━━━━━━━━━━━━━━");
+		
+		String access_token = (String) session.getAttribute("access_token");
+		MemberVo vo = (MemberVo) session.getAttribute("member");
+		int m_idx = vo.getM_idx();
+		System.out.println("access_token: " +access_token);
+		System.out.println("m_idx: " +m_idx);
+		
+		int result = kCancel.kakaoCancel(access_token, m_idx);
+		
+		if (result != 0) {
+			
+			session.invalidate();
+			System.out.println("회원탈퇴 성공");
+			return "success";
+		} else {
+			System.out.println("회원탈퇴 실패");
+			return "fail";
+		}
+		
+	}
 
 }

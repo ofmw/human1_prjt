@@ -14,4 +14,12 @@
         select * from order_list where order_idx = #{orderNum}
     </select>
     
+        
+    <!-- 주문/배송조회 페이지 정보 -->
+    <select id="get_ph_info" parameterType="_int" resultType="orderVo">
+    	SELECT *
+    	FROM order_list
+    	WHERE m_idx = #{m_idx}
+    </select>
+    
 </mapper>

@@ -16,6 +16,7 @@ import com.omart.service.member.MemberService;
 import com.omart.service.product.ProductService;
 import com.omart.vo.AddressVo;
 import com.omart.vo.MemberVo;
+import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
 
 import lombok.Setter;
@@ -25,7 +26,7 @@ import lombok.Setter;
 public class MypageController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mWish, mAddress;
+	private MemberService mPh, mAddress, mWish;
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdInfo;
 	
@@ -60,7 +61,19 @@ public class MypageController {
 	
 	//마이페이지 - 주문/배송조회
 	@GetMapping("/purchase_history.do")
-	public String purchase_history() {
+	public String purchase_history(HttpSession session) {
+		
+		MemberVo vo = (MemberVo) session.getAttribute("member");
+		int m_idx = vo.getM_idx();
+		
+		List<OrderVo> phInfo = mPh.get_ph_info(m_idx);
+		
+		if (phInfo != null) {
+			
+		}
+		
+		session.setAttribute("phInfo", phInfo);
+		
 		return "mypage/purchase_history";
 	}
 	
@@ -177,4 +190,10 @@ public class MypageController {
 //		
 //		return viewPage;
 //	}
+	
+	@GetMapping("/cancel.do")
+	public String cancel() {
+		return "mypage/cancel";
+	}
+	
 }
