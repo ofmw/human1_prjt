@@ -49,7 +49,8 @@
     /* ---------------------현재 선택된 배송지--------------------- */
     #ca_selected_address{
         width: 95%;
-        margin: 20px 0;
+        margin-top: 20px;
+        margin-bottom: 10px;
         padding: 10px 5px;
         font-size: 13px;
         color: #666;
@@ -84,6 +85,7 @@
 
     /* ---------------------새 배송지 추가 버튼--------------------- */
     #ca_m_addNewAddress{
+    	margin-top: 10px;
         margin-bottom: 5px;
     }
     #ca_m_addNewAddress button{
@@ -272,72 +274,85 @@
         //*** 기본 배송지로 설정 버튼 클릭 이벤트 처리 ***//
         $("#btn_set_default").on("click", function(){
         	
-        	let m_idx = parseInt($("#m_idx").val());
-        	let tr = $("input[type='radio']:checked").closest("tr");
-        	let a_name = tr.find(".a_name").val();
-        	let def_add = parseInt(tr.find(".def_add").val());
+        	if (countVisibleRows() === 0) {
+        		alert("등록된 배송지가 없습니다.\n배송지를 등록해주세요.");
+			} else {
         	
-        	if(def_add === 0) { // 기본 배송지가 아닐 경우
-				$.ajax({
-	        		type: "POST",
-	                url: "update_def_address.do", // AjaxCartController
-	                data: {
-	                	m_idx: m_idx,
-	                    a_name: a_name
-	                },
-	                success: function (response) { // 업데이트된 배송지 목록 객체 반환
-	                    if (response != null) { // 업데이트가 성공한 경우
-	                    	alert('기본 배송지가 "' +a_name+ '" (으)로 변경되었습니다.');
-	                    	checkRadio();
-	                 	    $("#ca_area").load(location.href + "#ca_m_table");
-							$("#ca_area").load(location.href + "#ca_selected_address");
-	                     } else {
-	                         alert("기본 배송지 업데이트에 실패하였습니다.");
-	                     }
-					},
-					error: function () {
-						alert("오류가 발생하였습니다.");
-					}
-				}); // end of ajax
-        	} else { // 이미 기본 배송지로 설정되어 있을 경우
-        		alert("이미 기본배송지로 설정되어 있습니다.");
-        	}
+	        	let m_idx = parseInt($("#m_idx").val());
+	        	let tr = $("input[type='radio']:checked").closest("tr");
+	        	let a_name = tr.find(".a_name").val();
+	        	let def_add = parseInt(tr.find(".def_add").val());
+				
+		       	if(def_add === 0) { // 기본 배송지가 아닐 경우
+					$.ajax({
+		        		type: "POST",
+		                url: "update_def_address.do", // AjaxCartController
+		                data: {
+		                	m_idx: m_idx,
+		                    a_name: a_name
+		                },
+		                success: function (response) { // 업데이트된 배송지 목록 객체 반환
+		                    if (response != null) { // 업데이트가 성공한 경우
+		                    	alert('기본 배송지가 "' +a_name+ '" (으)로 변경되었습니다.');
+		                    	checkRadio();
+		                 	    $("#ca_area").load(location.href + "#ca_m_table");
+								$("#ca_area").load(location.href + "#ca_selected_address");
+		                     } else {
+		                         alert("기본 배송지 업데이트에 실패하였습니다.");
+		                     }
+						},
+						error: function () {
+							alert("오류가 발생하였습니다.");
+						}
+					}); // end of ajax
+		       	} else { // 이미 기본 배송지로 설정되어 있을 경우
+		       		alert("이미 기본배송지로 설정되어 있습니다.");
+		       	}
+		       	
+			}
+        	
         });
         
         /* ---------------------현재 주문 배송지로 선택--------------------- */
         //*** 현재 주문 배송지로 설정 버튼 클릭 이벤트 처리 ***//
         $("#btn_set_current").on("click", function(){
         	
-        	let tr = $("input[type='radio']:checked").closest("tr");
-        	let a_name = tr.find(".a_name").val();
-        	let flag = tr.find(".div_cur_add");
+        	if (countVisibleRows() === 0) {
+        		alert("등록된 배송지가 없습니다.\n배송지를 등록해주세요.");
+			} else {
         	
-        	if(flag.length === 0) { // 현재 주문 배송지가 아닌 경우
+	        	let tr = $("input[type='radio']:checked").closest("tr");
+	        	let a_name = tr.find(".a_name").val();
+	        	let flag = tr.find(".div_cur_add");
         	
-	        	$.ajax({
-	        		type: "POST",
-	                url: "set_cur_address.do", // AjaxCartController
-	                data: {
-	                    a_name: a_name
-	                },
-	                success: function (response) { // 업데이트된 배송지 목록 객체 반환
-	                    if (response === "success") { // 업데이트가 성공한 경우
-	                    	alert("현재 주문 배송지로 설정되었습니다.\n웹 브라우저를 종료할 경우 등록하신 기본 배송지로 재설정됩니다.");
-	                    	// 현재 주문 배송지로 설정 후 자식창을 닫고 부모창 새로고침
-	                    	opener.document.location.reload();
-	                    	self.close();
-	                     } else {
-	                         alert("현재 배송지로 설정에 실패하였습니다.");
-	                     }
-					},
-					error: function () {
-						alert("오류가 발생하였습니다.");
-					}
-				}); // end of ajax
-        	  	
-        	} else { // 이미 현재 주문 배송지로 설정되어 있는 경우
-        		alert("이미 현재 주문 배송지로 선택되었습니다.");
-        	} // end of flag
+	        	if(flag.length === 0) { // 현재 주문 배송지가 아닌 경우
+	        	
+		        	$.ajax({
+		        		type: "POST",
+		                url: "set_cur_address.do", // AjaxCartController
+		                data: {
+		                    a_name: a_name
+		                },
+		                success: function (response) { // 업데이트된 배송지 목록 객체 반환
+		                    if (response === "success") { // 업데이트가 성공한 경우
+		                    	alert("현재 주문 배송지로 설정되었습니다.\n웹 브라우저를 종료할 경우 등록하신 기본 배송지로 재설정됩니다.");
+		                    	// 현재 주문 배송지로 설정 후 자식창을 닫고 부모창 새로고침
+		                    	opener.document.location.reload();
+		                    	self.close();
+		                     } else {
+		                         alert("현재 배송지로 설정에 실패하였습니다.");
+		                     }
+						},
+						error: function () {
+							alert("오류가 발생하였습니다.");
+						}
+					}); // end of ajax
+	        	  	
+	        	} else { // 이미 현재 주문 배송지로 설정되어 있는 경우
+	        		alert("이미 현재 주문 배송지로 선택되었습니다.");
+	        	} // end of flag
+	        	
+			}
         	
         });
         
@@ -417,45 +432,47 @@
 
 	<div id="ca_section">
 	
-		<div id="ca_selected_address">
-			<c:choose>
-				<c:when test="${!empty AddressList}">
-					
-					<c:forEach items="${AddressList}" var="a">
-						<c:choose>
-							<c:when test="${!empty current_add}">
-								<c:if test="${current_add eq a.a_name}">
-									<div id="selected_address_title">현재 선택된 배송지</div>
-									<div id="selected_address_nickname">
-						                <span>[${a.a_name}]</span>
-						                <span>홍길동</span>
-						            </div>
-									<div id="selected_address_postnum">(${a.postnum})</div>
-									<div id="selected_address_1">도로명: ${a.roadAddr}, ${a.detail}</div>
-									<div id="selected_address_2">지번: ${a.jibunAddr}, ${a.detail}</div>
-								</c:if>
-							</c:when>
-							<c:otherwise>
-								<c:if test="${a.def_add eq '1'}">
-									<div id="selected_address_title">현재 선택된 배송지</div>
-									<div id="selected_address_nickname">
-						                <span>[${a.a_name}]</span>
-						                <span>홍길동</span>
-						            </div>
-									<div id="selected_address_postnum">(${a.postnum})</div>
-									<div id="selected_address_1">도로명: ${a.roadAddr}, ${a.detail}</div>
-									<div id="selected_address_2">지번: ${a.jibunAddr}, ${a.detail}</div>
-								</c:if>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-										
-				</c:when>
-				<c:otherwise>
-					<div id="empty_selected_address">현재 선택된 배송지가 없습니다!</div>
-				</c:otherwise>
-			</c:choose>
-		</div>
+		<c:if test="${page eq '2'}">
+			<div id="ca_selected_address">
+				<c:choose>
+					<c:when test="${!empty AddressList}">
+						
+						<c:forEach items="${AddressList}" var="a">
+							<c:choose>
+								<c:when test="${!empty current_add}">
+									<c:if test="${current_add eq a.a_name}">
+										<div id="selected_address_title">현재 선택된 배송지</div>
+										<div id="selected_address_nickname">
+							                <span>[${a.a_name}]</span>
+							                <span>홍길동</span>
+							            </div>
+										<div id="selected_address_postnum">(${a.postnum})</div>
+										<div id="selected_address_1">도로명: ${a.roadAddr}, ${a.detail}</div>
+										<div id="selected_address_2">지번: ${a.jibunAddr}, ${a.detail}</div>
+									</c:if>
+								</c:when>
+								<c:otherwise>
+									<c:if test="${a.def_add eq '1'}">
+										<div id="selected_address_title">현재 선택된 배송지</div>
+										<div id="selected_address_nickname">
+							                <span>[${a.a_name}]</span>
+							                <span>홍길동</span>
+							            </div>
+										<div id="selected_address_postnum">(${a.postnum})</div>
+										<div id="selected_address_1">도로명: ${a.roadAddr}, ${a.detail}</div>
+										<div id="selected_address_2">지번: ${a.jibunAddr}, ${a.detail}</div>
+									</c:if>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+											
+					</c:when>
+					<c:otherwise>
+						<div id="empty_selected_address">현재 선택된 배송지가 없습니다!</div>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</c:if>
 		
 		<div id="ca_management_area">
 			<div id="ca_m_addNewAddress"><button type="button" id="btn_addNewAddr">새 배송지 추가</button></div>
@@ -489,7 +506,7 @@
 								<input type="hidden" class="a_name" value="${a.a_name}">
 								<input type="hidden" class="def_add" value="${a.def_add}">
 									<c:choose>
-										<c:when test="${a.def_add eq '1' and current_add eq a.a_name}">
+										<c:when test="${a.def_add eq '1' and page eq '2' and current_add eq a.a_name}">
 											<div class="div_def_add">기본배송지</div>
 											<div class="div_cur_add">현재배송지</div>
 											<div>${a.a_name}</div>
@@ -498,7 +515,7 @@
 											<div class="div_def_add">기본배송지</div>
 											<div>${a.a_name}</div>
 										</c:when>
-										<c:when test="${current_add eq a.a_name}">
+										<c:when test="${page eq '2' and current_add eq a.a_name}">
 											<div class="div_cur_add">현재배송지</div>
 											<div>${a.a_name}</div>
 										</c:when>
@@ -516,7 +533,7 @@
 								<td class="td_selnum">010-1234-1324</td>
 								<td class="td_option">
 									<c:choose>
-										<c:when test="${a.def_add eq '1' or a.a_name eq current_add}">
+										<c:when test="${a.def_add eq '1' or page eq '2' and a.a_name eq current_add}">
 											<button type="button" class="btn_edit">수정</button>
 										</c:when>
 										<c:otherwise>
@@ -542,8 +559,11 @@
 			</div>
 			
 			<div id="ca_m_btn_box">
+				
 				<button type="button" id="btn_set_default">기본 배송지로 설정</button>
-				<button type="button" id="btn_set_current">현재 주문 배송지로 설정</button>
+				<c:if test="${page eq '2'}">
+					<button type="button" id="btn_set_current">현재 주문 배송지로 설정</button>
+				</c:if>
 				<button type="button" id="btn_close_window">닫기</button>
 			</div>
 			

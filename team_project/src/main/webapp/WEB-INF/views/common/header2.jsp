@@ -155,7 +155,7 @@
             </div><!-- end of 로그인창 내부요소 -->
         </div><!-- end of login container -->
     </div><!-- end of shadow -->
-    <div id="shadow_addCart" style="display: none;">
+    <div id="shadow_addCart" style="display:none;">
         <div id="addCart_container">
             제품이 장바구니에 추가되었습니다.
         </div>

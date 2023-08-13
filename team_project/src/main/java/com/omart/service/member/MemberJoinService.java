@@ -32,4 +32,8 @@ public class MemberJoinService implements MemberService {
 		return dao.join(memberVo);
 	}
 	
+	public int checkM_idx(MemberVo vo) {
+		return dao.checkM_idx(vo);
+	}
+	
 }

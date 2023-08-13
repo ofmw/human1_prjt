@@ -44,7 +44,7 @@ $(function() {
 
     /* 장바구니 추가 알림창 닫기 메서드 */
     function hideShadow_addCart() {
-        shadow_addCart.fadeOut(1200, function() {
+        shadow_addCart.fadeOut(500, function() {
             $(this).css({
                 'display': 'none',
                 'z-index': '0'

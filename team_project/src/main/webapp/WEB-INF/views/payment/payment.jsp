@@ -500,7 +500,6 @@
 	                                       <p id="receiver">받는분 : ${a.receiver}</p>
 	                                       <p id="selnum">연락처 : ${formattedPhoneNumber}</p>
 	                                       <p id="address">배송지 : (${a.a_name}) [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
-
 	                                   </c:if>
 	                               </c:forEach>
 	                           </c:when>

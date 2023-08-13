@@ -2,16 +2,19 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>찜목록</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     
     <style>
         /* Noto Sans KR */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
         *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
+
+		body{min-width: 1280px;}
 
         /* 섹션 */
         section{
@@ -22,8 +25,19 @@
 
         /* a태그 공통 */
         a{text-decoration: none; color: black;}
+        a:hover{text-decoration: underline;}
         /* list 공통 */
         ul{list-style: none;}
+        /* 버튼 및 선택 요소 공통 */
+        button:hover, #sel_box:hover{
+        	background-color: #222 !important;
+        	color: white;
+        }
+        
+        #mp_header_area li span:hover{
+	    	text-decoration: underline;
+	    	cursor: pointer;
+	    }
 
         /* ---------------------마이페이지 헤더--------------------- */
         #mp_header_area{
@@ -104,7 +118,7 @@
             flex-direction: column;
 
             width: 150px;
-            height: 287px;
+            height: 260px;
             border: 1px solid #e5e5e5;
             border-radius: 8px;
 
@@ -149,8 +163,6 @@
             flex-direction: column;
             padding-bottom: 5px;
             border-bottom: 2px solid #222;
-            
-            background-color: yellowgreen;
         }
         .mp_w_main_header_title{
             padding-bottom: 15px;
@@ -162,10 +174,8 @@
         	flex-direction: row;
         	justify-content: space-between;
         	
-        	font-size: 14px;
-        	
+        	font-size: 12px;
         	user-select: none;
-        	background-color: aquamarine;
         }
         #mp_w_main_header_btn-box{
         	display: flex;
@@ -175,16 +185,22 @@
 	        position: relative;
 	        top: 1.5px;
 	    }
-	    #mp_w_main_header_btn-box button{
-	    	margin-left: 5px;
-	    	font-size: 14px;
-	    	border: 0;
-	    }
-        #mp_w_main_header_sel-box{
-            
+	    #mp_w_main_header_btn-box button {
+		    margin-left: 10px;
+		    font-size: 12px;
+		    padding: 2px 5px;
+			border: 1px solid #ddd;
+		    border-radius: 3px;
+		    background-color: #fcfcfc;
+		}
+        #sel_box{
+            background-color: #fcfcfc;
+		    padding: 2px 5px;
+		    border: 1px solid #ddd;
+		    border-radius: 3px;
         }
         #mp_main_wish_notice{
-            border-top: 2px solid #666;
+            border-top: 1px solid #e5e5e5;
             padding-top: 10px;
             font-size: 13px;
             color: #777;
@@ -197,7 +213,13 @@
         #w_box{
             width: 100%;
         }
-
+		#w_empty{
+			height: 367px;
+			font-size: 20px;
+			line-height: 367px;
+			text-align: center;
+			user-select: none;
+		}
         .w_inner_elements_box{
             display: flex;
             flex-flow: row wrap;
@@ -211,8 +233,11 @@
             width: 230px;
             min-height: 367px;
         }
-        .w_inner_elements_box:not(:first-child){
-            margin-top: 30px;
+        .w_inner_elements{
+            display: flex;
+		    flex-direction: row;
+		    flex-wrap: wrap;
+		    justify-content: space-between;
         }
         /* .w_inner_elements a:not(:nth-child(4n+1)) {
             margin-left: 52px;
@@ -238,11 +263,13 @@
             line-height: 40px;
             bottom: 0;
             left: 0;
+            user-select: none;
             
             background-color: rgba(255,255,255,0.9);
         }
         .w_img_opt-box button{
         	margin: auto 0;
+        	background-color: #fcfcfc;
         }
         .w_info_brand{
             font-size: 14px;
@@ -269,21 +296,63 @@
             font-size: 13px;
             color: #8b96a1;
         }
+        
+        /* ---------------------페이지 내비게이션--------------------- */
+        #mp_main_wish_p-nav{
+        	margin: 10px 0;
+        	text-align: center;
+        	user-select: none;
+        }
+        #mp_main_wish_p-nav button{
+        	width: 25px;
+        	height: 25px;
+        	margin: 0 5px;
+        	padding: 2px 5px;
+        	
+		    font-size: 14px;
+		    cursor: pointer;
+		    
+		    border: 1px solid #ddd;
+		    border-radius: 3px;
+		    background-color: #fcfcfc;
+        }
     </style>
     
     <script>
         $(function() {
+        	/* ---------------------배송지 변경--------------------- */
+            // 기존에 열려있는 자식 창에 대한 변수 초기화
+            let childWindow = null;
+            
+            //*** 배송지 변경 자식창 열기 ***//
+            function openManageAddress() {
+            	
+            	// 기존에 자식창이 열려있는지에 대한 여부
+            	if (childWindow) { // 이미 자식창이 열려있으면
+                    childWindow.close(); // 자식창을 닫음
+                }
+            	
+            	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
+            	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=1";
+            	// 자식창을 열고 그 여부를 변수에 저장
+            	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
+            	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
+            }
+            
+            //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
+            $("#manage_address").on("click", function(){
+            	openManageAddress();
+            });
         	
         	/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
         	//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
-            $(".w_img").hover(
-                function() {
-                	$(this).find(".w_img_opt-box").stop().fadeIn(300);
-                },
-                function() {
-                	$(this).find(".w_img_opt-box").stop().fadeOut(300);
-                }
-            );
+            $(document).on("mouseenter", ".w_img", function() {
+			    $(this).find(".w_img_opt-box").stop().fadeIn(300);
+			});
+			
+			$(document).on("mouseleave", ".w_img", function() {
+			    $(this).find(".w_img_opt-box").stop().fadeOut(300);
+			});
              
             /* ---------------------상품 선택 체크박스------------------- */
             //*** "전체선택" 체크박스 클릭 이벤트 처리 ***//
@@ -307,24 +376,6 @@
                 // 모든 개별 상품이 체크되어 있으면 "전체선택"의 checked 속성이 true
                 // 하나라도 체크가 풀려 있으면 "전체선택"의 checked 속성이 false
                 $("#sel-all").prop("checked", allChecked);
-            });
-            
-            /* ---------------------버튼 색상 변경--------------------- */
-            //*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
-            $("button").mouseenter(function() {
-                $(this).css({
-                    "background-color": "#222",
-                    "color": "white"
-                    });
-            });
-
-
-            //*** 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
-            $("button").mouseleave(function() {
-                $(this).css({
-                    "background-color": "",
-                    "color": ""
-                }); // 원래 배경색 및 폰트 색상으로 되돌리기
             });
             
             /* ---------------------찜한 상품 삭제 관리--------------------- */
@@ -357,7 +408,7 @@
          	//*** 찜 버튼 클릭 이벤트 처리 ***//
             $(".w_btn").click(function() {
             	let p_idArray = [$(this).siblings(".p_id").val()];
-            	console.log(p_id);
+            	console.log(p_idArray);
             	
             	// 상품 삭제 여부 결정
                 let confirmed = confirm("해당 상품을 찜목록에서 삭제하시겠습니까?");
@@ -365,7 +416,7 @@
                 // "확인" 을 눌렀을 경우
                 if (confirmed) {
 
-                	removeWish(p_ids);
+                	removeWish(p_idArray);
 
                 } // end of if (confirmed)
             	
@@ -424,7 +475,6 @@
 	                   if (response === "success") { // 수량 업데이트가 성공한 경우
 	                	   	alert('장바구니에 상품이 추가되었습니다.');
 	                	  	//페이지 새로고침
-	                	   	location.reload();
 	                    } else {
 	                        alert("장바구니 상품 추가에 실패했습니다.");
 	                    }
@@ -484,9 +534,180 @@
                 
             });
             
+            /* ---------------------찜목록 정렬--------------------- */
+            //*** 기존 찜목록 순서 저장 ***//
+    		let originalOrder = $(".w_products").toArray();
             
+            //*** 찜목록 정렬 기준 설정 ***//
+            function sortElements(option) {
+            	
+                alert("정렬 메서드 실행");
+                
+            	if (option === "name") {
+            		
+            		alert("이름 정렬 시도!");
+            		
+            		// 모든 w_products 요소 선택
+            	    let products = $(".w_products");
+
+            	    // 제품 이름과 해당 요소를 연결하는 배열 생성
+            	    let productData = [];
+
+            	    // 빈 제품 이름을 가진 요소 저장하는 배열 생성
+            	    let emptyProductData = [];
+
+            	    // 각 제품 요소를 순회하면서 데이터 추출
+            	    products.each(function(index, element) {
+            	    	let productName = $(element).find(".w_info_name a").text();
+            	        if (productName.trim() === "") {
+            	            emptyProductData.push($(element));
+            	        } else {
+            	            productData.push({ element: $(element), name: productName });
+            	        }
+            	    });
+
+            	    // 유니코드 값을 기반으로 정렬 (한글이 영어보다 앞에 오는 문제 있음)
+            	    productData.sort(function(a, b) {
+					    return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+					});
+
+            	    // 정렬된 순서대로 제품 요소를 재배치
+            	    let sortedProducts = productData.map(function(item) {
+            	        return item.element;
+            	    });
+            	    
+            	    sortedProducts = sortedProducts.concat(emptyProductData);
+            	    $(".w_inner_elements").empty().append(sortedProducts);
+            	    
+            	} else if (option === "date") {
+            		
+            		alert("날짜 정렬 시도!");
+            		$(".w_inner_elements").empty().append(originalOrder);
+            	}
+            	
+            	// 정렬과 동시에 1페이지 보내기
+            	changePage(1);
+            	
+            }
             
+            //*** sel1 정렬 옵션 선택 이벤트 처리 ***//
+            $("#sel1").change(function() {
+                var selectedOption = $(this).val();
+                
+                if (selectedOption === "name") { // 이름순 정렬
+                    sortElements("name");
+                } else if (selectedOption === "date") { // 추가순 정렬
+                	sortElements("date");
+                }
+            });
             
+            /* ---------------------찜목록 표시 개수--------------------- */
+            //*** 표시 개수 설정 ***//
+            function showElements(option) {
+                
+            	console.log("표시 개수: "+option);
+            	
+            	let elements = $(".w_products");
+            	let page = 0;
+            	
+            	if (elements.length > option) { // 찜 상품 개수가 선택한 표시 수보다 클 경우
+                	
+            		page = Math.ceil(elements.length / option);
+            		
+            		console.log("찜 개수: "+elements.length);
+                    console.log("박스 및 페이지 수: "+page);
+                    
+                    setNav(page);
+                    
+                } else { // 찜 상품 개수가 선택한 표시 수보다 작을 경우
+                	
+                	page = 1; // 표시할 페이지 내비게이션 버튼 1개
+                	
+                	console.log("찜 개수: "+elements.length);
+                    console.log("페이지 수: "+page);
+                    
+                    setNav(page);
+                }
+            }
+            
+          	//*** sel2 표시 옵션 선택 이벤트 처리 ***//
+            $("#sel2").change(function() {
+                let selectedOption = parseInt($(this).val());
+                
+                if (selectedOption === 4) { // 4개씩 표시
+                    showElements(4);
+                } else if (selectedOption === 8) { // 8개씩 표시
+                	showElements(8);
+                } else if (selectedOption === 100) { // 100개씩 표시
+                	showElements(100);
+                }
+            });
+            
+            /* ---------------------페이지 내비게이션------------------- */
+            //*** 페이지 내비게이션 버튼 생성 ***//
+            function setNav(page) {
+				console.log("내비게이션 메서드 표시 값: " + page);
+			
+				let navDiv = $("#mp_main_wish_p-nav"); // 페이지 내비게이션 버튼 생성 위치
+				navDiv.empty(); // 기존 버튼 삭제
+			
+				for (var i = 1; i <= page; i++) {
+					let pagebtn = $("<button>", {
+						class: "p-nav",
+						type: "button",
+						value: i,
+						text: i
+					});
+				
+					navDiv.append(pagebtn);
+				}
+				
+				// 페이지 버튼 생성과 동시에 1페이지로 보내기
+				changePage(1);
+				
+			}
+            
+            //페이지 로드시 기본 버튼 생성
+            setNav(Math.ceil($(".w_products").length / 4)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+            
+          	//*** 페이지 변환 ***//
+            function changePage(pageNum) {
+            
+          		// 찜 상품 개수
+          		let elements = $(".w_products");
+          		// 한 페이지에 표시할 상품 개수
+          		let showAmount = parseInt($("#sel2").val());
+          		
+          		console.log("한 페이지에 표시할 상품 개수: " +showAmount);
+          		
+          		// 해당 페이지에서 표시할 첫번째 상품 인덱스 번호
+          		let startIndex = (pageNum - 1) * showAmount;
+          		// 해당 페이지에서 표시할 마지막 상품 인덱스 번호
+          		let endIndex = startIndex + showAmount - 1;
+          		console.log("해당 페이지 상품 인덱스 시작값: " +startIndex);
+          		console.log("해당 페이지 상품 인덱스 끝값: " +endIndex);
+          		
+          		for (let i=0; i<elements.length; i++) {
+          			if (i >= startIndex && i <= endIndex) {
+          				console.log("현재 인덱스: " +i)
+          	            $(elements[i]).show();
+          	        } else {
+          	        	console.log("else 현재 인덱스: " +i)
+          	            $(elements[i]).hide();
+          	        }
+				}
+          	}
+          	
+          	//*** 페이지 내비게이션 버튼 클릭 이벤트 처리 ***//
+          	
+          	$(document).on("click", ".p-nav", function() {
+
+          		// 클릭한 페이지 내비게이션 버튼 값
+          		let pageNum = parseInt($(this).val());
+          		console.log(pageNum);
+          		changePage(pageNum);
+			});	
+          	
         });
     </script>
 
@@ -502,12 +723,13 @@
     <div id="mp_header_area">
 
         <div id="mp_header_user" class="mp_header_obj">
-            <div id="mp_header_user_name">홍길동님</div>
+            <div id="mp_header_user_name">${member.m_name}님</div>
+            <input type="hidden" id="session_m_idx" value="${member.m_idx}">
             <div id="mp_header_user_menu">
                 <ul>
                     <li><a href="#">회원정보 변경</a></li>
                     <li><a href="#">비밀번호 변경</a></li>
-                    <li><a href="#">배송지 관리</a></li>
+                    <li><span id="manage_address">배송지 관리</span></li>
                 </ul>
             </div>
         </div>
@@ -553,10 +775,10 @@
                 <div class="mp_main_menu_title">나의 활동관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <li><a href="mypage 찜목록.html">찜목록</a></li>
+                        <li><a href="wish.do">찜목록</a></li>
                         <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
                         <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
-                        <li><a href="wish.do">1:1 문의</a></li>
+                        <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>
             </div>
@@ -577,14 +799,13 @@
 							<button type="button" id="sel-addcart">선택품목 장바구니 추가</button>
                     	</div>
 	                    <div id="mp_w_main_header_sel-box">
-	                        <select id="sel1">
-	                            <option value="1">이름순</option>
-	                            <option value="2">추가날짜순</option>
-	                        </select>
+                        	<select id="sel1">
+                       			<option value="date">추가순</option>
+                       			<option value="name">이름순</option>
+							</select>
 	                        <select id="sel2">
-	                            <option value="40">40개씩</option>
-	                            <option value="60">60개씩</option>
-	                            <option value="80">80개씩</option>
+	                            <option value="4">4개씩</option>
+	                            <option value="8">8개씩</option>
 	                            <option value="100">100개씩</option>
 	                        </select>
 	                    </div>
@@ -595,58 +816,62 @@
                 <div id="mp_w_main_products">
 
                     <div id="w_box">
-                        <div class="w_inner_elements">
-							
-							<c:forEach begin="0" end="${wishList.size() div 4}" var="i">
-	                            <div class="w_inner_elements_box">
-	                            	<c:forEach begin="${i*4}" end="${i*4+3}" var="j">
-										
-							            <div class="w_products">
-							            	<c:if test="${!empty wishList[j]}">
-							            		<input type="checkbox" class="w_checkbox">
-								                <div class="w_img">
-								                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
-								                	<div style="display:none" class="w_img_opt-box">
-								                		<button type="button" class="c_btn">카</button>
-								                		<button type="button" class="w_btn">♥</button>
-								                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
-								                	</div>
-								                </div>
-								                <div class="w_info">
-								                    <div class="w_info_brand">${p_info[j].brand}</div>
-								                    <div class="w_info_name">
-								                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name}</a>
-								                    </div>
-								                    <c:if test="${p_info[j].discount gt 0}">
-									                    <div class="w_info_price">
-									                        <fmt:formatNumber value="${p_info[j].price}" pattern="#,###"/>원
+                    	<c:choose>
+							<c:when test="${!empty wishList[0]}">
+                       			<div class="w_inner_elements">
+									<c:forEach begin="0" end="${(fn:length(wishList) - 1) div 4}" var="i">
+		                            	<c:forEach begin="${i*4}" end="${i*4+3}" var="j">
+								            <div class="w_products">
+								            	<c:if test="${!empty wishList[j] and !empty p_info[j]}">
+								            		<input type="checkbox" class="w_checkbox">
+									                <div class="w_img">
+									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
+									                	<div style="display:none" class="w_img_opt-box">
+									                		<button type="button" class="c_btn">카</button>
+									                		<button type="button" class="w_btn">♥</button>
+									                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
+									                	</div>
+									                </div>
+									                <div class="w_info">
+									                    <div class="w_info_brand">${p_info[j].brand}</div>
+									                    <div class="w_info_name">
+									                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name}</a>
 									                    </div>
-								                    </c:if>
-								                    <div class="w_info_price_final">
-			                                            <c:if test="${p_info[j].discount gt 0}">
-			                                                <span>${p_info[j].discount}% </span>
-			                                            </c:if>
-			                                            <c:set var="discount_new" value="${p_info[j].price*(p_info[j].discount/100)}"></c:set>
-			                                            <fmt:formatNumber value="${p_info[j].price - discount_new}" pattern="#,###" />원
-			                                        </div>
-								                    <div class="w_info_stars">★ 4.5 (1043)</div>
-								                </div>
-							                </c:if>
-							            </div>
-							            
-									</c:forEach>
-	                            </div>
-                            </c:forEach>
-
-                        </div>
+									                    <c:if test="${p_info[j].discount gt 0}">
+										                    <div class="w_info_price">
+										                        <fmt:formatNumber value="${p_info[j].price}" pattern="#,###"/>원
+										                    </div>
+									                    </c:if>
+									                    <div class="w_info_price_final">
+				                                            <c:if test="${p_info[j].discount gt 0}">
+				                                                <span>${p_info[j].discount}% </span>
+				                                            </c:if>
+				                                            <c:set var="discount_new" value="${p_info[j].price*(p_info[j].discount/100)}"></c:set>
+				                                            <fmt:formatNumber value="${p_info[j].price - discount_new}" pattern="#,###" />원
+				                                        </div>
+									                    <div class="w_info_stars">★ 4.5 (1043)</div>
+									                </div>
+								                </c:if>
+								            </div>
+										</c:forEach>
+	                            	</c:forEach>
+                        		</div>
+                        	</c:when>
+                        	<c:otherwise>
+								<div id="w_empty">찜목록에 상품이 없습니다!</div>
+							</c:otherwise>
+						</c:choose>
                     </div>
 
                 </div><!-- end of mp_w_main_products -->
+                
+                <!-- 페이지 내비게이션 -->
+                <div id="mp_main_wish_p-nav"></div>
 
                 <div id="mp_main_wish_notice">
                     <ul>
                         <li>·&nbsp;&nbsp;찜목록은 최대 xx개까지 저장 가능합니다.</li>
-                        <li>·&nbsp;&nbsp;품절 및 판매중단 상품은 표시되지 않습니다?</li>
+                        <li>·&nbsp;&nbsp;품절 및 판매중단 상품은 표시되지 않습니다.</li>
                         <li>·&nbsp;&nbsp;추가할 내용</li>
                     </ul>
                 </div>
