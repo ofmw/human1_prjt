@@ -39,4 +39,8 @@ public class MemberLoginService implements MemberService {
 		return vo;
 	}
 	
+	public void recordLogin(int m_idx) {
+		dao.recordLogin(m_idx);
+	}
+	
 }

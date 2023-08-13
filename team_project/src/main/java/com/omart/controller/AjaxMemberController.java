@@ -33,7 +33,9 @@ public class AjaxMemberController {
 		
 		if(vo != null){
 			
-			List<String> wishList = mWish.getWishList(vo.getM_idx());
+			int m_idx = vo.getM_idx();
+			
+			List<String> wishList = mWish.getWishList(m_idx);
 
 			System.out.println(wishList);
 			
@@ -62,6 +64,8 @@ public class AjaxMemberController {
 			
 			session.setAttribute("member", vo);
 			session.setAttribute("wishList", wishList);
+			
+			mLogin.recordLogin(m_idx);
 						
 			if(vo.getGrade() == 9 || vo.getGrade() == 8 || vo.getGrade() == 7) {
 				session.setMaxInactiveInterval(60 * 60);

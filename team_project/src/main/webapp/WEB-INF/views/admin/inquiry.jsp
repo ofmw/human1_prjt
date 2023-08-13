@@ -88,9 +88,6 @@
     #div_right tr td:nth-child(3), #div_right tr td:nth-child(4), #div_right tr td:nth-child(7), #div_right tr td:nth-child(8), #div_right tr td:nth-child(9){
         width: 60px;
     }
-    #div_right tr td:nth-child(5){
-        width: 80px;
-    }
     #div_right button, #div_right img{
         width: 15px;
         height: 15px;

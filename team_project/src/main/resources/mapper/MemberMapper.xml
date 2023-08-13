@@ -26,6 +26,12 @@
     	WHERE m_id = #{m_id}
     </select>
     
+    <update id="recordLogin" parameterType="_int">
+        update member_omart
+        set login_date = now()
+        where m_idx = #{m_idx}
+    </update>
+    
     <!-- 로그인 처리구문 -->
     <select id="login" parameterType="map" resultType="memberVo">
         SELECT *
