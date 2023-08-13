@@ -109,4 +109,14 @@ public class MemberDao{
 		return result; 
 	}
 	
+	public boolean isDuplicateById(String m_id) {
+		int count = sqlSession.selectOne(MAPPER + ".checkId", m_id);
+	    return count > 0;
+	}
+	
+	public boolean isDuplicateBySelNum(String selNum) {
+		int count = sqlSession.selectOne(MAPPER + ".checkSelNum", selNum);
+	    return count > 0;
+	}
+	
 }

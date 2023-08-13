@@ -32,4 +32,11 @@ public class MemberJoinService implements MemberService {
 		return dao.join(memberVo);
 	}
 	
+	public boolean checkDuplicateId(String m_id) {
+		return dao.isDuplicateById(m_id);
+	}
+	
+	public boolean checkDuplicateSelNum(String selNum) {
+		return dao.isDuplicateBySelNum(selNum);
+	}
 }

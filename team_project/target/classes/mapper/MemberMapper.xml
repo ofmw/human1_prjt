@@ -11,7 +11,12 @@
         FROM member_omart
         WHERE m_id=#{m_id}
     </select>
-    
+    <!-- 전화번호검사 구문 -->
+    <select id="checkSelNum" parameterType="string" resultType="_int">
+        SELECT count(*)
+        FROM member_omart
+        WHERE selNum=#{selNUm}
+    </select>
     <!-- 회원정보 입력구문 -->
     <insert id="join" parameterType="MemberVo">
         INSERT
