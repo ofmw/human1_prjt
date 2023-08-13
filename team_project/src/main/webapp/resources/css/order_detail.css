@@ -175,18 +175,8 @@ ul{list-style: none;}
 }
 /* 주문내역 옵션 박스 (버튼) */
 #od_header_opt_box button{
-    border: 0;
     color: #222;
-    background: none;
     cursor: pointer;
-}
-/* 주문내역 옵션 박스 (division) */
-#od_header_division{
-    content: "";
-    width: 1px;
-    height: 10px;
-    margin: 3px 10px;
-    background: #969696;
 }
 
 /* ---------------------주문상세 조회 배송상태--------------------- */        
@@ -311,11 +301,11 @@ ul{list-style: none;}
     color: #222;
 }
 .td_odinfo_price{
-    font-size: 22px;
+    font-size: 24px;
 }
 .td_odinfo_price span{
     padding-left: 1px;
-    font-size: 11px;
+    font-size: 14px;
 }
 .td_odinfo_amount{
     font-size: 11px;

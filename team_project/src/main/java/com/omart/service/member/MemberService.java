@@ -30,5 +30,7 @@ public interface MemberService {
 	default void editAddr(AddressVo vo) {}
 	default int cancel(int m_idx) {return 0;}
 	default List<OrderVo> get_ph_info(int m_idx) {return null;}
+	default List<ProductVo> get_p_info(List<OrderVo> ph_info) {return null;}
+	default List<ProductVo> get_p_info2(String[] p_idArr) {return null;}
 
 }

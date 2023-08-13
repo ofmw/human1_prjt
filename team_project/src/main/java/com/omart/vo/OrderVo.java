@@ -24,4 +24,6 @@ public class OrderVo {
 	private String selnum;
 	private String address;
 	
+	//주문한 상품 개수
+	private int p_amount;
 }

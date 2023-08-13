@@ -1,14 +1,73 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>mypage</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <title>주문상세 조회</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link href="../resources/css/order_detail.css" rel="stylesheet">
+    
+    <style>
+   		/* a태그 공통 */
+		a:hover{text-decoration: underline;}
+		
+		#od_header_btn-addcart{
+			width: 140px;
+			padding: 2px 5px;
+			border-radius: 3px;
+		    border: 1px solid #ddd;
+    		background-color: #fcfcfc;
+		}
+		#od_header_btn-addcart:hover{
+			background-color: #222; !important;
+			color: white;
+		}
+    </style>
+    
+    <script>
+    	$(function() {
+    		
+    		//*** 장바구니에 다시 담기 ***//
+    		$("#od_header_btn-addcart").click(function() {
+    			
+    			let check = confirm("상품들을 장바구니에 추가하시겠습니까?\n판매중인 상품만 추가됩니다.");
+    			
+    			if (check) {
+    				
+    				let p_idArray = [];
+
+                    $(".p_id").each(function() {
+
+                        p_idArray.push($(this).val());       
+
+                    }); // end of .each()
+    				
+   	            	$.ajax({
+   		                type: "POST",
+   		                url: "addCart.do",
+   		                data: {
+   		                    p_id: p_idArray,
+   		                },
+   		                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+   		                   if (response === "success") { // 수량 업데이트가 성공한 경우
+   		                	   	alert('장바구니에 상품이 추가되었습니다.');
+   		                    } else {
+   		                        alert("장바구니 상품 추가에 실패했습니다.");
+   		                    }
+   		                },
+   		                error: function () {
+   		                    alert("오류가 발생하였습니다.");
+   		                }
+   	            	}); // end of ajax
+    			}
+    			
+    		});
+    		
+    	});
+    </script>
 </head>
 <body>
 
@@ -21,12 +80,15 @@
     <div id="mp_header_area">
 
         <div id="mp_header_user" class="mp_header_obj">
-            <div id="mp_header_user_name">홍길동님</div>
+            <div id="mp_header_user_name">${member.m_name}님</div>
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="#">회원정보 변경</a></li>
-                    <li><a href="#">비밀번호 변경</a></li>
-                    <li><a href="#">배송지 관리</a></li>
+                	<c:if test="${member.platform eq 'omart'}">
+	                    <li><a href="#">회원정보 변경</a></li>
+	                    <li><a href="#">비밀번호 변경</a></li>
+	                </c:if>
+                    <li><span id="manage_address">배송지 관리</span></li>
+                    <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
@@ -56,15 +118,13 @@
     <!-- 마이페이지 내용부분 -->
     <div id="mp_main_area">
 
-        <!-- 마이페이지 좌측 메뉴 -->
+        <!-- 좌측 메뉴 영역 -->
         <div id="mp_main_menu">
             <div id="mp_main_menu_order">
                 <div class="mp_main_menu_title">나의 주문관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <!-- <li><a href="mypage 주문배송.html">주문/배송조회</a></li> -->
                         <li><a href="purchase_history.do">주문/배송조회</a></li>
-                        <!-- <li><a href="#">자주 구매한 상품</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -89,56 +149,58 @@
 
                     <!-- 마이페이지 주문상세 조회  -->
                     <div class="mp_main_title">주문상세 조회</div>
-
-                    <!-- 주문상세 조회 헤더 -->
-                    <div id="mp_main_od_header">
-                        <div id="od_header_info_box">
-                            <span id="od_header_date">2023-07-17</span>
-                            <span id="od_header_ordernum">주문번호 <span>20230717-00000012</span></span>
-                        </div>
-                        
-                        <div id="od_header_opt_box">
-                            <button id="od_header_del">주문내역에서 삭제 X</button>
-                            <div id="od_header_division"></div>
-                            <button id="od_header_addcart">장바구니 담기</button>
-                        </div>
-                    </div>
-
-                    <!-- 주문상세 배송상태 -->
-                    <div id="mp_main_od_shipstate">
-                        <ul>
-                            <li><div><span>결제완료</span></div></li>
-                            <li><div><span>상품준비중</span></div></li>
-                            <li><div><span>배송중</span></div></li>
-                            <li><div><span>배송완료</span></div></li>
-                        </ul>
-                    </div>
-
-                    <!-- 주문상세 조회 주문정보 table -->
-                    <div id="mp_main_od_tb_info">
-                        <table>
-                            <tr>
-                                <th>주문자 정보</th>
-                                <td><span>${member.m_name} </span>${member.selNum}</td>
-                            </tr>
-                            <tr>
-                                <th>받으시는 분</th>
-                                <td><span>홍길동 </span>010-1111-2222</td>
-                            </tr>
-                            <tr>
-                                <th>받으시는 주소</th>
-                                <td><span>[주소지 프리셋 이름]</span> [31313] 충남 천안시 동남구 ~~~ (상세주소)</td>
-                            </tr>
-                            <tr>
-                                <th>배송 요청사항</th>
-                                <td>기본 요청사항, 추가 요청사항</td>
-                            </tr>
-                            <tr>
-                                <th>수령방법</th>
-                                <td>문 앞, 경비실 등등</td>
-                            </tr>
-                        </table>
-                    </div>
+                    
+                    <c:forEach items="${phInfo}" var="ph">
+                    	<c:if test="${ph.order_idx eq param.order_idx}">
+		                    <!-- 주문상세 조회 헤더 -->
+		                    <div id="mp_main_od_header">
+		                        <div id="od_header_info_box">
+		                            <span id="od_header_date"><fmt:formatDate value="${ph.order_date}" pattern="yyyy-MM-dd"/></span>
+		                            <span id="od_header_ordernum">주문번호 <span>${ph.order_idx}</span></span>
+		                        </div>
+		                        
+		                        <div id="od_header_opt_box">
+		                            <button type="button" id="od_header_btn-addcart">장바구니에 다시 담기</button>
+		                        </div>
+		                    </div>
+		
+		                    <!-- 주문상세 배송상태 -->
+		                    <div id="mp_main_od_shipstate">
+		                        <ul>
+		                            <li><div><span>결제완료</span></div></li>
+		                            <li><div><span>상품준비중</span></div></li>
+		                            <li><div><span>배송중</span></div></li>
+		                            <li><div><span>배송완료</span></div></li>
+		                        </ul>
+		                    </div>
+		
+		                    <!-- 주문상세 조회 주문정보 table -->
+		                    <div id="mp_main_od_tb_info">
+		                        <table>
+		                            <tr>
+		                                <th>주문자 정보</th>
+		                                <td><span>${member.m_name} </span>${member.selNum}</td>
+		                            </tr>
+		                            <tr>
+		                                <th>받으시는 분</th>
+		                                <td><span>${ph.receiver} </span>${ph.selnum}</td>
+		                            </tr>
+		                            <tr>
+		                                <th>받으시는 주소</th>
+		                                <td><span>[주소지 프리셋 이름]</span> ${ph.address}</td>
+		                            </tr>
+		                            <tr>
+		                                <th>배송 요청사항</th>
+		                                <td>${ph.request}, ${ph.message}</td>
+		                            </tr>
+		                            <tr>
+		                                <th>수령방법</th>
+		                                <td>문 앞, 경비실 등등</td>
+		                            </tr>
+		                        </table>
+		                    </div>
+	                    </c:if>
+                    </c:forEach>
 
                     <!-- 주문상세 조회 주문상품 table -->
                     <div>
@@ -148,47 +210,23 @@
                                 <col style="width:60%;">
                                 <col style="width:20%;">
                                 <col style="width:10%;">
-                                <!-- <col style="width:10%;background-color: rgb(147, 255, 152);">
-                                <col style="width:60%;background-color: #ffd89e;">
-                                <col style="width:20%;">
-                                <col style="width:10%;background-color: #d8a9ff;"> -->
                             </colgroup>
-                            <tr>
-                                <td class="td_img"><a href="#"><img src="#" alt="이미지" width="90" height="90"></a></td>
-                                <td class="td_pname"><a href="#">[국산] 고구마500kg</a></td>
-                                <td class="td_odinfo">
-                                    <span class="td_odinfo_price">1,100<span>원</span></span><br>
-                                    <span class="td_odinfo_amount">수량 1개</span>
-                                </td>
-                                <td class="td_review"><a href="#">리뷰작성</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_img"><a href="#"><img src="#" alt="이미지"></a></td>
-                                <td class="td_pname"><a href="#">[하림] 닭가슴살 260g</a></td>
-                                <td class="td_odinfo">
-                                    <span class="td_odinfo_price">31,300<span>원</span></span><br>
-                                    <span class="td_odinfo_amount">수량 1개</span>
-                                </td>
-                                <td class="td_review"><a href="#">리뷰작성</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_img"><a href="#"><img src="#" alt="이미지"></a></td>
-                                <td class="td_pname"><a href="#">상품명</a></td>
-                                <td class="td_odinfo">
-                                    <span class="td_odinfo_price">1,100<span>원</span></span><br>
-                                    <span class="td_odinfo_amount">수량 12개</span>
-                                </td>
-                                <td class="td_review"><a href="#">리뷰작성</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_img"><a href="#"><img src="#" alt="이미지"></a></td>
-                                <td class="td_pname"><a href="#">상품명2</a></td>
-                                <td class="td_odinfo">
-                                    <span class="td_odinfo_price">1,100<span>원</span></span><br>
-                                    <span class="td_odinfo_amount">수량 1개</span>
-                                </td>
-                                <td class="td_review"><a href="#">리뷰작성</a></td>
-                            </tr>
+                            <c:forEach items="${p_info}" var="p">
+	                            <tr>
+	                                <td class="td_img"><a href="#"><img src="#" alt="이미지" width="90" height="90"></a></td>
+	                                <td class="td_pname">
+	                                	<input type="hidden" class="p_id" value="${p.p_id}">
+	                                	<a href="product_view.do?p_id=${p.p_id}">
+	                                		[${p.brand}] ${p.p_name} ${p.standard}${p.unit}
+	                                	</a>
+	                                </td>
+	                                <td class="td_odinfo">
+	                                    <span class="td_odinfo_price"><fmt:formatNumber value="${p.price*p.stock}" pattern="#,###"/><span>원</span></span><br>
+	                                    <span class="td_odinfo_amount">수량 ${p.stock}개</span>
+	                                </td>
+	                                <td class="td_review"><a href="#">리뷰작성</a></td>
+	                            </tr>
+                            </c:forEach>
                         </table>
                     </div>
 

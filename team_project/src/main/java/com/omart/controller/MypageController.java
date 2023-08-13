@@ -66,10 +66,17 @@ public class MypageController {
 		MemberVo vo = (MemberVo) session.getAttribute("member");
 		int m_idx = vo.getM_idx();
 		
+		// 주문/배송조회 내역 가져오기
 		List<OrderVo> phInfo = mPh.get_ph_info(m_idx);
 		
 		if (phInfo != null) {
 			
+			// 가져온 주문/배송조회 각 내역의 첫번째 상품 정보 가져오기 (상품 이름 띄우기용)
+			List<ProductVo> phfInfo = mPh.get_p_info(phInfo);
+			
+			if (phfInfo != null) {
+				session.setAttribute("phfInfo", phfInfo);
+			}
 		}
 		
 		session.setAttribute("phInfo", phInfo);
@@ -79,7 +86,48 @@ public class MypageController {
 	
 	//마이페이지 - 주문상세조회
 	@GetMapping("/order_detail.do")
-	public String order_detail() {
+	public String order_detail(@RequestParam("order_idx") String order_idx, HttpSession session) {
+		
+		// 현재 세션에서 주문내역 정보 가져옴
+		@SuppressWarnings("unchecked")
+		List<OrderVo> ph_info = (ArrayList<OrderVo>)session.getAttribute("phInfo");  
+		
+		// 가져온 주문내역 정보에서 정보 추출
+		for (OrderVo vo : ph_info) {
+            
+			if(vo.getOrder_idx().equals(order_idx)) {
+				
+				// 주문내역의 각 정보 저장
+				String p_id = vo.getProducts();
+				String amounts = vo.getAmounts();
+				String p_price = vo.getProducts_price();
+				
+				// 저장한 정보에서 하나씩 분리하여 배열에 저장
+				
+				String[] p_idArr = p_id.split(",");							//p_id
+				
+				//추출하여 분리 저장한 p_id로 product 테이블에서 상품 정보 검색
+				List<ProductVo> p_info = mPh.get_p_info2(p_idArr);
+				
+				String[] String_amountsArr= amounts.split(",");				//amounts (String형)
+				int[] amountsArr = new int[String_amountsArr.length];		//int형의 amounts 생성
+				for (int i = 0; i < String_amountsArr.length; i++) {		//String형 amounts의 요소들을 int형으로 변환하여 저장
+		            amountsArr[i] = Integer.parseInt(String_amountsArr[i]);
+	            	p_info.get(i).setStock(amountsArr[i]);
+		        }
+				
+				String[] String_p_priceArr = p_price.split(",");			//products_price (String형)
+				int[] p_priceArr = new int[String_p_priceArr.length];		//int형의 products_price 생성
+				for (int i = 0; i < String_p_priceArr.length; i++) {		//String형 products_price의 요소들을 int형으로 변환하여 저장
+					p_priceArr[i] = Integer.parseInt(String_p_priceArr[i]);
+					p_info.get(i).setPrice(p_priceArr[i]);
+		        }
+				
+				session.setAttribute("p_info", p_info);
+			}
+        }
+		
+		
 		return "mypage/order_detail";
 	}
 	
