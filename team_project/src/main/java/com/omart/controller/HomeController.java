@@ -66,7 +66,6 @@ public class HomeController {
 	//로그아웃
 	@GetMapping("/**/logout.do")
 	public String logout(String requestor, HttpServletRequest request) {
-				
 		HttpSession session = request.getSession();
 		session.invalidate();
 		

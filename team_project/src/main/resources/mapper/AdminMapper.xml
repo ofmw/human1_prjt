@@ -71,4 +71,16 @@
         select count(*) from member_omart where m_id = #{m_id} and grade in (7, 8, 9)
     </select>
     
+    <update id="changeOrderState" parameterType="string">
+	    <![CDATA[
+	    update order_list
+	    set order_state =
+	        case
+	            when order_state <= 2 then order_state + 1
+	            else order_state
+	        end
+	    where order_idx = #{order_idx}
+	    ]]>
+	</update>
+    
 </mapper>

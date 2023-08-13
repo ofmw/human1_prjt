@@ -400,13 +400,14 @@
         let dcPrice = parseInt($("#div_dcPrice h1").text().replace(/\D/g, ''));
         let dCalPrice = $("#div_calPrice");
         let hCalPrice = $("#h3_calPrice");
-        
+        let totalPrice = $("#h1_totalPrice");
         
         minusBtn.on("click",function(){
        		if(amount.val()>1){
        			amount.val(amount.val()-1);
        			dCalPrice.text((dcPrice*amount.val()).toLocaleString()+"원");
        			hCalPrice.text(dCalPrice.text());
+       			totalPrice.text(hCalPrice.text());
             }
             
         });
@@ -416,6 +417,7 @@
                 amount.val(parseInt(amount.val())+1);
                 dCalPrice.text((dcPrice*amount.val()).toLocaleString()+"원");
                 hCalPrice.text(dCalPrice.text());
+                totalPrice.text(hCalPrice.text());
             }else{
                 alert("상품 최대 구매갯수는 20개입니다.");
             }            
@@ -585,7 +587,16 @@
 	                <input type="text" class="input_amount" value="1" id="amount" name="amount">
 	                <input type="button" class="btn_plus" value="+">
 	            </fieldset>
-	            <div id="div_calPrice"><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</div>
+	            <div id="div_calPrice">
+	               <c:choose>
+	                   <c:when test="${product.discount eq 0}">
+	                       <fmt:formatNumber value="${product.price}" pattern="#,###" />원
+	                   </c:when>
+	                   <c:otherwise>
+	                       <fmt:formatNumber value="${discount_price}" pattern="#,###" />원
+	                   </c:otherwise>
+	               </c:choose>	               
+	            </div>
 	        </div>
         </form>        
         <br>
@@ -628,12 +639,31 @@
                     <input type="button" class="btn_minus" value="-">
                     <input type="text" class="input_amount" value="1">
                     <input type="button" class="btn_plus" value="+">
-                </fieldset>
-                <h3 id="h3_calPrice"><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h3>
+                </fieldset>                
+                <h3 id="h3_calPrice">
+                    <c:choose>
+                       <c:when test="${product.discount eq 0}">
+                           <fmt:formatNumber value="${product.price}" pattern="#,###" />원
+                       </c:when>
+                       <c:otherwise>
+                           <fmt:formatNumber value="${discount_price}" pattern="#,###" />원
+                       </c:otherwise>
+                   </c:choose>                 
+                </h3>
             </div>
         </div>
         <div id="div_totalPrice">
-            <h1><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h1><h2>합계</h2>
+            <h1 id="h1_totalPrice">
+                <c:choose>
+                    <c:when test="${product.discount eq 0}">
+                        <fmt:formatNumber value="${product.price}" pattern="#,###" />원
+                    </c:when>
+                    <c:otherwise>
+                        <fmt:formatNumber value="${discount_price}" pattern="#,###" />원
+                    </c:otherwise>
+                </c:choose>       
+            </h1>
+            <h2>합계</h2>
         </div>
         <c:choose>
             <c:when test="${empty member}">

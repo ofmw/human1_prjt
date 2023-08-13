@@ -31,7 +31,7 @@ import lombok.Setter;
 @RestController
 public class AjaxController {
 	@Setter(onMethod_={ @Autowired })
-	private AdminService cgCount, pdInsert, pdEdit, pdChange, pdDelete, acCreate, acCheck;
+	private AdminService cgCount, pdInsert, pdEdit, pdChange, pdDelete, acCreate, acCheck, odChange;
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdList;	
 	@Setter(onMethod_={ @Autowired })
@@ -75,6 +75,13 @@ public class AjaxController {
 	public void deleteProduct(@RequestParam("checkedProducts[]") String[] checkedProducts) {
 		for(String p_id : checkedProducts) {
 			pdDelete.deleteProduct(p_id);
+		}
+	}
+	
+	@PostMapping("/admin/changeOrderState.do")
+	public void changeOrderState(@RequestParam("checkedOrders[]") String[] checkedOrders) {
+		for(String order_idx : checkedOrders) {
+			odChange.changeOrderState(order_idx);
 		}
 	}
 	
@@ -172,6 +179,7 @@ public class AjaxController {
         
         return response;
     }
+	
 	
 	@PostMapping("/boardFile/insert_notice_write_process.do")
 	public void insert_notice_write_process(BoardFileVo boardFileVo) {

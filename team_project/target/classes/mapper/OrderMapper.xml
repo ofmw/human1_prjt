@@ -6,8 +6,8 @@
 <mapper namespace="com.omart.OrderMapper">    
     
     <insert id="createOrder" parameterType="orderVo">
-        insert into order_list (order_idx, m_idx, products, amounts, products_price, receiver, selnum, address, paid_price, request, paymentInfo) 
-        values (#{order_idx}, #{m_idx}, #{products}, #{amounts}, #{products_price}, #{receiver}, #{selnum}, #{address}, #{paid_price}, #{request}, #{paymentInfo})
+        insert into order_list (order_idx, m_idx, products, amounts, products_price, receiver, selnum, address, paid_price, request, paymentInfo, used_point) 
+        values (#{order_idx}, #{m_idx}, #{products}, #{amounts}, #{products_price}, #{receiver}, #{selnum}, #{address}, #{paid_price}, #{request}, #{paymentInfo}, #{used_point})
     </insert>
     
     <select id="selectOrder" parameterType="string" resultType="orderVo">

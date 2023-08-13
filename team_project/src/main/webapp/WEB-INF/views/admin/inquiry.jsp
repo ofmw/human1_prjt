@@ -294,7 +294,9 @@ $(function () {
 		    let tableNameId = $(this).data("table-name");
 		    let categoryId = $(this).data("category");
 		    let replyState = $(this).data("reply-state");
-		    
+		    let ansContent = $(this).data("ans-content");
+		    console.log("답변내용: " + ansContent);
+		    $("#ans_content").val(ansContent);
 		    //답변완료 상태일때 답변 내용이랑 확인 버튼 disabled
 		    if (replyState === 1) {
 	            // reply_state가 1인 경우에 처리할 작업
@@ -315,6 +317,7 @@ $(function () {
 		      post_date: $(this).data("post-date"),
 		      title: $(this).data("title"),
 		      content: $(this).data("content"),
+		      ans_content: $(this).data("ans-content"),
 		      b_idx: $(this).data("b-idx")
 		    };
 
@@ -342,6 +345,7 @@ $(function () {
 		    $("#inquiry_title").val(inquiryData.title);
 		    $("#inquiry_content").val(inquiryData.content);
 		    $("#inquiry_b-idx").val(inquiryData.b_idx);
+		    $("#ans_content").val(inquiryData.ans_content);
 		    // 팝업 창 표시
 		    $("#div_member_info").hide();
 		    $("#div_inquiry_info").show();
@@ -610,7 +614,8 @@ $(function () {
                     	<button class="btn_inquiry" data-table-name="${item.tableName}" data-category="${item.category}" 
                     	data-memberid="${item.m_id}" data-name="${item.m_name}" data-post-date="${item.post_date}" 
                     	data-title="${item.title}" data-p-id="${item.p_id}" data-content="${item.content}"
-                    	data-reply-state="${item.reply_state}" data-b-idx="${item.b_idx}">
+                    	data-reply-state="${item.reply_state}" data-b-idx="${item.b_idx}"
+                    	data-ans-content="${item.ans_content}">
                     		문의내용 보기
                     	</button>
                     </td>

@@ -20,5 +20,6 @@ public interface AdminService {
 	default int checkAccount(String m_id) {return 0;}
 	default int getAccount(String m_id) {return 0;}
 	default List<OrderVo> orderList() {return null;}
+	default void changeOrderState(String order) {}
 	
 }

@@ -132,9 +132,6 @@ public class paymentController {
 		
 		model.addAttribute("OrderDetails", OrderDetails);
 		
-		
-		
-		
 		List<String> productIds = new ArrayList<String>();
 		List<String> productAmounts = new ArrayList<String>();
 		List<String> productsPrice = new ArrayList<String>();
@@ -161,6 +158,7 @@ public class paymentController {
 		orderVo.setPaid_price(paid_price);
 		orderVo.setRequest(requestMessage);
 		orderVo.setPaymentInfo(paymentInfo);
+		orderVo.setUsed_point(point);
 		
 		pmOrder.createOrder(orderVo);
 		

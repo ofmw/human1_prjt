@@ -31,9 +31,10 @@
     </insert>
     <!-- 1:1문의 글 목록 반환 -->
     <select id="getAllInquiries" resultType="boardFileVo">
-    	select i.*, m.m_id, m.m_name, i.b_idx
+    	select i.*, m.m_id, m.m_name, i.b_idx, ia.ans_content
 	    from inquiries i
 	    inner join member_omart m on i.m_idx = m.m_idx
+        left outer join inquiry_ans ia on i.b_idx = ia.b_idx
 	    order by i.b_idx desc
     </select>
     <!-- QnA 답변 게시글 추가 처리구문
@@ -42,20 +43,11 @@
 	</insert> -->
     <!-- QnA 글 목록 반환 -->
     <select id="getAllQnas" resultType="boardFileVo">
-	    select q.*, m.m_id, m.m_name, q.b_idx
+	    select q.*, m.m_id, m.m_name, q.b_idx, qa.ans_content
 	    from qna q
 	    inner join member_omart m on q.m_idx = m.m_idx
+	    left outer join qna_ans qa on q.b_idx = qa.b_idx
 	    order by q.b_idx desc
-	</select>
-	<select id="getInquiryAns" resultType="boardFileVo">
-		select ans_content
-		from inquiry_ans
-		where b_idx = #{bIdx}
-	</select>
-	<select id="getQnaAns" resultType="boardFileVo">
-		select ans_content
-		from qna_ans
-		where b_idx = #{bIdx}
 	</select>
     <!-- 공지사항 글 목록 반환 -->
     <select id="getAllNotices" resultType="boardFileVo">

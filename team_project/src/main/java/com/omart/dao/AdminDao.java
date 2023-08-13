@@ -73,4 +73,8 @@ public class AdminDao{
 		return sqlSession.selectList(MAPPER+".orderList");
 	}
 	
+	public void changeOrderState(String order_idx) {
+		sqlSession.update(MAPPER+".changeOrderState", order_idx);
+	}
+	
 }

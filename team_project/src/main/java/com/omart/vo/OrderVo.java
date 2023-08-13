@@ -26,4 +26,6 @@ public class OrderVo {
 	private int paid_price;
 	private int order_state;
 	private String paymentInfo;
+	private int used_point;
+	
 }

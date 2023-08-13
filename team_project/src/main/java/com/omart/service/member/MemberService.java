@@ -28,5 +28,6 @@ public interface MemberService {
 	default int checkEditAddr(AddressVo vo) {return 0;}
 	default void editAddr(AddressVo vo) {}
 	default void recordLogin(int m_idx) {}
-
+	default boolean checkDuplicateId(String m_id) {return false;}
+	
 }
