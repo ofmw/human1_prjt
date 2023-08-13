@@ -10,7 +10,7 @@
     </select>
     
     <insert id="insertProduct" parameterType="productVo">
-        insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state})
+        insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state, sub_category) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state}, #{sub_category})
     </insert>
     
     <update id="editProduct" parameterType="productVo">
@@ -24,7 +24,8 @@
             unit = #{unit},
             stock = #{stock},
             discount = #{discount},
-            post_state = #{post_state}
+            post_state = #{post_state},
+            sub_category = #{sub_category}
         where p_id = #{p_id}
             
     </update>
@@ -52,6 +53,10 @@
     
     <select id="adminList" resultType="memberVo">
         select * from member_omart where grade in (7, 8, 9)
+    </select>
+    
+    <select id="orderList" resultType="orderVo">
+        select * from order_list
     </select>
     
     <insert id="createAccount" parameterType="memberVo">

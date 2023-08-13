@@ -82,9 +82,6 @@
         width: 25px;
         padding: 0;
     }
-    #div_right tr td:nth-child(n + 9):nth-child(-n + 12){
-        width: 35px;
-    }
     #div_right button, #div_right img{
         width: 15px;
         height: 15px;
@@ -654,10 +651,10 @@
 </head>
 <body>
     <div id="div_left">
-        <h3>제품관리</h3>
+        <h3>주문관리</h3>
         <table>
             <tr>
-                <td>분류</td>
+                <td>처리상태</td>
             </tr>
             <tr>
                 <td>
@@ -715,40 +712,32 @@
             <tr>
                 <td><input type="checkbox" id="checkAll"></td>
                 <td></td>
-                <td>코드</td>
-                <td>소분류</td>
-                <td>제품명</td>
-                <td>브랜드</td>
-                <td>구매가</td>
-                <td>판매가</td>
-                <td>규격</td>
-                <td>단위</td>
-                <td>재고</td>
-                <td>할인율</td>
-                <td>게시상태</td>                
+                <td>주문번호</td>
+                <td>결제금액</td>
+                <td>결제유형</td>
+                <td>배송요청</td>
+                <td>추가요청</td>
+                <td>처리상태</td>                
             </tr>
-            <c:forEach items="${productList}" var="product">
+            <c:forEach items="${orderList}" var="order">
                 <tr>
-                    <td><input type="checkbox" value="${product.p_id}"></td>
+                    <td><input type="checkbox" value="${order.order_idx}"></td>
                     <td>
-                        <button class="btn_editProduct" id="${product.p_id}">
+                        <button class="btn_editProduct" id="${order.order_idx}">
                             <img alt="" src="">
                         </button>
                     </td>
-	                <td>${product.p_id}</td>
-	                <td>${product.sub_category}</td>
-	                <td>${product.p_name}</td>
-	                <td>${product.brand}</td>
-	                <td>${product.cost}</td>
-                    <td>${product.price}</td>
-                    <td>${product.standard}</td>
+	                <td>${order.order_idx}</td>
+	                <td>${order.paid_price}</td>
+                    <td>card, kakao 등</td>
+                    <td>${order.request}</td>
                     <td>${product.unit}</td>
-                    <td>${product.stock}</td>
-                    <td>${product.discount}</td>
                     <td>
                         <c:choose>
-                            <c:when test="${product.post_state == 1}">판매중</c:when>
-                            <c:otherwise>판매중단</c:otherwise>
+                            <c:when test="${order.order_state == 0}">결제완료</c:when>
+                            <c:when test="${order.order_state == 1}">결제완료</c:when>
+                            <c:when test="${order.order_state == 1}">결제완료</c:when>
+                            <c:otherwise>구매확정</c:otherwise>
                         </c:choose>
                     </td>
 

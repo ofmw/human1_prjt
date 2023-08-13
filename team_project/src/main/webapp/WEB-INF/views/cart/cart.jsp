@@ -671,13 +671,15 @@
                 
                 // "전체상품" 수량에 반영
                 $("#product_total span").text(totalAmount);
-
+                
             } else { // 장바구니에 상품이 있을 경우
                 $("#shipping-fee").text("0 원");
                 $("#ordered-price").text("0 원");
                 $("#payment-price").text("0");
                 $("#product_total span").text("0");
             }
+            
+            
         }
 
         
@@ -931,9 +933,18 @@
 		                                            	<span class="calprice"></span>
 		                                            	<span style="font-size:11px;padding-left:1px;">원</span>
 		                                            </div>
-		                                            <div class="td_odinfo_op">		                                            	
-		                                            	&nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원		                                            	
-		                                            </div>
+		                                            <c:choose>
+		                                              <c:when test="${c.discount gt 0}">
+		                                                  <div class="td_odinfo_op">                                                      
+                                                              &nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원                                                      
+                                                          </div>
+		                                              </c:when>
+		                                              <c:otherwise>
+		                                                  <div class="td_odinfo_op" style="display: none;">
+                                                              &nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원                                                      
+                                                          </div>
+		                                              </c:otherwise>
+		                                            </c:choose>		                                            
 		                                            <div class="td_odinfo_amount">
 		                                                <button type="button" class="plist_minus-btn">-</button>
 		                                                <input type="text" class="plist_amount_value" value="${c.amount}">
@@ -1057,8 +1068,8 @@
                                         <span id="ordered-price"></span>
                                     </div>
                                     <div id="product_discount-price">
-                                        <span>상품할인</span>
-                                        <span id="discount-price">-0 원</span>
+                                        <span>할인금액</span>
+                                        <span id="discount-price">- 0 원</span>
                                     </div>
                                     <div id="product_shipping-fee">
                                         <span>배송비</span>

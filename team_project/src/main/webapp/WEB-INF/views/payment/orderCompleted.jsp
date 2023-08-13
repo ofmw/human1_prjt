@@ -160,11 +160,14 @@
                     	   <p>받는분 : ${orderVo.receiver}</p>
                     	   <p>연락처 : ${formattedPhoneNumber}</p>
                     	   <p>배송지 : ${orderVo.address}</p>
+                    	   <c:if test="${orderVo.request ne ''}">
+                    	       <p>요청사항 : ${orderVo.request}</p>
+                    	   </c:if>
                     	</td>
                     </tr>
                     <tr>
                     	<th>결제정보</th>
-                    	<td colspan="3"></td>
+                    	<td colspan="3">${orderVo.paymentInfo}</td>
                     </tr>
                     <c:forEach items="${orderList}" var="product">
                         <tr>

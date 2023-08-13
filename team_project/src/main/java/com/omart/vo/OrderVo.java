@@ -14,7 +14,7 @@ public class OrderVo {
 	private String products; 
 	private String amounts; 
 	private String products_price; 
-	private String request; 
+	private String request;
 	private String message; 
 	private int s_fee; 
 	private Timestamp order_date; 
@@ -23,5 +23,7 @@ public class OrderVo {
 	private String receiver;
 	private String selnum;
 	private String address;
-	
+	private int paid_price;
+	private int order_state;
+	private String paymentInfo;
 }

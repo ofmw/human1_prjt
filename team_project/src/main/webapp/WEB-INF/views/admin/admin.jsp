@@ -265,7 +265,16 @@
                  </div>                    
              </li>
 	         </c:if>
-	         
+	         <c:if test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
+               <li>
+                 <div>
+                     <a href="${pageContext.request.contextPath}/admin/order.do">
+                         <img src="" alt="">
+                         <p>주문</p>
+                     </a>
+                 </div>                    
+             </li>
+             </c:if>
 	         <!-- <li>
 	             <div>
 	                 <a href="">
@@ -289,6 +298,9 @@
                </c:when>
                <c:when test="${status == 'inquiry'}">
                    <jsp:include page="inquiry.jsp"></jsp:include>
+               </c:when>
+               <c:when test="${status == 'order'}">
+                   <jsp:include page="order.jsp"></jsp:include>
                </c:when>
 	       </c:choose>	        
 	    </div>      
