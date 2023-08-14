@@ -43,4 +43,5 @@ public class KakaoDao {
 		}
 		sqlSession.insert(MAPPER+".kjoin", userInfo);
 	}
+	
 }

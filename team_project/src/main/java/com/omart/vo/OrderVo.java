@@ -28,4 +28,6 @@ public class OrderVo {
 	private String paymentInfo;
 	private int used_point;
 	
+	//주문한 상품 개수
+	private int p_amount;
 }

@@ -20,7 +20,7 @@
     </insert>
     
     <!-- 회원가입시 찜목록에 행 생성하기 위해 가입정보 조회 -->
-    <select id="checkM_idx" parameterType="MemberVo">
+    <select id="checkM_idx" parameterType="MemberVo" resultType="_int">
     	SELECT m_idx
     	FROM member_omart
     	WHERE m_id = #{m_id}
@@ -53,6 +53,11 @@
         WHERE m_id=#{m_id}
     </select>
     
+    <!-- 회원탈퇴 -->
+    <delete id="cancel" parameterType="_int">
+	    CALL cancel_member(#{m_idx})
+    </delete>
+    
     <!-- 정보 찾기 -->
 	<select id="klogin" parameterType="string" resultType="memberVo">
 		SELECT *
@@ -60,7 +65,7 @@
 		WHERE m_id=#{email}
 	</select>
 	
-	<!-- 정보 저장 -->
+	<!-- 카카오 회원 정보 저장 -->
 	<insert id="kjoin" parameterType="map">
 		INSERT INTO member_omart(m_id, m_pw, m_name, platform, gender)
 		VALUES(#{email}, "kakao", #{nickname}, "kakao", #{gender}) 

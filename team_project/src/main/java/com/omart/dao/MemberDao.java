@@ -46,10 +46,18 @@ public class MemberDao{
 		return sqlSession.selectOne(MAPPER+".checkM_idx", vo);
 	}
 	
+	//회원탈퇴
+	public int cancel(int m_idx) {
+		System.out.println("프로시저에 제공된 m_idx: " +m_idx);
+		return sqlSession.delete(MAPPER+".cancel", m_idx);
+	}
+	
+	//가입시 찜목록 생성
 	public void insertWish(int m_idx) {
 		sqlSession.insert(MAPPER+".insertWish", m_idx);
 	}
 	
+	//찜목록 정보 가져오기
 	public List<String> getWishList(int m_idx){
 		List<String> wishList = null;
 				
@@ -81,7 +89,7 @@ public class MemberDao{
 			sqlSession.update(MAPPER+".setPoint", mVo);
 		}
 		
-	//찜목록 조회
+	//찜목록에 있는 상품 정보 조회
 	public List<ProductVo> getP_info(List<String> wish) {
 		
 		return sqlSession.selectList(MAPPER+".getP_info", wish);

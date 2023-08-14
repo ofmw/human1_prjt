@@ -1,14 +1,11 @@
 package com.omart.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,6 +58,9 @@ public class AjaxMypageController {
 	@PostMapping("/addCart.do")
 	public String addCart(@RequestParam("p_id[]") String [] p_id,
 			 			  HttpSession session) {
+		
+		System.out.println(Arrays.toString(p_id));
+		System.out.println("addCart.do 요청됨");
 		
 		MemberVo member = (MemberVo) session.getAttribute("member");
 		int m_idx = member.getM_idx();

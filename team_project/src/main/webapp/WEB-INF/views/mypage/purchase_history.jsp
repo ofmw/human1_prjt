@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +23,38 @@
 	    	text-decoration: underline;
 	    	cursor: pointer;
 	    }
+	    /* ---------------------마이페이지 메인영역 헤더--------------------- */
+        #mp_main_ph_header{
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #222;
+        }
+        .mp_main_ph_header_title{
+            padding-bottom: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #mp_main_ph_header_opt-box{
+        	display: flex;
+        	flex-direction: row;
+        	justify-content: flex-end;
+        	
+        	font-size: 12px;
+        	user-select: none;
+        }
+        #sel_box{
+            background-color: #fcfcfc;
+		    padding: 2px 5px;
+		    border: 1px solid #ddd;
+		    border-radius: 3px;
+        }
+        #mp_main_wish_notice{
+            border-top: 1px solid #e5e5e5;
+            padding-top: 10px;
+            font-size: 13px;
+            color: #777;
+        }
         /* ---------------------페이지 내비게이션--------------------- */
         .p-nav{
         	width: 25px;
@@ -89,6 +124,135 @@
 	                }
 	            });
 	        });
+	        /* ---------------------회원 탈퇴--------------------- */
+            //*** 회원탈퇴 버튼 클릭 이벤트 처리 ***//
+            $("#cancel").on("click", function(){
+            	
+            	let platform = $("#session_platform").val();
+            	
+            	if (platform === "omart") {
+            		location.href = "omartCancel.do";
+            	} else if (platform === "kakao") {
+            		location.href = "kakaoCancel.do";
+            	}
+            	
+            });
+            
+	        /* ---------------------주문/배송내역 표시 개수--------------------- */
+            //*** 표시 개수 설정 ***//
+            function showElements(option) {
+                
+            	console.log("표시 개수: "+option);
+            	
+            	let elements = countVisibleRows();
+            	let page = 0;
+            	
+            	if (elements.length > option) { // 내역 개수가 선택한 표시 수보다 클 경우
+                	
+            		page = Math.ceil(elements.length / option);
+            		
+            		console.log("내역 개수: "+elements.length);
+                    console.log("페이지 수: "+page);
+                    
+                    setNav(page);
+                    
+                } else { // 내역 개수가 선택한 표시 수보다 작을 경우
+                	
+                	page = 1; // 표시할 페이지 내비게이션 버튼 1개
+                	
+                	console.log("내역 개수: "+elements.length);
+                    console.log("페이지 수: "+page);
+                    
+                    setNav(page);
+                }
+            }
+            
+          	//*** sel2 표시 옵션 선택 이벤트 처리 ***//
+            $("#sel2").change(function() {
+                let selectedOption = parseInt($(this).val());
+                
+                if (selectedOption === 4) { // 4개씩 표시
+                    showElements(4);
+                } else if (selectedOption === 8) { // 8개씩 표시
+                	showElements(8);
+                } else if (selectedOption === 100) { // 100개씩 표시
+                	showElements(100);
+                }
+            });
+            
+            
+	        /* ---------------------페이지 내비게이션------------------- */
+	        //*** 테이블의 tr 요소 개수 확인 ***//
+	        function countVisibleRows() {
+	            // 숨김처리된 #tr_empty_history 행 및 제목 행울 제외한 행의 개수 반환
+	            return $('table tr:not(#tr_empty_history, :first-child, :last-child)').length;
+	        }
+	        
+            //*** 페이지 내비게이션 버튼 생성 ***//
+            function setNav(page) {
+            	
+            	console.log("내역 개수: " +countVisibleRows());
+            	console.log("페이지 개수: " +page);
+			
+				let navDiv = $("#td_pnav"); // 페이지 내비게이션 버튼 생성 위치
+				navDiv.empty(); // 기존 버튼 삭제
+			
+				for (var i = 1; i <= page; i++) {
+					let pagebtn = $("<button>", {
+						class: "p-nav",
+						type: "button",
+						value: i,
+						text: i
+					});
+				
+					navDiv.append(pagebtn);
+				}
+				
+				// 페이지 버튼 생성과 동시에 1페이지로 보내기
+				changePage(1);
+				
+			}
+            
+            //페이지 로드시 기본 버튼 생성
+            setNav(Math.ceil(countVisibleRows() / 4)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+            
+          	//*** 페이지 변환 ***//
+            function changePage(pageNum) {
+            
+          		// 찜 상품 개수
+          		let elements = $('table tr:not(#tr_empty_history, :first-child, :last-child)');
+          		// 한 페이지에 표시할 내역 개수
+          		let showAmount = parseInt($("#sel2").val());
+          		
+          		console.log("한 페이지에 표시할 상품 개수: " +showAmount);
+          		
+          		// 해당 페이지에서 표시할 첫번째 내역 인덱스 번호
+          		let startIndex = (pageNum - 1) * showAmount;
+          		// 해당 페이지에서 표시할 마지막 내역 인덱스 번호
+          		let endIndex = startIndex + showAmount - 1;
+          		console.log("해당 페이지 상품 인덱스 시작값: " +startIndex);
+          		console.log("해당 페이지 상품 인덱스 끝값: " +endIndex);
+          		
+          		for (let i=0; i<elements.length; i++) {
+          			if (i >= startIndex && i <= endIndex) {
+          				console.log("현재 인덱스: " +i)
+          	            $(elements[i]).show();
+          	        } else {
+          	        	console.log("else 현재 인덱스: " +i)
+          	            $(elements[i]).hide();
+          	        }
+				}
+          	}
+          	
+          	//*** 페이지 내비게이션 버튼 클릭 이벤트 처리 ***//
+          	
+          	$(document).on("click", ".p-nav", function() {
+
+          		// 클릭한 페이지 내비게이션 버튼 값
+          		let pageNum = parseInt($(this).val());
+          		console.log(pageNum);
+          		changePage(pageNum);
+			});	
 
         });
     </script>
@@ -112,9 +276,12 @@
             <input type="hidden" id="session_m_idx" value="${member.m_idx}">
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="#">회원정보 변경</a></li>
-                    <li><a href="#">비밀번호 변경</a></li>
+                	<c:if test="${member.platform eq 'omart'}">
+	                    <li><a href="#">회원정보 변경</a></li>
+	                    <li><a href="#">비밀번호 변경</a></li>
+	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
+                    <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
@@ -172,9 +339,23 @@
         <form>
             <div id="mp_main">
                 <div id="mp_main_ph" class="mp_main_obj">
+                
+                	<!-- 메인영역 헤더 -->
+	                <div id="mp_main_ph_header">
+	                    <div class="mp_main_title">주문/배송 내역</div>
+	                    <div id="mp_main_ph_header_opt-box">
+		                    <div id="mp_main_ph_header_sel-box">
+		                        <select id="sel2">
+		                            <option value="4">4개씩</option>
+		                            <option value="8">8개씩</option>
+		                            <option value="100">100개씩</option>
+		                        </select>
+		                    </div>
+	                    </div>
+	                </div>
 
                     <!-- 마이페이지 주문/배송내역  -->
-                    <div class="mp_main_title">주문/배송 내역</div>
+                    
                     <div id="mp_main_ph_searchbar">
 
                         <div>기간조회</div>
@@ -215,39 +396,29 @@
                                 <th scope="col">배송상태</th>
                                 <th scope="col">선택</th>
                             </tr>
+                            <c:choose>
+                            	<c:when test="${!empty phInfo}">
+		                            <c:forEach begin="0" end="${fn:length(phInfo) - 1}" var="i">
+			                            <tr>
+			                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
+			                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
+			                                <td class="td_pname">
+			                                	<a href="order_detail.do?order_idx=${phInfo[i].order_idx}">
+			                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
+			                                		<c:if test="${phInfo[i].p_amount gt 1}"><span>외 ${phInfo[i].p_amount - 1}건</span></c:if>
+			                                	</a>
+			                                </td>
+			                                <td class="td_shipstate">결제완료</td>
+			                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
+			                            </tr>
+		                            </c:forEach>
+	                            </c:when>
+	                            <c:otherwise>
+	                            	<tr id="tr_empty_history"><td colspan="5">주문/배송 내역이 없습니다!</td></tr>
+	                            </c:otherwise>
+                            </c:choose>
                             <tr>
-                                <td class="td_date">2023-07-17</td>
-                                <td class="td_ordernum">20230717-00000012</td>
-                                <td class="td_pname">[국산] 고구마500kg <span>외 8건</span></td>
-                                <td class="td_shipstate">결제완료</td>
-                                <td><a href="order_detail.do" class="ph_detail_btn button">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-07-14</td>
-                                <td class="td_ordernum">20230714-00000001</td>
-                                <td class="td_pname">[오뚜기] 삼양라면 <span>외 5건</span></td>
-                                <td>상품준비중</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-05-29</td>
-                                <td class="td_ordernum">20230529-00012351</td>
-                                <td class="td_pname">[풀무원] AA건전지 X 20입 <span>외 14건</span></td>
-                                <td>베송중</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-04-01</td>
-                                <td class="td_ordernum">20230401-00037541</td>
-                                <td class="td_pname">불스원 와이퍼 외 <span>외 2건</span></td>
-                                <td>배송완료</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn button">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="5" id="td_pnav">
-                                	<button type="button" class="p-nav button" value="">1</button>
-                                	<button type="button" class="p-nav button" value="">2</button>
-                                </td>
+                                <td colspan="5" id="td_pnav"></td>
                             </tr>
                         </table>
                     </div>

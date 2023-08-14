@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.omart.vo.AddressVo;
 import com.omart.vo.MemberVo;
+import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
 
 public interface MemberService {
@@ -29,5 +30,9 @@ public interface MemberService {
 	default void editAddr(AddressVo vo) {}
 	default void recordLogin(int m_idx) {}
 	default boolean checkDuplicateId(String m_id) {return false;}
-	
+	default int cancel(int m_idx) {return 0;}
+	default List<OrderVo> get_ph_info(int m_idx) {return null;}
+	default List<ProductVo> get_p_info(List<OrderVo> ph_info) {return null;}
+	default List<ProductVo> get_p_info2(String[] p_idArr) {return null;}
+
 }
