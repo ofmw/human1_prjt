@@ -179,13 +179,99 @@
                 	showElements(100);
                 }
             });
+          	
+            /* ---------------------기간조회 (라디오 버튼 프리셋)--------------------- */
+            $('.quicksel_radio').change(function() {
+            	let range = $(this).val();
+            	console.log("기간조회 (프리셋): " +range);
+            	
+            	// 오늘 날짜
+            	let today = new Date();
+            	
+            	// 오늘 날짜 기준으로 프리셋에 해당되는 날짜 계산
+            	let targetDate = new Date();
+            	switch (range) {
+            		case "1": targetDate.setDate(targetDate.getDate() - 8); break;
+            		case "2": targetDate.setDate(targetDate.getDate() - 16); break;
+            		case "3": targetDate.setDate(targetDate.getDate() - 1); 
+    							targetDate.setMonth(targetDate.getMonth() - 1); break;
+            		case "4": targetDate.setDate(targetDate.getDate() - 1);
+            					targetDate.setMonth(targetDate.getMonth() - 3); break;
+            	}
+            	
+            	console.log("조회 날짜 구간: " +targetDate);
+            	 
+             	// 모든 td_date 요소 반복
+                $('.td_date').each(function() {
+                    let dateString = $(this).text();
+                    let dateParts = dateString.split('-');
+                    
+                    // td에 있는 날짜 정보로 날짜 객체 생성
+                    let tdDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+                    // 기간조회 날짜와 비교하여 표시 여부 결정
+                    if (tdDate > targetDate && tdDate <= today) {
+                        // td 요소의 부모인 tr 요소를 보이게 설정
+                        $(this).closest('tr').show();
+                    } else {
+                        // td 요소의 부모인 tr 요소를 숨김 처리
+                        $(this).closest('tr').hide();
+                    }
+                });
+             	
+                setNav(Math.ceil(countVisibleRows() / 4));
+            });
             
+            /* ---------------------기간조회 (달력 선택)--------------------- */
+            // 조회하기 버튼 클릭 이벤트 처리
+		    $('#mp_main_ph_search_detail_btn').click(function() {
+		    	
+		        let startDate = new Date($('#cal-start').val());
+		        let endDate = new Date($('#cal-end').val());
+		        
+		        startDate.setDate(startDate.getDate() - 1);
+		        endDate.setDate(endDate.getDate() + 1);
+		        
+		        console.log("조회 날짜 구간(시작): " +startDate);
+            	console.log("조회 날짜 구간(끝): " +endDate);
+		
+		        if (startDate > endDate) {
+		        	
+		            alert("시작 날짜는 종료 날짜보다 이전 날짜여야 합니다.");
+		            $('#cal-end').val(''); // 종료 날짜 초기화
+		            return;
+		        } else {
+		        	
+	             	// 모든 td_date 요소 반복
+	                $('.td_date').each(function() {
+	                    let dateString = $(this).text();
+	                    let dateParts = dateString.split('-');
+	                    
+	                    // td에 있는 날짜 정보로 날짜 객체 생성
+	                    let tdDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+	                    // 일주일 전 날짜와 비교하여 표시 여부 결정
+	                    if (startDate < tdDate && tdDate < endDate) {
+	                        // td 요소의 부모인 tr 요소를 보이게 설정
+	                        $(this).closest('tr').show();
+	                    } else {
+	                        // td 요소의 부모인 tr 요소를 숨김 처리
+	                        $(this).closest('tr').hide();
+	                    }
+	                });
+	             	
+	                setNav(Math.ceil(countVisibleRows() / 4));
+		        }
+		        
+		    });
             
 	        /* ---------------------페이지 내비게이션------------------- */
 	        //*** 테이블의 tr 요소 개수 확인 ***//
 	        function countVisibleRows() {
-	            // 숨김처리된 #tr_empty_history 행 및 제목 행울 제외한 행의 개수 반환
-	            return $('table tr:not(#tr_empty_history, :first-child, :last-child)').length;
+	            // 제목 행을 제외한 표시된 tr의 갯수 반환
+	            return $('#tb_ph-list tr:not(:first-child, :last-child)').filter(function() {
+	                return $(this).css('display') !== 'none';
+	            }).length;
 	        }
 	        
             //*** 페이지 내비게이션 버튼 생성 ***//
@@ -220,7 +306,9 @@
             function changePage(pageNum) {
             
           		// 찜 상품 개수
-          		let elements = $('table tr:not(#tr_empty_history, :first-child, :last-child)');
+          		let elements = $('#tb_ph-list tr:not(:first-child, :last-child)').filter(function() {
+	                return $(this).css('display') !== 'none';
+	            });
           		// 한 페이지에 표시할 내역 개수
           		let showAmount = parseInt($("#sel2").val());
           		
@@ -371,9 +459,9 @@
                         </div>
 
                         <div class="mp_main_ph_search_detail">
-                            <input type="date" class="cal_date" id="cal_start">
+                            <input type="date" class="cal_date" id="cal-start">
                             <span id="cal_hipen">~</span>
-                            <input type="date" class="cal_date" id="cal_end">
+                            <input type="date" class="cal_date" id="cal-end">
                             <div><input type="button" value="조회하기" id="mp_main_ph_search_detail_btn"></div>
                         </div>
 
@@ -381,7 +469,7 @@
 
                     <!-- 마이페이지 주문/배송내역 table -->
                     <div id="mp_main_ph_content">
-                        <table>
+                        <table id="tb_ph-list">
                             <colgroup>
                                 <col style="width:9%;">
                                 <col style="width:19%;">
