@@ -408,7 +408,22 @@
 			                                		<c:if test="${phInfo[i].p_amount gt 1}"><span>외 ${phInfo[i].p_amount - 1}건</span></c:if>
 			                                	</a>
 			                                </td>
-			                                <td class="td_shipstate">결제완료</td>
+			                                <td class="td_shipstate">
+			                                    <c:choose>
+			                                         <c:when test="${phInfo[i].order_state eq 0}">
+			                                             결제완료
+			                                         </c:when>
+			                                         <c:when test="${phInfo[i].order_state eq 1}">
+                                                         상품준비중
+                                                     </c:when>
+                                                     <c:when test="${phInfo[i].order_state eq 2}">
+                                                         배송중
+                                                     </c:when>
+                                                     <c:when test="${phInfo[i].order_state eq 3}">
+                                                         배송완료
+                                                     </c:when>
+			                                    </c:choose>
+			                                </td>
 			                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
 			                            </tr>
 		                            </c:forEach>
