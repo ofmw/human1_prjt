@@ -37,6 +37,23 @@
         left outer join inquiry_ans ia on i.b_idx = ia.b_idx
 	    order by i.b_idx desc
     </select>
+    <!-- 로그인한 사용자의 1:1문의글 가져오기 -->
+	<select id="getInquiryByUser" resultType="boardFileVo">
+	    select i.*, m.m_id, m.m_name, i.b_idx, ia.ans_date
+	    from inquiries i
+	    inner join member_omart m on i.m_idx = m.m_idx
+	    left outer join inquiry_ans ia on i.b_idx = ia.b_idx
+	    where m.m_id = #{userId}
+	    order by i.b_idx desc
+	</select>
+	<!-- b_idx를 이용하여 1:1문의 상세 내역 가져오기 -->
+	<select id="getInquiryByBIdx" resultType="boardFileVo">
+	    select i.*, m.m_id, m.m_name, i.b_idx, ia.ans_content
+	    from inquiries i
+	    inner join member_omart m on i.m_idx = m.m_idx
+	    left outer join inquiry_ans ia on i.b_idx = ia.b_idx
+	    where i.b_idx = #{b_idx}
+	</select>
     <!-- QnA 답변 게시글 추가 처리구문
     <insert id="insertQnaAnswer" parameterType="boardFileVo">
 	    insert into inquiries (b_idx, m_idx, ans_content, ans_date) values (#{b_idx}, #{m_idx}, #{ans_content}, #{ans_date})

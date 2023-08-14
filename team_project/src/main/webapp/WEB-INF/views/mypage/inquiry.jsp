@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -176,7 +180,7 @@
         }
         /* 리스트 테이블 구매상품 이름 */
         .td_title{
-            text-align: left;
+            text-align: center;
         }
         /* 리스트 테이블 주문상세내역 버튼 */
         .inquiry_detail_btn{
@@ -189,6 +193,10 @@
             border: 1px solid #cfcfcf;
             box-sizing: border-box;
         }
+        .td_ans_date{
+        	font-size: 14px;
+            color: #777;
+        }
         #td_pnav{
             height: 50px;
         }
@@ -200,6 +208,23 @@
     </style>
 
 </head>
+<script type="text/javascript">
+	$(function(){
+		$(".inquiry_detail_btn").click(function(){
+		    let b_idx = $(this).closest("tr").find(".b_idx").val();
+		let url ="inquiry_content.do?b_idx="+b_idx; 
+		let childWindow = null;
+		                        
+		// 기존에 자식창이 열려있는지에 대한 여부
+		if (childWindow) { // 이미 자식창이 열려있으면
+		childWindow.close(); // 자식창을 닫음
+		}
+		
+		childWindow = window.open(url, '리뷰 작성', 'menubar=no,width=700,height=750');
+		
+		});
+	});	
+</script>
 <body>
 
 <!-- 헤더 -->
@@ -284,28 +309,52 @@
                     <table >
                         <colgroup>
                             <col style="width: 9%;">
-                            <col style="width: 69%;">
+                            <col style="width: 54%;">
+                            <col style="width: 15%;">
                             <col style="width: 7%;">
                             <col style="width: 15%;">
                         </colgroup>
                         <tr>
                             <th>작성일</th>
                             <th>제목</th>
+                            <th>답변일자</th>
                             <th>진행상태</th>
                             <th>선택</th>
                         </tr>
+                        <c:forEach items="${inquiryList}" var="inquiry">
                         <tr>
-                            <td class="td_date">2023.07.28</td>
-                            <td class="td_title">[주문/배송] 배송이 오지 않았습니다</td>
-                            <td class="td_state">진행중</td>
-                            <td><a href="#" class="inquiry_detail_btn">문의상세내역</a></td>
+                            <td class="td_date"><fmt:formatDate value="${inquiry.post_date}" pattern="yyyy-MM-dd"/></td>
+                            <td class="td_title">${inquiry.title}</td>
+                            <td class="td_ans_date">
+                            	<c:choose>
+		                    		<c:when test="${inquiry.reply_state eq '0'}">
+								        -
+								    </c:when>
+								    <c:when test="${inquiry.reply_state eq '1'}">
+								        <fmt:formatDate value="${inquiry.ans_date}" pattern="MM-dd HH:mm"/>
+								    </c:when>
+								    <c:otherwise>
+								        <fmt:formatDate value="${inquiry.ans_date}" pattern="MM-dd HH:mm"/>
+								    </c:otherwise>
+								 </c:choose>
+                            </td>
+                            <td class="td_state">
+								<c:choose>
+		                    		<c:when test="${inquiry.reply_state eq '0'}">
+								        진행중
+								    </c:when>
+								    <c:when test="${inquiry.reply_state eq '1'}">
+								        답변완료
+								    </c:when>
+								    <c:otherwise>
+								        ${inquiry.reply_state}
+								    </c:otherwise>
+								 </c:choose>
+							</td>
+                            <td><input type="hidden" class="b_idx" value="${inquiry.b_idx}"/><a class="inquiry_detail_btn">문의상세내역</a></td>
                         </tr>
-                        <tr>
-                            <td class="td_date">2023.07.21</td>
-                            <td class="td_title">[취소/환불] ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ</td>
-                            <td class="td_state">답변완료</td>
-                            <td><a href="#" class="inquiry_detail_btn">문의상세내역</a></td>
-                        </tr>
+                        </c:forEach>
+                        
                         <tr>
                             <td colspan="4" id="td_pnav">네비게이션</td>
                         </tr>

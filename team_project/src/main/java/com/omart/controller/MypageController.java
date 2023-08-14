@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.omart.service.boardfile.BoardFileListService;
 import com.omart.service.member.MemberService;
 import com.omart.service.product.ProductService;
+import com.omart.vo.BoardFileVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.ProductVo;
 
@@ -26,6 +28,8 @@ public class MypageController {
 	private MemberService mWish;
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdInfo;
+	@Setter(onMethod_= {@Autowired})
+	private BoardFileListService bfList;
 	
 	//마이페이지
 	@GetMapping("/mypage.do")
@@ -47,9 +51,37 @@ public class MypageController {
 	
 	//마이페이지 - 1:1문의
 	@GetMapping("/inquiry.do")
-	public String list_inquiry() {
+	public String inquiry(HttpSession session, Model model) {
+	    MemberVo loggedInUser = (MemberVo) session.getAttribute("member");
+	    
+	    if (loggedInUser != null) {
+	        String loggedInUserId = loggedInUser.getM_id(); // 로그인한 사용자 아이디 가져오기
+	        
+	        List<BoardFileVo> inquiryList = bfList.getInquiryByUser(loggedInUserId); // 로그인한 사용자의 1:1 문의 내역 가져오기
+	        
+	        // inquiryList를 JSP로 전달
+	        model.addAttribute("inquiryList", inquiryList);
+	        
+	        return "mypage/inquiry";
+	    }
 		return "mypage/inquiry";
 	}
+	
+	//마이페이지 1:1문의상세내역
+	@GetMapping("/inquiry_content.do")
+	public String inquiry_content(@RequestParam("b_idx") int b_idx, Model model) {
+		
+		List<BoardFileVo> inquiryContent = bfList.getInquiryByBIdx(b_idx);
+		
+		System.out.println("컨트롤러b_idx값 :" + bfList.getInquiryByBIdx(b_idx));
+
+		model.addAttribute("inquiryContent", inquiryContent);
+		
+		return "mypage/inquiry_content";
+	}
+	   
+
+
 	
 	//마이페이지 - 찜목록
 	@GetMapping("/wish.do")
@@ -102,4 +134,6 @@ public class MypageController {
 //		
 //		return viewPage;
 //	}
+	 
+	
 }
