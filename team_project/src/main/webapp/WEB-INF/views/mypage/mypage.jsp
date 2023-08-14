@@ -7,7 +7,7 @@
 <head>
     <title>마이페이지</title>
 
-<link href="../resources/css/mypage.css" rel="stylesheet">
+<link href="../resources/css/mypage.css?v=1234" rel="stylesheet">
 <style>
 
 	/* a태그 공통 */
@@ -112,6 +112,9 @@
 
 	<script>
         $(function() {
+        	
+        	
+        	
         	/* ---------------------배송지 변경--------------------- */
             // 기존에 열려있는 자식 창에 대한 변수 초기화
             let childWindow = null;
@@ -348,10 +351,10 @@
 				        </c:if>
                     </c:forEach>
                     
-                    <div class="mp_main_osc_infobar_obj_btw">결제완료<a href="#">${payment_completed}</a></div>
-                    <div class="mp_main_osc_infobar_obj_btw"><span>상품준비중</span><a href="#">${ready_to_products}</a></div>
-                    <div class="mp_main_osc_infobar_obj_btw"><span>배송중</span><a href="#">${delivery_in_progress}</a></div>
-                    <div class="mp_main_osc_infobar_obj"><span>배송완료</span><a href="#">${delivery_completed}</a></div>
+                    <div class="mp_main_osc_infobar_obj_btw">결제완료<p>${payment_completed}</p></div>
+                    <div class="mp_main_osc_infobar_obj_btw"><span>상품준비중</span><p>${ready_to_products}</p></div>
+                    <div class="mp_main_osc_infobar_obj_btw"><span>배송중</span><p>${delivery_in_progress}</p></div>
+                    <div class="mp_main_osc_infobar_obj"><span>배송완료</span><p>${delivery_completed}</p></div>
                 </div>
                 <div style="border-radius: 4px;background-color: #fafafa;height: 40px;width: 100%;margin-top: 5px;"></div>
             </div>

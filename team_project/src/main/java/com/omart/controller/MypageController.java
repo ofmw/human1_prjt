@@ -3,6 +3,7 @@ package com.omart.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.omart.service.member.MemberService;
 import com.omart.service.product.ProductService;
 import com.omart.vo.AddressVo;
+import com.omart.vo.CartVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
@@ -155,7 +157,7 @@ public class MypageController {
 			
 			@SuppressWarnings("unchecked")
 			List<String> wish = (List<String>) session.getAttribute("wishList");
-			System.out.println(wish);
+//			System.out.println(wish);
 			
 			List<ProductVo> p_info = new ArrayList<ProductVo>();
 			
@@ -249,6 +251,52 @@ public class MypageController {
 	@GetMapping("/cancel.do")
 	public String cancel() {
 		return "mypage/cancel";
+	}
+	
+	@GetMapping("/write_review.do")
+	public String write_review(@RequestParam String order_idx, @RequestParam String pId, HttpServletRequest request, Model model) {
+		
+		HttpSession session = request.getSession();		
+		MemberVo mVo = (MemberVo) session.getAttribute("member");
+		int m_idx =  mVo.getM_idx();
+		
+		System.out.println("param-check : "+order_idx+", "+pId+", "+m_idx);
+		
+		// 현재 세션에서 주문내역 정보 가져옴
+		@SuppressWarnings("unchecked")
+		List<OrderVo> orderList = (ArrayList<OrderVo>)session.getAttribute("phInfo");
+		OrderVo selected_order = new OrderVo();
+		
+		for(OrderVo order : orderList) {
+			if(order.getOrder_idx().equals(order_idx)) {
+				selected_order = order;
+			}
+		}
+		
+		CartVo cVo = new CartVo();
+		
+		// 주문내역의 각 정보 저장
+		String p_ids = selected_order.getProducts();
+		String amounts = selected_order.getAmounts();
+		String p_price = selected_order.getProducts_price();
+		
+		// 저장한 정보에서 하나씩 분리하여 배열에 저장
+		
+		String[] p_idArr = p_ids.split(",");
+		String[] amountsArr = amounts.split(",");
+		String[] p_priceArr = p_price.split(",");
+		
+		for(int i=0; i<p_idArr.length; i++) {
+			if(p_idArr[i].equals(pId)) {
+				cVo.setP_id(p_idArr[i]);
+				cVo.setAmount(Integer.parseInt(amountsArr[i]));
+				cVo.setPrice(Integer.parseInt(p_priceArr[i]));
+			}
+		}
+		
+		model.addAttribute("selected_product", cVo);
+				
+		return "mypage/write_review";
 	}
 	
 }

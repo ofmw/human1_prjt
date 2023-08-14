@@ -63,9 +63,7 @@ public class MemberDao{
 		List<String> wishList = null;
 				
 		WishVo wVo = sqlSession.selectOne(MAPPER+".getWishList", m_idx);
-		
-		System.out.println("wVo: "+wVo);
-		
+				
 		if(wVo.getW_list() != null) {
 			wishList = new ArrayList<String>();
 			wishList = Arrays.asList(wVo.getW_list().split(","));

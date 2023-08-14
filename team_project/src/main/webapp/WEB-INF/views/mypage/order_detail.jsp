@@ -66,6 +66,21 @@
     			
     		});
     		
+    		$(".btn_writeReview").click(function(){
+    			let pId = $(this).closest("tr").find(".p_id").val();
+    			let orderIdx = $("#od_header_ordernum span").text();
+    		    let url ="write_review.do?order_idx="+orderIdx+"&pId="+pId; 
+    		    let childWindow = null;
+    		        		    
+    		    // 기존에 자식창이 열려있는지에 대한 여부
+                if (childWindow) { // 이미 자식창이 열려있으면
+                    childWindow.close(); // 자식창을 닫음
+                }
+    		    
+    		    childWindow = window.open(url, '리뷰 작성', 'menubar=no,width=700,height=750');
+    		    
+    		});
+    		
     	});
     </script>
 </head>
@@ -252,7 +267,7 @@
 	                                    <span class="td_odinfo_price"><fmt:formatNumber value="${p.price*p.stock}" pattern="#,###"/><span>원</span></span><br>
 	                                    <span class="td_odinfo_amount">수량 ${p.stock}개</span>
 	                                </td>
-	                                <td class="td_review"><a href="#">리뷰작성</a></td>
+	                                <td class="td_review"><a class="btn_writeReview" >리뷰작성</a></td>
 	                            </tr>
                             </c:forEach>
                         </table>

@@ -325,4 +325,5 @@ ul{list-style: none;}
     color: #222;
     text-align: center;
     line-height: 30px;
+    cursor: pointer;
 }
