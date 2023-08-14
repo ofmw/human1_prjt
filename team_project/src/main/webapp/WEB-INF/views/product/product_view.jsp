@@ -271,15 +271,17 @@
 	    color: gray;
 	}
 	#div_reviewContents textarea {
-	    width: 780px;
+	    width: 750px;
+	    height: auto;
 	    resize: none;
 	    color: black;
 	    background-color: white;
 	    border: none;
 	}
-	#div_reviewContent {
+	.div_reviewContent {
 	    width: 780px;
-	    height: 80px;
+	    display: flex;
+	    align-items: center;
 	}
 	#div_pageNav {
 	    /* border: 1px solid green; */
@@ -358,7 +360,9 @@
 	   position: absolute;
 	   right: 100px;
 	}
-	
+	.div_reviewContent *{
+	   white-space: nowrap;
+	}
     
 </style>
 <script>
@@ -786,7 +790,8 @@
     </div>
     <div id="div_review" class="other">
         <div>
-            <h3>리뷰(2건)</h3>
+            <c:set var="reviewNum" value="${ReviewList.size()}"></c:set>
+            <h3>리뷰(${reviewNum}건)</h3>
             <select name="" id="">
                 <option value="">최신순</option>
                 <option value="">평점높은순</option>
@@ -794,23 +799,21 @@
             </select>                
         </div>
         <div id="div_reviewContents">
-            <div id="div_reviewContent">
-                <h5>★ 5</h5>
-                <h6>브론즈</h6>
-                <p>회원id</p>
-                <p>2023.07.20</p>
-                <p>No.2</p>
-                <textarea name="" id="" cols="30" rows="1" disabled>그러게요~</textarea>
-            </div>
-            <div id="div_reviewContent">
-                <h5>★ 5</h5>
-                <h6>브론즈</h6>
-                <p>회원id</p>
-                <p>2023.07.20</p>
-                <p>No.1</p>
-                <textarea name="" id="" cols="30" rows="1" disabled>정말 맛있네요~</textarea>
-            </div>
-            <div id="div_pageNav">여기에 페이지 네비게이션</div>
+            <c:forEach items="${ReviewList}" var="review">
+	            <div class="div_reviewContent">
+	                <h5>★ ${review.stars}</h5>
+	                <c:choose>
+	                   <c:when test="${review.grade eq 0}"><h6>브론즈</h6></c:when>
+	                   <c:when test="${review.grade eq 1}"><h6>실버</h6></c:when>
+	                   <c:when test="${review.grade eq 2}"><h6>골드</h6></c:when>
+                       <c:otherwise><h6>관리자</h6></c:otherwise>
+	                </c:choose>
+	                <p>${review.m_name}</p>
+	                <p><fmt:formatDate value="${review.post_date}" pattern="yyyy-MM-dd" /></p>
+	                <textarea name="" id="" cols="30" rows="1" disabled>${review.content}</textarea>
+	            </div>  
+            </c:forEach>            
+<!--             <div id="div_pageNav">여기에 페이지 네비게이션</div> -->
         </div>
     </div>
     <div id="div_refundInfo" class="other">

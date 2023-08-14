@@ -30,4 +30,8 @@ public class ProductVo {
 	private List<String> selectedCategories;//
 	
 	private int salesAmount; // 주문 판매량
+	
+	//주문당 Product 개별 조회시 리뷰 유무 구분을 위한 필드
+	private int review_state;
+	private String order_idx;
 }

@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.omart.vo.BoardFileVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
@@ -125,6 +126,32 @@ public class MemberDao{
 	
 	public List<OrderVo> orderList(int m_idx) {
 		return sqlSession.selectList(MAPPER+".orderList", m_idx);
+	}
+	
+	public boolean isDuplicateById(String m_id) {
+		int count = sqlSession.selectOne(MAPPER + ".checkId", m_id);
+	    return count > 0;
+	}
+	
+	public boolean isDuplicateBySelNum(String selNum) {
+		int count = sqlSession.selectOne(MAPPER + ".checkSelNum", selNum);
+	    return count > 0;
+	}
+	
+	public void write_review_process(BoardFileVo bfVo){
+		sqlSession.insert(MAPPER+".write_review_process", bfVo);
+	}
+	
+	public List<BoardFileVo> selectReviewList(String p_id){
+		return sqlSession.selectList(MAPPER+".selectReviewList", p_id);
+	}
+	
+	public String getMemberNameFromOrder(String order_idx) {
+		return sqlSession.selectOne(MAPPER+".getMemberNameFromOrder", order_idx);
+	}
+	
+	public int getGradeFromOrder(String order_idx) {
+		return sqlSession.selectOne(MAPPER+".getGradeFromOrder", order_idx);
 	}
 	
 }

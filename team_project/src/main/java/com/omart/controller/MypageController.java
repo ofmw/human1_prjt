@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.omart.service.member.MemberService;
 import com.omart.service.product.ProductService;
 import com.omart.vo.AddressVo;
+import com.omart.vo.BoardFileVo;
 import com.omart.vo.CartVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.OrderVo;
@@ -30,7 +32,7 @@ public class MypageController {
 	@Setter(onMethod_={ @Autowired })
 	private MemberService mPh, mAddress, mWish, mOdrList;
 	@Setter(onMethod_= {@Autowired})
-	private ProductService pdInfo;
+	private ProductService pdInfo, pdCheck;
 	
 	//마이페이지
 	@GetMapping("/mypage.do")
@@ -119,17 +121,23 @@ public class MypageController {
 				List<ProductVo> p_info = mPh.get_p_info2(p_idArr);
 				
 				String[] String_amountsArr= amounts.split(",");				//amounts (String형)
-				int[] amountsArr = new int[String_amountsArr.length];		//int형의 amounts 생성
-				for (int i = 0; i < String_amountsArr.length; i++) {		//String형 amounts의 요소들을 int형으로 변환하여 저장
-		            amountsArr[i] = Integer.parseInt(String_amountsArr[i]);
-	            	p_info.get(i).setStock(amountsArr[i]);
-		        }
-				
 				String[] String_p_priceArr = p_price.split(",");			//products_price (String형)
+				
+				int[] amountsArr = new int[String_amountsArr.length];		//int형의 amounts 생성
 				int[] p_priceArr = new int[String_p_priceArr.length];		//int형의 products_price 생성
-				for (int i = 0; i < String_p_priceArr.length; i++) {		//String형 products_price의 요소들을 int형으로 변환하여 저장
+				
+				for (int i = 0; i < String_amountsArr.length; i++) {		//String형 amounts의 요소들을 int형으로 변환하여 저장
+					ProductVo pVo = p_info.get(i);
+					pVo.setOrder_idx(order_idx);
+									
+		            amountsArr[i] = Integer.parseInt(String_amountsArr[i]);
 					p_priceArr[i] = Integer.parseInt(String_p_priceArr[i]);
-					p_info.get(i).setPrice(p_priceArr[i]);
+	            	
+					pVo.setStock(amountsArr[i]);
+					pVo.setPrice(p_priceArr[i]);
+					
+					pVo.setReview_state(pdCheck.checkReview(pVo));
+					
 		        }
 				
 				session.setAttribute("p_info", p_info);
@@ -274,6 +282,7 @@ public class MypageController {
 		}
 		
 		CartVo cVo = new CartVo();
+		ProductVo pVo = pdInfo.getProduct(pId);
 		
 		// 주문내역의 각 정보 저장
 		String p_ids = selected_order.getProducts();
@@ -291,10 +300,12 @@ public class MypageController {
 				cVo.setP_id(p_idArr[i]);
 				cVo.setAmount(Integer.parseInt(amountsArr[i]));
 				cVo.setPrice(Integer.parseInt(p_priceArr[i]));
+				cVo.setP_name(pVo.getP_name());
 			}
 		}
 		
 		model.addAttribute("selected_product", cVo);
+		model.addAttribute("p_info", pVo);
 				
 		return "mypage/write_review";
 	}

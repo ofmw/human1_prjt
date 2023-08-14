@@ -3,6 +3,7 @@ package com.omart.service.member;
 import java.util.List;
 
 import com.omart.vo.AddressVo;
+import com.omart.vo.BoardFileVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
@@ -35,5 +36,10 @@ public interface MemberService {
 	default List<ProductVo> get_p_info(List<OrderVo> ph_info) {return null;}
 	default List<ProductVo> get_p_info2(String[] p_idArr) {return null;}
 	default List<OrderVo> orderList(int m_idx) {return null;}
+	default boolean checkDuplicateSelNum(String selNum) {return false;}
+	default void write_review_process(BoardFileVo vo){}
+	default List<BoardFileVo> selectReviewList(String p_id){return null;}
+	default String getMemberNameFromOrder(String order_idx) {return null;}
+	default int getGradeFromOrder(String order_idx) {return 0;}
 
 }

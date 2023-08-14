@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,8 +47,6 @@
         height: 100%;
     }
 
-   
-
     /* ---------------------리뷰 작성--------------------- */
     #ca_notice_area{
         width: 95%;
@@ -89,8 +88,8 @@
         border: 0;
         color: white;
     }
-    /* 기본 배송지로 설정 버튼 */
-    #btn_set_default{
+    /* 리뷰작성 완료 버튼 */
+    #btn_write_review{
         background-color: #e53838;
     }
     /* 현재 주문 배송지로 설정 버튼 */
@@ -109,10 +108,14 @@
     }
     #ca_product_tbl td{
         border: 1px solid red;
-        height: 100px;
+        height: 90px;
+    }
+    #ca_product_tbl tr:first-child td{
+        font-size: 13px;
+        padding-left: 5px;
     }
     #ca_product_tbl tr td:first-child {
-	   width: 105px;
+	   width: 95px;
 	}
 	#ca_product_tbl tr:first-child td:last-child{
 	   width: 150px;
@@ -123,6 +126,16 @@
 	   padding: 5px;
 	   resize: none;
 	}
+	#ca_product_tbl tr:nth-child(3) td{
+	   text-align: center;
+	   user-select: none;
+	}
+	#ca_product_tbl tr:nth-child(3) span{
+	   font-size: 40px;
+	   color: gray;
+	   cursor: pointer;
+	   margin: 2px;
+    }    
     
 </style>
 	
@@ -130,11 +143,66 @@
 	$(function() {
 		
 		let close_btn = $("#btn_close_window");
+		let write_review_btn = $("#btn_write_review");				
+		let stars = $(".stars");
+		let score = 0;
+		let orderIdx = $("#order_idx").val();
+		let pId = $("#p_id").val();
 		
-		close_btn.click(function() {
-			opener.document.location.reload();
-			self.close();
-	    });
+		stars.click(function(){	
+			let num = parseInt($(this).attr("id").replace("star_", ""))+1;
+			score = num-1;
+				
+			for (let i=0; i<num; i++){
+				$("#star_"+i).text("★");
+			}
+			
+			for(let i=num; i<6; i++){
+				$("#star_"+i).text("☆");
+			}
+			
+		});
+		
+		write_review_btn.click(function(){
+			
+			let content = $("#content").val();
+			
+			if(score == 0){
+				alert("별점을 선택해주세요.");
+			}else{
+				
+				$.ajax({
+					type: "post",
+					url: "write_review_process.do",
+					data: {
+						order_idx: orderIdx,
+						p_id: pId,
+						content: content,
+						stars: score
+					},
+					success: function(response){
+						if(response == "success"){
+							alert("리뷰작성이 완료되었습니다.");
+	                        opener.document.location.reload();
+	                        self.close();
+						}else{
+							alert("리뷰작성에 실패했습니다.");
+						}
+						
+					},
+					error: function(error){
+						console.log("리뷰작성 ajax 통신 중 에러발생");
+					}
+				});				
+				
+			}
+			
+		});		
+
+        close_btn.click(function() {
+            opener.document.location.reload();
+            self.close();
+        });
         
 	});
 </script>
@@ -146,19 +214,32 @@
 
 	<div id="ca_header">
 		상품 리뷰 작성
-		<input type="hidden" id="m_idx" value="${m_idx}">
+		<input type="hidden" id="order_idx" value="${param.order_idx}">
+		<input type="hidden" id="p_id" value="${selected_product.p_id}">		
 	</div>
 
 	<div id="ca_section">
 		<table id="ca_product_tbl">
 	      <tr>
             <td></td>
-            <td>${p.p_name}</td>
-            <td></td>
+            <td>${selected_product.p_name} ${p_info.standard} ${p_info.unit}</td>
+            <td>
+                <fmt:formatNumber value="${selected_product.amount}" pattern="#,###" />개 <br>
+                <fmt:formatNumber value="${selected_product.price}" pattern="#,###" />원
+            </td>
           </tr>
 		  <tr>
 		  	<td></td>
-		  	<td colspan="2"><textarea placeholder="상품 리뷰를 남겨주세요."></textarea></td>		  	
+		  	<td colspan="2"><textarea id="content" placeholder="상품 리뷰를 남겨주세요."></textarea></td>		  	
+		  </tr>
+		  <tr>
+		  	<td colspan="3">
+		  	   <span class="stars" id="star_1">☆</span>
+		  	   <span class="stars" id="star_2">☆</span>
+		  	   <span class="stars" id="star_3">☆</span>
+		  	   <span class="stars" id="star_4">☆</span>
+		  	   <span class="stars" id="star_5">☆</span>
+		  	</td>
 		  </tr>
 		</table>
 		<div id="ca_notice_area">	
@@ -174,11 +255,8 @@
 			
 			<div id="ca_m_btn_box">
 				
-				<button type="button" id="btn_set_default">기본 배송지로 설정</button>
-				<c:if test="${page eq '2'}">
-					<button type="button" id="btn_set_current">현재 주문 배송지로 설정</button>
-				</c:if>
-				<button type="button" id="btn_close_window">닫기</button>
+				<button id="btn_write_review">리뷰작성</button>
+				<button id="btn_close_window">닫기</button>
 			</div>
 			
 					
