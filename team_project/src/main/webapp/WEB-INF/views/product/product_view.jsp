@@ -808,7 +808,7 @@
 	                   <c:when test="${review.grade eq 2}"><h6>골드</h6></c:when>
                        <c:otherwise><h6>관리자</h6></c:otherwise>
 	                </c:choose>
-	                <p>${review.m_name}</p>
+	                <p>${review.m_name.substring(0, 2)}**</p>
 	                <p><fmt:formatDate value="${review.post_date}" pattern="yyyy-MM-dd" /></p>
 	                <textarea name="" id="" cols="30" rows="1" disabled>${review.content}</textarea>
 	            </div>  
