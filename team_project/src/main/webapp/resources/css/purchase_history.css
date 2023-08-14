@@ -252,11 +252,21 @@ ul{list-style: none;}
 }
 /* 리스트 테이블 구매상품 이름 */
 .td_pname{
+	display: flex;
+    flex-direction: row;
+    align-items: center;
     text-align: left;
-    color: #222;
 }
 /* 리스트 테이블 구매상품 (~외 n건) */
-.td_pname span{
+.td_pname div:first-child{
+	display: inline-block;
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;	
+}
+.td_pname .extra-products{
+	margin-left: 5px;
     color: #e24f4f;
 }
 /* 리스트 테이블 배송상태 */

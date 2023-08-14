@@ -384,8 +384,8 @@
                         <table>
                             <colgroup>
                                 <col style="width:9%;">
-                                <col style="width:17%;">
-                                <col style="width:50%;">
+                                <col style="width:19%;">
+                                <col style="width:48%;">
                                 <col style="width:10%;">
                                 <col style="width:14%;">
                             </colgroup>
@@ -403,10 +403,12 @@
 			                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
 			                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
 			                                <td class="td_pname">
-			                                	<a href="order_detail.do?order_idx=${phInfo[i].order_idx}">
-			                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
-			                                		<c:if test="${phInfo[i].p_amount gt 1}"><span>외 ${phInfo[i].p_amount - 1}건</span></c:if>
-			                                	</a>
+				                                <div>
+				                                	<a href="order_detail.do?order_idx=${phInfo[i].order_idx}">
+				                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
+				                                	</a>
+			                                	</div>
+			                                	<c:if test="${phInfo[i].p_amount gt 1}"><div class="extra-products">외 ${phInfo[i].p_amount - 1}건</div></c:if>
 			                                </td>
 			                                <td class="td_shipstate">결제완료</td>
 			                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
