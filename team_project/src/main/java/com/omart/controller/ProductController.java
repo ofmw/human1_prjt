@@ -41,9 +41,6 @@ public class ProductController {
 		
 			
 		List<ProductVo> productList = pdList.productList();
-		
-		// post_state가 1이 아닌 제품 제거
-	    productList.removeIf(product -> product.getPost_state() != 1);
 	    
 	    if(category != null) {
 	    	productList.removeIf(product -> !product.getP_id().startsWith(category));
@@ -68,6 +65,9 @@ public class ProductController {
 	    categoryList.put("분류", subCategoryList);
 	    
 		//model.addAttribute("productList", productList);
+	    
+		// post_state가 1이 아닌 제품 제거
+	    productList.removeIf(product -> product.getPost_state() != 1);
 		
 		HttpSession session = request.getSession();		
 		session.setAttribute("productList", productList);
@@ -80,6 +80,9 @@ public class ProductController {
 	@GetMapping("/product_view.do")
 	public String productView(@RequestParam("p_id") String p_id, Model model) {
 		ProductVo vo = pdInfo.getProduct(p_id);
+		
+		vo.setStars_avg(pdInfo.getStarsAvg(p_id));
+		vo.setReviews(pdInfo.getReviews(p_id));
 		
 		List<BoardFileVo> ReviewList =  mReview.selectReviewList(p_id);
 		

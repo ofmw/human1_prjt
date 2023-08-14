@@ -70,4 +70,12 @@ public class ProductDao{
 		return sqlSession.selectOne(MAPPER+".checkReview", pVo);
 	}
 	
+	public double getStarsAvg(String p_id) {
+		return sqlSession.selectOne(MAPPER+".getStarsAvg", p_id);
+	}
+	
+	public int getReviews(String p_id) {
+		return sqlSession.selectOne(MAPPER+".getReviews", p_id);
+	}
+	
 }

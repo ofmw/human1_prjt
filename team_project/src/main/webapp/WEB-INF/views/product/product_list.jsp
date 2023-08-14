@@ -211,6 +211,17 @@
 <script>
 	$(function(){
 		
+		let perants_div = $(".p_inner_elements_box");
+		
+		perants_div.each(function(){
+			let first_div = $(this).find("div:first-child");
+			let p_id = first_div.text().trim();
+			if(p_id == ""){
+				$(this).hide();
+			}
+			
+		});
+		
 		let category = '${param.category}';		
 		
 		$(".opt_checkbox").change(function(){
@@ -392,6 +403,7 @@
 	                                            <div class="p_products">	                                                
                                                     <c:if test="${productList[j] ne null}">
                                                     <a href="product_view.do?p_id=${productList[j].p_id}">
+                                                    <input type="hidden" id="p_id" value="${productList[j].p_id}"/>
 	                                                    <div class="p_img"><img src="#" alt="#"></div>
 	                                                    <div class="p_info">
 	                                                        <div class="p_info_brand">${productList[j].brand}</div>

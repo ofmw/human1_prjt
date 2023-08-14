@@ -34,5 +34,6 @@ public class ProductVo {
 	//주문당 Product 개별 조회시 필요한 필드 목록
 	private int review_state; //회원이 조회하는 주문번호에 해당되는 제품의 리뷰 작성 유무
 	private String order_idx; //주문번호와 p_idx로 제품 리뷰 작성 유무 판단을 위한 필드
-	private double stars; // 평균별점
+	private double stars_avg; // 평균별점
+	private int reviews; //리뷰 갯수
 }

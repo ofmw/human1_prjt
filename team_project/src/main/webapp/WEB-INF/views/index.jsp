@@ -419,7 +419,9 @@
 	                                    	<c:set var="discount_best" value="${bestList[i].price*(bestList[i].discount/100)}"></c:set>
 	                                    	<fmt:formatNumber value="${bestList[i].price - discount_best}" pattern="#,###" />원
 	                                    </div>
-	                                    <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+	                                    <c:if test="${bestList[i].reviews ne 0}">
+	                                       <div class="p_info_stars">★ ${bestList[i].stars_avg} (${bestList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+	                                    </c:if>
 	                                </div>
 	                            </a>
                             </c:forEach>                            
@@ -434,7 +436,7 @@
                         <div class="p_title">세일중인 상품</div>
                         <div class="p_inner_elements">
                             <c:forEach begin="0" end="3" var="i">
-	                            <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
+	                            <a href="product/product_view.do?p_id=${saleList[i].p_id}"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
 	                                <div class="p_img"><img src="#" alt="상품 이미지">
                                         <c:choose>
 	                                        <c:when test="${empty member}">
@@ -458,7 +460,9 @@
 	                                        <c:set var="discount_sale" value="${saleList[i].price*(saleList[i].discount/100)}"></c:set>
 	                                        <fmt:formatNumber value="${saleList[i].price - discount_sale}" pattern="#,###" />원
 	                                    </div>
-	                                    <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+	                                    <c:if test="${saleList[i].reviews ne 0}">
+                                           <div class="p_info_stars">★ ${saleList[i].stars_avg} (${saleList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+                                        </c:if>
 	                                </div>
 	                            </a>
                             </c:forEach>  
@@ -473,7 +477,7 @@
                         <div class="p_title">신규 상품</div>
                         <div class="p_inner_elements">
                             <c:forEach begin="0" end="3" var="i">                                 
-                                <a href="#"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
+                                <a href="product/product_view.do?p_id=${newList[i].p_id}"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
                                     <div class="p_img"><img src="#" alt="상품 이미지">
                                     <c:choose>
                                             <c:when test="${empty member}">
@@ -497,7 +501,9 @@
                                             <c:set var="discount_new" value="${newList[i].price*(newList[i].discount/100)}"></c:set>
                                             <fmt:formatNumber value="${newList[i].price - discount_new}" pattern="#,###" />원
                                         </div>
-                                        <div class="p_info_stars">★ 4.5 (1043)</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+                                        <c:if test="${newList[i].reviews ne 0}">
+                                           <div class="p_info_stars">★ ${newList[i].stars_avg} (${newList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+                                        </c:if>
                                     </div>
                                 </a>
                             </c:forEach>  

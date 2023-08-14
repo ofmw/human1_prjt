@@ -21,4 +21,12 @@ public class ProductInfoService implements ProductService {
 		dao.updateTotalSales(pVo);
 	}	
 	
+	public double getStarsAvg(String p_id) {
+		return dao.getStarsAvg(p_id);
+	}
+	
+	public int getReviews(String p_id) {
+		return dao.getReviews(p_id);
+	}
+	
 }
