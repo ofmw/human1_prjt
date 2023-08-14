@@ -53,6 +53,11 @@
         WHERE m_id=#{m_id}
     </select>
     
+    <!-- 회원탈퇴 -->
+    <delete id="cancel" parameterType="_int">
+	    CALL cancel_member(#{m_idx})
+    </delete>
+    
     <!-- 정보 찾기 -->
 	<select id="klogin" parameterType="string" resultType="memberVo">
 		SELECT *
@@ -60,10 +65,10 @@
 		WHERE m_id=#{email}
 	</select>
 	
-	<!-- 정보 저장 -->
+	<!-- 카카오 회원 정보 저장 -->
 	<insert id="kjoin" parameterType="map">
-		INSERT INTO member_omart(m_id, m_pw, m_name, platform, gender)
-		VALUES(#{email}, "kakao", #{nickname}, "kakao", #{gender}) 
+		INSERT INTO member_omart(m_id, m_pw, m_name, birth, platform, gender)
+		VALUES(#{email}, "kakao", #{nickname}, #{birthday}, "kakao", #{gender}) 
 	</insert>
 	
 	<insert id="insertWish" parameterType="_int">
