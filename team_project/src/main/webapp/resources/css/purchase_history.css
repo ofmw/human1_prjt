@@ -284,6 +284,9 @@ ul{list-style: none;}
     border: 1px solid #cfcfcf;
     box-sizing: border-box;
 }
+#tr_empty_history{
+	height: 100px;
+}
 /* 리스트 페이지 네비게이션 */
 #td_pnav{
     height: 50px;

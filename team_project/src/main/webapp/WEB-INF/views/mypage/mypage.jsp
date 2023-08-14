@@ -64,22 +64,27 @@
       	width: 100%;
      	height: 100%;
     }
-    .w_img_opt-box {
-       	width: 100%;
-      	height: 40px;
-        position: absolute;
-        text-align: center;
-        line-height: 40px;
-        bottom: 0;
-        left: 0;
-            
-        background-color: rgba(255,255,255,0.9);
-        user-select: none;
-    }
-	.w_img_opt-box button{
-    	margin: auto 0;
-    	background-color: #fcfcfc;
-    }
+	.w_img_opt-box {
+		width: 100%;
+		height: 30px;
+		position: absolute;
+		text-align: center;
+		bottom: 0;
+		user-select: none;
+          
+		background-color: rgba(255,255,255,0.9);
+	}
+	.w_img_opt-box-innerDiv{
+		height: 100%;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		justify-content: center;
+	}
+	.w_img_opt-box-innerDiv button{
+		margin: 0 5px;
+		background-color: #fcfcfc;
+	}
 	.w_info_brand{
         font-size: 12px;
     	font-weight: bold;
@@ -291,7 +296,9 @@
 		<!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">30 P</div>
+            <div id="mp_header_point_num">
+            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
+            </div>
         </div>
 
     </div>
@@ -376,9 +383,11 @@
 									                <div class="w_img">
 									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
 									                	<div style="display:none" class="w_img_opt-box">
-									                		<button type="button" class="c_btn">카</button>
-									                		<button type="button" class="w_btn">♥</button>
-									                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
+									                		<div class="w_img_opt-box-innerDiv">
+										                		<button type="button" class="c_btn">카</button>
+										                		<button type="button" class="w_btn" style="color:red;">♥</button>
+										                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
+									                		</div>
 									                	</div>
 									                </div>
 									                <div class="w_info">

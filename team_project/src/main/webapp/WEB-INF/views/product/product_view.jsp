@@ -456,7 +456,7 @@
         	        	
         });
         
-        // 찜 버튼 클릭 이벤터 처리
+        // 찜 버튼 클릭 이벤트 처리
         $("#div_wish_btn").click(function() {
         	
         	// 로그인 상태 판멸
@@ -500,10 +500,12 @@
                     p_id: p_id,
                 },
                 success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
-                   if (response != null) { // 수량 업데이트가 성공한 경우
+                   if (response === "success") { // 수량 업데이트가 성공한 경우
                 	   	alert("찜목록에 추가되었습니다!");
-                   		//찜 버튼 새로고침
+                   		//페이지 새로고침
                 	   	location.reload();
+                    } else if (response === "max") {
+                        alert("찜목록이 꽉 찼습니다! (최대 100개)");
                     } else {
                         alert("찜목록 추가에 실패했습니다.");
                     }
@@ -674,7 +676,7 @@
             <c:otherwise>
                 <div class="btn_addWish btn2" id="div_wish_btn2">
                     <c:choose>
-                        <c:when test="${not empty wishList and wishList.contains(product.p_id)}">
+                        <c:when test="${!empty wishList and wishList.contains(product.p_id)}">
                            <span style="color: red;">♥</span>
                         </c:when>
                         <c:otherwise>♡</c:otherwise>

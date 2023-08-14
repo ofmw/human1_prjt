@@ -138,6 +138,17 @@
             	
             });
             
+            /* ---------------------주문/배송내역 표시 개수--------------------- */
+            function checkElements() {
+            	
+            	let tr = countVisibleRows();
+            	if (tr === 0) {
+            		$("#tr_empty_history").show();
+            	} else {
+            		$("#tr_empty_history").hide();
+            	}
+            }
+            
 	        /* ---------------------주문/배송내역 표시 개수--------------------- */
             //*** 표시 개수 설정 ***//
             function showElements(option) {
@@ -219,6 +230,7 @@
                     }
                 });
              	
+                checkElements();
                 setNav(Math.ceil(countVisibleRows() / 4));
             });
             
@@ -260,6 +272,7 @@
 	                    }
 	                });
 	             	
+	                checkElements();
 	                setNav(Math.ceil(countVisibleRows() / 4));
 		        }
 		        
@@ -390,9 +403,12 @@
             </div>
         </div>
 
+        <!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">30 P</div>
+            <div id="mp_header_point_num">
+            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
+            </div>
         </div>
 
     </div>
@@ -485,29 +501,25 @@
                                 <th scope="col">배송상태</th>
                                 <th scope="col">선택</th>
                             </tr>
-                            <c:choose>
-                            	<c:when test="${!empty phInfo}">
-		                            <c:forEach begin="0" end="${fn:length(phInfo) - 1}" var="i">
-			                            <tr>
-			                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
-			                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
-			                                <td class="td_pname">
-				                                <div>
-				                                	<a href="order_detail.do?order_idx=${phInfo[i].order_idx}">
-				                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
-				                                	</a>
-			                                	</div>
-			                                	<c:if test="${phInfo[i].p_amount gt 1}"><div class="extra-products">외 ${phInfo[i].p_amount - 1}건</div></c:if>
-			                                </td>
-			                                <td class="td_shipstate">결제완료</td>
-			                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
-			                            </tr>
-		                            </c:forEach>
-	                            </c:when>
-	                            <c:otherwise>
-	                            	<tr id="tr_empty_history"><td colspan="5">주문/배송 내역이 없습니다!</td></tr>
-	                            </c:otherwise>
-                            </c:choose>
+                           	<c:if test="${!empty phInfo}">
+	                            <c:forEach begin="0" end="${fn:length(phInfo) - 1}" var="i">
+		                            <tr>
+		                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
+		                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
+		                                <td class="td_pname">
+			                                <div>
+			                                	<a href="order_detail.do?order_idx=${phInfo[i].order_idx}">
+			                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
+			                                	</a>
+		                                	</div>
+		                                	<c:if test="${phInfo[i].p_amount gt 1}"><div class="extra-products">외 ${phInfo[i].p_amount - 1}건</div></c:if>
+		                                </td>
+		                                <td class="td_shipstate">결제완료</td>
+		                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
+		                            </tr>
+	                            </c:forEach>
+                            </c:if>
+                            <tr id="tr_empty_history" style="display:none;"><td colspan="5">주문/배송 내역이 없습니다!</td></tr>
                             <tr>
                                 <td colspan="5" id="td_pnav"></td>
                             </tr>

@@ -69,6 +69,8 @@ public class AjaxMypageController {
 		
 		if (result != 0) {
 			return "success";
+		} else if (result == 0) {
+			return "max";
 		} else {
 			return "fail";
 		}

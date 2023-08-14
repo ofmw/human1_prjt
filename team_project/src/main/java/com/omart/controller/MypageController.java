@@ -26,7 +26,7 @@ import lombok.Setter;
 public class MypageController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mPh, mAddress, mWish, mOdrList;
+	private MemberService mPh, mAddress, mWish, mBenefit, mOdrList;
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdInfo;
 	
@@ -35,12 +35,16 @@ public class MypageController {
 	public String mypage(HttpSession session) {
 		
 		MemberVo member = (MemberVo) session.getAttribute("member");
-		int m_idx = member.getM_idx();
-		List<String> wishList = mWish.getWishList(m_idx);
-		List<OrderVo> orderList = mOdrList.orderList(m_idx);
+		
 		
 		// 로그인 풀렸을 경우 대비 member 객체 체크
 		if (member != null) {
+			
+			int m_idx = member.getM_idx();
+			List<String> wishList = mWish.getWishList(m_idx);
+			List<OrderVo> orderList = mOdrList.orderList(m_idx);
+			int point = mBenefit.getPoint(m_idx);
+			session.setAttribute("point", point);
 			
 			if(wishList != null)	{
 				/* 찜목록 페이지에서 찜한 상품과 해당 상품 정보를 매칭시키기 위해
