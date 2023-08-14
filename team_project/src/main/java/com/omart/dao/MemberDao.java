@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.omart.vo.MemberVo;
+import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
 import com.omart.vo.WishVo;
 
@@ -124,6 +125,10 @@ public class MemberDao{
 	
 	public void recordLogin(int m_idx) {
 		sqlSession.update(MAPPER+".recordLogin", m_idx);
+	}
+	
+	public List<OrderVo> orderList(int m_idx) {
+		return sqlSession.selectList(MAPPER+".orderList", m_idx);
 	}
 	
 }

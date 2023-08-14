@@ -401,7 +401,7 @@
     	point = parseInt($("#input_point").val().replace(/\D/g, ''));
     	receiver = $("#receiver").text().replace('받는분 : ','');
     	selnum = $("#selnum").text().replace('연락처 : ','').replace(/\-/g, '').trim();
-    	address = $("#address").text().replace('주소 : ','');
+    	address = $("#address").text().replace('배송지 : ','');
     	requestMessage = $("#request option:selected").text().replace('배송기사에게 전달되는 메시지입니다. 선택해주세요.','');
     	paymentInfo = "카카오페이";
     	
@@ -500,6 +500,7 @@
 	                                       <p id="receiver">받는분 : ${a.receiver}</p>
 	                                       <p id="selnum">연락처 : ${formattedPhoneNumber}</p>
 	                                       <p id="address">배송지 : (${a.a_name}) [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
+
 	                                   </c:if>
 	                               </c:forEach>
 	                           </c:when>

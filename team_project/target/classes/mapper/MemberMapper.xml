@@ -20,7 +20,7 @@
     </insert>
     
     <!-- 회원가입시 찜목록에 행 생성하기 위해 가입정보 조회 -->
-    <select id="checkM_idx" parameterType="MemberVo">
+    <select id="checkM_idx" parameterType="MemberVo" resultType="_int">
     	SELECT m_idx
     	FROM member_omart
     	WHERE m_id = #{m_id}
@@ -110,4 +110,9 @@
 	    SET w_list = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', w_list, ','), CONCAT(',', #{p_id}, ','), ','))
 	    WHERE m_idx = #{m_idx}
 	</update>
+	
+    <select id="orderList" parameterType="_int" resultType="orderVo">
+        select * from order_list where m_idx = #{m_idx}
+    </select>
+	
 </mapper>

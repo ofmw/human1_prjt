@@ -167,10 +167,38 @@
 		                    <!-- 주문상세 배송상태 -->
 		                    <div id="mp_main_od_shipstate">
 		                        <ul>
-		                            <li><div><span>결제완료</span></div></li>
-		                            <li><div><span>상품준비중</span></div></li>
-		                            <li><div><span>배송중</span></div></li>
-		                            <li><div><span>배송완료</span></div></li>
+		                            <c:choose>
+			                              <c:when test="${ph.order_state eq 0}">
+			                                  <li id="selected_state"><div><span>결제완료</span></div></li>
+			                              </c:when>
+			                              <c:otherwise>
+			                                  <li><div><span>결제완료</span></div></li>
+			                              </c:otherwise>
+		                            </c:choose>
+		                            <c:choose>
+                                          <c:when test="${ph.order_state eq 1}">
+                                              <li id="selected_state"><div><span>상품준비중</span></div></li>
+                                          </c:when>
+                                          <c:otherwise>
+                                              <li><div><span>상품준비중</span></div></li>
+                                          </c:otherwise>
+                                    </c:choose>
+		                            <c:choose>
+                                          <c:when test="${ph.order_state eq 2}">
+                                              <li id="selected_state"><div><span>배송중</span></div></li>
+                                          </c:when>
+                                          <c:otherwise>
+                                              <li><div><span>배송중</span></div></li>
+                                          </c:otherwise>
+                                    </c:choose>
+		                            <c:choose>
+                                          <c:when test="${ph.order_state eq 3}">
+                                              <li id="selected_state"><div><span>배송완료</span></div></li>
+                                          </c:when>
+                                          <c:otherwise>
+                                              <li><div><span>배송완료</span></div></li>
+                                          </c:otherwise>
+                                    </c:choose>
 		                        </ul>
 		                    </div>
 		
@@ -187,11 +215,11 @@
 		                            </tr>
 		                            <tr>
 		                                <th>받으시는 주소</th>
-		                                <td><span>[주소지 프리셋 이름]</span> ${ph.address}</td>
+		                                <td>${ph.address}</td>
 		                            </tr>
 		                            <tr>
 		                                <th>배송 요청사항</th>
-		                                <td>${ph.request}, ${ph.message}</td>
+		                                <td>${ph.request}</td>
 		                            </tr>
 		                            <tr>
 		                                <th>수령방법</th>

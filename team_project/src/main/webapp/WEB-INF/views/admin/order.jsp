@@ -336,62 +336,7 @@
             } else {
                 $("#option2_edit").prop("checked", true);
             }
-        }
-        
-        let editApply = document.getElementById("btn_edit");
-        
-        
-        
-        editApply.addEventListener("click", function(){
-        	
-        	p_id = $("#order_idx_info").val();
-            p_name = $("#p_name_edit").val();
-            brand = $("#request_info").val();
-            price = $("#price_edit").val();
-            cost = $("#cost_edit").val();
-            standard = $("#standard_edit").val();
-            unit = $("#unit_edit").val();
-            stock = $("#stock_edit").val();
-            discount = $("#discount_edit").val();
-            post_state = $("input[name='option_edit']:checked").val() || 0;
-            sub_category = $("#payment_info").val();
-            
-        	
-            if(p_name == "" || brand == "" || price == "" || cost == "" || standard == "" || unit == "" || sub_category == ""){
-                alert("모든 항목을 입력해주세요.");
-            }else{
-                let formData = {
-                        p_id: p_id,
-                        p_name: p_name,
-                        brand: brand,
-                        price: parseInt(price),
-                        cost: parseInt(cost),
-                        standard: parseInt(standard),
-                        unit: unit,
-                        stock: parseInt(stock),
-                        discount: parseInt(discount),
-                        post_state: post_state,
-                        sub_category: sub_category
-                };
-                
-                $.ajax({
-                    
-                    type: "post",
-                    url: "editProduct.do",
-                    data: formData,
-                    success: function(response){
-                        alert("상품이 성공적으로 수정되었습니다.")
-                        location.reload();
-                    },
-                    error: function(error){
-                        console.error("AJAX 오류 발생", error);
-                        alert("상품 수정 중 오류가 발생했습니다.");
-                    }                   
-                }); //end of ajax
-                
-            }
-            
-        });
+        }        
         
         $("#checkAll").click(function(){
         	

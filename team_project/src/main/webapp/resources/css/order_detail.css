@@ -213,14 +213,16 @@ ul{list-style: none;}
     border-radius: 0 20px 20px 0;
     border-right: 1px solid black;
 }
-#mp_main_od_shipstate li:nth-child(2){
+#selected_state{
     display: flex;
     align-items: center;
     justify-content: center;
     height: 31px;
+    padding-top: 0px !important;
 }
-#mp_main_od_shipstate li:nth-child(2) div{
-    position: absolute;
+
+#selected_state div{
+/*     position: absolute; */
     width: 260px;
     height: 40px;
     overflow: visible;

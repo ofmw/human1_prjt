@@ -309,6 +309,7 @@
           		let elements = $('#tb_ph-list tr:not(:first-child, :last-child)').filter(function() {
 	                return $(this).css('display') !== 'none';
 	            });
+
           		// 한 페이지에 표시할 내역 개수
           		let showAmount = parseInt($("#sel2").val());
           		
