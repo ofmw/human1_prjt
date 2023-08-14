@@ -328,10 +328,30 @@
             <div id="mp_main_osc" class="mp_main_obj">
                 <div id="mp_main_osc_title"><a href="purchase_history.do">주문/배송 조회</a></div>
                 <div id="mp_main_osc_infobar">
-                    <div class="mp_main_osc_infobar_obj_btw">결제완료<a href="#">5</a></div>
-                    <div class="mp_main_osc_infobar_obj_btw"><span>상품준비중</span><a href="#">5</a></div>
-                    <div class="mp_main_osc_infobar_obj_btw"><span>배송중</span><a href="#">1</a></div>
-                    <div class="mp_main_osc_infobar_obj"><span>배송완료</span><a href="#">8000</a></div>
+                    <c:set var="payment_completed" value="0"></c:set><!-- 결제완료 -->
+                    <c:set var="ready_to_products" value="0"></c:set><!-- 상품준비중 -->
+                    <c:set var="delivery_in_progress" value="0"></c:set><!-- 배송중 -->
+                    <c:set var="delivery_completed" value="0"></c:set><!-- 배송완료 -->
+                    
+                    <c:forEach items="${orderList}" var="order">
+                        <c:if test="${order.order_state eq 0}">
+                            <c:set var="payment_completed" value="${payment_completed + 1}"></c:set><!-- 결제완료 -->
+                        </c:if>
+                        <c:if test="${order.order_state eq 1}">
+				            <c:set var="ready_to_products" value="${ready_to_products + 1}"></c:set><!-- 상품준비중 -->
+				        </c:if>
+				        <c:if test="${order.order_state eq 2}">
+				            <c:set var="delivery_in_progress" value="${delivery_in_progress + 1}"></c:set><!-- 배송중 -->
+				        </c:if>
+				        <c:if test="${order.order_state eq 3}">
+				            <c:set var="delivery_completed" value="${delivery_completed + 1}"></c:set><!-- 배송완료 -->
+				        </c:if>
+                    </c:forEach>
+                    
+                    <div class="mp_main_osc_infobar_obj_btw">결제완료<a href="#">${payment_completed}</a></div>
+                    <div class="mp_main_osc_infobar_obj_btw"><span>상품준비중</span><a href="#">${ready_to_products}</a></div>
+                    <div class="mp_main_osc_infobar_obj_btw"><span>배송중</span><a href="#">${delivery_in_progress}</a></div>
+                    <div class="mp_main_osc_infobar_obj"><span>배송완료</span><a href="#">${delivery_completed}</a></div>
                 </div>
                 <div style="border-radius: 4px;background-color: #fafafa;height: 40px;width: 100%;margin-top: 5px;"></div>
             </div>

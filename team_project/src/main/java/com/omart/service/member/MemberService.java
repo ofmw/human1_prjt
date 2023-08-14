@@ -34,5 +34,6 @@ public interface MemberService {
 	default List<OrderVo> get_ph_info(int m_idx) {return null;}
 	default List<ProductVo> get_p_info(List<OrderVo> ph_info) {return null;}
 	default List<ProductVo> get_p_info2(String[] p_idArr) {return null;}
+	default List<OrderVo> orderList(int m_idx) {return null;}
 
 }
