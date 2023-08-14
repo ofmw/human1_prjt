@@ -19,7 +19,7 @@
     
     button:hover, #sel_box:hover{
 		background-color: #222 !important;
-		color: white;
+		color: white !important;
 	}
 
     /* ---------------------상품 페이지--------------------- */
@@ -271,8 +271,10 @@
                 success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
                    if (response === "success") { // 수량 업데이트가 성공한 경우
                 	   	alert("찜목록에 추가되었습니다!");
-                   		//페이지 새로고침
-                	   	location.reload();
+
+                	   	/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
+                	  	*  같은 상태로 임의변경 */
+                   		$('.p_id[value='+p_id+']').siblings(".w_btn").css('color','red').addClass("inWish");
                     } else if (response === "max") {
                         alert("찜목록이 꽉 찼습니다! (최대 100개)");
                     } else {
@@ -300,8 +302,10 @@
                 success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
                    if (response != null) { // 수량 업데이트가 성공한 경우
                 	   	alert("찜목록에서 삭제되었습니다!");
-                	  	//찜 버튼 새로고침
-                	   	location.reload();
+                	  	
+                	  	/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
+                	  	*  같은 상태로 임의변경 */
+                	   	$('.p_id[value='+p_id+']').siblings(".w_btn").css('color','#222').removeClass("inWish");
                     } else {
                         alert("찜목록 삭제에 실패했습니다.");
                     }
