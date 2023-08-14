@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.omart.service.cart.CartService;
 import com.omart.service.member.MemberService;
 import com.omart.vo.AddressVo;
+import com.omart.vo.BoardFileVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.ProductVo;
 
@@ -24,7 +25,7 @@ import lombok.Setter;
 public class AjaxMypageController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mWish, mAddress;
+	private MemberService mWish, mAddress, mReview;
 	@Setter(onMethod_={ @Autowired })
 	private CartService cAdd;
 	
@@ -200,4 +201,22 @@ public class AjaxMypageController {
 		
 		return response;
 	}
+	
+	@PostMapping("/write_review_process.do")
+	public String write_review_process(@RequestParam String order_idx, @RequestParam String p_id, 
+			@RequestParam String content, @RequestParam int stars) {
+		
+		System.out.println("param-check : "+order_idx+", "+p_id+", "+content+", "+stars);
+		
+		BoardFileVo bfVo = new BoardFileVo();
+		bfVo.setOrder_idx(order_idx);
+		bfVo.setP_id(p_id);
+		bfVo.setContent(content);
+		bfVo.setStars(stars);
+		
+		mReview.write_review_process(bfVo);
+		
+		return "success";
+	}
+	
 }

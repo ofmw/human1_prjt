@@ -65,4 +65,8 @@ public class ProductDao{
 		sqlSession.update(MAPPER+".updateTotalSales", pVo);
 	}
 	
+	public int checkReview(ProductVo pVo) {
+		return sqlSession.selectOne(MAPPER+".checkReview", pVo);
+	}
+	
 }

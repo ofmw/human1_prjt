@@ -10,7 +10,7 @@ public class OrderVo {
 	private String order_idx; 
 	private int m_idx; 
 	private String brands; 
-	private String productNames; 
+	private String productNames; //전체 상품의 통칭
 	private String products; 
 	private String amounts; 
 	private String products_price; 

@@ -66,5 +66,9 @@
 	   set total_sales = total_sales + #{salesAmount}
 	   where p_id = #{p_id}
 	</update>
+	
+	<select id="checkReview" parameterType="productVo" resultType="_int">
+	   select count(*) from review where order_idx = #{order_idx} and p_id = #{p_id}
+	</select>
     
 </mapper>

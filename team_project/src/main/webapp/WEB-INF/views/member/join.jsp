@@ -144,6 +144,7 @@
         height: 24.79px;
     }
     button{
+    	margin-top: 5px;
         margin-bottom: 8px;
         width: 378.01px;
         height: 37px;
@@ -274,8 +275,75 @@ $(function () {
         var birthPattern = /^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))$/;
         var genderPattern = /^[1-4]$/;
         var selNumPattern = /^(010|011)[0-9]{7,8}$/;
-        var idPattern = /^(?=.*[a-z])(?=.*\d)[a-z\d]{5,11}$/;
         var passwordPattern = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,12}$/;
+		var idPattern = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+        
+		$('#btn_join').click(function() {
+	        var fields = [
+	            { input: $('#m_name'), error: $('#name_check'), message: '이름을 입력해주세요.', pattern: namePattern, error_message: '이름을 올바르게 입력해주세요.' },
+	            { input: $('#birth'), error: $('#birth_check'), message: '생년월일을 입력해주세요.', pattern: birthPattern, error_message: '생년월일을 올바르게 입력해주세요.' },
+	            { input: $('#gender'), error: $('#gender_check'), message: '성별을 입력해주세요.', pattern: genderPattern, error_message: '성별을 올바르게 입력해주세요.' },
+	            { input: $('#selNum'), error: $('#selNum_check'), message: '휴대폰 번호를 입력해주세요.', pattern: selNumPattern, error_message: '휴대폰 번호를 올바르게 입력해주세요.' },
+	            { input: $('#m_id'), error: $('#id_check'), message: '아이디를 입력해주세요.', pattern: idPattern, error_message: '이메일 형식으로 입력해주세요.' },
+	            { input: $('#m_pw'), error: $('#pw_check'), message: '비밀번호를 입력해주세요.', pattern: passwordPattern, error_message: '비밀번호를 올바르게 입력해주세요.' },
+	        ];
+	        
+	        var isValid = true;
+	        
+	        for (var i = 0; i < fields.length; i++) {
+	            var field = fields[i];
+	            
+	            if (field.input.val().length === 0) {
+	                alertAndFocus(field.input, field.error, field.message);
+	                isValid = false;
+	                break;
+	            } else if (!field.pattern.test(field.input.val())) {
+	                alertAndFocus(field.input, field.error, field.error_message);
+	                isValid = false;
+	                break;
+	            } else {
+	                field.error.text(''); // 에러 메시지 초기화
+	            }
+	        }
+	        
+	     	// 비밀번호 일치 여부 확인
+	        var passwordInput = $('#m_pw');
+	        var passwordConfirmInput = $('#m_pwCheck');
+	        var passwordConfirmCheck = $('#pw_check2');
+	        
+	        if (passwordPattern.test(passwordInput.val()) && passwordInput.val() !== passwordConfirmInput.val()) {
+	            alertAndFocus(passwordConfirmInput, passwordConfirmCheck, '비밀번호가 일치하지 않습니다.');
+	            isValid = false;
+	        } else {
+	        	passwordConfirmCheck.text('');
+	        }
+
+	        /* if (isValid) {
+	        	   // 휴대전화 중복 여부 확인 AJAX 요청
+	               $.ajax({
+	                   type: 'POST',
+	                   url: 'checkSelNum',  // 실제 서버의 URL을 입력
+	                   data: { selNum: selNum },
+	                   success: function(response) {
+	                       if (response === 'duplicate') {
+	                           alert('이미 가입된 전화번호입니다.');
+	                           isValid = false;
+	                       } else {
+	                           // 서버에서 가입 가능한 상태임을 확인하면 여기에서는 아무 작업이 필요 없음
+	                           alert('회원 가입이 완료되었습니다.');
+	                       }
+	                   }
+	               });
+	        }
+ */
+	        return isValid;
+	    });
+
+	    function alertAndFocus(inputElement, errorElement, errorMessage) {
+	        alert(errorMessage);
+	        errorElement.text(errorMessage);
+	        inputElement.focus();
+	    }
 
         $('#m_name').blur(function(){
             var nameInput = $(this);
@@ -312,24 +380,53 @@ $(function () {
             var selNumInput = $(this);
             var selNumCheck = $('#selNum_check');
             
-            if (selNumPattern.test(selNumInput.val())) {
+            if(selNumPattern.test(selNumInput.val())) {
                 selNumCheck.text('');
             } else {
                 selNumCheck.text('올바른 핸드폰 번호 형식이 아닙니다.');
                 selNumCheck.css('color', 'red');
             }
+            
         });
         
-        $('#m_id').blur(function(){
-        	var idInput = $(this);
-        	var idCheck = $('#id_check');
-        	
-        	if(idPattern.test(idInput.val())) {
-        		idCheck.text('');
-        	} else {
-        		ischeck.text('5~11자리의 영소문자와 숫자를 포함해야 합니다.');
-        		idcheck.css('color', 'red');
-        	}
+        $('#m_id').on('input', function(){
+            var idInput = $(this);
+            var idCheck = $('#id_check');
+            
+            if(idPattern.test(idInput.val())) {
+                idCheck.text('');
+            } else {
+                idCheck.text('이메일 형식으로 입력해주세요.');
+                idCheck.css('color', 'red');
+            }
+        });
+        
+        $('#m_id').blur(function() {
+            var idInput = $(this);
+            var idCheck = $('#id_check');
+            
+            if (!idPattern.test(idInput.val())) {
+                idCheck.text('이메일 형식으로 입력해주세요.');
+                idCheck.css('color', 'red');
+                return; // 유효성 검사 통과하지 않으면 중복 여부 체크를 하지 않음
+            }
+            
+            var m_id = idInput.val();
+            // AJAX를 사용하여 서버에 아이디 중복 여부 확인 요청을 보냄
+            $.ajax({
+                type: 'POST',
+                url: 'checkId',  // 실제 서버의 URL을 입력
+                data: { m_id: m_id },
+                success: function(response) {
+                    if (response === 'duplicate') {
+                        idCheck.text('이미 사용 중인 아이디입니다.');
+                        idCheck.css('color', 'red');
+                    } else {
+                        idCheck.text('사용 가능한 아이디입니다.');
+                        idCheck.css('color', 'green');
+                    }
+                }
+            });
         });
         
         $('#m_pw').blur(function(){
@@ -357,33 +454,13 @@ $(function () {
             }
         });
     });
-    
-    $(document).ready(function () {
-        $('#m_id').on('input', function() {
-            var m_id = $(this).val();
-            
-            // AJAX를 사용하여 서버에 아이디 중복 여부 확인 요청을 보냄
-            $.ajax({
-                type: 'POST',
-                url: 'checkId',  // 실제 서버의 URL을 입력
-                data: { m_id: m_id },
-                success: function(response) {
-                    if (response === 'DUPLICATE') {
-                    	$('#id_check').text('이미 사용 중인 아이디입니다.');
-                        $('#id_check').css('color', 'red');
-                    } else {
-                    	$('#id_check').text('사용 가능한 아이디입니다.');
-                        $('#id_check').css('color', 'green');
-                    }
-                }
-            });
-        });
-    });
+   
+
 </script>
 <body>
-    <form action="join_process.do" method="POST" onsubmit="return validateForm();">
+    <form action="join_process.do" method="POST">
         <div id="div_join">
-        <img src="../resources/img/로고_블랙.png" onclick="location.href='join.do'">
+        <img src="../resources/img/로고_블랙.png" onclick="location.href='/index.do'">
             <div  id="div_box">
                 <h4>회원가입</h4>
             </div>
@@ -452,16 +529,16 @@ $(function () {
                     <tr>
                         <td id="aNum_behind">
                             <p>아이디</p>
-                            <input type="text" name="m_id" id="m_id"><br>
-                            <div class="check" id="id_check"></div>
+                            	<input type="text" name="m_id" id="m_id"><br>
+                            	<div class="check" id="id_check"></div>
                     
                             <p>비밀번호</p>
                                 <input type="password" name="m_pw" id="m_pw"><br>
                                 <div class="check" id="pw_check"></div>
                         
                             <p>비밀번호 확인</p>
-                            <input type="password" name="m_pwCheck" id="m_pwCheck"><br>
-                            <div class="check" id="pw_check2"></div>
+                           		<input type="password" name="m_pwCheck" id="m_pwCheck"><br>
+                            	<div class="check" id="pw_check2"></div>
                         
                             <button type="submit" name="btn_join" id="btn_join">가입하기</button>
                         </td>

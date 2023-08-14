@@ -11,7 +11,12 @@
         FROM member_omart
         WHERE m_id=#{m_id}
     </select>
-    
+    <!-- 전화번호검사 구문 -->
+    <select id="checkSelNum" parameterType="string" resultType="_int">
+        SELECT count(*)
+        FROM member_omart
+        WHERE selNum=#{selNUm}
+    </select>
     <!-- 회원정보 입력구문 -->
     <insert id="join" parameterType="MemberVo">
         INSERT
@@ -113,6 +118,28 @@
 	
     <select id="orderList" parameterType="_int" resultType="orderVo">
         select * from order_list where m_idx = #{m_idx}
+    </select>
+    
+    <insert id="write_review_process" parameterType="boardFileVo">
+        insert into review(order_idx, p_id, content, stars) values(#{order_idx}, #{p_id}, #{content}, #{stars})
+    </insert>
+    
+    <select id="selectReviewList" parameterType="string" resultType="boardFileVo">
+        select * from review where p_id = #{p_id} order by post_date desc
+    </select>
+    
+    <select id="getMemberNameFromOrder" parameterType="string" resultType="string">
+        SELECT m.m_name
+	    FROM member_omart m
+		JOIN order_list o ON m.m_idx = o.m_idx
+		WHERE o.order_idx = #{order_idx}
+    </select>
+    
+    <select id="getGradeFromOrder" parameterType="string" resultType="_int">
+        SELECT m.grade
+        FROM member_omart m
+        JOIN order_list o ON m.m_idx = o.m_idx
+        WHERE o.order_idx = #{order_idx}
     </select>
 	
 </mapper>

@@ -138,17 +138,6 @@
             	
             });
             
-            /* ---------------------주문/배송내역 표시 개수--------------------- */
-            function checkElements() {
-            	
-            	let tr = countVisibleRows();
-            	if (tr === 0) {
-            		$("#tr_empty_history").show();
-            	} else {
-            		$("#tr_empty_history").hide();
-            	}
-            }
-            
 	        /* ---------------------주문/배송내역 표시 개수--------------------- */
             //*** 표시 개수 설정 ***//
             function showElements(option) {
@@ -190,101 +179,13 @@
                 	showElements(100);
                 }
             });
-          	
-            /* ---------------------기간조회 (라디오 버튼 프리셋)--------------------- */
-            $('.quicksel_radio').change(function() {
-            	let range = $(this).val();
-            	console.log("기간조회 (프리셋): " +range);
-            	
-            	// 오늘 날짜
-            	let today = new Date();
-            	
-            	// 오늘 날짜 기준으로 프리셋에 해당되는 날짜 계산
-            	let targetDate = new Date();
-            	switch (range) {
-            		case "1": targetDate.setDate(targetDate.getDate() - 8); break;
-            		case "2": targetDate.setDate(targetDate.getDate() - 16); break;
-            		case "3": targetDate.setDate(targetDate.getDate() - 1); 
-    							targetDate.setMonth(targetDate.getMonth() - 1); break;
-            		case "4": targetDate.setDate(targetDate.getDate() - 1);
-            					targetDate.setMonth(targetDate.getMonth() - 3); break;
-            	}
-            	
-            	console.log("조회 날짜 구간: " +targetDate);
-            	 
-             	// 모든 td_date 요소 반복
-                $('.td_date').each(function() {
-                    let dateString = $(this).text();
-                    let dateParts = dateString.split('-');
-                    
-                    // td에 있는 날짜 정보로 날짜 객체 생성
-                    let tdDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-
-                    // 기간조회 날짜와 비교하여 표시 여부 결정
-                    if (tdDate > targetDate && tdDate <= today) {
-                        // td 요소의 부모인 tr 요소를 보이게 설정
-                        $(this).closest('tr').show();
-                    } else {
-                        // td 요소의 부모인 tr 요소를 숨김 처리
-                        $(this).closest('tr').hide();
-                    }
-                });
-             	
-                checkElements();
-                setNav(Math.ceil(countVisibleRows() / 4));
-            });
             
-            /* ---------------------기간조회 (달력 선택)--------------------- */
-            // 조회하기 버튼 클릭 이벤트 처리
-		    $('#mp_main_ph_search_detail_btn').click(function() {
-		    	
-		        let startDate = new Date($('#cal-start').val());
-		        let endDate = new Date($('#cal-end').val());
-		        
-		        startDate.setDate(startDate.getDate() - 1);
-		        endDate.setDate(endDate.getDate() + 1);
-		        
-		        console.log("조회 날짜 구간(시작): " +startDate);
-            	console.log("조회 날짜 구간(끝): " +endDate);
-		
-		        if (startDate > endDate) {
-		        	
-		            alert("시작 날짜는 종료 날짜보다 이전 날짜여야 합니다.");
-		            $('#cal-end').val(''); // 종료 날짜 초기화
-		            return;
-		        } else {
-		        	
-	             	// 모든 td_date 요소 반복
-	                $('.td_date').each(function() {
-	                    let dateString = $(this).text();
-	                    let dateParts = dateString.split('-');
-	                    
-	                    // td에 있는 날짜 정보로 날짜 객체 생성
-	                    let tdDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-
-	                    // 일주일 전 날짜와 비교하여 표시 여부 결정
-	                    if (startDate < tdDate && tdDate < endDate) {
-	                        // td 요소의 부모인 tr 요소를 보이게 설정
-	                        $(this).closest('tr').show();
-	                    } else {
-	                        // td 요소의 부모인 tr 요소를 숨김 처리
-	                        $(this).closest('tr').hide();
-	                    }
-	                });
-	             	
-	                checkElements();
-	                setNav(Math.ceil(countVisibleRows() / 4));
-		        }
-		        
-		    });
             
 	        /* ---------------------페이지 내비게이션------------------- */
 	        //*** 테이블의 tr 요소 개수 확인 ***//
 	        function countVisibleRows() {
-	            // 제목 행을 제외한 표시된 tr의 갯수 반환
-	            return $('#tb_ph-list tr:not(:first-child, :last-child)').filter(function() {
-	                return $(this).css('display') !== 'none';
-	            }).length;
+	            // 숨김처리된 #tr_empty_history 행 및 제목 행울 제외한 행의 개수 반환
+	            return $('table tr:not(#tr_empty_history, :first-child, :last-child)').length;
 	        }
 	        
             //*** 페이지 내비게이션 버튼 생성 ***//
@@ -319,10 +220,7 @@
             function changePage(pageNum) {
             
           		// 찜 상품 개수
-          		let elements = $('#tb_ph-list tr:not(:first-child, :last-child)').filter(function() {
-	                return $(this).css('display') !== 'none';
-	            });
-
+          		let elements = $('table tr:not(#tr_empty_history, :first-child, :last-child)');
           		// 한 페이지에 표시할 내역 개수
           		let showAmount = parseInt($("#sel2").val());
           		
@@ -403,12 +301,9 @@
             </div>
         </div>
 
-        <!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">
-            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
-            </div>
+            <div id="mp_header_point_num">30 P</div>
         </div>
 
     </div>
@@ -476,9 +371,9 @@
                         </div>
 
                         <div class="mp_main_ph_search_detail">
-                            <input type="date" class="cal_date" id="cal-start">
+                            <input type="date" class="cal_date" id="cal_start">
                             <span id="cal_hipen">~</span>
-                            <input type="date" class="cal_date" id="cal-end">
+                            <input type="date" class="cal_date" id="cal_end">
                             <div><input type="button" value="조회하기" id="mp_main_ph_search_detail_btn"></div>
                         </div>
 
@@ -486,7 +381,7 @@
 
                     <!-- 마이페이지 주문/배송내역 table -->
                     <div id="mp_main_ph_content">
-                        <table id="tb_ph-list">
+                        <table>
                             <colgroup>
                                 <col style="width:9%;">
                                 <col style="width:19%;">
@@ -501,25 +396,42 @@
                                 <th scope="col">배송상태</th>
                                 <th scope="col">선택</th>
                             </tr>
-                           	<c:if test="${!empty phInfo}">
-	                            <c:forEach begin="0" end="${fn:length(phInfo) - 1}" var="i">
-		                            <tr>
-		                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
-		                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
-		                                <td class="td_pname">
-			                                <div>
+                            <c:choose>
+                            	<c:when test="${!empty phInfo}">
+		                            <c:forEach begin="0" end="${fn:length(phInfo) - 1}" var="i">
+			                            <tr>
+			                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
+			                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
+			                                <td class="td_pname">
 			                                	<a href="order_detail.do?order_idx=${phInfo[i].order_idx}">
 			                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
+			                                		<c:if test="${phInfo[i].p_amount gt 1}"><span>외 ${phInfo[i].p_amount - 1}건</span></c:if>
 			                                	</a>
-		                                	</div>
-		                                	<c:if test="${phInfo[i].p_amount gt 1}"><div class="extra-products">외 ${phInfo[i].p_amount - 1}건</div></c:if>
-		                                </td>
-		                                <td class="td_shipstate">결제완료</td>
-		                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
-		                            </tr>
-	                            </c:forEach>
-                            </c:if>
-                            <tr id="tr_empty_history" style="display:none;"><td colspan="5">주문/배송 내역이 없습니다!</td></tr>
+			                                </td>
+			                                <td class="td_shipstate">
+			                                    <c:choose>
+			                                         <c:when test="${phInfo[i].order_state eq 0}">
+			                                             결제완료
+			                                         </c:when>
+			                                         <c:when test="${phInfo[i].order_state eq 1}">
+                                                         상품준비중
+                                                     </c:when>
+                                                     <c:when test="${phInfo[i].order_state eq 2}">
+                                                         배송중
+                                                     </c:when>
+                                                     <c:when test="${phInfo[i].order_state eq 3}">
+                                                         배송완료
+                                                     </c:when>
+			                                    </c:choose>
+			                                </td>
+			                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
+			                            </tr>
+		                            </c:forEach>
+	                            </c:when>
+	                            <c:otherwise>
+	                            	<tr id="tr_empty_history"><td colspan="5">주문/배송 내역이 없습니다!</td></tr>
+	                            </c:otherwise>
+                            </c:choose>
                             <tr>
                                 <td colspan="5" id="td_pnav"></td>
                             </tr>

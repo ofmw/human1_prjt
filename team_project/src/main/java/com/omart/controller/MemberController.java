@@ -49,11 +49,23 @@ public class MemberController {
 	@CrossOrigin(origins = "http://localhost:9090")
 	@ResponseBody
 	public String checkId(@RequestParam("m_id") String m_id) {
-		boolean isDuplicate = mJoin.checkDuplicateId(m_id);
-		if(isDuplicate) {
-			return "DUPLICATE";
+		boolean isDuplicateById = mJoin.checkDuplicateId(m_id);
+		if(isDuplicateById) {
+			return "duplicate";
 		} else {
-			return "AVAILABLE";
+			return "available";
+		}
+	}
+	
+	@PostMapping("/checkSelNum")
+	@CrossOrigin(origins = "http://localhost:9090")
+	@ResponseBody
+	public String checkSelNum(@RequestParam("selNum") String selNum) {
+		boolean isDuplicateBySelNum = mJoin.checkDuplicateSelNum(selNum);
+		if(isDuplicateBySelNum) {
+			return "duplicate";
+		} else {
+			return "available";
 		}
 	}
 	 
