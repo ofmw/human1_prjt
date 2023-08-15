@@ -265,7 +265,7 @@
 		<table id="ca_product_tbl">
 	      <tr>
             <td id="td_img"><img src="#" alt="#"></td>
-            <td id="td_p-name">상품이름ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ</td>
+            <td id="td_p-name">상품이름ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁa</td>
             <td id="td_p-info">
                 <fmt:formatNumber value="${selected_product.price}" pattern="#,###" />10,000 원<br>
                 <fmt:formatNumber value="${selected_product.amount}" pattern="#,###" />39 개
