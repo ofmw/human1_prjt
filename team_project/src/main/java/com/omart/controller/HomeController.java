@@ -22,7 +22,7 @@ import lombok.Setter;
 public class HomeController {
 	
 	@Setter(onMethod_= {@Autowired})
-	private ProductService pdList;
+	private ProductService pdList, pdInfo;
 	
 	//임시로 메인페이지에 상품 리스트 불러오는 메서드
 	@GetMapping("/")
@@ -31,6 +31,33 @@ public class HomeController {
 		List<ProductVo> bestList = pdList.bestList();
 		List<ProductVo> saleList = pdList.saleList();
 		List<ProductVo> newList = pdList.newList();
+		
+		for(ProductVo best : bestList) {
+			String p_id = best.getP_id();
+			double stars_avg = pdInfo.getStarsAvg(p_id);	//평균 별점
+			int reviews = pdInfo.getReviews(p_id);			//리뷰 갯수
+			
+			best.setStars_avg(stars_avg);
+			best.setReviews(reviews);
+		}
+		
+		for(ProductVo sales : saleList) {
+			String p_id = sales.getP_id();
+			double stars_avg = pdInfo.getStarsAvg(p_id);	//평균 별점
+			int reviews = pdInfo.getReviews(p_id);			//리뷰 갯수
+			
+			sales.setStars_avg(stars_avg);
+			sales.setReviews(reviews);
+		}
+		
+		for(ProductVo news : newList) {
+			String p_id = news.getP_id();
+			double stars_avg = pdInfo.getStarsAvg(p_id);	//평균 별점
+			int reviews = pdInfo.getReviews(p_id);			//리뷰 갯수
+			
+			news.setStars_avg(stars_avg);
+			news.setReviews(reviews);
+		}
 				
 		model.addAttribute("bestList", bestList);
 		model.addAttribute("saleList", saleList);
@@ -51,7 +78,34 @@ public class HomeController {
 		List<ProductVo> bestList = pdList.bestList();
 		List<ProductVo> saleList = pdList.saleList();
 		List<ProductVo> newList = pdList.newList();
-						
+		
+		for(ProductVo best : bestList) {
+			String p_id = best.getP_id();
+			double stars_avg = pdInfo.getStarsAvg(p_id);	//평균 별점
+			int reviews = pdInfo.getReviews(p_id);			//리뷰 갯수
+			
+			best.setStars_avg(stars_avg);
+			best.setReviews(reviews);
+		}
+		
+		for(ProductVo sales : saleList) {
+			String p_id = sales.getP_id();
+			double stars_avg = pdInfo.getStarsAvg(p_id);	//평균 별점
+			int reviews = pdInfo.getReviews(p_id);			//리뷰 갯수
+			
+			sales.setStars_avg(stars_avg);
+			sales.setReviews(reviews);
+		}
+		
+		for(ProductVo news : newList) {
+			String p_id = news.getP_id();
+			double stars_avg = pdInfo.getStarsAvg(p_id);	//평균 별점
+			int reviews = pdInfo.getReviews(p_id);			//리뷰 갯수
+			
+			news.setStars_avg(stars_avg);
+			news.setReviews(reviews);
+		}
+				
 		model.addAttribute("bestList", bestList);
 		model.addAttribute("saleList", saleList);
 		model.addAttribute("newList", newList);

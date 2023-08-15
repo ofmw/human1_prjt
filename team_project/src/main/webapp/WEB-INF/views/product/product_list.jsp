@@ -248,6 +248,20 @@
         $(document).on("mouseenter", ".p_img", function() {
 		    $(this).find(".p_img_opt-box").stop().fadeIn(300);
 		});
+
+		let perants_div = $(".p_inner_elements_box");
+		
+		perants_div.each(function(){
+			let first_div = $(this).find("div:first-child");
+			let p_id = first_div.text().trim();
+			if(p_id == ""){
+				$(this).hide();
+			}
+			
+		});
+		
+		let category = '${param.category}';		
+
 		
 		$(document).on("mouseleave", ".p_img", function() {
 		    $(this).find(".p_img_opt-box").stop().fadeOut(300);
@@ -550,6 +564,7 @@
                                             <c:forEach begin="${i*4}" end="${i*4+3}" var="j">
 	                                            <div class="p_products">
                                                     <c:if test="${productList[j] ne null}">
+
 	                                                    <div class="p_img">
 	                                                    	<a href="product_view.do?p_id=${productList[j].p_id}"><img src="#" alt="#"></a>
 	                                                    	<div style="display:none" class="p_img_opt-box">
@@ -583,6 +598,7 @@
 		                                                        </div>
 		                                                        <div class="p_info_stars">★ 4.5 (1043)</div>
 		                                                    </div>
+
 	                                                    </a>
 	                                                    
                                                     </c:if>		                                            

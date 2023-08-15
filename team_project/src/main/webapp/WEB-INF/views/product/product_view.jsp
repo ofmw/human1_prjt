@@ -259,7 +259,8 @@
 	}
 	#div_reviewContents * {
 	    float: left;
-	    margin: 5px 7px;
+	    margin-left: 7px;
+	    margin-bottom: 7px;
 	    line-height: 20px;
 	}
 	#div_reviewContents h6 {
@@ -282,6 +283,7 @@
 	    width: 780px;
 	    display: flex;
 	    align-items: center;
+	    height: 50px;
 	}
 	#div_pageNav {
 	    /* border: 1px solid green; */
@@ -363,10 +365,35 @@
 	.div_reviewContent *{
 	   white-space: nowrap;
 	}
+	#div_stars{
+	   display: flex;
+	}
+	.stars_img{
+	   width: 97px;
+	}
+	#stars{
+	   position: absolute;
+	   font-weight: normal;
+	   color: gray;
+	}
     
 </style>
 <script>
     window.onload = function(){
+    	
+    	let starsAvg = parseFloat($(".stars_avg").text()) * 20;
+        let starsImg = $(".stars_img");
+        
+        if(starsAvg == 0){
+        	$(".stars_avg").text("리뷰없음");
+        	$(".stars_avg").css("color", "lightgray");
+        }
+        
+        let starsWidth = starsImg.width();
+        let visibleWidth = 100 - (starsWidth * starsAvg) / 100;
+
+        starsImg.css("clip-path", "inset(0 " + visibleWidth + "px 0 0)");
+    	
         let productBar = document.getElementById("div_productBar");
         let buy_quick = document.getElementById("div_buy_quick");
         let detail = document.getElementById("div_productDetail");
@@ -563,7 +590,9 @@
     <div id="div_buy_main">        
         <p>${product.brand}</p>
         <h1>${product.p_name}</h1>
-        <h3>★★★★★ 5.0</h3>
+        <div id="div_stars">
+            <h3 id="stars">☆☆☆☆☆</h3><h3 class="stars_img">★★★★★</h3><h3 class="stars_avg"> ${product.stars_avg}</h3>
+        </div>        
         <h3>원산지 : 상세설명참조</h3>
         <div id="div_dcPrice">
 	        <c:choose>
