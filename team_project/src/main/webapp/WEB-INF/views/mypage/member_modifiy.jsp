@@ -7,14 +7,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>1:1 문의</title>
+    <title>회원정보수정</title>
     
     <link href="../resources/css/mypage.css" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     
     <style>
-             
+    	#mp_main {
+    		height: auto;
+    	}
+    	
         .mp_main_title{
             padding-bottom: 15px;
             font-size: 20px;
@@ -31,43 +34,9 @@
             width: 100%;
         }
         th{
-            height: 40px;
-            font-size: 15px;
-            border-top: 1px solid black;
-            border-bottom: 1px solid #e5e5e5;
-            background-color: #f9f9f9;
+            
         }
-        /* 리스트 테이블 td 공통 */
-        td:not(#td_pnav){
-            height: 50px;
-            border-bottom: 1px solid #e5e5e5;
-        }
-        /* 리스트 테이블 구매일자 */
-        .td_date{
-            /* background-color: skyblue; */
-            font-size: 14px;
-            color: #777;
-        }
-        /* 리스트 테이블 구매상품 이름 */
-        .td_title{
-            text-align: center;
-        }
-        /* 리스트 테이블 주문상세내역 버튼 */
-        .inquiry_detail_btn{
-            display: inline-block;
-            padding-top: 3px;
-            width: 110px;
-            height: 30px;
-            font-size: 14px;
-            color: #777;
-            border: 1px solid #cfcfcf;
-            box-sizing: border-box;
-            cursor: pointer;
-        }
-        .td_ans_date{
-        	font-size: 14px;
-            color: #777;
-        }
+        
         #td_pnav{
             height: 50px;
         }
@@ -75,6 +44,14 @@
             margin-top: 10px;
             font-size: 13px;
             color: #777;
+        }
+        .mp_memberPw_check{
+        	position: absolute;
+        	
+        }
+        .mp_member_modifiy{
+        	
+        	display: none;
         }
     </style>
 
@@ -95,6 +72,21 @@
 		
 		});
 	});	
+</script>
+<script>
+	function checkPwAndShowForm() {
+		var PwCheck = document.getElementById("m_pw").value;		
+		var Pw = ${member.m_pw};
+		
+		console.log(${member.m_pw});
+		
+		if(PwCheck === pw){
+		document.getElementById("mp_memberPw_check").style.display = "none";
+		document.getElementById("mp_member_modifiy").style.display = "block";
+		} else {
+			alert("비밀번호가 일치하지 않습니다.");
+		}
+	}
 </script>
 <body>
 
@@ -168,75 +160,76 @@
         </div>
 
         <div id="mp_main">
-			<div id="mp_main_inquiry" class="mp_main_obj">
-                <div class="mp_main_title">1:1 문의</div>
-                <div id="mp_main_inquiry_info">
-                	<p>
-                		＊ 고객님께서 고객센터 1:1문의에 작성하신 문의 내역입니다.<br>
-                		＊ 상세 내용은 문의내역상세 버튼을 클릭하여 확인 가능합니다.
-                	</p>
-                </div>
-                <div id="mp_main_inquiry_content">
-                    <table >
-                        <colgroup>
-                            <col style="width: 9%;">
-                            <col style="width: 54%;">
-                            <col style="width: 15%;">
-                            <col style="width: 7%;">
-                            <col style="width: 15%;">
-                        </colgroup>
-                        <tr>
-                            <th>작성일</th>
-                            <th>제목</th>
-                            <th>답변일자</th>
-                            <th>진행상태</th>
-                            <th>선택</th>
-                        </tr>
-                        <c:forEach items="${inquiryList}" var="inquiry">
-                        <tr>
-                            <td class="td_date"><fmt:formatDate value="${inquiry.post_date}" pattern="yyyy-MM-dd"/></td>
-                            <td class="td_title">${inquiry.title}</td>
-                            <td class="td_ans_date">
-                            	<c:choose>
-		                    		<c:when test="${inquiry.reply_state eq '0'}">
-								        -
-								    </c:when>
-								    <c:when test="${inquiry.reply_state eq '1'}">
-								        <fmt:formatDate value="${inquiry.ans_date}" pattern="MM-dd HH:mm"/>
-								    </c:when>
-								    <c:otherwise>
-								        <fmt:formatDate value="${inquiry.ans_date}" pattern="MM-dd HH:mm"/>
-								    </c:otherwise>
-								 </c:choose>
-                            </td>
-                            <td class="td_state">
-								<c:choose>
-		                    		<c:when test="${inquiry.reply_state eq '0'}">
-								        진행중
-								    </c:when>
-								    <c:when test="${inquiry.reply_state eq '1'}">
-								        답변완료
-								    </c:when>
-								    <c:otherwise>
-								        ${inquiry.reply_state}
-								    </c:otherwise>
-								 </c:choose>
-							</td>
-                            <td><input type="hidden" class="b_idx" value="${inquiry.b_idx}"/><a class="inquiry_detail_btn">문의상세내역</a></td>
-                        </tr>
-                        </c:forEach>
+			<div id="mp_memberPw_check" class="mp_memberPw_check">
+				<p>회원정보수정</p>
+                <table>
+                	<tr>
+						<th>비밀번호 확인</th>
+						<td><input type="password" id="m_pwCheck"></td>
+						                	
+               		</tr>
+				</table>
+				<div>
+					<button type="button" onclick="checkPwAndShowForm()">확인</button>
+				</div>
+        	</div>
+        	<div id="mp_member_modifiy" class="mp_member_modifiy">
+        		<table id="tbl_join">
+                    <tr>
+                        <td>
+                            <p>이름</p>
+                            <input type="text" name="m_name" id="m_name" value="${member.m_name}">
+                            <div class="check" id="name_check"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>생년월일 및 성별</p>
+                                <fieldset>
+                                    <input type="text" name="birth" id="birth" placeholder="●●●●●●" maxlength="6">
+                                    <p>-</p>
+                                    <input type="text" name="gender" id="gender" placeholder="●" maxlength="1">
+                                    <input type="text" id="fld_block" value="●●●●●●" disabled style="background-color: white;">
+                                </fieldset>
+                                <div class="check" id="birth_check"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="sel_aNum">
+                            <p>휴대폰 번호</p>
+                                    <input type="text" name="selNum" id="selNum">
+                                    <button type="button" id="btn_get_aNum">인증번호 받기</button>
+                                    <div class="check" id="selNum_check"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="aNum_behind">
+                            <input type="text" id="aNum">
+                            <button onclick="location.href=''" id="btn_check_aNum">인증하기</button></td>
+                    </tr>
+                    <tr>
+                        <td id="aNum_behind">
+                            <p>아이디</p>
+                            	<input type="text" name="m_id" id="m_id"><br>
+                            	<div class="check" id="id_check"></div>
+                    
+                            <p>비밀번호</p>
+                                <input type="password" name="m_pw" id="m_pw"><br>
+                                <div class="check" id="pw_check"></div>
                         
-                        <tr>
-                            <td colspan="4" id="td_pnav">네비게이션</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+                            <p>비밀번호 확인</p>
+                           		<input type="password" name="m_pwCheck" id="m_pwCheck"><br>
+                            	<div class="check" id="pw_check2"></div>
+                        
+                            <button type="submit" name="btn_join" id="btn_join">가입하기</button>
+                        </td>
+                    </tr>
+                </table>
+        	</div>
 
-        </div>
-
-    </div>
-
+   		</div>
+   	</div>
+	
 </section>
 
 <!-- 푸터 -->

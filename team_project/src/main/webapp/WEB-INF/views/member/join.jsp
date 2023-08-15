@@ -164,6 +164,9 @@
   	p{
   		padding-top: 5px;
   	}
+  	.hidden_row{
+  		display:;
+  	}
 
    
 </style>
@@ -171,87 +174,7 @@
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 
-<script>
 
-function smsConfirmNum() {
-    const min = 10000;
-    const max = 99999;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-$(function () {
-    $("#btn_get_aNum").click(function () {
-        let serviceId = "ncp:sms:kr:312456196439:team";
-        let accessKey = "h4BjwmodGCWHpW6lxoPj";
-        let secretKey = "zLhbW5OTd6ShI0Ls4t3jTFhZff2HcyiFifkymgql";
-        let selNum = $("#selNum").val();
-        let content = "[Omart] 인증번호 [" + smsConfirmNum() + "]를 입력해주세요";
-        let auth_code = smsConfirmNum(); //인증코드
-        let url = "https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages";
-        let time = Date.now().toString(); // 현재 밀리초 단위 시간
-        let signature = makeSignature(url, time, accessKey, secretKey); //시그너처
-
-        let requestData = {
-            type: "SMS",
-            contentType: "COMM",
-            countryCode: "82", // 국가 코드 (한국은 82)
-            from: "01012345678",
-            content: content,
-            messages: [
-                {
-                    to: "82" + selNum, // 전화번호 형식 조합
-                    content: content
-                }
-            ]
-        };
-
-        $.ajax({
-            type: "POST",
-            url: url,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            headers: {
-                "x-ncp-apigw-timestamp": time,
-                "x-ncp-iam-access-key": accessKey,
-                "x-ncp-apigw-signature-v2": signature
-            },
-            data: JSON.stringify(requestData),
-            success: function (data) {
-                $("#result").text("SMS가 성공적으로 전송되었습니다.");
-            },
-            error: function (error) {
-                $("#result").text("SMS 전송에 실패하였습니다.");
-            }
-        });
-    });
-	});
-	
-	//시그너처 생성구문
-	function makeSignature(url_signature, time, accessKey, s_Key) {
-		var space = " ";				// one space
-		var newLine = "\n";				// new line
-		var method = "GET";				// method
-		var url = url_signature;	// url (include query string)
-		var timestamp = time;			// current timestamp (epoch)
-		var accessKey = accessKey;			// access key id (from portal or Sub Account)
-		var secretKey = s_Key;			// secret key (from portal or Sub Account)
-
-		var hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
-		hmac.update(method);
-		hmac.update(space);
-		hmac.update(url);
-		hmac.update(newLine);
-		hmac.update(timestamp);
-		hmac.update(newLine);
-		hmac.update(accessKey);
-
-		var hash = hmac.finalize();
-
-		return hash.toString(CryptoJS.enc.Base64);
-	}
-			 
-
-</script>
 <script>
     window.onload = function(){
         let lbl_allSee = document.getElementById("lbl_allSee");
@@ -317,7 +240,7 @@ $(function () {
 	        } else {
 	        	passwordConfirmCheck.text('');
 	        }
-
+			
 	        /* if (isValid) {
 	        	   // 휴대전화 중복 여부 확인 AJAX 요청
 	               $.ajax({
@@ -334,8 +257,47 @@ $(function () {
 	                       }
 	                   }
 	               });
+	        } */
+	        
+	        if (isValid) {
+	        	var formData = {
+	        			m_name: $('#m_name').val(),
+	        			birth: $('#birth').val(),
+	        			gender: $('#gender').val(),
+	        			selNum: $('#selNum').val(),
+	        			m_id: $('#m_id').val(),
+	        			m_pw: $('#m_pw').val()
+	        	};
+	        	$.ajax({
+	        	    type: 'POST',
+	        	    url: 'checkSelNum', // 중복 여부 확인 엔드포인트 URL
+	        	    data: { selNum: formData.selNum }, // 휴대폰 번호 전송
+	        	    success: function(response) {
+	        	        if (response === 'duplicate') {
+	        	            alert('이미 가입된 전화번호입니다.');
+	        	        } else {
+	        	            // 중복이 아니라면 실제 회원 가입 처리
+	        	            $.ajax({
+	        	                type: 'POST',
+	        	                url: 'join_process.do', // 회원 가입 처리 엔드포인트 URL
+	        	                data: formData,
+	        	                success: function(response) {
+	        	                    if (response === 'success') {
+	        	                        alert('회원 가입이 완료되었습니다.');
+	        	                        location.href = '/index.do';
+	        	                    } else {
+	        	                        alert('회원 가입에 실패했습니다.');
+	        	                    }
+	        	                }
+	        	            });
+	        	        }
+	        	    }
+	        	});
+	        	
+	        	return false;
+	        	
 	        }
- */
+	      
 	        return isValid;
 	    });
 
@@ -379,15 +341,29 @@ $(function () {
         $('#selNum').blur(function(){
             var selNumInput = $(this);
             var selNumCheck = $('#selNum_check');
+            var btnGetANum = $('#btn_get_aNum');
             
             if(selNumPattern.test(selNumInput.val())) {
                 selNumCheck.text('');
+                btnGetANum.prop('disabled', false); // 유효성 검사 통과 시 버튼 활성화
+                btnGetANum.css('cursor', 'pointer');
             } else {
                 selNumCheck.text('올바른 핸드폰 번호 형식이 아닙니다.');
                 selNumCheck.css('color', 'red');
+                btnGetANum.prop('disabled', true); // 유효성 검사 실패 시 버튼 비활성화
+                btnGetANum.css('cursor', 'default');
             }
             
         });
+        
+        $('#btn_get_aNum').click(function(){
+        	var aNum = $('#aNum');
+        	
+        	if(aNum.val() === ""){
+        		alert("휴대폰 번호를 입력해주세요.");
+        	}
+        });
+        
         
         $('#m_id').on('input', function(){
             var idInput = $(this);
@@ -457,6 +433,56 @@ $(function () {
    
 
 </script>
+<script>
+$(document).ready(function() {
+    var code2 = "";
+    
+    $("#btn_get_aNum").click(function() {
+        var selNum = $("#selNum").val();
+        
+        $.ajax({
+            type: "GET",
+            url: "selNumCheck?selNum=" + selNum,
+            cache: false,
+            success: function(data) {
+                if (data == "error") {
+                    $("#selNum").attr("autofocus", true);
+                } else {
+                    $("#aNum").attr("disabled", false); // aNum 활성화
+                    $("#btn_check_aNum").css("display", "inline-block");
+                    $("#selNum").attr("readonly", true); // selNum 읽기 전용 처리
+                    code2 = data;
+                }
+            }
+        });
+        
+        return false;
+    });
+
+    $("#btn_check_aNum").click(function() {
+        var enteredCode = $("#aNum").val();
+        if (enteredCode === ""){
+        	$("#certifiedNum_check").text("인증번호를 입력해주세요.")
+        	$("#certifiedNum_check").css("color", "red");
+        	return false;
+        }
+        if (enteredCode == code2) {
+            $("#certifiedNum_check").text("인증번호가 일치합니다.");
+    		$("#certifiedNum_check").css("color","green");
+            $("#selNumDoubleChk").val("true");
+            $("#aNum").attr("disabled", true); // aNUm 다시 비활성화
+            $(".hidden_row").css("display", "table-row");
+        } else {
+            $("#selNumDoubleChk").val("false");
+            $("#aNum").focus();
+            $("#selNumDoubleChk").text("인증번호가 일치하지 않습니다.");
+            $("#selNumDoubleChk").css("color", "red");
+        }
+        return false;
+    });
+});
+
+</script>
 <body>
     <form action="join_process.do" method="POST">
         <div id="div_join">
@@ -470,7 +496,7 @@ $(function () {
                             <input type="checkbox">
                                 <label for="All-check" id="lbl_all">본인 확인을 위한 약관 모두 동의</label>
                             <p id="lbl_allSee" class="close">보기</p>
-                            <ul id="lbl_behind">
+                            <ul id="lbl_behind" style="display: none;">
                                 <li>
                                     <input type="checkbox">
                                     <label>개인정보 수집 및 이용 동의</label>
@@ -516,17 +542,20 @@ $(function () {
                     <tr>
                         <td id="sel_aNum">
                             <p>휴대폰 번호</p>
-                                    <input type="text" name="selNum" id="selNum">
-                                    <button type="button" id="btn_get_aNum">인증번호 받기</button>
+                                    <input type="text" name="selNum" id="selNum" required/>
+                                    <button type="button" id="btn_get_aNum" class="btn_get_aNum">인증번호 받기</button>
                                     <div class="check" id="selNum_check"></div>
                         </td>
                     </tr>
                     <tr>
                         <td id="aNum_behind">
-                            <input type="text" id="aNum">
-                            <button onclick="location.href=''" id="btn_check_aNum">인증하기</button></td>
+                            <input type="text" id="aNum" disabled required/>
+                            <button id="btn_check_aNum">인증하기</button>
+                            <input type="hidden" id="selNumDoubleChk"/>
+                            <div class="check" class="certifiedNum_check"></div>
+                        </td>
                     </tr>
-                    <tr>
+                    <tr class="hidden_row">
                         <td id="aNum_behind">
                             <p>아이디</p>
                             	<input type="text" name="m_id" id="m_id"><br>
@@ -542,7 +571,7 @@ $(function () {
                         
                             <button type="submit" name="btn_join" id="btn_join">가입하기</button>
                         </td>
-                    </tr>
+                     </tr>
                 </table>
             </div>
     </form>

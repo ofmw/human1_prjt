@@ -37,6 +37,12 @@ public class MypageController {
 		return "mypage/mypage";
 	}
 	
+	//마이페이지 - 회원정보변경
+	@GetMapping("/member_modifiy.do")
+	public String member_modifiy() {
+		return "mypage/member_modifiy";
+	}
+	
 	//마이페이지 - 주문/배송조회
 	@GetMapping("/purchase_history.do")
 	public String purchase_history() {
