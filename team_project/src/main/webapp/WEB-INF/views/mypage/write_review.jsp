@@ -111,17 +111,6 @@
         height: 100px;
         background-color: #f7f7f7;
     }
-	#ca_product_tbl tr:nth-child(3) td{
-	   text-align: center;
-	   user-select: none;
-	}
-	#ca_product_tbl tr:nth-child(3) span{
-	   font-size: 40px;
-	   color: #ddd;
-	   cursor: pointer;
-	   margin: 2px;
-    }
-
     .click{
         color: red !important;
     }
@@ -163,9 +152,22 @@
     }
     #td_stars{
         height: 70px;
+        font-size: 0;
+        letter-spacing: 0;
+        word-spacing: 0;
+        text-align: center;
+        user-select: none;
+    }
+    #td_stars div{
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        display: inline-block;
+        font-size: 40px;
+        color: #eee;
+        cursor: pointer;
     }
 
-    
 </style>
 	
 <script>
@@ -265,7 +267,7 @@
 		<table id="ca_product_tbl">
 	      <tr>
             <td id="td_img"><img src="#" alt="#"></td>
-            <td id="td_p-name">상품이름ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁa</td>
+            <td id="td_p-name">상품이름ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ</td>
             <td id="td_p-info">
                 <fmt:formatNumber value="${selected_product.price}" pattern="#,###" />10,000 원<br>
                 <fmt:formatNumber value="${selected_product.amount}" pattern="#,###" />39 개
@@ -276,11 +278,11 @@
 		  </tr>
 		  <tr>
 		  	<td colspan="3" id="td_stars">
-		  	   <span class="stars" id="star_1">★</span>
-		  	   <span class="stars" id="star_2">★</span>
-		  	   <span class="stars" id="star_3">★</span>
-		  	   <span class="stars" id="star_4">★</span>
-		  	   <span class="stars" id="star_5">★</span>
+		  	   <div class="stars" id="star_1">★</div>
+		  	   <div class="stars" id="star_2">★</div>
+		  	   <div class="stars" id="star_3">★</div>
+		  	   <div class="stars" id="star_4">★</div>
+		  	   <div class="stars" id="star_5">★</div>
 		  	</td>
 		  </tr>
 		</table>

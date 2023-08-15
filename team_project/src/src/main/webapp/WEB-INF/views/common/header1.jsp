@@ -95,10 +95,10 @@
                  	<div id="div_category">
                      	<a href="product/product_list.do">전체 카테고리</a>
                      	<ul>
-                     		<li><a href="">육류</a></li>
-                     		<li><a href="">가공</a></li>
-                     		<li><a href="">수산</a></li>
-                     		<li><a href="">야채</a></li>
+                     		<li><a href="product/product_list.do?category=AA">육류</a></li>
+                     		<li><a href="product/product_list.do?category=BB">가공</a></li>
+                     		<li><a href="product/product_list.do?category=CC">수산</a></li>
+                     		<li><a href="product/product_list.do?category=DD">야채</a></li>
                     	</ul>	                        
                 	</div>
              	</div>
@@ -145,12 +145,7 @@
 				<div id="login_sns_area">
 				    <div id="sns_title">SNS 로그인</div>
 				    <div id="sns_box">
-						<label id="sns_naver" class="sns">
-						    <a href="#" id="sns_naver_btn" class="sns_button">네이버 로그인</a>
-						</label>
-						<label id="sns_kakao" class="sns">
-						    <a href="#" id="sns_kakao_btn" class="sns_button">카카오 로그인</a>
-						</label>
+					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="resources/img/kakao_login_medium_wide.png" alt="카카오로그인"></a>
 					</div>
 				</div>
 				

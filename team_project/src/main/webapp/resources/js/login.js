@@ -63,26 +63,6 @@ $(function() {
     	
     }
 
-    
-    
-    //---------------네이버 로그인 처리 메서드---------------//
-    $("#sns_naver_btn").click(function(event){
-        event.preventDefault();
-        
-        let windowWidth = 400;
-        let windowHeight = 650;
-
-        // 화면 중앙에 위치시키기 위해 창의 x, y 위치 계산
-        let windowLeft = (window.screen.width - windowWidth) / 2;
-        let windowTop = (window.screen.height - windowHeight) / 2;
-
-        // 새 창을 띄우기 위한 윈도우 옵션들
-        let windowFeatures = "width=" + windowWidth + ",height=" + windowHeight + ",left=" + windowLeft + ",top=" + windowTop;
-
-        let url = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=AdI9mtwo_qO9HcI4nYXD&redirect_uri=http://localhost:9090/prjt/member/nlogin.do";
-        window.open(url, "_blank", windowFeatures);
-    });
-
     //---------------카카오 로그인 처리 메서드---------------//
     $("#sns_kakao_btn").click(function(event){
         event.preventDefault();
