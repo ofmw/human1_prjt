@@ -38,8 +38,8 @@ public class MemberController {
 		if(result == 1) {
 			
 			// 가입 성공시 생성된 해당 회원의 m_idx 조회
-			int m_idx = mJoin.checkM_idx(memberVo);
-			mWish.insertWish(m_idx);
+//			int m_idx = mJoin.checkM_idx(memberVo);
+//			mWish.insertWish(m_idx);
 			viewPage = "redirect:/index.do";
 		}
 		return viewPage;

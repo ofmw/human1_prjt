@@ -627,9 +627,6 @@
                     // "주문금액"에 합산
                     totalPrice += calPriceValue;
                 });
-
-                // "주문금액" 에 주문금액 반영
-                $("#ordered-price").text(totalPrice.toLocaleString() + " 원");       
                 
                 let beforePrice = 0;
                 
@@ -638,6 +635,9 @@
                 	
                 	beforePrice += bfPriceValue;
                 });
+                
+                // "주문금액" 에 주문금액 반영
+                $("#ordered-price").text(beforePrice.toLocaleString() + " 원");
                 
                 $("#discount-price").text("- " + (beforePrice-totalPrice).toLocaleString() + " 원");   
                 

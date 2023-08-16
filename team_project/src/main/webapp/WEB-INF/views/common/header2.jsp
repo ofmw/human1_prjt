@@ -69,12 +69,17 @@
                             </c:otherwise>
 						</c:choose>
 					</div>
-	                    	
-                    <div id="div_persnal_menu">
-                        <a href="">ㅇ</a>
-                        <a href="member/mypage.do">ㅁ</a>
-                        <a href="../cart/cart.do">카</a>
-                        <a href="">ㅇ</a>
+	                <div id="div_persnal_menu">
+                        <c:choose>
+                            <c:when test="${empty member}">
+                                <a class="need_login" href="#">마이페이지</a>
+                                <a class="need_login" href="#">장바구니</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="../mypage/mypage.do">마이페이지</a>
+                                <a href="../cart/cart.do">장바구니</a>
+                            </c:otherwise>
+                        </c:choose>                     
                     </div>
 				</div>
 			</div>

@@ -17,11 +17,9 @@
         FROM member_omart
         WHERE selNum=#{selNUm}
     </select>
-    <!-- 회원정보 입력구문 -->
+    <!-- 회원가입 구문 -->
     <insert id="join" parameterType="MemberVo">
-        INSERT
-        INTO member_omart(m_name, birth, gender, selNum, m_id, m_pw, platform)
-        VALUES(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw}, "omart")
+        CALL join_member(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw}, "omart")
     </insert>
     
     <!-- 회원가입시 찜목록에 행 생성하기 위해 가입정보 조회 -->
@@ -88,9 +86,15 @@
         select point from point where m_idx = #{m_idx}
     </select>
     
-    <update id="setPoint" parameterType="memberVo">
+    <update id="usePoint" parameterType="memberVo">
         UPDATE point
         SET point = point - #{point}
+        WHERE m_idx=#{m_idx}
+    </update>
+    
+    <update id="addPoint" parameterType="pointVo">
+        UPDATE point
+        SET point = point + #{savePoint}
         WHERE m_idx=#{m_idx}
     </update>
     

@@ -29,11 +29,12 @@ public class AjaxMemberController {
                         @RequestParam("m_pw") String m_pw,
                         HttpSession session) {
 		
+		System.out.println(m_pw);
 
 		System.out.println("━━━━━━━━━━━━━━━━━<일반 로그인 요청>━━━━━━━━━━━━━━━━━");
 		
 		MemberVo vo = mLogin.login(m_id, m_pw);
-		
+				
 		if(vo != null){
 			
 			int m_idx = vo.getM_idx();
