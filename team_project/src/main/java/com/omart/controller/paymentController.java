@@ -22,6 +22,7 @@ import com.omart.vo.AddressVo;
 import com.omart.vo.CartVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.OrderVo;
+import com.omart.vo.PointVo;
 import com.omart.vo.ProductVo;
 
 import lombok.Setter;
@@ -111,12 +112,15 @@ public class paymentController {
 	}	
 	
 	@PostMapping("/orderProcess.do")
-	public String orderProcess(@RequestParam String requestor, @RequestParam int m_idx, @RequestParam String orderNum, 
+	public String orderProcess(@RequestParam String requestor, @RequestParam String orderNum, 
 			@RequestParam String name, @RequestParam int point, @RequestParam String receiver, @RequestParam String selnum, 
 			@RequestParam String address, @RequestParam int paid_price, @RequestParam String requestMessage, 
-			@RequestParam String paymentInfo, Model model, HttpServletRequest request) {
+			@RequestParam int shFee, @RequestParam String paymentInfo, Model model, HttpServletRequest request) {
 		
 		System.out.println(requestor);
+		HttpSession session = request.getSession();
+		MemberVo member = (MemberVo) session.getAttribute("member");
+		int m_idx = member.getM_idx();
 		
 		List<CartVo> OrderDetails = new ArrayList<CartVo>();
 		
@@ -125,9 +129,7 @@ public class paymentController {
 			cDel.deleteCartAll(m_idx);
 			
 		}else {
-			HttpSession session = request.getSession();
-			OrderDetails = (List<CartVo>)session.getAttribute("CartList");
-			
+			OrderDetails = (List<CartVo>)session.getAttribute("CartList");			
 		}
 		
 		model.addAttribute("OrderDetails", OrderDetails);
@@ -140,16 +142,18 @@ public class paymentController {
 			productAmounts.add(Integer.toString(product.getAmount()));
 			int price = product.getPrice();
 			int discount = product.getDiscount();
-			productsPrice.add(Integer.toString(price*(100-discount)/100));
+			productsPrice.add(Integer.toString(price*(100-discount)/100));			
 		}
 		String products = String.join(",", productIds);
 		String amounts = String.join(",", productAmounts);
-		String prdtsPrice = String.join(",", productsPrice);
+		String prdcsPrice = String.join(",", productsPrice);
+		
+		System.out.println("테스트한다: "+prdcsPrice);
 		
 		OrderVo orderVo = new OrderVo();
 		orderVo.setProducts(products);
 		orderVo.setAmounts(amounts);
-		orderVo.setProducts_price(prdtsPrice);
+		orderVo.setProducts_price(prdcsPrice);
 		orderVo.setOrder_idx(orderNum);
 		orderVo.setM_idx(m_idx);		
 		orderVo.setReceiver(receiver);
@@ -158,7 +162,8 @@ public class paymentController {
 		orderVo.setPaid_price(paid_price);
 		orderVo.setRequest(requestMessage);
 		orderVo.setPaymentInfo(paymentInfo);
-		orderVo.setUsed_point(point);
+		orderVo.setUsed_point(point);		
+		orderVo.setS_fee(shFee);
 		
 		pmOrder.createOrder(orderVo);
 		
@@ -176,7 +181,24 @@ public class paymentController {
 		mVo.setM_idx(m_idx);
 		mVo.setPoint(point);
 		
-		mBenefit.setPoint(mVo);
+		mBenefit.usePoint(mVo);
+		
+		int savePoint = 0;
+		double savePointPercent = 0.0;
+		
+		switch (member.getGrade()) {
+		case 0: savePointPercent = 0.01; break;
+		case 1: savePointPercent = 0.03; break;
+		case 2: savePointPercent = 0.05; break;
+		}
+		
+		savePoint = (int)(paid_price * savePointPercent);
+		
+		PointVo pointVo = new PointVo();
+		pointVo.setM_idx(m_idx);
+		pointVo.setSavePoint(savePoint);
+		
+		mBenefit.addPoint(pointVo);
 		
 		model.addAttribute("orderNum", orderNum);
 	    model.addAttribute("orderName", name);

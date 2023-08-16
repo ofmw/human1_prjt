@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.omart.vo.BoardFileVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.OrderVo;
+import com.omart.vo.PointVo;
 import com.omart.vo.ProductVo;
 import com.omart.vo.WishVo;
 
@@ -61,12 +62,11 @@ public class MemberDao{
 	
 	//찜목록 정보 가져오기
 	public List<String> getWishList(int m_idx){
-		List<String> wishList = null;
+		List<String> wishList = new ArrayList<String>();
 				
 		WishVo wVo = sqlSession.selectOne(MAPPER+".getWishList", m_idx);
 				
-		if(wVo.getW_list() != null) {
-			wishList = new ArrayList<String>();
+		if(wVo!= null) {
 			wishList = Arrays.asList(wVo.getW_list().split(","));
 		}
 		
@@ -85,9 +85,14 @@ public class MemberDao{
 	}
 	
 	//포인트 사용
-		public void setPoint(MemberVo mVo) {			
-			sqlSession.update(MAPPER+".setPoint", mVo);
-		}
+	public void usePoint(MemberVo mVo) {			
+		sqlSession.update(MAPPER+".usePoint", mVo);
+	}
+		
+	//포인트 적립
+	public void addPoint(PointVo pointVo) {
+		sqlSession.update(MAPPER+".addPoint", pointVo);
+	}
 		
 	//찜목록에 있는 상품 정보 조회
 	public List<ProductVo> getP_info(List<String> wish) {
@@ -117,7 +122,9 @@ public class MemberDao{
 			System.out.println("실행된 행 갯수 누적: " +result);
 		}
 		
-		return result; 
+		
+		
+		return result;
 	}
 	
 	public void recordLogin(int m_idx) {

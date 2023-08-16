@@ -145,7 +145,9 @@
 		<!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">30 P</div>
+            <div id="mp_header_point_num">
+            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
+            </div>
         </div>
 
     </div>
@@ -159,9 +161,7 @@
                 <div class="mp_main_menu_title">나의 주문관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <!-- <li><a href="mypage 주문배송.html">주문/배송조회</a></li> -->
                         <li><a href="purchase_history.do">주문/배송조회</a></li>
-                        <!-- <li><a href="#">자주 구매한 상품</a></li> -->
                     </ul>
                 </div>
             </div>

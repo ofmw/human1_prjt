@@ -50,15 +50,13 @@
     /* ---------------------리뷰 작성--------------------- */
     #ca_notice_area{
         width: 95%;
-        display: flex;
         flex-direction: column;
-        /* align-items: center; */
     }
    
     /* ---------------------안내문구--------------------- */
     #ca_m_notice{
-        margin: 10px 0;
-        padding: 0 10px;
+        margin: 20px 0;
+        padding-left: 30px;
         font-size: 12px;
         color: #777777;
     }
@@ -72,7 +70,7 @@
         flex-direction: row;
         justify-content: center;
 
-        margin-top: 25px;
+        margin-top: 50px;
     }
     /* 버튼 공통 */
     #ca_m_btn_box button{
@@ -99,43 +97,74 @@
     /* 창 닫기 버튼 */
     #btn_close_window{
         width: 100px;
-        background-color: #fcfcfc;
+        background-color: #f2f2f2;
         border: 1px solid #dddddd;
     }
-    #ca_product_tbl{
+    table{
+        width: 95%;
+        border-top: 1px solid #222;
+        border-bottom: 1px solid #222;
+        margin-top: 50px;
         border-collapse: collapse;
-        width: 700px;
-    }
-    #ca_product_tbl td{
-        border: 1px solid red;
-        height: 90px;
     }
     #ca_product_tbl tr:first-child td{
-        font-size: 13px;
-        padding-left: 5px;
+        height: 100px;
+        background-color: #f7f7f7;
     }
-    #ca_product_tbl tr td:first-child {
-	   width: 95px;
-	}
-	#ca_product_tbl tr:first-child td:last-child{
-	   width: 150px;
-	}
-	#ca_product_tbl textarea {
-	   height: 83%;
-	   width: 98%;
-	   padding: 5px;
-	   resize: none;
-	}
 	#ca_product_tbl tr:nth-child(3) td{
 	   text-align: center;
 	   user-select: none;
 	}
 	#ca_product_tbl tr:nth-child(3) span{
 	   font-size: 40px;
-	   color: gray;
+	   color: #ddd;
 	   cursor: pointer;
 	   margin: 2px;
-    }    
+    }
+
+    .click{
+        color: red !important;
+    }
+    #ca_m_notice ul{
+        list-style-type: circle;
+    	font-size: 13px;
+    }
+    #td_img{
+        width: 100px;
+    }
+    #td_content{
+        height: 150px;
+        padding: 20px 20px;
+        box-sizing: border-box;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+    #content{
+        display: block;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        font-size: 18px;
+        border: 0;
+        outline: 0;
+        resize: none;
+    }
+    #td_p-name{
+        padding: 0 10px;
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        text-align: center;
+    }
+    #td_p-info{
+        width: 90px;
+        padding: 0 20px;
+        text-align: center;
+        box-sizing: content-box;
+    }
+    #td_stars{
+        height: 70px;
+    }
+
     
 </style>
 	
@@ -149,19 +178,33 @@
 		let orderIdx = $("#order_idx").val();
 		let pId = $("#p_id").val();
 		
-		stars.click(function(){	
-			let num = parseInt($(this).attr("id").replace("star_", ""))+1;
-			score = num-1;
-				
-			for (let i=0; i<num; i++){
-				$("#star_"+i).text("★");
-			}
-			
-			for(let i=num; i<6; i++){
-				$("#star_"+i).text("☆");
-			}
-			
-		});
+        stars.on("mouseenter", function(){
+
+            let starIndex = $(this).index();
+
+            for (i=0; i<=starIndex; i++) {
+                stars.eq(i).css('color', 'red');
+            }
+
+        });
+
+        stars.on("mouseleave", function(){
+                $(".stars").css('color', '');
+        });
+
+        stars.click(function(){
+
+            let starIndex = $(this).index();
+            
+            for (let i = 0; i < stars.length; i++) {
+                if (i <= starIndex) {
+                stars.eq(i).css('color', 'red').addClass("click");
+                } else {
+                stars.eq(i).css('color', '').removeClass("click");
+                }
+            }
+
+        });
 		
 		write_review_btn.click(function(){
 			
@@ -221,35 +264,32 @@
 	<div id="ca_section">
 		<table id="ca_product_tbl">
 	      <tr>
-            <td></td>
-            <td>${selected_product.p_name} ${p_info.standard} ${p_info.unit}</td>
-            <td>
-                <fmt:formatNumber value="${selected_product.amount}" pattern="#,###" />개 <br>
-                <fmt:formatNumber value="${selected_product.price}" pattern="#,###" />원
+            <td id="td_img"><img src="#" alt="#"></td>
+            <td id="td_p-name">상품이름ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁa</td>
+            <td id="td_p-info">
+                <fmt:formatNumber value="${selected_product.price}" pattern="#,###" />10,000 원<br>
+                <fmt:formatNumber value="${selected_product.amount}" pattern="#,###" />39 개
             </td>
           </tr>
 		  <tr>
-		  	<td></td>
-		  	<td colspan="2"><textarea id="content" placeholder="상품 리뷰를 남겨주세요."></textarea></td>		  	
+		  	<td colspan="3" id="td_content"><textarea id="content" placeholder="상품 리뷰를 남겨주세요. (최대 100자)" maxlength="100"></textarea></td>		  	
 		  </tr>
 		  <tr>
-		  	<td colspan="3">
-		  	   <span class="stars" id="star_1">☆</span>
-		  	   <span class="stars" id="star_2">☆</span>
-		  	   <span class="stars" id="star_3">☆</span>
-		  	   <span class="stars" id="star_4">☆</span>
-		  	   <span class="stars" id="star_5">☆</span>
+		  	<td colspan="3" id="td_stars">
+		  	   <span class="stars" id="star_1">★</span>
+		  	   <span class="stars" id="star_2">★</span>
+		  	   <span class="stars" id="star_3">★</span>
+		  	   <span class="stars" id="star_4">★</span>
+		  	   <span class="stars" id="star_5">★</span>
 		  	</td>
 		  </tr>
 		</table>
 		<div id="ca_notice_area">	
 			<div id="ca_m_notice">
 				<ul>
-					<li>·&nbsp;&nbsp;배송지는 최대 5개 까지 저장 가능합니다.</li>
-					<li>·&nbsp;&nbsp;기본 배송지로 설정된 배송지는 주문시 기본값으로 적용됩니다.</li>
-                    <li>·&nbsp;&nbsp;기본 배송지 및 현재 주문 배송지는 삭제할 수 없습니다.</li>
-                    <li>·&nbsp;&nbsp;배송지는 마이페이지에서도 관리 가능합니다.</li>
-					<li>·&nbsp;&nbsp;결제 전 배송지를 반드시 확인해주세요.</li>
+					<li>작성 완료하신 리뷰는 수정이 불가합니다.</li>
+					<li>리뷰 작성시 50 포인트가 지급됩니다.</li>
+                    <li>작성된 리뷰는 사이트 운영규칙에 따라 삭제조치될 수 있습니다.</li>
 				</ul>
 			</div>
 			

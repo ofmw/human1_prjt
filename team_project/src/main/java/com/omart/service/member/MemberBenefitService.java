@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.omart.dao.MemberDao;
 import com.omart.vo.MemberVo;
+import com.omart.vo.PointVo;
 
 import lombok.Setter;
 
@@ -18,8 +19,12 @@ public class MemberBenefitService implements MemberService {
 		return dao.getPoint(m_idx);
 	}
 	
-	public void setPoint(MemberVo memberVo){
-		dao.setPoint(memberVo);
+	public void usePoint(MemberVo memberVo){
+		dao.usePoint(memberVo);
+	}
+	
+	public void addPoint(PointVo pointVo) {
+		dao.addPoint(pointVo);
 	}
 	
 }

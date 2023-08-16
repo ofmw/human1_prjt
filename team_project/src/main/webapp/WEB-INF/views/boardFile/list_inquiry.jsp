@@ -161,8 +161,10 @@
 		let content = $("#content").val();
 		let m_idx = $("#m_idx").val();
 	
-		if(category == "" || m_name == "" || title == "" || content == ""){
+		if(m_name == "" || title == "" || content == ""){
 			alert("모든 항목을 입력해주세요")
+		}else if(category == 1){
+			alert("문의목록을 선택해주세요");
 		}else{
 			let formData = {
 				category: parseInt(category),
@@ -218,7 +220,7 @@
 			            <td>말머리</td>
 			            <td>
 			              <select id="category" name="category" required>
-			                <option value="1">문의내용</option>
+			                <option value="1">문의목록</option>
 			                <option value="2">회원정보</option>
 			                <option value="3">주문/결제/배송</option>
 			                <option value="4">취소/환불</option>

@@ -545,7 +545,7 @@ $(function () {
                 </td>
             </tr>
             <tr>
-                <td>문의목록</td>
+                <td>분류</td>
             </tr>
             <tr>
                 <td>
@@ -581,7 +581,7 @@ $(function () {
                 <td>이름</td>
                 <td>제목</td>
                 <td>문의내용</td>
-                <td>문의목록</td>
+                <td>분류</td>
                 <td>답변여부</td>
                 <td>작성일</td>
          		<td>제품코드</td>                             
@@ -621,7 +621,7 @@ $(function () {
                     </td>
                     <td>
 						<c:choose>
-							<c:when test="${item.category eq '0'}">
+							<c:when test="${item.category eq '1'}">
 						        상품문의
 						    </c:when>
 		                	<c:when test="${item.category eq '2'}">
@@ -742,7 +742,7 @@ $(function () {
 	                <tr>
 	                    <th>게시판</th>
 	                    <td><input type="text" id="inquiry_table-name" disabled/></td>
-	                    <th>문의 카테고리</th>
+	                    <th>분류</th>
 	                    <td><input type="text" id="inquiry_category" disabled/></td>
 	                </tr>
 	                <tr>
@@ -758,7 +758,7 @@ $(function () {
 	                    <td><input type="text" id="inquiry_post-date" disabled/></td>
 	                </tr>
 	                <tr>
-	                	<th>문의 내용</th>
+	                	<th>문의내용</th>
 	                    <td colspan="3"><textarea id="inquiry_content" disabled></textarea></td>
 	                </tr>
 	                <tr>
@@ -766,7 +766,7 @@ $(function () {
 	                    <td><input type="text" id="inquiry_p-id" disabled/></td>
 	                </tr>
 	                <tr>
-	                	<th>답변 내용</th>
+	                	<th>답변내용</th>
 	                	<td colspan="3"><textarea id="ans_content"></textarea></td>
 	                </tr>
 	                <tr>

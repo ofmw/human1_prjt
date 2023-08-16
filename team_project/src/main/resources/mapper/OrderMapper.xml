@@ -6,15 +6,14 @@
 <mapper namespace="com.omart.OrderMapper">    
     
     <insert id="createOrder" parameterType="orderVo">
-        insert into order_list (order_idx, m_idx, products, amounts, products_price, receiver, selnum, address, paid_price, request, paymentInfo, used_point) 
-        values (#{order_idx}, #{m_idx}, #{products}, #{amounts}, #{products_price}, #{receiver}, #{selnum}, #{address}, #{paid_price}, #{request}, #{paymentInfo}, #{used_point})
+        insert into order_list (order_idx, m_idx, products, amounts, products_price, receiver, selnum, address, paid_price, request, paymentInfo, used_point, s_fee) 
+        values (#{order_idx}, #{m_idx}, #{products}, #{amounts}, #{products_price}, #{receiver}, #{selnum}, #{address}, #{paid_price}, #{request}, #{paymentInfo}, #{used_point}, #{s_fee})
     </insert>
     
     <select id="selectOrder" parameterType="string" resultType="orderVo">
         select * from order_list where order_idx = #{orderNum}
     </select>
     
-        
     <!-- 주문/배송조회 페이지 정보 -->
     <select id="get_ph_info" parameterType="_int" resultType="orderVo">
     	SELECT *

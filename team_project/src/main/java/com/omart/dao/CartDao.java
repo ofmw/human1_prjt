@@ -67,11 +67,15 @@ public class CartDao{
 		
 		if(checkVo != null) {
 			if(cartVo.getAmount() + checkVo.getAmount() > 20) {
-				cartVo.setAmount(20 - checkVo.getAmount());
+				cartVo.setAmount(20);
 			}
-		}		
+			sqlSession.update(MAPPER+".cartUpdate_Amount", cartVo);
+		}else {
+			sqlSession.insert(MAPPER+".addCart", cartVo);
+		}
 		
-		sqlSession.insert(MAPPER+".addCart", cartVo);
+		System.out.println("addCartDao m_idx: "+cartVo.getM_idx());
+		
 	}
 	
 	//해당 회원의 장바구니에 상품 추가 (마이페이지용.. 임시)

@@ -105,7 +105,7 @@
     #div_member_info{
         position: absolute;
         width: 500px;
-        height: 400px;
+        height: 300px;
         background-color: white;
         left: 50%;
         margin-left: -310px;
@@ -208,6 +208,26 @@ $(function(){
             $("#platForm_info").val(memberRow.find("td:nth-child(13)").text().trim());
             $("#a_date_info").val(memberRow.find("td:nth-child(11)").text().trim());
             $("#a_state_info").val(memberRow.find("td:nth-child(12)").text().trim());
+            $("#login_date_info").val(memberRow.find("td:nth-child(8)").text().trim());
+            
+            /* let mIdx = memberRow.find(".m_idx").val();
+            let page = "admin";
+            
+            $.ajax({
+            	type: "post",
+            	url: "../mypage/manage_address.do",
+            	data: {m_idx: mIdx, page: page},
+            	success: function(response){
+            		alert("ajax테스트 성공");
+            	},
+            	error: function(error){
+            		alert("ajax테스트 실패");
+            	},
+            	complete: function(response){
+            		alert("ajax 컴플리트 구간");
+            		
+            	}
+            }); */
             
         });
 	});
@@ -335,6 +355,7 @@ $(function(){
                         <button class="btn_memberInfo" id="${member.m_id}">
                             <img alt="" src="">
                         </button>
+                        <input type="hidden" class="m_idx" value="${member.m_idx}"/>
                     </td>                    
 	                <td>${member.m_id}</td>
                     <td>
@@ -363,7 +384,7 @@ $(function(){
                         </c:choose> 
                     </td>
                     <td>${member.selNum}</td>
-                    <td>${member.login_date}</td>
+                    <td><fmt:formatDate value="${member.login_date}" pattern="yyyy-MM-dd"/></td>
                     <td><fmt:formatDate value="${member.j_date}" pattern="yyyy-MM-dd"/></td>
                     <td><fmt:formatDate value="${member.u_date}" pattern="yyyy-MM-dd"/></td>
                     <td><fmt:formatDate value="${member.a_date}" pattern="yyyy-MM-dd"/></td>
@@ -405,7 +426,7 @@ $(function(){
 			           <th>성별</th>
 			           <td><input type="text" id="gender_info" disabled/></td>
 		           </tr>
-		           <tr>
+		           <!-- <tr>
 			           <th>주소지1</th>
 			           <td><input type="text" disabled/></td>	           	
 			           <td colspan="2"><input type="text" disabled/></td>
@@ -419,7 +440,7 @@ $(function(){
 			           <th>주소지3</th>
 			           <td><input type="text" disabled/></td>
 			           <td colspan="2"><input type="text" disabled/></td>
-		           </tr>
+		           </tr> -->
 		           <tr>
 			           <th>가입일</th>
 			           <td><input type="text" id="j_date_info" disabled/></td>
@@ -428,7 +449,7 @@ $(function(){
 		           </tr>
 		           <tr>
 			           <th>최근접속일</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="login_date_info" disabled/></td>
 			           <th>플랫폼</th>
 			           <td><input type="text" id="platForm_info" disabled/></td>
 		           </tr>

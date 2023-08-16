@@ -22,16 +22,12 @@
 	
 	<select id="checkAmount" parameterType="cartVo" resultType="cartVo">
         select * from cart where m_idx = #{m_idx} and p_id = #{p_id}
-	</select>
-	
+	</select>	
 	
 	<!-- 장바구니에 상품 추가 -->
-	<insert id="addCart" parameterType="cartVo">
-	    
+	<insert id="addCart" parameterType="cartVo">	    
 	    insert into cart (m_idx, p_id, amount)
         values (#{m_idx}, #{p_id}, #{amount})
-        on duplicate key update amount = amount + #{amount}
-	    
 	</insert>
 	
 	<!-- 장바구니에 상품 추가(마이페이지용 임시) -->
