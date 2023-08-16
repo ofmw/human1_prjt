@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.omart.AdminMapper">    
+    
+    <select id="countCategory" parameterType="string" resultType="_int">
+        SELECT COUNT(*) FROM product WHERE p_id LIKE CONCAT(#{category}, '%')
+    </select>
+    
+    <insert id="insertProduct" parameterType="productVo">
+        insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state, sub_category) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state}, #{sub_category})
+    </insert>
+    
+    <update id="editProduct" parameterType="productVo">
+        update product
+        set p_id = #{p_id},
+            p_name = #{p_name},
+            brand = #{brand},
+            cost = #{cost},
+            price = #{price},
+            standard = #{standard},
+            unit = #{unit},
+            stock = #{stock},
+            discount = #{discount},
+            post_state = #{post_state},
+            sub_category = #{sub_category}
+        where p_id = #{p_id}
+            
+    </update>
+    
+    <update id="stateChangeTrue" parameterType="string">
+        update product
+        set post_state = true
+        where p_id = #{p_id}
+    </update>
+    
+    <update id="stateChangeFalse" parameterType="string">
+        update product
+        set post_state = false
+        where p_id = #{p_id}
+    </update>
+    
+    <delete id="deleteProduct" parameterType="string">
+        delete from product
+        where p_id = #{p_id}
+    </delete>
+    
+    <select id="memberList" resultType="memberVo">
+        select * from member_omart where grade not in (7, 8, 9)
+    </select>
+    
+    <select id="adminList" resultType="memberVo">
+        select * from member_omart where grade in (7, 8, 9)
+    </select>
+    
+    <select id="orderList" resultType="orderVo">
+        select * from order_list
+    </select>
+    
+    <insert id="createAccount" parameterType="memberVo">
+        insert into member_omart (m_id, m_pw, grade, m_name) values (#{m_id}, #{m_pw}, #{grade}, #{m_name})
+    </insert>
+    
+    <select id="checkAccount" resultType="_int" parameterType="string">
+        select count(*) from member_omart where m_id = #{m_id}
+    </select>
+    
+    <select id="getAccount" resultType="_int" parameterType="string">
+        select count(*) from member_omart where m_id = #{m_id} and grade in (7, 8, 9)
+    </select>
+    
+    <update id="changeOrderState" parameterType="string">
+	    <![CDATA[
+	    update order_list
+	    set order_state =
+	        case
+	            when order_state <= 2 then order_state + 1
+	            else order_state
+	        end
+	    where order_idx = #{order_idx}
+	    ]]>
+	</update>
+    
+</mapper>

@@ -1,17 +1,19 @@
 package com.omart.service.product;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.omart.dao.ProductDao;
-import com.omart.vo.WishVo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Service("pdWish")
 @RequiredArgsConstructor
 public class ProductWishService implements ProductService {	
 	
-	private final ProductDao dao;
+	@Setter(onMethod_={ @Autowired })
+	private ProductDao dao;
 	
 	//찜목록 추가
 	public int addWishList(int m_idx, String p_id) {

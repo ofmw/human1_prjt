@@ -114,8 +114,9 @@
     }
     .p_inner_elements a{
         width: 295px;
-        min-height: 408px;
-        /* background-color: aliceblue; */
+        
+        /* 상품 박스 최소높이 */
+        min-height: 429px;
     }
     .p_img{
         width: 100%;
@@ -142,6 +143,11 @@
         font-weight: bold;
     }
     .p_info_name{
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+		display: -webkit-box;			/* box형태로 지정 */
+		-webkit-line-clamp: 2;			/* 해당 영역의 최대 라인 수 */
+		-webkit-box-orient: vertical;	/* 수직 정렬 */
         font-size: 15px;
     }
     .p_info_price{

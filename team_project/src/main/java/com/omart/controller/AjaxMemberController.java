@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,11 +29,12 @@ public class AjaxMemberController {
                         @RequestParam("m_pw") String m_pw,
                         HttpSession session) {
 		
+		System.out.println(m_pw);
 
 		System.out.println("━━━━━━━━━━━━━━━━━<일반 로그인 요청>━━━━━━━━━━━━━━━━━");
 		
 		MemberVo vo = mLogin.login(m_id, m_pw);
-		
+				
 		if(vo != null){
 			
 			int m_idx = vo.getM_idx();
@@ -85,6 +85,7 @@ public class AjaxMemberController {
             return "failure";
         }
     }
+	
 	
 	//회원탈퇴
 	@PostMapping("/mypage/omartCancel.do")

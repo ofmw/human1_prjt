@@ -384,8 +384,8 @@
                         <table>
                             <colgroup>
                                 <col style="width:9%;">
-                                <col style="width:17%;">
-                                <col style="width:50%;">
+                                <col style="width:19%;">
+                                <col style="width:48%;">
                                 <col style="width:10%;">
                                 <col style="width:14%;">
                             </colgroup>

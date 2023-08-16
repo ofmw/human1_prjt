@@ -66,7 +66,7 @@ $(function() {
         let m_idx = $("#m_idx").val();
         let p_id = $(this).attr("id");
         let amount = 1;
-
+        
         $.ajax({
             type: "post",
             url: "cart/addCart.do",

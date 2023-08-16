@@ -5,7 +5,7 @@ $(function() {
 	$("#login_btn").click(function() {
 	    let m_id = $("#m_id").val();
 	    let m_pw = $("#m_pw").val();
-	    
+	    	    
 	    login_process(m_id, m_pw);
 	});
 	
@@ -21,7 +21,7 @@ $(function() {
     
     //*** 로그인 처리 ***///
     function login_process(m_id, m_pw) {
-    
+                
 	    // 아이디, 비밀번호 공란 체크
 	    if (m_id === "") {
 	    	alert("아이디를 입력해주세요");

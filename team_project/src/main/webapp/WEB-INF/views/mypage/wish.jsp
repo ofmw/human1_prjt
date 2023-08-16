@@ -260,15 +260,20 @@
         	height: 40px;
             position: absolute;
             text-align: center;
-            line-height: 40px;
             bottom: 0;
-            left: 0;
             user-select: none;
             
             background-color: rgba(255,255,255,0.9);
         }
-        .w_img_opt-box button{
-        	margin: auto 0;
+        .w_img_opt-box-innerDiv{
+		    height: 100%;
+		    display: flex;
+		    align-items: center;
+		    flex-direction: row;
+		    justify-content: center;
+		}
+        .w_img_opt-box-innerDiv button{
+        	margin: 0 5px;
         	background-color: #fcfcfc;
         }
         .w_info_brand{
@@ -316,6 +321,17 @@
 		    border-radius: 3px;
 		    background-color: #fcfcfc;
         }
+        
+        #mp_main_wish_notice {
+		    margin-top: 10px;
+		    padding-left: 30px;
+		    color: #777;
+		}
+		
+		#mp_main_wish_notice ul {
+		    list-style-type: circle;
+		    font-size: 13px;
+		}
     </style>
     
     <script>
@@ -475,6 +491,8 @@
 	                   if (response === "success") { // 수량 업데이트가 성공한 경우
 	                	   	alert('장바구니에 상품이 추가되었습니다.');
 	                	  	//페이지 새로고침
+	                    } else if (response === "max"){
+	                        alert("해당 상품이 장바구니 최대 상품 수량을 초과했습니다.");
 	                    } else {
 	                        alert("장바구니 상품 추가에 실패했습니다.");
 	                    }
@@ -727,9 +745,12 @@
             <input type="hidden" id="session_m_idx" value="${member.m_idx}">
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="#">회원정보 변경</a></li>
-                    <li><a href="#">비밀번호 변경</a></li>
+                	<c:if test="${member.platform eq 'omart'}">
+	                    <li><a href="#">회원정보 변경</a></li>
+	                    <li><a href="#">비밀번호 변경</a></li>
+	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
+                    <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
@@ -749,9 +770,12 @@
             </div>
         </div>
 
+        <!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">30 P</div>
+            <div id="mp_header_point_num">
+            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
+            </div>
         </div>
 
     </div>
@@ -764,9 +788,7 @@
                 <div class="mp_main_menu_title">나의 주문관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <!-- <li><a href="mypage 주문배송.html">주문/배송조회</a></li> -->
                         <li><a href="purchase_history.do">주문/배송조회</a></li>
-                        <!-- <li><a href="#">자주 구매한 상품</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -827,9 +849,11 @@
 									                <div class="w_img">
 									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
 									                	<div style="display:none" class="w_img_opt-box">
-									                		<button type="button" class="c_btn">카</button>
-									                		<button type="button" class="w_btn">♥</button>
-									                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
+									                		<div class="w_img_opt-box-innerDiv">
+										                		<button type="button" class="c_btn">카</button>
+										                		<button type="button" class="w_btn" style="color:red;">♥</button>
+										                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
+									                		</div>
 									                	</div>
 									                </div>
 									                <div class="w_info">
@@ -870,9 +894,9 @@
 
                 <div id="mp_main_wish_notice">
                     <ul>
-                        <li>·&nbsp;&nbsp;찜목록은 최대 xx개까지 저장 가능합니다.</li>
-                        <li>·&nbsp;&nbsp;품절 및 판매중단 상품은 표시되지 않습니다.</li>
-                        <li>·&nbsp;&nbsp;추가할 내용</li>
+                        <li>찜목록은 최대 100개까지 저장 가능합니다.</li>
+                        <li>판매중단 상품은 표시되지 않습니다.</li>
+                        <li>추가할 내용</li>
                     </ul>
                 </div>
             </div>
