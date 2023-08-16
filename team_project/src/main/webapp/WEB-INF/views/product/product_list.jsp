@@ -210,10 +210,18 @@
 		flex-direction: row;
 		justify-content: center;
 	}
-	.p_img_opt-box-innerDiv button{
-		margin: 0 5px;
-		background-color: #fcfcfc;
-	}
+    .p_img_opt-box-innerDiv button{
+        width: 30px;
+        height: 28px;
+        margin: 0 5px;
+        background: none;
+        border: 0;
+        border-radius: 5px;
+        font-size: 18px;
+        padding-bottom: 2px;
+        box-sizing: content-box;
+        line-height: 28px;
+    }
     .p_info_brand{
         font-size: 14px;
         font-weight: bold;
@@ -291,7 +299,7 @@
 	
 	                	   	/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
 	                	  	*  같은 상태로 임의변경 */
-	                   		$('.p_id[value='+p_id+']').siblings(".w_btn").css('color','red').addClass("inWish");
+	                   		$('.p_id[value='+p_id+']').siblings(".w_btn").text("❤").css('color','red').addClass("inWish");
 	                    } else if (response === "max") {
 	                        alert("찜목록이 꽉 찼습니다! (최대 100개)");
 	                    } else {
@@ -328,7 +336,7 @@
 	                	  	
 	                	  	/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
 	                	  	*  같은 상태로 임의변경 */
-	                	   	$('.p_id[value='+p_id+']').siblings(".w_btn").css('color','#222').removeClass("inWish");
+	                	   	$('.p_id[value='+p_id+']').siblings(".w_btn").text("♡").css('color','#222').removeClass("inWish");
 	                    } else {
 	                        alert("찜목록 삭제에 실패했습니다.");
 	                    }
@@ -589,13 +597,13 @@
 	                                                    	<div style="display:none" class="p_img_opt-box">
 										                		<div class="p_img_opt-box-innerDiv">
 										                			<input type="hidden" class="p_id" value="${productList[j].p_id}">
-											                		<button type="button" class="c_btn">카</button>
+											                		<button type="button" class="c_btn">🛒</button>
 											                		<c:choose>
                         												<c:when test="${!empty wishList and wishList.contains(productList[j].p_id)}">
-											                				<button type="button" class="w_btn inWish" style="color:red;">♥</button>
+											                				<button type="button" class="w_btn inWish" style="color:red;font-size:22px;">❤</button>
 										                				</c:when>
 										                				<c:otherwise>
-										                					<button type="button" class="w_btn noWish">♥</button>
+										                					<button type="button" class="w_btn noWish" style="font-size:20px;font-weight:bold;padding:0;height:30px">♡</button>
 										                				</c:otherwise>
 										                			</c:choose>
 										                		</div>
