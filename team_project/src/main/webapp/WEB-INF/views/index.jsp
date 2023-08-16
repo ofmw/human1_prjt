@@ -114,8 +114,9 @@
     }
     .p_inner_elements a{
         width: 295px;
-        min-height: 408px;
-        /* background-color: aliceblue; */
+        
+        /* 상품 박스 최소높이 */
+        min-height: 429px;
     }
     .p_img{
         width: 100%;
@@ -142,6 +143,11 @@
         font-weight: bold;
     }
     .p_info_name{
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+		display: -webkit-box;			/* box형태로 지정 */
+		-webkit-line-clamp: 2;			/* 해당 영역의 최대 라인 수 */
+		-webkit-box-orient: vertical;	/* 수직 정렬 */
         font-size: 15px;
     }
     .p_info_price{
@@ -329,6 +335,14 @@
             console.log("autoplay stop");
             swiper.autoplay.stop();
         });
+        
+        $('.swiper-slide').hover(function(){
+			swiper.autoplay.stop();
+        }, function(){
+			swiper.autoplay.start();
+        });
+        
+        
     });
     
 </script>
@@ -343,13 +357,6 @@
 	<div id="hp_area">
         <div id="hp_area_contents">
 
-            <!-- 상단 광고이미지 슬라이드 영역 -->
-            <!-- <div id="hp_area_adImg_box">
-                <div id="img_box">
-                    <div class="adImg"><a href="#"><img src="#" alt="#"></a></div>
-                </div>
-                <div id="nav">네비게이션</div>
-            </div> -->
             <!-- 상단 광고이미지 슬라이드 영역 -->
             <div class="wrapper">
                 <!-- Swiper -->
@@ -377,10 +384,6 @@
                   <!-- <div class="custom-fraction">
                     <span class="current">1</span>/<span class="all">9
                   </div> -->
-                </div>
-                <div class="btn-wrapper">
-                  <button class="auto-start">slide autoplay start</button>
-                  <button class="auto-stop">slide autoplay stop</button>
                 </div>
             </div>
 

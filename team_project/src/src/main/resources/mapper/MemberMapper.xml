@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.omart.MemberMapper">
+    
+    <!-- 아이디검사 구문 -->
+    <select id="checkId" parameterType="string" resultType="_int">
+        SELECT count(*)
+        FROM member_omart
+        WHERE m_id=#{m_id}
+    </select>
+    
+    <!-- 회원정보 입력구문 -->
+    <insert id="join" parameterType="MemberVo">
+        INSERT
+        INTO member_omart(m_name, birth, gender, selNum, m_id, m_pw, platform)
+        VALUES(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw}, "omart")
+    </insert>
+    
+    <!-- 회원가입시 찜목록에 행 생성하기 위해 가입정보 조회 -->
+    <select id="checkM_idx" parameterType="MemberVo">
+    	SELECT m_idx
+    	FROM member_omart
+    	WHERE m_id = #{m_id}
+    </select>
+    
+    <update id="recordLogin" parameterType="_int">
+        update member_omart
+        set login_date = now()
+        where m_idx = #{m_idx}
+    </update>
+    
+    <!-- 로그인 처리구문 -->
+    <select id="login" parameterType="map" resultType="memberVo">
+        SELECT *
+        FROM member_omart
+        WHERE m_id=#{m_id}
+    </select>
+    
+    <!-- 회원정보 수정구문 -->
+    <update id="update" parameterType="memberVo">
+        UPDATE member_omart
+        SET m_pw=#{m_pw}, m_name=#{m_name}, gender=#{gender}, selNum=#{selNum}, update_date=now()
+        WHERE m_id=#{m_id}
+    </update>
+    
+    <!-- 업데이트된 회원정보 가져오는 구문 -->
+    <select id="selectOne" parameterType="string" resultType="memberVo">
+        SELECT *
+        FROM member_omart
+        WHERE m_id=#{m_id}
+    </select>
+    
+    <!-- 정보 찾기 -->
+	<select id="klogin" parameterType="string" resultType="memberVo">
+		SELECT *
+		FROM member_omart
+		WHERE m_id=#{email}
+	</select>
+	
+	<!-- 카카오 회원 정보 저장 -->
+	<insert id="kjoin" parameterType="map">
+		INSERT INTO member_omart(m_id, m_pw, m_name, birth, platform, gender)
+		VALUES(#{email}, "kakao", #{nickname}, #{birthday}, "kakao", #{gender}) 
+	</insert>
+	
+	<insert id="insertWish" parameterType="_int">
+	   insert into wish (m_idx) values(#{m_idx})
+	</insert>
+    
+    <select id="getWishList" parameterType="_int" resultType="wishVo">
+        select * from wish where m_idx = #{m_idx}
+    </select>
+    
+    <select id="getPoint" parameterType="_int" resultType="_int">
+        select point from point where m_idx = #{m_idx}
+    </select>
+    
+    <update id="setPoint" parameterType="memberVo">
+        UPDATE point
+        SET point = point - #{point}
+        WHERE m_idx=#{m_idx}
+    </update>
+    
+    <!-- 찜목록 페이지 정보 -->
+    <select id="getP_info" parameterType="java.util.List" resultType="productVo">
+	    SELECT *
+	    FROM product
+	    WHERE p_id IN
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	    ORDER BY FIELD(p_id,
+	        <foreach item="item" index="index" collection="list" separator=",">
+	            #{item}
+	        </foreach>
+	    )
+	</select>
+	
+	<!-- 찜목록 삭제 -->
+    <update id="removeWishList" parameterType="map">
+	    UPDATE wish
+	    SET w_list = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', w_list, ','), CONCAT(',', #{p_id}, ','), ','))
+	    WHERE m_idx = #{m_idx}
+	</update>
+</mapper>

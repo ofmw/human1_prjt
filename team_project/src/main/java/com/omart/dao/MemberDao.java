@@ -117,7 +117,9 @@ public class MemberDao{
 			System.out.println("실행된 행 갯수 누적: " +result);
 		}
 		
-		return result; 
+		
+		
+		return result;
 	}
 	
 	public void recordLogin(int m_idx) {

@@ -30,23 +30,34 @@ import lombok.Setter;
 public class MypageController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mPh, mAddress, mWish, mOdrList;
+	private MemberService mPh, mAddress, mWish, mBenefit, mOdrList;
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdInfo, pdCheck;
 	
-	//마이페이지
+	// 마이페이지
 	@GetMapping("/mypage.do")
 	public String mypage(HttpSession session) {
 		
+		// 세션에서 회원의 맴버객체를 가져옴
 		MemberVo member = (MemberVo) session.getAttribute("member");
-		int m_idx = member.getM_idx();
-		List<String> wishList = mWish.getWishList(m_idx);
-		List<OrderVo> orderList = mOdrList.orderList(m_idx);
 		
 		// 로그인 풀렸을 경우 대비 member 객체 체크
 		if (member != null) {
 			
-			if(wishList != null)	{
+			// 세션에서 가져온 맴버객체에서 회원 고유번호 추출
+			int m_idx = member.getM_idx();
+			
+			// 회원 고유번호로 wish, order, point 테이블에서 정보 가져옴
+			// wishList: 찜목록 정보 / orderList: 주문내역 정보 / point: 포인트 정보
+			List<String> wishList = mWish.getWishList(m_idx);
+			List<OrderVo> orderList = mOdrList.orderList(m_idx);
+			int point = mBenefit.getPoint(m_idx);
+			
+			// 세션에 회원의 포인트 정보 저장
+			session.setAttribute("point", point);
+			
+			// 찜목록에 찜한 상품이 있는지 체크
+			if(wishList != null)	{ // 찜한 상품이 있을 경우
 				/* 찜목록 페이지에서 찜한 상품과 해당 상품 정보를 매칭시키기 위해
 				   product 테이블에서 찜목록의 p_id 정보를 이용하여 상품 정보를 가져옴 */			
 				List<ProductVo> p_info = mWish.getP_info(wishList);
@@ -54,19 +65,24 @@ public class MypageController {
 				// post_state가 1이 아닌 제품 제거
 				p_info.removeIf(product -> product.getPost_state() != 1);
 			    
+				// 세션에 기존에 저장된 찜목록과 상품 정보를 삭제 후 업데이트된 정보로 다시 저장
 				session.removeAttribute("wishList");
 				session.removeAttribute("p_info");
 				session.setAttribute("wishList", wishList);
 				session.setAttribute("p_info", p_info);
 			}
 			
-			if(orderList != null) {
+			// 주문내역이 있는지 체크
+			if(orderList != null) { // 주문내역이 있을 경우
+				
+				// 세션에 기존에 저장된 주문내역 정보 삭제 후 업데이트된 정보로 다시 저장
 				session.removeAttribute("orderList");
 				session.setAttribute("orderList", orderList);
 			}
 			
 		}
 		
+		// mypage.jsp로 이동
 		return "mypage/mypage";
 	}
 	
@@ -74,10 +90,12 @@ public class MypageController {
 	@GetMapping("/purchase_history.do")
 	public String purchase_history(HttpSession session) {
 		
+		// 세션에서 회원의 맴버객체를 가져옴
 		MemberVo vo = (MemberVo) session.getAttribute("member");
+		// 세션에서 가져온 맴버객체에서 회원 고유번호 추출
 		int m_idx = vo.getM_idx();
 		
-		// 주문/배송조회 내역 가져오기
+		// 회원 고유번호로 주문/배송조회 내역 가져오기
 		List<OrderVo> phInfo = mPh.get_ph_info(m_idx);
 		
 		if (phInfo != null) {
@@ -178,9 +196,6 @@ public class MypageController {
 			
 			/* 찜목록 페이지에서 찜한 상품과 해당 상품 정보를 매칭시키기 위해
 			   product 테이블에서 찜목록의 p_id 정보를 이용하여 상품 정보를 가져옴 */
-			
-			// post_state가 1이 아닌 제품 제거
-			
 			
 			session.setAttribute("p_info", p_info);
 			

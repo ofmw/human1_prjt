@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.omart.OrderMapper">    
+    
+    <insert id="createOrder" parameterType="orderVo">
+        insert into order_list (order_idx, m_idx, products, amounts, products_price, receiver, selnum, address, paid_price, request, paymentInfo, used_point) 
+        values (#{order_idx}, #{m_idx}, #{products}, #{amounts}, #{products_price}, #{receiver}, #{selnum}, #{address}, #{paid_price}, #{request}, #{paymentInfo}, #{used_point})
+    </insert>
+    
+    <select id="selectOrder" parameterType="string" resultType="orderVo">
+        select * from order_list where order_idx = #{orderNum}
+    </select>
+    
+    <!-- 주문/배송조회 페이지 정보 -->
+    <select id="get_ph_info" parameterType="_int" resultType="orderVo">
+    	SELECT *
+    	FROM order_list
+    	WHERE m_idx = #{m_idx}
+    </select>
+    
+    <!-- 주문/배송조회 페이지 상품 정보 -->
+    <select id="getP_info" parameterType="string" resultType="productVo">
+	    SELECT *
+	    FROM product
+	    WHERE p_id = #{p_id}
+	</select>
+	
+	<!-- 주문내역 상세 페이지 상품 정보 -->
+    <select id="getP_info2" parameterType="string" resultType="productVo">
+	    SELECT p_id ,brand, p_name, standard, unit
+        FROM product
+		WHERE p_id = #{p_id}
+	</select>
+    
+</mapper>

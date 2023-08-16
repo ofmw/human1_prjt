@@ -1,0 +1,270 @@
+@charset "UTF-8";
+
+/* Noto Sans KR */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+*{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
+
+/* body{
+    font-size: 50px;
+    
+} */
+
+#shadow{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* 로그인 창 */
+#login_container{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 365px;
+    height: 580px;
+    text-align: center;
+    position: fixed;
+}
+
+/* 로그인 창 닫기 버튼 */
+#login_close_button{
+    float: right;
+    font-size: 10px;
+}
+
+/* 로그인 창 닫기 버튼 아이콘 */
+#login_close_button img{
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+
+/* a태그 전체적용 */
+a{
+    text-decoration: none;
+}
+/* 로그인 창 뒷배경 */
+/*  #login_box::after{
+     content: "";
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, 0.7);
+ } */
+
+/* 로그인 창 내부 요소 container */
+#login_inner_elements{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
+    width: 325px;
+    height: 490px;
+    background-color: white;
+}
+
+/* 로그인 창 헤더 부분 */
+#login_head_area{
+    display: flex;
+    align-items: baseline;
+	margin-top: 25px;
+    width: 100%;
+}
+
+/* 로그인 타이틀 */
+#login_title{
+    margin-right: auto;
+    font-weight: bold;
+    font-size: 30px;
+    color: #222;
+    user-select: none;
+}
+
+/* 비회원 배송조회 */
+#unregist_tracking a{
+    font-size: 14px;
+    color: rgb(158, 158, 158);
+}
+
+/* id, pw 입력 area */
+#login_input_area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 105px;
+
+    margin-top: 28px;
+}
+
+/* id, pw input text */
+.input_object{
+    width: 100%;
+    height: 46px;
+
+    font-size: 16px;
+
+    padding: 6px 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+
+    box-sizing: border-box;
+}
+
+/* id, pw placeholder */
+.input_object::placeholder{
+    color: rgb(169, 169, 169);
+}
+
+/* checkCapsLock */
+#ccl_message{
+    display: none;
+    font-size: 14px;
+    color: #222;
+}
+
+/* 로그인 버튼 area */
+#login_button_area{
+    margin-top: 20px;
+}
+
+/* 로그인 버튼 */
+#login_btn{
+    width: 100%;
+    height: 51px;
+    
+    border: 0;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+
+    color: white;
+    font-size: 23px;
+    font-weight: bold;
+    background-color: black;
+
+    box-sizing: border-box;
+}
+
+/* 아이디/비밀번호 찾기 area */
+#forgot_account_area{
+    margin-top: 8px;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* 아이디/비밀번호 찾기 a태그 */
+#forgot_account_area a{
+    color: rgb(158, 158, 158);
+}
+
+/* 아이디/비밀번호 찾기 작대기 */
+#division{
+    margin: 0 8px;
+    color: rgb(158, 158, 158);
+}
+
+/* sns 로그인 area */
+#login_sns_area{
+    margin-top: 40px;
+}
+
+/* sns 로그인 타이틀 */
+#sns_title{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    color: #222;
+    user-select: none;
+}
+
+/* sns 로그인 버튼 box */
+#sns_box{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* sns 로그인 버튼 div */
+.sns{
+    position: relative;
+    width: 160px;
+    height: 36px;
+}
+
+/* sns 로그인 버튼 공통 */
+.sns_button{
+    width: 160px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+    color: rgb(169, 169, 169);
+    background-color: white;
+    border: 1px solid #E1E1E3;
+    border-radius: 5px;
+    box-sizing: border-box;
+    left: 0;
+}
+
+/* sns 로그인 버튼 (네이버) */
+#sns_naver_btn{
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    padding-left: 50px;
+}
+
+/* sns 로그인 버튼 (카카오) */
+#sns_kakao_btn{
+    position: relative;
+    display: flex;
+    background-color: #FEE500;
+    color: #191919;
+    cursor: pointer;
+    padding-left: 50px;
+    border: 0;
+}
+
+/* sns 로그인 버튼 아이콘 (네이버)*/
+#sns_naver_btn::after{
+    content: "";
+    display: block;
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    margin-left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-image: url("../img/naver_icon.png");
+    cursor: pointer;
+}
+
+/* sns 로그인 버튼 아이콘 (카카오)*/
+#sns_kakao_btn::after{
+    content: "";
+    display: block;
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    margin-left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-image: url("../img/kakao_icon.png");
+    cursor: pointer;
+}
