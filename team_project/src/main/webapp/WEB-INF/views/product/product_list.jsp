@@ -239,6 +239,10 @@
         font-size: 13px;
         color: #8b96a1;
     }
+    .thumbnail{
+        width: 230px;
+        height: 230px;
+    }
     </style>
 <script>
 	$(function(){
@@ -583,13 +587,12 @@
                                             <c:forEach begin="${i*4}" end="${i*4+3}" var="j">
 	                                            <div class="p_products">
                                                     <c:if test="${productList[j] ne null}">
-
 	                                                    <div class="p_img">
-	                                                    	<a href="product_view.do?p_id=${productList[j].p_id}"><img src="#" alt="#"></a>
+	                                                    	<a href="product_view.do?p_id=${productList[j].p_id}"><img class="thumbnail" src="../resources/uploads/${productList[j].saveFile1}" alt="#"></a>
 	                                                    	<div style="display:none" class="p_img_opt-box">
 										                		<div class="p_img_opt-box-innerDiv">
 										                			<input type="hidden" class="p_id" value="${productList[j].p_id}">
-											                		<button type="button" class="c_btn">카</button>
+											                		<button type="button" class="c_btn">🛒</button>
 											                		<c:choose>
                         												<c:when test="${!empty wishList and wishList.contains(productList[j].p_id)}">
 											                				<button type="button" class="w_btn inWish" style="color:red;">♥</button>

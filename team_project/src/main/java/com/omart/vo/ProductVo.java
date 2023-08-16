@@ -36,4 +36,11 @@ public class ProductVo {
 	private String order_idx; //주문번호와 p_idx로 제품 리뷰 작성 유무 판단을 위한 필드
 	private double stars_avg; // 평균별점
 	private int reviews; //리뷰 갯수
+	
+	//썸네일, 제품정보 사진 파일 첨부
+	private String originFile1;
+	private String saveFile1; 
+	private String originFile2;
+	private String saveFile2;
+	
 }

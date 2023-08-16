@@ -31,6 +31,7 @@ public class AdminDao{
 	};
 	
 	public int editProduct(ProductVo productVo) {
+		System.out.println("관리자DAO fileCheck: "+productVo.getOriginFile1());
 		return sqlSession.update(MAPPER+".editProduct", productVo);
 	}
 	
