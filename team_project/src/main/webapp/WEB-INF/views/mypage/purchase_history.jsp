@@ -76,30 +76,7 @@
     
     <script>
         $(function() {
-        	/* ---------------------배송지 변경--------------------- */
-            // 기존에 열려있는 자식 창에 대한 변수 초기화
-            let childWindow = null;
-            
-            //*** 배송지 변경 자식창 열기 ***//
-            function openManageAddress() {
-            	
-            	// 기존에 자식창이 열려있는지에 대한 여부
-            	if (childWindow) { // 이미 자식창이 열려있으면
-                    childWindow.close(); // 자식창을 닫음
-                }
-            	
-            	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
-            	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=1";
-            	// 자식창을 열고 그 여부를 변수에 저장
-            	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
-            	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
-            }
-            
-            //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
-            $("#manage_address").on("click", function(){
-            	openManageAddress();
-            });
-        	
+
             /* ---------------------버튼 색상 변경--------------------- */
 	      	//*** 기간조회 라디오 버튼 클릭 이벤트 처리 ***//
 	        $('.quicksel_radio').change(function() {
@@ -124,30 +101,208 @@
 	                }
 	            });
 	        });
-	        /* ---------------------회원 탈퇴--------------------- */
-            //*** 회원탈퇴 버튼 클릭 이벤트 처리 ***//
-            $("#cancel").on("click", function(){
-            	
-            	let platform = $("#session_platform").val();
-            	
-            	if (platform === "omart") {
-            		location.href = "omartCancel.do";
-            	} else if (platform === "kakao") {
-            		location.href = "kakaoCancel.do";
-            	}
-            	
+          	
+            /* ---------------------주문내역 기간 설정(라디오 버튼)------------------- */
+            $('.quicksel_radio').change(function() {
+                let range = $(this).val();
+                console.log("기간조회 (라디오 버튼): " + range);
+                
+                let today = new Date();
+                let targetDate = new Date();  // 초기값은 오늘 날짜로 설정
+
+                switch (range) {
+                    case "1":
+                        targetDate.setDate(targetDate.getDate() - 8);
+                        break;
+                    case "2":
+                        targetDate.setDate(targetDate.getDate() - 16);
+                        break;
+                    case "3":
+                        targetDate.setMonth(targetDate.getMonth() - 1);
+                        targetDate.setDate(targetDate.getDate() - 1);
+                        break;
+                    case "4":
+                        targetDate.setMonth(targetDate.getMonth() - 3);
+                        targetDate.setDate(targetDate.getDate() - 1);
+                        break;
+                }
+
+                console.log("조회 날짜 구간: " + targetDate);
+
+                $(".tr_history").removeClass('hide');
+
+                $('.td_date').each(function() {
+                    let dateString = $(this).text();
+                    let dateParts = dateString.split('-');
+                    let tdDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+                    if (tdDate > targetDate && tdDate < today) {
+                        $(this).closest('tr').show();
+                        console.log("표시");
+                    } else {
+                        $(this).closest('tr').hide().addClass('hide');
+                        console.log("숨김");
+                    }
+                    
+                    checkEmpty();
+                    
+                });
+
+                setNav(Math.ceil(countVisibleRows() / 4));
+                changePage(1);
+                
+            });
+
+            /* ---------------------달력 초기 날짜 설정------------------- */
+            // 오늘 날짜 저장
+            const today = new Date();
+            today.setDate(today.getDate() + 1);
+            // 6개월 전 날짜 계산
+            const limitedMonth = new Date();
+            limitedMonth.setMonth(today.getMonth() - 6);
+            // 날짜를 YYYY-MM-DD 형식으로 변환
+            const limitedtoday = today.toISOString().split("T")[0];
+            const limitedStartDate = limitedMonth.toISOString().split("T")[0];
+            // 시작, 종료 날짜 달력 생성            
+            const calStart = $('<input>').attr('type', 'date').addClass('cal_date').attr('id', 'cal-start').attr('min', limitedStartDate).attr('max', limitedtoday);
+            const calEnd = $('<input>').attr('type', 'date').addClass('cal_date').attr('id', 'cal-end').attr('min', limitedStartDate).attr('max', limitedtoday);
+            
+            // '~' 앞뒤에 달력 추가
+            calStart.insertBefore('#cal_hipen');
+            calEnd.insertAfter('#cal_hipen');
+
+            /* ---------------------달력 날짜 설정------------------- */
+            //*** 시작 날짜 달력 설정 ***//
+            function setCalStart() {
+
+                /***
+                * 시작 날짜 달력 날짜 선택시
+                * 종료 날짜 달력의 최소 날짜를 시작 날짜와 동기화
+                ***/
+                let calStart = $("#cal-start");
+                let calEnd = $("#cal-end");
+                let calStartDate = calStart.val();
+
+                calEnd.prop("min", calStartDate);
+
+                let dateString = calStart.val();
+                let dateParts = dateString.split('-');
+                console.log(dateParts[1]);
+                if (dateParts[1] === undefined) {
+                    $(".tr_history").show();
+                    calStart.prop("min", limitedStartDate);
+                    calStart.prop("max", limitedtoday);
+                    calEnd.prop("min", limitedStartDate);
+                    calEnd.prop("max", limitedtoday);
+                }
+            }
+
+            //*** 종료 날짜 달력 설정 ***//
+            function setCalEnd() {
+
+                /***
+                * 종료 날짜 달력 날짜 선택시
+                * 시작 날짜 달력의 최대 날짜를 종료 날짜와 동기화
+                ***/
+                let calStart = $("#cal-start");
+                let calEnd = $("#cal-end");
+                let calEndDate = calEnd.val();
+
+                calStart.prop("max", calEndDate);
+
+                let dateString = calEnd.val();
+                let dateParts = dateString.split('-');
+                console.log(dateParts[1]);
+                if (dateParts[1] === undefined) {
+                    $(".tr_history").show();
+                    calStart.prop("min", limitedStartDate);
+                    calStart.prop("max", limitedtoday);
+                    calEnd.prop("min", limitedStartDate);
+                    calEnd.prop("max", limitedtoday);
+                }
+            }
+
+            //*** 시작 날짜 달력 날짜 선택 이벤트 처리 ***//
+            $(document).on("change", "#cal-start", function() {
+                setCalStart();
+            });
+
+            //*** 종료 날짜 달력 날짜 선택 이벤트 처리 ***//
+            $(document).on("change", "#cal-end", function() {
+                setCalEnd();
+            });
+
+
+            /* ---------------------주문내역 기간 설정(달력 선택 조회하기)------------------- */
+            //*** 조회하기 버튼 클릭 이벤트 처리 ***//
+            $('#mp_main_ph_search_detail_btn').click(function() {
+                
+                let radio = $('.quicksel_radio:checked');
+                radio.prop("checked", false);
+                let label = radio.next();
+                label.css({
+                    'background-color': '',
+                    'color': ''
+                });
+
+
+                let today = new Date();
+                let startDate = new Date($('#cal-start').val());
+		        let endDate = new Date($('#cal-end').val());
+                let rows = 0;
+
+                if (isNaN(startDate)) {
+                    alert("시작 날짜를 선택해주세요");
+                } else if (isNaN(endDate)) {
+                    alert("끝 날짜를 선택해주세요");
+                } else {
+
+                    startDate.setDate(startDate.getDate() - 1);
+                    endDate.setDate(endDate.getDate() + 1);
+                    
+                    console.log("조회 날짜 구간(시작): " +startDate);
+                    console.log("조회 날짜 구간(끝): " +endDate);
+                    
+                    $(".tr_history").removeClass('hide');
+
+                    $('.td_date').each(function() {
+                        let dateString = $(this).text();
+                        let dateParts = dateString.split('-');
+                        let tdDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                        console.log(tdDate);
+
+                        if (tdDate > startDate && tdDate < endDate) {
+                            $(this).closest('tr').show();
+                            console.log("표시");
+                            rows += 1;
+                        } else {
+                            $(this).closest('tr').hide().addClass('hide');;
+                            console.log("숨김");
+                            rows -= 1;
+                        }
+                        
+                        // 조회 결과가 비었을 경우 체크
+                        checkEmpty();
+                        
+                    });
+                    
+                }
+
+                setNav(Math.ceil(countVisibleRows() / 4));
+                changePage(1);
+
             });
             
-	        /* ---------------------주문/배송내역 표시 개수--------------------- */
+		    /* ---------------------주문내역 표시 개수--------------------- */
             //*** 표시 개수 설정 ***//
             function showElements(option) {
                 
             	console.log("표시 개수: "+option);
             	
-            	let elements = countVisibleRows();
+            	let elements = $('.tr_history:not(.hide)');
             	let page = 0;
             	
-            	if (elements.length > option) { // 내역 개수가 선택한 표시 수보다 클 경우
+            	if (elements.length > option) { // 주문내역 개수가 선택한 표시 수보다 클 경우
                 	
             		page = Math.ceil(elements.length / option);
             		
@@ -155,8 +310,9 @@
                     console.log("페이지 수: "+page);
                     
                     setNav(page);
+                    changePage(1);
                     
-                } else { // 내역 개수가 선택한 표시 수보다 작을 경우
+                } else { // 주문내역 개수가 선택한 표시 수보다 같거나 작을 경우
                 	
                 	page = 1; // 표시할 페이지 내비게이션 버튼 1개
                 	
@@ -164,6 +320,7 @@
                     console.log("페이지 수: "+page);
                     
                     setNav(page);
+                    changePage(1);
                 }
             }
             
@@ -180,20 +337,27 @@
                 }
             });
             
-            
 	        /* ---------------------페이지 내비게이션------------------- */
-	        //*** 테이블의 tr 요소 개수 확인 ***//
+	        //*** 테이블에 표시되는 주문내역 tr 요소 개수 확인 ***//
 	        function countVisibleRows() {
-	            // 숨김처리된 #tr_empty_history 행 및 제목 행울 제외한 행의 개수 반환
-	            return $('table tr:not(#tr_empty_history, :first-child, :last-child)').length;
-	        }
+			    // display가 block인 tr들만 선택하여 개수 반환
+			    return $('.tr_history:visible').length;
+			}
 	        
             //*** 페이지 내비게이션 버튼 생성 ***//
             function setNav(page) {
             	
+            	let visibleTr = countVisibleRows();
+
+                console.log("몇개냐: " +visibleTr);
+            	
             	console.log("내역 개수: " +countVisibleRows());
             	console.log("페이지 개수: " +page);
-			
+				
+            	if (visibleTr === 0) {
+            		page = 1;
+            	}
+            	
 				let navDiv = $("#td_pnav"); // 페이지 내비게이션 버튼 생성 위치
 				navDiv.empty(); // 기존 버튼 삭제
 			
@@ -219,14 +383,13 @@
           	//*** 페이지 변환 ***//
             function changePage(pageNum) {
             
-          		// 찜 상품 개수
-          		let elements = $('table tr:not(#tr_empty_history, :first-child, :last-child)');
+          		// 주문 내역 tr
+          		elements = $('.tr_history:not(.hide)');
           		// 한 페이지에 표시할 내역 개수
-          		let showAmount = parseInt($("#sel2").val());
+          		// let showAmount = parseInt($("#sel2").val());
+                let showAmount = 4;
           		
-          		console.log("한 페이지에 표시할 상품 개수: " +showAmount);
-          		
-          		// 해당 페이지에서 표시할 첫번째 내역 인덱스 번호
+          	    // 해당 페이지에서 표시할 첫번째 내역 인덱스 번호
           		let startIndex = (pageNum - 1) * showAmount;
           		// 해당 페이지에서 표시할 마지막 내역 인덱스 번호
           		let endIndex = startIndex + showAmount - 1;
@@ -245,21 +408,36 @@
           	}
           	
           	//*** 페이지 내비게이션 버튼 클릭 이벤트 처리 ***//
-          	
           	$(document).on("click", ".p-nav", function() {
 
           		// 클릭한 페이지 내비게이션 버튼 값
           		let pageNum = parseInt($(this).val());
           		console.log(pageNum);
           		changePage(pageNum);
-			});	
+			});
+          	
+          	
+          	/* ---------------------빈 주문내역--------------------- */
+          	//*** 빈 주문내역 목록 표시 ***//
+          	function checkEmpty() {
+
+          		let tr = countVisibleRows();
+          		
+          		console.log("현재 표시된 내역: " +tr);
+          		
+          		if (tr === 0) {
+                    $("#tr_empty_history").show();
+                } else {
+                    $("#tr_empty_history").hide();
+                }
+
+                // setNav(Math.ceil(tr / 4));
+          	}
+
+            checkEmpty();
 
         });
     </script>
-    <script>
-	    
-    </script>
-    
 </head>
 <body>
 
@@ -346,7 +524,7 @@
 	                    <div id="mp_main_ph_header_opt-box">
 		                    <div id="mp_main_ph_header_sel-box">
 		                        <select id="sel2">
-		                            <option value="4">4개씩</option>
+		                            <option value="4" selected>4개씩</option>
 		                            <option value="8">8개씩</option>
 		                            <option value="100">100개씩</option>
 		                        </select>
@@ -371,9 +549,7 @@
                         </div>
 
                         <div class="mp_main_ph_search_detail">
-                            <input type="date" class="cal_date" id="cal_start">
                             <span id="cal_hipen">~</span>
-                            <input type="date" class="cal_date" id="cal_end">
                             <div><input type="button" value="조회하기" id="mp_main_ph_search_detail_btn"></div>
                         </div>
 
@@ -384,8 +560,8 @@
                         <table>
                             <colgroup>
                                 <col style="width:9%;">
-                                <col style="width:17%;">
-                                <col style="width:50%;">
+                                <col style="width:19%;">
+                                <col style="width:48%;">
                                 <col style="width:10%;">
                                 <col style="width:14%;">
                             </colgroup>
@@ -396,42 +572,42 @@
                                 <th scope="col">배송상태</th>
                                 <th scope="col">선택</th>
                             </tr>
-                            <c:choose>
-                            	<c:when test="${!empty phInfo}">
-		                            <c:forEach begin="0" end="${fn:length(phInfo) - 1}" var="i">
-			                            <tr>
-			                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
-			                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
-			                                <td class="td_pname">
+                            
+                            <c:if test="${!empty phInfo}">
+	                            <c:forEach begin="0" end="${fn:length(phInfo) - 1}" var="i">
+		                            <tr class="tr_history">
+		                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
+		                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
+		                                <td class="td_pname">
+		                                	<div>
 			                                	<a href="order_detail.do?order_idx=${phInfo[i].order_idx}">
 			                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
-			                                		<c:if test="${phInfo[i].p_amount gt 1}"><span>외 ${phInfo[i].p_amount - 1}건</span></c:if>
 			                                	</a>
-			                                </td>
-			                                <td class="td_shipstate">
-			                                    <c:choose>
-			                                         <c:when test="${phInfo[i].order_state eq 0}">
-			                                             결제완료
-			                                         </c:when>
-			                                         <c:when test="${phInfo[i].order_state eq 1}">
-                                                         상품준비중
-                                                     </c:when>
-                                                     <c:when test="${phInfo[i].order_state eq 2}">
-                                                         배송중
-                                                     </c:when>
-                                                     <c:when test="${phInfo[i].order_state eq 3}">
-                                                         배송완료
-                                                     </c:when>
-			                                    </c:choose>
-			                                </td>
-			                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
-			                            </tr>
-		                            </c:forEach>
-	                            </c:when>
-	                            <c:otherwise>
-	                            	<tr id="tr_empty_history"><td colspan="5">주문/배송 내역이 없습니다!</td></tr>
-	                            </c:otherwise>
-                            </c:choose>
+		                                	</div>
+		                                	<c:if test="${phInfo[i].p_amount gt 1}">
+		                                		<div class="extra_p">외 ${phInfo[i].p_amount - 1}건</div>
+		                                	</c:if>
+		                                </td>
+		                                <td class="td_shipstate">
+		                                    <c:choose>
+		                                         <c:when test="${phInfo[i].order_state eq 0}">
+		                                             결제완료
+		                                         </c:when>
+		                                         <c:when test="${phInfo[i].order_state eq 1}">
+	                                                       상품준비중
+	                                                   </c:when>
+	                                                   <c:when test="${phInfo[i].order_state eq 2}">
+	                                                       배송중
+	                                                   </c:when>
+	                                                   <c:when test="${phInfo[i].order_state eq 3}">
+	                                                       배송완료
+	                                                   </c:when>
+		                                    </c:choose>
+		                                </td>
+		                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
+		                            </tr>
+	                            </c:forEach>
+                            </c:if>
                             <tr>
                                 <td colspan="5" id="td_pnav"></td>
                             </tr>

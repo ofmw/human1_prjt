@@ -145,12 +145,9 @@
 				<div id="login_sns_area">
 				    <div id="sns_title">SNS 로그인</div>
 				    <div id="sns_box">
-						<label id="sns_naver" class="sns">
-						    <a href="#" id="sns_naver_btn" class="sns_button">네이버 로그인</a>
-						</label>
-						<label id="sns_kakao" class="sns">
-						    <a href="#" id="sns_kakao_btn" class="sns_button">카카오 로그인</a>
-						</label>
+					    <a href="#" id="sns_kakao_btn" class="sns_button">
+					    	<img alt="카카오 로그인" src="resources/img/kakao_login_large_wide.png" width="325">
+					    </a>
 					</div>
 				</div>
 				
