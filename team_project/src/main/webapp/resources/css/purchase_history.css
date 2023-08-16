@@ -254,9 +254,6 @@ ul{list-style: none;}
 }
 /* 리스트 테이블 구매상품 이름 */
 .td_pname{
-	display: flex;
-    flex-direction: row;
-    align-items: center;
     text-align: left;
 }
 .td_pname div{

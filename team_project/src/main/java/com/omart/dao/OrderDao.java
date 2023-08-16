@@ -30,7 +30,7 @@ public class OrderDao{
 	}
 	
 	public List<OrderVo> get_ph_info(int m_idx) {
-		List<OrderVo> ph_info = sqlSession.selectList(MAPPER+".get_ph_info", m_idx); 
+		List<OrderVo> ph_info = sqlSession.selectList(MAPPER+".get_ph_info", m_idx);
 				
 		
 		for (OrderVo vo : ph_info) {

@@ -23,7 +23,7 @@ public class AjaxMemberController {
 	@Setter(onMethod_={ @Autowired })
 	private KakaoService kCancel;
 
-	//로그인
+	// 로그인
 	@PostMapping("/**/login.do")
     public String login(@RequestParam("m_id") String m_id,
                         @RequestParam("m_pw") String m_pw,
@@ -62,7 +62,6 @@ public class AjaxMemberController {
 			System.out.println("비밀번호 (복호화): " +m_pw);
 			System.out.println("가입일: " +vo.getJ_date());
 			System.out.println("활성여부: " +vo.getA_state());
-//			System.out.println("플랫폼: " +vo.getPlatform());
 			System.out.println("회원등급: " + grade);
 			
 			session.setAttribute("member", vo);
