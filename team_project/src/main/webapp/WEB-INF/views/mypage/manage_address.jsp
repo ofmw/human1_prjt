@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>배송지 설정</title>
+<title>배송지 관리</title>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 

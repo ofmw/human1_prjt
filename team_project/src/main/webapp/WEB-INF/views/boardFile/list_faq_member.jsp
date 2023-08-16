@@ -21,6 +21,7 @@
     	margin-right: 1000px;
     	height: 70px;
     	width: 195px;
+    	cursor: pointer;
     }
     img{
     	width: 100%;
@@ -214,7 +215,7 @@
                         <td><a href="list_notice.do">공지사항</a></td>
                     </tr>
                     <tr>
-                        <td><a href="list_event.do">이벤트</a></td>
+                        <td><a href="#">이벤트</a></td>
                     </tr>
                     <tr>
                         <td><a href="list_inquiry.do">1:1문의하기</a></td>

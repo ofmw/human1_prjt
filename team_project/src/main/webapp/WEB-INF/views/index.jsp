@@ -23,6 +23,10 @@
     body {
         overflow-x: hidden;
     }
+	.p_img_opt-box-innerDiv button:hover{
+		background-color: #222 !important;
+		color: white !important;
+    }
 
     /* ---------------------섹션--------------------- */
     section{
@@ -112,32 +116,54 @@
         padding: 20px;
         box-sizing: border-box;
     }
-    .p_inner_elements a{
-        width: 295px;
-        
-        /* 상품 박스 최소높이 */
-        min-height: 429px;
-    }
+	.p_products{
+		width: 295px;
+		min-height: 429px;
+	}
     .p_img{
+        position: relative;
+        display: inline-block;
         width: 100%;
         height: 295px;
         margin-bottom: 5px;
         background-color: gold;
-        position: relative;
     }
-    .p_img img{
+    .p_img a{
+    	display: block;
         width: 100%;
         height: 100%;
     }
-    .p_img input{
-        position: absolute;
-        right: 0;
+    .p_img_opt-box {
+     	width: 100%;
+     	height: 50px;
+		position: absolute;
+		text-align: center;
         bottom: 0;
-        width: 30px;
-        height: 30px;
-        margin: 10px 5px;
-        cursor: pointer;
-    }
+        user-select: none;
+         
+		background-color: rgba(255,255,255,0.9);
+	}
+	.p_img_opt-box-innerDiv{
+	    height: 100%;
+	    display: flex;
+	    align-items: center;
+	    flex-direction: row;
+		justify-content: center;
+	}
+	.p_img_opt-box-innerDiv button {
+	    text-align: center;
+	    width: 33px;
+	    height: 29px;
+	    margin: 0 5px;
+	    background: none;
+	    border: 0;
+	    border-radius: 5px;
+	    font-size: 22px;
+	    padding-bottom: 6px;
+	    padding-left: 2px;
+	    box-sizing: content-box;
+	    line-height: 33px;
+	}
     .p_info_brand{
         font-size: 14px;
         font-weight: bold;
@@ -256,7 +282,12 @@
 
     .custom-fraction {text-align:right; margin:15px 5px 0 0;}
     .btn-wrapper {
-        margin-top:50px;
+        margin-top:50px;        
+    
+    }
+    .thumbnail{
+        width: 295px;
+        height: 295px;
     }
 </style>
 <script>
@@ -342,9 +373,159 @@
 			swiper.autoplay.start();
         });
         
-        
-    });
     
+		/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
+		//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
+	    $(document).on("mouseenter", ".p_img", function() {
+		    $(this).find(".p_img_opt-box").stop().fadeIn(300);
+		});
+		
+		$(document).on("mouseleave", ".p_img", function() {
+		    $(this).find(".p_img_opt-box").stop().fadeOut(300);
+		});
+		
+		/* ---------------------찜목록 상품 추가, 삭제--------------------- */
+	    //*** 찜목록 상품 추가 메서드 ***//
+	    function addWish(p_id) {
+	    	
+	    	let m_idx = parseInt($("#m_idx").val());
+	    	
+	    	if (isNaN(m_idx)) {
+	    		alert("로그인 후 이용 가능합니다.");
+	    		$("#shadow").show();
+	    	} else {
+	    	
+	        	$.ajax({
+	                type: "POST",
+	                url: "product/add_wishList.do",
+	                data: {
+	                	m_idx: m_idx,
+	                    p_id: p_id,
+	                },
+	                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+	                   if (response === "success") { // 수량 업데이트가 성공한 경우
+	                	   	alert("찜목록에 추가되었습니다!");
+	
+	                	   	/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
+	                	  	*  같은 상태로 임의변경 */
+	                   		$('.p_id[value='+p_id+']').siblings(".p_btn").text("❤").css('color','red').addClass("inWish");
+	                    } else if (response === "max") {
+	                        alert("찜목록이 꽉 찼습니다! (최대 100개)");
+	                    } else {
+	                        alert("찜목록 추가에 실패했습니다.");
+	                    }
+	                }.bind(this), // 증감 버튼이 속한 행으로 한정
+	                error: function () {
+	                    alert("오류가 발생하였습니다.");
+	                }
+	            }); // end of ajax
+	    	}
+	    }
+		
+	  	//*** 찜목록 상품 삭제 메서드 ***//
+	    function removeWish(p_id) {
+	  		
+			let m_idx = parseInt($("#m_idx").val());
+	    	
+	    	if (isNaN(m_idx)) {
+	    		alert("로그인 후 이용 가능합니다.");
+	    		$("#shadow").show();
+	    	} else {
+	    	
+	        	$.ajax({
+	                type: "POST",
+	                url: "product/remove_wishList.do",
+	                data: {
+	                	m_idx: m_idx,
+	                    p_id: p_id,
+	                },
+	                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+	                   if (response != null) { // 수량 업데이트가 성공한 경우
+	                	   	alert("찜목록에서 삭제되었습니다!");
+	                	  	
+	                	  	/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
+	                	  	*  같은 상태로 임의변경 */
+	                	   	$('.p_id[value='+p_id+']').siblings(".p_btn").text("♡").css({
+	                	   		'color':'#222',
+	                	   		'font-size':'24px',
+	                	   		'font-weight':'bold',
+	                	   		'width':'34px',
+	                	   		'padding-left':'1px',
+	                	   		'padding-top':'1px',
+	                	   		'padding-bottom':'3px',
+	                	   		'height':'31px'
+	                	   	}).removeClass("inWish");
+	                    } else {
+	                        alert("찜목록 삭제에 실패했습니다.");
+	                    }
+	                }.bind(this), // 증감 버튼이 속한 행으로 한정
+	                error: function () {
+	                    alert("오류가 발생하였습니다.");
+	                }
+	            }); // end of ajax
+	        
+	    	}
+	    }
+	  	
+	  	//*** 찜버튼 클릭 이벤트 처리 ***//
+	  	$(".p_btn").click(function() {
+	  		
+	  		if ($(this).hasClass('inWish')) {
+	  			
+	  			let p_id = $(this).siblings(".p_id").val();
+	  			removeWish(p_id);
+	  	    } else {
+	  	    	
+	  	    	let p_id = $(this).siblings(".p_id").val();
+	           	addWish(p_id);
+	  	    }
+	  	});
+		
+	    /* ---------------------장바구니 상품 추가--------------------- */
+	    //*** 장바구니에 선택한 상품 추가 ***//
+	    function addCart(p_idArray) {
+	    	
+	    	let m_idx = parseInt($("#m_idx").val());
+	    	
+	    	if (isNaN(m_idx)) {
+	    		alert("로그인 후 이용 가능합니다.");
+	    		$("#shadow").show();
+	    	} else {
+	    	
+	        	$.ajax({
+	                type: "POST",
+	                url: "mypage/addCart.do",
+	                data: {
+	                    p_id: p_idArray,
+	                },
+	                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+	                   if (response === "success") { // 수량 업데이트가 성공한 경우
+	                	   	alert('장바구니에 상품이 추가되었습니다.');
+	                	  	//페이지 새로고침
+	                    } else if (response === "max"){
+	                        alert("해당 상품이 장바구니 최대 상품 수량을 초과했습니다.\n(최대 20개)");
+	                    } else {
+	                        alert("장바구니 상품 추가에 실패했습니다.");
+	                    }
+	                },
+	                error: function () {
+	                    alert("오류가 발생하였습니다.");
+	                }
+	        	}); // end of ajax
+	    	}
+	    	
+	    }
+	    
+	    
+	  	//*** 장바구니 버튼 클릭 이벤트 처리 ***//
+	    $(".c_btn").click(function() {
+	    	let p_idArray = [$(this).siblings(".p_id").val()];
+	    	console.log(p_idArray);
+	    	
+	    	addCart(p_idArray);
+	    });
+	  	
+    });
 </script>
 
 </head>
@@ -396,37 +577,47 @@
                         <div class="p_title">베스트 상품</div>
                         <div class="p_inner_elements">                        
 
-                        	<c:forEach begin="0" end="3" var="i">                      			
-	                            <a href="product/product_view.do?p_id=${bestList[i].p_id}"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
+                        	<c:forEach begin="0" end="3" var="i">
+	                            
+	                            <div class="p_products">
 	                                <div class="p_img">
-		                                <img src="#" alt="상품 이미지">
-		                                <c:choose>
-		                                  <c:when test="${empty member}">
-		                                      <input class="need_login" id="${bestList[i].p_id}" type="button" value="C"/>
-		                                  </c:when>
-		                                  <c:otherwise>
-		                                      <input class="btn_addCart" id="${bestList[i].p_id}" type="button" value="C"/>
-		                                  </c:otherwise>
-		                                </c:choose>		                                
+	                                	<a href="product/product_view.do?p_id=${bestList[i].p_id}"><img class="thumbnail" src="resources/uploads/${bestList[i].saveFile1}" alt="${bestList[i].p_name}"></a>
+		                                <div style="display:none" class="p_img_opt-box">
+		                                	<div class="p_img_opt-box-innerDiv">
+				                                <input type="hidden" class="p_id" value="${bestList[i].p_id}">
+						                		<button type="button" class="c_btn">🛒</button>
+						                		<c:choose>
+	               									<c:when test="${!empty wishList and wishList.contains(bestList[i].p_id)}">
+						                				<button type="button" class="p_btn inWish" style="color:red;font-size:26px;">❤</button>
+					                				</c:when>
+					                				<c:otherwise>
+					                					<button type="button" class="p_btn noWish" style="font-size:24px;font-weight:bold;width:34px;padding-left:1px;padding-top:1px;padding-bottom:3px;height:31px">♡</button>
+					                				</c:otherwise>
+					                			</c:choose>
+		                                	</div>
+		                                </div>                                
 	                                </div>
-	                                <div class="p_info">
-	                                    <div class="p_info_brand">${bestList[i].brand}</div>
-	                                    <div class="p_info_name">${bestList[i].p_name} ${bestList[i].standard}${bestList[i].unit}</div>
-	                                    <c:if test="${bestList[i].discount gt 0}">
-	                                       <div class="p_info_price"><fmt:formatNumber value="${bestList[i].price}" pattern="#,###" />원</div>
-	                                    </c:if>	                                    
-	                                    <div class="p_info_price_final">
-	                                        <c:if test="${bestList[i].discount gt 0}">
-                                                <span>${bestList[i].discount}% </span>
-                                            </c:if>
-	                                    	<c:set var="discount_best" value="${bestList[i].price*(bestList[i].discount/100)}"></c:set>
-	                                    	<fmt:formatNumber value="${bestList[i].price - discount_best}" pattern="#,###" />원
-	                                    </div>
-	                                    <c:if test="${bestList[i].reviews ne 0}">
-	                                       <div class="p_info_stars">★ ${bestList[i].stars_avg} (${bestList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
-	                                    </c:if>
-	                                </div>
-	                            </a>
+	                                <a href="product/product_view.do?p_id=${bestList[i].p_id}">
+		                                <div class="p_info">
+		                                    <div class="p_info_brand">${bestList[i].brand}</div>
+		                                    <div class="p_info_name">${bestList[i].p_name} ${bestList[i].standard}${bestList[i].unit}</div>
+		                                    <c:if test="${bestList[i].discount gt 0}">
+		                                       <div class="p_info_price"><fmt:formatNumber value="${bestList[i].price}" pattern="#,###" />원</div>
+		                                    </c:if>	                                    
+		                                    <div class="p_info_price_final">
+		                                        <c:if test="${bestList[i].discount gt 0}">
+	                                                <span>${bestList[i].discount}% </span>
+	                                            </c:if>
+		                                    	<c:set var="discount_best" value="${bestList[i].price*(bestList[i].discount/100)}"></c:set>
+		                                    	<fmt:formatNumber value="${bestList[i].price - discount_best}" pattern="#,###" />원
+		                                    </div>
+		                                    <c:if test="${bestList[i].reviews ne 0}">
+		                                       <div class="p_info_stars">★ ${bestList[i].stars_avg} (${bestList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+		                                    </c:if>
+		                                </div>
+	                                </a>
+                                </div>
+	                            
                             </c:forEach>                            
                         </div>
                         
@@ -439,35 +630,44 @@
                         <div class="p_title">세일중인 상품</div>
                         <div class="p_inner_elements">
                             <c:forEach begin="0" end="3" var="i">
-	                            <a href="product/product_view.do?p_id=${saleList[i].p_id}"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
-	                                <div class="p_img"><img src="#" alt="상품 이미지">
-                                        <c:choose>
-	                                        <c:when test="${empty member}">
-	                                            <input class="need_login" id="${saleList[i].p_id}" type="button" value="C"/>
-	                                        </c:when>
-	                                        <c:otherwise>
-	                                            <input class="btn_addCart" id="${saleList[i].p_id}" type="button" value="C"/>
-	                                        </c:otherwise>
-                                        </c:choose>                                     
-                                    </div>
-	                                <div class="p_info">
-	                                    <div class="p_info_brand">${saleList[i].brand}</div>
-	                                    <div class="p_info_name">${saleList[i].p_name} ${saleList[i].standard}${saleList[i].unit}</div>
-	                                    <c:if test="${saleList[i].discount gt 0}">
-                                           <div class="p_info_price"><fmt:formatNumber value="${saleList[i].price}" pattern="#,###" />원</div>
-                                        </c:if>                                     
-                                        <div class="p_info_price_final">
-                                            <c:if test="${saleList[i].discount gt 0}">
-                                                <span>${saleList[i].discount}% </span>
-                                            </c:if>
-	                                        <c:set var="discount_sale" value="${saleList[i].price*(saleList[i].discount/100)}"></c:set>
-	                                        <fmt:formatNumber value="${saleList[i].price - discount_sale}" pattern="#,###" />원
-	                                    </div>
-	                                    <c:if test="${saleList[i].reviews ne 0}">
-                                           <div class="p_info_stars">★ ${saleList[i].stars_avg} (${saleList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
-                                        </c:if>
+	                            <div class="p_products">
+	                                <div class="p_img">
+	                                	<a href="product/product_view.do?p_id=${saleList[i].p_id}"><img class="thumbnail" src="resources/uploads/${saleList[i].saveFile1}" alt="${saleList[i].p_name}"></a>
+		                                <div style="display:none" class="p_img_opt-box">
+		                                	<div class="p_img_opt-box-innerDiv">
+				                                <input type="hidden" class="p_id" value="${saleList[i].p_id}">
+						                		<button type="button" class="c_btn">🛒</button>
+						                		<c:choose>
+	               									<c:when test="${!empty wishList and wishList.contains(saleList[i].p_id)}">
+						                				<button type="button" class="p_btn inWish" style="color:red;font-size:26px;">❤</button>
+					                				</c:when>
+					                				<c:otherwise>
+					                					<button type="button" class="p_btn noWish" style="font-size:24px;font-weight:bold;width:34px;padding-left:1px;padding-top:1px;padding-bottom:3px;height:31px">♡</button>
+					                				</c:otherwise>
+					                			</c:choose>
+		                                	</div>
+		                                </div>                                
 	                                </div>
-	                            </a>
+	                                <a href="product/product_view.do?p_id=${saleList[i].p_id}">
+		                                <div class="p_info">
+		                                    <div class="p_info_brand">${saleList[i].brand}</div>
+		                                    <div class="p_info_name">${saleList[i].p_name} ${saleList[i].standard}${saleList[i].unit}</div>
+		                                    <c:if test="${saleList[i].discount gt 0}">
+		                                       <div class="p_info_price"><fmt:formatNumber value="${saleList[i].price}" pattern="#,###" />원</div>
+		                                    </c:if>	                                    
+		                                    <div class="p_info_price_final">
+		                                        <c:if test="${saleList[i].discount gt 0}">
+	                                                <span>${saleList[i].discount}% </span>
+	                                            </c:if>
+		                                    	<c:set var="discount_best" value="${saleList[i].price*(saleList[i].discount/100)}"></c:set>
+		                                    	<fmt:formatNumber value="${saleList[i].price - discount_best}" pattern="#,###" />원
+		                                    </div>
+		                                    <c:if test="${saleList[i].reviews ne 0}">
+		                                       <div class="p_info_stars">★ ${saleList[i].stars_avg} (${saleList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+		                                    </c:if>
+		                                </div>
+	                                </a>
+                                </div>
                             </c:forEach>  
                         </div>
                         
@@ -480,35 +680,44 @@
                         <div class="p_title">신규 상품</div>
                         <div class="p_inner_elements">
                             <c:forEach begin="0" end="3" var="i">                                 
-                                <a href="product/product_view.do?p_id=${newList[i].p_id}"><!-- a태그 링크는 해당 상품 페이지 링크로 연결 -->
-                                    <div class="p_img"><img src="#" alt="상품 이미지">
-                                    <c:choose>
-                                            <c:when test="${empty member}">
-                                                <input class="need_login" id="${newList[i].p_id}" type="button" value="C"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input class="btn_addCart" id="${newList[i].p_id}" type="button" value="C"/>
-                                            </c:otherwise>
-                                        </c:choose>                                     
-                                    </div>
-                                    <div class="p_info">
-                                        <div class="p_info_brand">${newList[i].brand}</div>
-                                        <div class="p_info_name">${newList[i].p_name} ${newList[i].standard}${newList[i].unit}</div>
-                                        <c:if test="${newList[i].discount gt 0}">
-                                           <div class="p_info_price"><fmt:formatNumber value="${newList[i].price}" pattern="#,###" />원</div>
-                                        </c:if>
-                                        <div class="p_info_price_final">
-                                            <c:if test="${newList[i].discount gt 0}">
-                                                <span>${newList[i].discount}% </span>
-                                            </c:if>
-                                            <c:set var="discount_new" value="${newList[i].price*(newList[i].discount/100)}"></c:set>
-                                            <fmt:formatNumber value="${newList[i].price - discount_new}" pattern="#,###" />원
-                                        </div>
-                                        <c:if test="${newList[i].reviews ne 0}">
-                                           <div class="p_info_stars">★ ${newList[i].stars_avg} (${newList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
-                                        </c:if>
-                                    </div>
-                                </a>
+                                <div class="p_products">
+	                                <div class="p_img">
+	                                	<a href="product/product_view.do?p_id=${newList[i].p_id}"><img class="thumbnail" src="resources/uploads/${newList[i].saveFile1}" alt="${newList[i].p_name}"></a>
+		                                <div style="display:none" class="p_img_opt-box">
+		                                	<div class="p_img_opt-box-innerDiv">
+				                                <input type="hidden" class="p_id" value="${newList[i].p_id}">
+						                		<button type="button" class="c_btn">🛒</button>
+						                		<c:choose>
+	               									<c:when test="${!empty wishList and newList.contains(newList[i].p_id)}">
+						                				<button type="button" class="p_btn inWish" style="color:red;font-size:26px;">❤</button>
+					                				</c:when>
+					                				<c:otherwise>
+					                					<button type="button" class="p_btn noWish" style="font-size:24px;font-weight:bold;width:34px;padding-left:1px;padding-top:1px;padding-bottom:3px;height:31px">♡</button>
+					                				</c:otherwise>
+					                			</c:choose>
+		                                	</div>
+		                                </div>                                
+	                                </div>
+	                                <a href="product/product_view.do?p_id=${newList[i].p_id}">
+		                                <div class="p_info">
+		                                    <div class="p_info_brand">${newList[i].brand}</div>
+		                                    <div class="p_info_name">${newList[i].p_name} ${newList[i].standard}${newList[i].unit}</div>
+		                                    <c:if test="${newList[i].discount gt 0}">
+		                                       <div class="p_info_price"><fmt:formatNumber value="${newList[i].price}" pattern="#,###" />원</div>
+		                                    </c:if>	                                    
+		                                    <div class="p_info_price_final">
+		                                        <c:if test="${newList[i].discount gt 0}">
+	                                                <span>${newList[i].discount}% </span>
+	                                            </c:if>
+		                                    	<c:set var="discount_best" value="${newList[i].price*(newList[i].discount/100)}"></c:set>
+		                                    	<fmt:formatNumber value="${newList[i].price - discount_best}" pattern="#,###" />원
+		                                    </div>
+		                                    <c:if test="${newList[i].reviews ne 0}">
+		                                       <div class="p_info_stars">★ ${newList[i].stars_avg} (${newList[i].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+		                                    </c:if>
+		                                </div>
+	                                </a>
+                                </div>
                             </c:forEach>  
                         </div>
                         

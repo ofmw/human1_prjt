@@ -189,6 +189,7 @@ a{
     user-select: none;
 }
 #sns_kakao_btn img {
+	width: 325px;
 	margin-top: 20px;
 }
 

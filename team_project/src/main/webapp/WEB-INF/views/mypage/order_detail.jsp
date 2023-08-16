@@ -168,13 +168,13 @@
                     <!-- 마이페이지 주문상세 조회  -->
                     <div class="mp_main_title">주문상세 조회</div>
                     
-                    <c:forEach items="${phInfo}" var="ph">
-                    	<c:if test="${ph.order_idx eq param.order_idx}">
+                    <c:forEach items="${orderList}" var="o">
+                    	<c:if test="${o.order_idx eq param.order_idx}">
 		                    <!-- 주문상세 조회 헤더 -->
 		                    <div id="mp_main_od_header">
 		                        <div id="od_header_info_box">
-		                            <span id="od_header_date"><fmt:formatDate value="${ph.order_date}" pattern="yyyy-MM-dd"/></span>
-		                            <span id="od_header_ordernum">주문번호 <span>${ph.order_idx}</span></span>
+		                            <span id="od_header_date"><fmt:formatDate value="${o.order_date}" pattern="yyyy-MM-dd"/></span>
+		                            <span id="od_header_ordernum">주문번호 <span>${o.order_idx}</span></span>
 		                        </div>
 		                        
 		                        <div id="od_header_opt_box">
@@ -186,7 +186,7 @@
 		                    <div id="mp_main_od_shipstate">
 		                        <ul>
 		                            <c:choose>
-			                              <c:when test="${ph.order_state eq 0}">
+			                              <c:when test="${o.order_state eq 0}">
 			                                  <li id="selected_state"><div><span>결제완료</span></div></li>
 			                              </c:when>
 			                              <c:otherwise>
@@ -194,7 +194,7 @@
 			                              </c:otherwise>
 		                            </c:choose>
 		                            <c:choose>
-                                          <c:when test="${ph.order_state eq 1}">
+                                          <c:when test="${o.order_state eq 1}">
                                               <li id="selected_state"><div><span>상품준비중</span></div></li>
                                           </c:when>
                                           <c:otherwise>
@@ -202,7 +202,7 @@
                                           </c:otherwise>
                                     </c:choose>
 		                            <c:choose>
-                                          <c:when test="${ph.order_state eq 2}">
+                                          <c:when test="${o.order_state eq 2}">
                                               <li id="selected_state"><div><span>배송중</span></div></li>
                                           </c:when>
                                           <c:otherwise>
@@ -210,7 +210,7 @@
                                           </c:otherwise>
                                     </c:choose>
 		                            <c:choose>
-                                          <c:when test="${ph.order_state eq 3}">
+                                          <c:when test="${o.order_state eq 3}">
                                               <li id="selected_state"><div><span>배송완료</span></div></li>
                                           </c:when>
                                           <c:otherwise>
@@ -229,15 +229,15 @@
 		                            </tr>
 		                            <tr>
 		                                <th>받으시는 분</th>
-		                                <td><span>${ph.receiver} </span>${ph.selnum}</td>
+		                                <td><span>${o.receiver} </span>${o.selnum}</td>
 		                            </tr>
 		                            <tr>
 		                                <th>받으시는 주소</th>
-		                                <td>${ph.address}</td>
+		                                <td>${o.address}</td>
 		                            </tr>
 		                            <tr>
 		                                <th>배송 요청사항</th>
-		                                <td>${ph.request}</td>
+		                                <td>${o.request}</td>
 		                            </tr>
 		                            <tr>
 		                                <th>수령방법</th>

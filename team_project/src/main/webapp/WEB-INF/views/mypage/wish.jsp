@@ -31,7 +31,7 @@
         /* 버튼 및 선택 요소 공통 */
         button:hover, #sel_box:hover{
         	background-color: #222 !important;
-        	color: white;
+        	color: white !important;
         }
         
         #mp_header_area li span:hover{
@@ -273,8 +273,16 @@
 		    justify-content: center;
 		}
         .w_img_opt-box-innerDiv button{
-        	margin: 0 5px;
-        	background-color: #fcfcfc;
+            width: 30px;
+            height: 28px;
+            margin: 0 5px;
+            background: none;
+            border: 0;
+            border-radius: 5px;
+            font-size: 18px;
+            padding-bottom: 2px;
+            box-sizing: content-box;
+            line-height: 28px;
         }
         .w_info_brand{
             font-size: 14px;
@@ -850,8 +858,8 @@
 									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
 									                	<div style="display:none" class="w_img_opt-box">
 									                		<div class="w_img_opt-box-innerDiv">
-										                		<button type="button" class="c_btn">카</button>
-										                		<button type="button" class="w_btn" style="color:red;">♥</button>
+										                		<button type="button" class="c_btn">🛒</button>
+										                		<button type="button" class="w_btn" style="color:red;font-size:22px;">❤</button>
 										                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
 									                		</div>
 									                	</div>

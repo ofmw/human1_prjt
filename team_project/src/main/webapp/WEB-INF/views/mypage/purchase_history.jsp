@@ -573,41 +573,42 @@
                                 <th scope="col">선택</th>
                             </tr>
                             
-                            <c:if test="${!empty phInfo}">
-	                            <c:forEach begin="0" end="${fn:length(phInfo) - 1}" var="i">
+                            <c:if test="${!empty orderList}">
+	                            <c:forEach begin="0" end="${fn:length(orderList) - 1}" var="i">
 		                            <tr class="tr_history">
-		                                <td class="td_date"><fmt:formatDate value="${phInfo[i].order_date}" pattern="yyyy-MM-dd"/></td>
-		                                <td class="td_ordernum">${phInfo[i].order_idx}</td>
+		                                <td class="td_date"><fmt:formatDate value="${orderList[i].order_date}" pattern="yyyy-MM-dd"/></td>
+		                                <td class="td_ordernum">${orderList[i].order_idx}</td>
 		                                <td class="td_pname">
 		                                	<div>
-			                                	<a href="order_detail.do?order_idx=${phInfo[i].order_idx}">
+			                                	<a href="order_detail.do?order_idx=${orderList[i].order_idx}">
 			                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
 			                                	</a>
 		                                	</div>
-		                                	<c:if test="${phInfo[i].p_amount gt 1}">
-		                                		<div class="extra_p">외 ${phInfo[i].p_amount - 1}건</div>
+		                                	<c:if test="${orderList[i].p_amount gt 1}">
+		                                		<div class="extra_p">외 ${orderList[i].p_amount - 1}건</div>
 		                                	</c:if>
 		                                </td>
 		                                <td class="td_shipstate">
 		                                    <c:choose>
-		                                         <c:when test="${phInfo[i].order_state eq 0}">
+		                                         <c:when test="${orderList[i].order_state eq 0}">
 		                                             결제완료
 		                                         </c:when>
-		                                         <c:when test="${phInfo[i].order_state eq 1}">
+		                                         <c:when test="${orderList[i].order_state eq 1}">
 	                                                       상품준비중
 	                                                   </c:when>
-	                                                   <c:when test="${phInfo[i].order_state eq 2}">
+	                                                   <c:when test="${orderList[i].order_state eq 2}">
 	                                                       배송중
 	                                                   </c:when>
-	                                                   <c:when test="${phInfo[i].order_state eq 3}">
+	                                                   <c:when test="${orderList[i].order_state eq 3}">
 	                                                       배송완료
 	                                                   </c:when>
 		                                    </c:choose>
 		                                </td>
-		                                <td><a href="order_detail.do?order_idx=${phInfo[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
+		                                <td><a href="order_detail.do?order_idx=${orderList[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
 		                            </tr>
 	                            </c:forEach>
                             </c:if>
+                            <tr id="tr_empty_history" style="display:none;height:210px;"><td colspan="5">주문/배송 내역이 없습니다!</td></tr>
                             <tr>
                                 <td colspan="5" id="td_pnav"></td>
                             </tr>

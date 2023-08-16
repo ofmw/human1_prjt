@@ -28,10 +28,6 @@ public class MemberPhService implements MemberService {
 		this.dao = dao;
 	}
 	
-	public List<OrderVo> get_ph_info(int m_idx) {
-		return dao.get_ph_info(m_idx);
-	}
-	
 	public List<ProductVo> get_p_info(List<OrderVo> ph_info) {
 		return dao.getP_info(ph_info);
 	}

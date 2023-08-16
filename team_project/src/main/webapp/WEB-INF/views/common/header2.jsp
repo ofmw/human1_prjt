@@ -9,7 +9,7 @@
     <title>비로그인 헤더</title>
 
 <link href="../resources/css/header.css?v=1234" rel="stylesheet">
-<link href="../resources/css/login.css" rel="stylesheet">
+<link href="../resources/css/login.css?v=1234" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="../resources/js/login.js?v=1234"></script>
@@ -148,7 +148,7 @@
 				<div id="login_sns_area">
 				    <div id="sns_title">SNS 로그인</div>
 				    <div id="sns_box">
-					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="../resources/img/kakao_login_medium_wide.png" alt="카카오로그인"></a>
+					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="../resources/img/kakao_login_large_wide.png" alt="카카오로그인"></a>
 					</div>
 				</div>
 				

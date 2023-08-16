@@ -131,8 +131,24 @@ public class MemberDao{
 		sqlSession.update(MAPPER+".recordLogin", m_idx);
 	}
 	
+	// 원본 백업
+//	public List<OrderVo> orderList(int m_idx) {
+//		return sqlSession.selectList(MAPPER+".orderList", m_idx);
+//	}
+	
 	public List<OrderVo> orderList(int m_idx) {
-		return sqlSession.selectList(MAPPER+".orderList", m_idx);
+		List<OrderVo> orderList = sqlSession.selectList(MAPPER+".orderList", m_idx);
+				
+		
+		for (OrderVo vo : orderList) {
+            
+			String p_ids = vo.getProducts();
+			String[] p_idArray = p_ids.split(",");
+			int p_amount = p_idArray.length;
+			vo.setP_amount(p_amount);
+        }
+		
+		return orderList; 
 	}
 	//아이디 가입여부 조회
 	public boolean isDuplicateById(String m_id) {

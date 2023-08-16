@@ -144,7 +144,7 @@
 				<div id="login_sns_area">
 				    <div id="sns_title">SNS 로그인</div>
 				    <div id="sns_box">
-					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="resources/img/kakao_login_medium_wide.png" alt="카카오로그인"></a>
+					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="resources/img/kakao_login_large_wide.png" alt="카카오로그인"></a>
 					</div>
 				</div>
 				
