@@ -18,4 +18,5 @@ public interface MemberService {
 	default int removeWishList(int m_idx, String [] p_id) {return 0;}
 	default boolean checkDuplicateId(String m_id) {return false;}
 	default boolean checkDuplicateSelNum(String selNum) {return false;}
+	default MemberVo update(MemberVo memberVo) {return null;}
 }

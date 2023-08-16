@@ -33,10 +33,6 @@
             color: #222;
             width: 100%;
         }
-        th{
-            
-        }
-        
         #td_pnav{
             height: 50px;
         }
@@ -50,9 +46,16 @@
         	
         }
         .mp_member_modifiy{
-        	
         	display: none;
         }
+        #mp_member_modify{
+        	width: 400px;
+        }
+        p{
+        	font-size: 14px;
+        	user-select: none;
+        }
+        
     </style>
 
 </head>
@@ -74,19 +77,54 @@
 	});	
 </script>
 <script>
-	function checkPwAndShowForm() {
-		var PwCheck = document.getElementById("m_pw").value;		
-		var Pw = ${member.m_pw};
-		
-		console.log(${member.m_pw});
-		
-		if(PwCheck === pw){
-		document.getElementById("mp_memberPw_check").style.display = "none";
-		document.getElementById("mp_member_modifiy").style.display = "block";
-		} else {
-			alert("비밀번호가 일치하지 않습니다.");
-		}
+	function hashPassword(password) {
+		var hash = sha256(password);
+		return hash;
 	}
+	
+	function checkPw() {
+		var password = $('#pw_check').val();
+		console.log("비번: " + password);
+		$.ajax({
+            type: 'POST',
+            url: 'check_password', // 서버의 비밀번호 확인 엔드포인트 URL
+            data: { password: password },
+            success: function(response) {
+                if (response === 'match') {
+                    document.getElementById("mp_memberPw_check").style.display = "none";
+                    document.getElementById("mp_member_modifiy").style.display = "block";
+                    // 비밀번호 일치 시 추가 작업 수행
+                } else {
+                    alert("비밀번호를 확인해주세요");
+                    document.getElementById("pw_check").value = "";
+                    document.getElementById("pw_check").focus();
+                }
+            }
+        });
+	}
+	
+	$(document).ready(function(){
+		$("#btn_update").click(function(){
+			var formData = $("#frm_update").serialize();
+			
+			console.log("formData : " + formData);
+			
+			$.ajax({
+				type: 'POST',
+				url: 'update_process.do',
+				data: formData,
+				success: function(response) {
+					if (response === 'success') {
+						alert("회원정보 수정이 완료되었습니다.");
+					} else {
+						alert("회원정보 수정을 실패하였습니다.");
+					}
+				}
+			});
+			return false;
+		});
+	});
+	
 </script>
 <body>
 
@@ -165,20 +203,24 @@
                 <table>
                 	<tr>
 						<th>비밀번호 확인</th>
-						<td><input type="password" id="m_pwCheck"></td>
+						<td><input type="password" id="pw_check"></td>
 						                	
                		</tr>
 				</table>
 				<div>
-					<button type="button" onclick="checkPwAndShowForm()">확인</button>
+					<button type="button" onclick="checkPw()">확인</button>
 				</div>
         	</div>
         	<div id="mp_member_modifiy" class="mp_member_modifiy">
+        		<div id="div_box">
+        			<h4>회원정보수정</h4>
+        		</div>
+        		<form action="update_process.do" method="post" name="frm_update" id="frm_update">
         		<table id="tbl_join">
                     <tr>
                         <td>
                             <p>이름</p>
-                            <input type="text" name="m_name" id="m_name" value="${member.m_name}">
+                            <input type="text" name="m_name" id="m_name" value="${member.m_name}" disabled>
                             <div class="check" id="name_check"></div>
                         </td>
                     </tr>
@@ -186,9 +228,9 @@
                         <td>
                             <p>생년월일 및 성별</p>
                                 <fieldset>
-                                    <input type="text" name="birth" id="birth" placeholder="●●●●●●" maxlength="6">
+                                    <input type="text" name="birth" id="birth" maxlength="6" value="${member.birth}" disabled>
                                     <p>-</p>
-                                    <input type="text" name="gender" id="gender" placeholder="●" maxlength="1">
+                                    <input type="text" name="gender" id="gender" maxlength="1" value="${member.gender}" disabled>
                                     <input type="text" id="fld_block" value="●●●●●●" disabled style="background-color: white;">
                                 </fieldset>
                                 <div class="check" id="birth_check"></div>
@@ -197,7 +239,7 @@
                     <tr>
                         <td id="sel_aNum">
                             <p>휴대폰 번호</p>
-                                    <input type="text" name="selNum" id="selNum">
+                                    <input type="text" name="selNum" id="selNum" value="${member.selNum}">
                                     <button type="button" id="btn_get_aNum">인증번호 받기</button>
                                     <div class="check" id="selNum_check"></div>
                         </td>
@@ -210,21 +252,22 @@
                     <tr>
                         <td id="aNum_behind">
                             <p>아이디</p>
-                            	<input type="text" name="m_id" id="m_id"><br>
+                            	<input type="text" name="m_id" id="m_id" value="${member.m_id}" disabled><br>
                             	<div class="check" id="id_check"></div>
                     
                             <p>비밀번호</p>
-                                <input type="password" name="m_pw" id="m_pw"><br>
+                                <input type="password" name="m_pw" id="m_pw" value="${member.m_pw}" disabled><br>
                                 <div class="check" id="pw_check"></div>
                         
                             <p>비밀번호 확인</p>
-                           		<input type="password" name="m_pwCheck" id="m_pwCheck"><br>
+                           		<input type="password" name="m_pwCheck" id="m_pwCheck" value="${member.m_pw}" disabled><br>
                             	<div class="check" id="pw_check2"></div>
                         
-                            <button type="submit" name="btn_join" id="btn_join">가입하기</button>
+                            <button type="submit" name="btn_update" id="btn_update">수정하기</button>
                         </td>
                     </tr>
                 </table>
+                </form>
         	</div>
 
    		</div>

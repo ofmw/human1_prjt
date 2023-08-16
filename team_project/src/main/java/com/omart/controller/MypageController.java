@@ -2,14 +2,18 @@ package com.omart.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.omart.service.boardfile.BoardFileListService;
 import com.omart.service.member.MemberService;
@@ -25,11 +29,13 @@ import lombok.Setter;
 public class MypageController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mWish;
+	private MemberService mWish, mUpdate;
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdInfo;
 	@Setter(onMethod_= {@Autowired})
 	private BoardFileListService bfList;
+	@Setter(onMethod_= {@Autowired})
+	private PasswordEncoder passwordEncoder;
 	
 	//마이페이지
 	@GetMapping("/mypage.do")
@@ -128,6 +134,40 @@ public class MypageController {
 		ProductVo vo = pdInfo.getProduct(p_id);
 		model.addAttribute("product",vo);		
 		return "product/product_view";
+	}
+	
+	@PostMapping("/check_password")
+	@ResponseBody
+	public String checkPassword(@RequestParam String password, HttpSession session) {
+		MemberVo vo = (MemberVo) session.getAttribute("member");
+		
+		if (vo != null) {
+			String storedPassword = vo.getM_pw();
+			System.out.println("암호화: " + storedPassword);
+		if(passwordEncoder.matches(password, storedPassword)) {
+			return "match";
+		} else {
+			return "mismatch";
+		}
+	}else {
+		return "mismatch";
+	}
+	}
+	
+	//회원정보 수정페이지 
+	@PostMapping("/update_process.do")
+	@ResponseBody
+	public String updateProcess(MemberVo memberVo, HttpServletRequest request) {
+		
+		MemberVo vo = mUpdate.update(memberVo);
+		
+		if(vo != null) {
+			HttpSession session = request.getSession();
+			session.removeAttribute("member");
+			session.setAttribute("member", vo);
+			return "success";
+		} else
+		return "fail";
 	}
 	
 	//마이페이지 -> 로그아웃
