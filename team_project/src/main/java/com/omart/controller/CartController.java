@@ -53,6 +53,7 @@ public class CartController {
 	public void addCart(CartVo cartVo) {
 		System.out.println("addCart실행");
 		System.out.println("p_id: "+cartVo.getP_id());
+		System.out.println("m_idx: "+cartVo.getM_idx());
 		cAdd.addCart(cartVo);
 	}
 	
