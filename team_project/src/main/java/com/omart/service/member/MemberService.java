@@ -43,5 +43,6 @@ public interface MemberService {
 	default String getMemberNameFromOrder(String order_idx) {return null;}
 	default int getGradeFromOrder(String order_idx) {return 0;}
 	default public void addPoint(PointVo pointVo) {}
-
+	default MemberVo update(MemberVo memberVo) {return null;}
+	
 }

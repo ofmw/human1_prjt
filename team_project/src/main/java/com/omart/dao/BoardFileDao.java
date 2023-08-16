@@ -59,6 +59,14 @@ public class BoardFileDao {
 		return sqlSession.selectList(MAPPER + ".getAllInquiries");
 	}
 
+	public List<BoardFileVo> getInquiryByUser(String userId){
+		return sqlSession.selectList(MAPPER + ".getInquiryByUser", userId);
+	}
+	
+	public List<BoardFileVo> getInquiryByBIdx(int b_idx){
+		return sqlSession.selectList(MAPPER + ".getInquiryByBIdx", b_idx);
+	}
+	
 	public List<BoardFileVo> getAllQnas(){
 		return sqlSession.selectList(MAPPER + ".getAllQnas");
 	}

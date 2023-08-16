@@ -134,12 +134,12 @@ public class MemberDao{
 	public List<OrderVo> orderList(int m_idx) {
 		return sqlSession.selectList(MAPPER+".orderList", m_idx);
 	}
-	
+	//아이디 가입여부 조회
 	public boolean isDuplicateById(String m_id) {
 		int count = sqlSession.selectOne(MAPPER + ".checkId", m_id);
 	    return count > 0;
 	}
-	
+	//전화번호 가입여부 조회
 	public boolean isDuplicateBySelNum(String selNum) {
 		int count = sqlSession.selectOne(MAPPER + ".checkSelNum", selNum);
 	    return count > 0;
@@ -159,6 +159,18 @@ public class MemberDao{
 	
 	public int getGradeFromOrder(String order_idx) {
 		return sqlSession.selectOne(MAPPER+".getGradeFromOrder", order_idx);
+	}
+	
+	//업데이트 처리
+	public MemberVo update(MemberVo vo) {
+		int result = -1;
+		result = sqlSession.update(MAPPER+".login", vo);
+		MemberVo updateVo = null;
+		if(result == 1) {
+			updateVo = sqlSession.selectOne(MAPPER+".selectOne", vo.getM_id());
+		}
+		
+		return updateVo;
 	}
 	
 }

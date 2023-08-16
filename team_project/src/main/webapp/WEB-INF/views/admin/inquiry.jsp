@@ -196,6 +196,7 @@
     }
     #ans_content{
     	height: 200px;
+    	white-space: pre-line;
     }
     #inquiry_content{
     	height: 150px;
@@ -529,6 +530,20 @@ $(function () {
 	 }
 	});
 
+</script>
+<script>
+    // 답변 내용의 textarea 엘리먼트
+    var ansContentTextarea = document.getElementById('ans_content');
+
+    // 답변 내용이 변경될 때 호출되는 함수
+    ansContentTextarea.addEventListener('input', function () {
+        // textarea의 내용을 읽어옴
+        var content = ansContentTextarea.value;
+        // 내용에서 줄바꿈을 <br> 태그로 변환
+        var contentWithBr = content.replace(/\n/g, "<br>");
+        // 변환한 내용을 해당 엘리먼트에 표시
+        ansContentTextarea.innerHTML = contentWithBr;
+    });
 </script>
 </head>
 <body>

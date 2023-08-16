@@ -2,147 +2,18 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>1:1 문의</title>
+    
+    <link href="../resources/css/mypage.css" rel="stylesheet">
+    
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     
     <style>
-        /* Noto Sans KR */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-        
-        *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
-
-        /* 섹션 */
-        section{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* a태그 공통 */
-        a{text-decoration: none; color: black;}
-        /* list 공통 */
-        ul{list-style: none;}
-
-        /* ---------------------마이페이지 헤더--------------------- */
-        #mp_header_area{
-            display: flex;
-            justify-content: space-between;
-
-            width: 1280px;
-            height: 280px;
-            /* background-color: rgb(230, 230, 230); */
-
-            margin: 40px 0;
-        }
-
-        /* 마이페이지 헤더 내부 요소 공통 */
-        .mp_header_obj{
-            display: flex;
-            flex-direction: column;
-
-            width: 426px;
-            height: 100%;
-            background-color: rgb(250, 250, 250);
-
-            padding: 30px 30px;
-            box-sizing: border-box
-        }
-        /* 마이페이지 헤더 내부 요소 제목 공통(쿠폰, 포인트) */
-        .mp_header_obj_title{font-size: 23px;}
-
-        /* 마이페이지 헤더 유저 이름 */
-        #mp_header_user_name{font-size: 35px; font-weight: bold;}
-        /* 마이페이지 헤더 유저 메뉴 */
-        #mp_header_user_menu ul{
-            font-size: 16px;
-            margin-top: 40px;
-        }
-        #mp_header_user_menu li{margin: 10px 0;}
-        #mp_header_user_menu a{color: #222;}
-        
-        /* 마이페이지 헤더 쿠폰 공통 */
-        #mp_header_coupon{color: #222;}
-        /* 마이페이지 헤더 소지 쿠폰 영역 */
-        #mp_header_coupon_num{margin-top: 15px;}
-        /* 소지 쿠폰 숫자 */
-        #mp_header_coupon_num span{
-            font-weight: bold;
-            font-size: 20px;
-            margin-right: 5px;
-        }
-        /* 마이페이지 헤더 쿠폰 정보 영역 */
-        #mp_header_coupon_info{margin-top: 50px;}
-        .mp_coupon{
-            display: flex;
-            justify-content: space-between;
-
-            margin: 5px 0;
-
-            font-size: 16px;
-            color: #444;
-        }
-        /* 마이페이지 헤더 포인트 영역 공통 */
-        #mp_header_point{color: #222;}
-        /* 마이페이지 헤더 소지 포인트 */
-        #mp_header_point_num{margin-top: 15px; font-size: 20px;}
-
-        /* ---------------------마이페이지 내용--------------------- */
-        #mp_main_area{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            width: 1280px;
-            /* background-color: plum; */
-        }
-
-        /* ---------------------마이페이지 내용 좌측 메뉴영역--------------------- */
-        #mp_main_menu{
-            display: flex;
-            flex-direction: column;
-
-            width: 150px;
-            height: 287px;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-
-            padding: 20px 20px;
-        }
-        /* 메뉴 각 범주 사이 구분선 */
-        #mp_main_menu_division{
-            margin: 30px auto;
-            content: "";
-            width: 150px;
-            height: 1px;
-            background-color: #e5e5e5;
-        }
-        /* 메뉴 각 범주 타이틀 공통 */
-        .mp_main_menu_title{
-            font-size: 17px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        /* 메뉴 li 공통 */
-        .mp_main_menu_list li{
-            margin-top: 3px;
-        }
-        /* 메뉴 a태그 공통 */
-        .mp_main_menu_list a{
-            color: #777;
-        }
-
-        /* ---------------------마이페이지 메인영역--------------------- */
-        #mp_main{
-            width: 1000px;
-            padding-right: 30px;
-            /* background-color: aquamarine; */
-        }
-        .mp_main_obj{
-            margin-bottom: 50px;
-        }     
+             
         .mp_main_title{
             padding-bottom: 15px;
             font-size: 20px;
@@ -178,7 +49,7 @@
         }
         /* 리스트 테이블 구매상품 이름 */
         .td_title{
-            text-align: left;
+            text-align: center;
         }
         /* 리스트 테이블 주문상세내역 버튼 */
         .inquiry_detail_btn{
@@ -190,6 +61,11 @@
             color: #777;
             border: 1px solid #cfcfcf;
             box-sizing: border-box;
+            cursor: pointer;
+        }
+        .td_ans_date{
+        	font-size: 14px;
+            color: #777;
         }
         #td_pnav{
             height: 50px;
@@ -202,6 +78,23 @@
     </style>
 
 </head>
+<script type="text/javascript">
+	$(function(){
+		$(".inquiry_detail_btn").click(function(){
+		    let b_idx = $(this).closest("tr").find(".b_idx").val();
+		let url ="inquiry_content.do?b_idx="+b_idx; 
+		let childWindow = null;
+		                        
+		// 기존에 자식창이 열려있는지에 대한 여부
+		if (childWindow) { // 이미 자식창이 열려있으면
+		childWindow.close(); // 자식창을 닫음
+		}
+		
+		childWindow = window.open(url, '리뷰 작성', 'menubar=no,width=700,height=750');
+		
+		});
+	});	
+</script>
 <body>
 
 <!-- 헤더 -->
@@ -291,28 +184,52 @@
                     <table >
                         <colgroup>
                             <col style="width: 9%;">
-                            <col style="width: 69%;">
+                            <col style="width: 54%;">
+                            <col style="width: 15%;">
                             <col style="width: 7%;">
                             <col style="width: 15%;">
                         </colgroup>
                         <tr>
                             <th>작성일</th>
                             <th>제목</th>
+                            <th>답변일자</th>
                             <th>진행상태</th>
                             <th>선택</th>
                         </tr>
+                        <c:forEach items="${inquiryList}" var="inquiry">
                         <tr>
-                            <td class="td_date">2023.07.28</td>
-                            <td class="td_title">[주문/배송] 배송이 오지 않았습니다</td>
-                            <td class="td_state">진행중</td>
-                            <td><a href="#" class="inquiry_detail_btn">문의상세내역</a></td>
+                            <td class="td_date"><fmt:formatDate value="${inquiry.post_date}" pattern="yyyy-MM-dd"/></td>
+                            <td class="td_title">${inquiry.title}</td>
+                            <td class="td_ans_date">
+                            	<c:choose>
+		                    		<c:when test="${inquiry.reply_state eq '0'}">
+								        -
+								    </c:when>
+								    <c:when test="${inquiry.reply_state eq '1'}">
+								        <fmt:formatDate value="${inquiry.ans_date}" pattern="MM-dd HH:mm"/>
+								    </c:when>
+								    <c:otherwise>
+								        <fmt:formatDate value="${inquiry.ans_date}" pattern="MM-dd HH:mm"/>
+								    </c:otherwise>
+								 </c:choose>
+                            </td>
+                            <td class="td_state">
+								<c:choose>
+		                    		<c:when test="${inquiry.reply_state eq '0'}">
+								        진행중
+								    </c:when>
+								    <c:when test="${inquiry.reply_state eq '1'}">
+								        답변완료
+								    </c:when>
+								    <c:otherwise>
+								        ${inquiry.reply_state}
+								    </c:otherwise>
+								 </c:choose>
+							</td>
+                            <td><input type="hidden" class="b_idx" value="${inquiry.b_idx}"/><a class="inquiry_detail_btn">문의상세내역</a></td>
                         </tr>
-                        <tr>
-                            <td class="td_date">2023.07.21</td>
-                            <td class="td_title">[취소/환불] ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ</td>
-                            <td class="td_state">답변완료</td>
-                            <td><a href="#" class="inquiry_detail_btn">문의상세내역</a></td>
-                        </tr>
+                        </c:forEach>
+                        
                         <tr>
                             <td colspan="4" id="td_pnav">네비게이션</td>
                         </tr>

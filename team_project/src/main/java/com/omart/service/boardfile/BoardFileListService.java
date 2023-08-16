@@ -38,5 +38,13 @@ private BoardFileDao dao;
 		return dao.getAllQnas();
 	}
 	
+	public List<BoardFileVo> getInquiryByUser(String userId){
+		return dao.getInquiryByUser(userId);
+	}
+	
+	public List<BoardFileVo> getInquiryByBIdx(int b_idx){
+		return dao.getInquiryByBIdx(b_idx);
+	}
+	
 
 }
