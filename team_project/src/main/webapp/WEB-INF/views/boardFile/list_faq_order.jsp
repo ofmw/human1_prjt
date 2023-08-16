@@ -34,6 +34,7 @@
         position: relative;
         display: flex;
         justify-content: center;
+        padding-top: 20px;
     }
     /*사이드메뉴, 공지사항내용 엮은 영역*/
     #div_div_notice {

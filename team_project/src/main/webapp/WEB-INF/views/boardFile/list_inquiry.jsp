@@ -15,6 +15,7 @@
         position: relative;
         display: flex;
         justify-content: center;
+        padding-top: 20px;
     }
     #div_logo{
         position: absolute;
