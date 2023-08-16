@@ -72,8 +72,8 @@
 	
 	<!-- 카카오 회원 정보 저장 -->
 	<insert id="kjoin" parameterType="map">
-		INSERT INTO member_omart(m_id, m_pw, m_name, platform, gender)
-		VALUES(#{email}, "kakao", #{nickname}, "kakao", #{gender}) 
+		INSERT INTO member_omart(m_id, m_pw, m_name, birth, platform, gender)
+		VALUES(#{email}, "kakao", #{nickname}, #{birthday}, "kakao", #{gender}) 
 	</insert>
 	
 	<insert id="insertWish" parameterType="_int">

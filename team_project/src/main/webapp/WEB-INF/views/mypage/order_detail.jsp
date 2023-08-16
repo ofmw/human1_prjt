@@ -8,7 +8,7 @@
 <head>
     <title>주문상세 조회</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <link href="../resources/css/order_detail.css?v=1234" rel="stylesheet">
+    <link href="../resources/css/order_detail.css" rel="stylesheet">
     
     <style>
    		/* a태그 공통 */
@@ -123,9 +123,12 @@
             </div>
         </div>
 
+        <!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">30 P</div>
+            <div id="mp_header_point_num">
+            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
+            </div>
         </div>
 
     </div>

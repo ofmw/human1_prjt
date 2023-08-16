@@ -9,7 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.omart.vo.ProductVo;
-import com.omart.vo.WishVo;
 
 import lombok.RequiredArgsConstructor;
 
