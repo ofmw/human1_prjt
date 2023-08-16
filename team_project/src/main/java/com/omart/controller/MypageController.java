@@ -188,7 +188,7 @@ public class MypageController {
 			List<ProductVo> p_info = new ArrayList<ProductVo>();
 			
 			// 만약 wish가 null 이면 (테이블에 행이 없어서 로그인시 가져온 정보가 없음)
-			if ((wish != null) && (wish.get(1) != null)) {
+			if ((wish != null) && (wish.get(0) != null)) {
 				p_info = mWish.getP_info(wish);
 				p_info.removeIf(product -> product.getPost_state() != 1);
 				System.out.println(p_info);
