@@ -573,13 +573,7 @@
                             <option value="5">할인율순</option>
                             <option value="6">신상품순</option>
                             <option value="7">리뷰많은순</option>
-                        </select>
-                        <select id="sel2">
-                            <option value="40">40개씩</option>
-                            <option value="60">60개씩</option>
-                            <option value="80">80개씩</option>
-                            <option value="100">100개씩</option>
-                        </select>
+                        </select>                        
                     </div>
                 </div>
             
