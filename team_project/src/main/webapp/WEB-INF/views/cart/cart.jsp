@@ -8,7 +8,7 @@
     <title>오!마트 - 장바구니</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    
+
     <style>
     /* ---------------------전체 요소 공통--------------------- */
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');       

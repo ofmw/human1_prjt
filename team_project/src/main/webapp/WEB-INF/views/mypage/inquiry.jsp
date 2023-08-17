@@ -10,10 +10,9 @@
     
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="../resources/js/mypage.js"></script>
-<link href="../resources/css/mypage.css" rel="stylesheet">
-<link href="../resources/css/mypage-common.css" rel="stylesheet">
+<link href="../resources/css/mypage/mypage.css" rel="stylesheet">
+<link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
 <style>
-	a:hover{text-decoration: underline;}
 	#mp_header_area li span:hover{
 		text-decoration: underline;
 		cursor: pointer;

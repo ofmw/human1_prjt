@@ -10,11 +10,10 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="../resources/js/mypage.js"></script>
 <script type="text/javascript" src="../resources/js/mypage-wish.js"></script>
-<link href="../resources/css/mypage.css?v=1234" rel="stylesheet">
+<link href="../resources/css/mypage/mypage.css?v=1234" rel="stylesheet">
+<link href="../resources/css/mypage/mypage-common.css?v=1234" rel="stylesheet">
 
 <style>
-	/* a태그 공통 */
-	a:hover:not(#div_category a){text-decoration: underline;}
 	/* 버튼 및 선택 요소 공통 */
 	button:hover, #sel_box:hover{
 		background-color: #222 !important;

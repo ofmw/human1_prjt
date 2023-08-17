@@ -9,13 +9,10 @@
     <title>찜목록</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="../resources/js/mypage.js"></script>
-<link href="../resources/css/mypage-common.css" rel="stylesheet">
+<script type="text/javascript" src="../resources/js/mypage-wish.js"></script>
+<link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
 
 <style>
-	/* Noto Sans KR */
-	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-	*{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
-
 	body{min-width: 1280px;}
 
 	/* 섹션 */
@@ -24,12 +21,6 @@
 		flex-direction: column;
 		align-items: center;
 	}
-
-	/* a태그 공통 */
-	a{text-decoration: none; color: black;}
-	a:hover{text-decoration: underline;}
-	/* list 공통 */
-	ul{list-style: none;}
 	/* 버튼 및 선택 요소 공통 */
 	button:hover, #sel_box:hover{
 		background-color: #222 !important;
@@ -705,12 +696,12 @@
 
                     <div id="w_box">
                     	<c:choose>
-							<c:when test="${!empty wishList[0]}">
+							<c:when test="${!empty p_info[0]}">
                        			<div class="w_inner_elements">
-									<c:forEach begin="0" end="${(fn:length(wishList) - 1) div 4}" var="i">
+									<c:forEach begin="0" end="${(fn:length(p_info) - 1) div 4}" var="i">
 		                            	<c:forEach begin="${i*4}" end="${i*4+3}" var="j">
 								            <div class="w_products">
-								            	<c:if test="${!empty wishList[j] and !empty p_info[j]}">
+								            	<c:if test="${!empty p_info[j]}">
 								            		<input type="checkbox" class="w_checkbox">
 									                <div class="w_img">
 									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>

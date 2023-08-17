@@ -1,6 +1,14 @@
 @charset "UTF-8";
 
-/* ---------------------하단 안내문구--------------------- */
+/* ━━━━━━━━━━━━━━━━━━━━공통 기본━━━━━━━━━━━━━━━━━━━━ */
+/* a태그 공통 */
+a{text-decoration: none;}
+a:hover:not(#div_category a){text-decoration: underline;}
+
+/* list 공통 */
+ul{list-style: none;}
+
+/* ━━━━━━━━━━━━━━━━━━━━하단 안내문구━━━━━━━━━━━━━━━━━━━━ */
 /* 안내문구 전체영역 */
 #mp_notice{
    	margin-top: 50px;

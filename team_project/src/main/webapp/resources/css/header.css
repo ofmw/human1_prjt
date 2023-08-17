@@ -1,6 +1,7 @@
 @charset "UTF-8";
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');       
-        *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');       
+*{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
 
 /* ---------------------전체 요소 공통--------------------- */
 	/* a태그 공통 */

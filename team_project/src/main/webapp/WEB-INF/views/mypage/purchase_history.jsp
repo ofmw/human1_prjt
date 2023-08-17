@@ -9,12 +9,10 @@
     <title>주문/배송조회</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="../resources/js/mypage.js"></script>
-    <link href="../resources/css/purchase_history.css" rel="stylesheet">
-    <link href="../resources/css/mypage-common.css" rel="stylesheet">
+    <link href="../resources/css/mypage/purchase_history.css" rel="stylesheet">
+    <link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
     
     <style>
-	    /* a태그 공통 */
-		a:hover{text-decoration: underline;}
     	/* 버튼 및 선택 요소 공통 */
         button:hover, #sel_box:hover{
         	background-color: #222 !important;
@@ -152,7 +150,7 @@
             /* ---------------------달력 초기 날짜 설정------------------- */
             // 오늘 날짜 저장
             const today = new Date();
-            today.setDate(today.getDate() + 1);
+            today.setDate(today.getDate());
             // 6개월 전 날짜 계산
             const limitedMonth = new Date();
             limitedMonth.setMonth(today.getMonth() - 6);
@@ -618,9 +616,9 @@
 						<div id="mp_notice_title">주문/배송조회 안내</div>
 		                <div id="mp_notice_content">
                             <ul>
-                                <li>구매한 상품이력은 당일부터 최근 6개월까지의 정보를 제공합니다.</li>
-                                <li>구메할 수 없는 판매제한 상품은 구매내역에 표시되지 않습니다.</li>
-                                <li>123</li>
+                                <li>주문 이력은 당일부터 최근 6개월까지의 정보만 조회 가능합니다.</li>
+                                <li>판매제한 상품은 주문내역에 표시되지 않습니다.</li>
+                                <li>추가할 내용</li>
                             </ul>
                         </div>
                     </div>

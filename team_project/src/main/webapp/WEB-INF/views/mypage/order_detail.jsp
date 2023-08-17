@@ -9,12 +9,9 @@
     <title>주문상세 조회</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="../resources/js/mypage.js"></script>
-    <link href="../resources/css/order_detail.css" rel="stylesheet">
+    <link href="../resources/css/mypage/order_detail.css" rel="stylesheet">
     
-    <style>
-   		/* a태그 공통 */
-		a:hover{text-decoration: underline;}
-		
+    <style>	
 		#od_header_btn-addcart{
 			width: 140px;
 			padding: 2px 5px;

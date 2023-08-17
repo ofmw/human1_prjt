@@ -7,14 +7,12 @@
 <head>
     <title>회원탈퇴</title>
 
-<link href="../resources/css/mypage.css" rel="stylesheet">
+<link href="../resources/css/mypage/mypage.css" rel="stylesheet">
+<link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="../resources/js/mypage.js"></script>
 
 <style>
-
-	/* a태그 공통 */
-	a:hover{text-decoration: underline;}
 	/* 버튼 및 선택 요소 공통 */
     #mp_header_area li span:hover{
     	text-decoration: underline;

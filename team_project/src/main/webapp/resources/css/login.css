@@ -1,15 +1,5 @@
 @charset "UTF-8";
 
-/* Noto Sans KR */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-
-*{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
-
-/* body{
-    font-size: 50px;
-    
-} */
-
 #shadow{
     position: fixed;
     top: 0;
