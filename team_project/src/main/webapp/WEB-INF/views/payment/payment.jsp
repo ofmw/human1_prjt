@@ -260,13 +260,23 @@
         cursor: pointer;
         background-color: rgb(245, 245, 245);
         margin-right: 10px;
-    }
+    }    
+    /* input[type="number"]의 증감버튼 제거 */
+    input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button {
+	    -webkit-appearance: none;
+	    margin: 0;
+	}
+	input[type="number"] {
+	    -moz-appearance: textfield; /* Firefox 에서 화살표 제거 */
+	}
     
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>	
 	$(function() {
+		
 		let shadow = $("#shadow");
 		/* 로그인 모달창 열기 메서드 */
 	    function showShadow() {
@@ -322,36 +332,16 @@
         
         //let current_add = opener.sessionStorage.getItem("current_add");
         //sessionStorage.setItem("current_add", current_add);
-          
-        /* 포인트 입력창을 벗어날때 */
-        $("#input_point").on("blur", function(){
-            let mPoint = parseInt($("#mPoint").val());
-            let inputValue = parseInt($(this).val().replace(/\D/g, ''));
-            
-            if(inputValue > mPoint){
-            	$(this).val(Number(mPoint).toLocaleString());
-            }
-            
-            dc_final();
-            
-        });
-        
-        $("#use_allPoint").on("click", function(){
-        	let mPoint = parseInt($("#mPoint").val());
-        	
-        	$("#input_point").val(Number(mPoint).toLocaleString());   
-        	
-        	dc_final();
-        	
-        });
         
         function dc_final(){
         	let dc_product = parseInt($("#discount_product").val());
-        	let inputPoint = parseInt($("#input_point").val().replace(/\D/g, ''));
+        	let inputPoint = parseInt($("#input_point").val().replace(/\D/g, ''));   
         	let dc_final = dc_product + inputPoint;
         	let price_before = parseInt($("#price_before").val().replace(/\D/g, ''));
         	let shipping_fee = parseInt($("#shipping-fee").text().replace(/\D/g, ''));
         	let price_final = price_before - dc_final + shipping_fee;
+        	        	
+        	
         	
         	$("#dc_final").text(" - "+Number(dc_final).toLocaleString()+"원");
         	$("#dc_final_nav").text(" - "+Number(dc_final).toLocaleString()+"원");
@@ -364,6 +354,45 @@
         
         $("#order-nav_btn").click(function(){
         	$("#btn_payment_main").click();
+        });
+        
+        /* 포인트를 입력할때 */
+        $("#input_point").on("input", function(){
+            let mPoint = parseInt($("#mPoint").val());
+            let inputValue = parseInt($(this).val().replace(/\D/g, ''));
+            let finalPrice = parseInt($("#btn_payment_main").text().replace(/\D/g, ''));
+            let beforePrice = parseInt($("#price_before").val().replace(/\D/g, ''));
+            let discount = parseInt($("#discount_product").val());        
+            let minPrice = 5000;
+                        
+            if(inputValue > mPoint){
+                $(this).val(Number(mPoint).toLocaleString());
+            }
+            
+            if(inputValue > beforePrice - discount - minPrice){
+                alert("최소 결제금액은 5,000원입니다.");
+                $(this).val(beforePrice - discount - minPrice);
+            }
+            
+            if(inputValue == undefined || inputValue == null || inputValue == ""){
+            	$(this).val(0);
+            }
+            
+            dc_final();
+            
+        });
+        
+        $("#use_allPoint").on("click", function(){
+            let mPoint = parseInt($("#mPoint").val());
+            let beforePrice = parseInt($("#price_before").val().replace(/\D/g, ''));
+            let discount = parseInt($("#discount_product").val());        
+            let minPrice = 5000;
+            
+            if(mPoint)
+            $("#input_point").val(Number(mPoint).toLocaleString());   
+            
+            dc_final();
+            
         });
         
 	});
@@ -550,7 +579,7 @@
 	                <c:set var="discount_product" value="0"></c:set>
 	                <c:forEach items="${CartList}" var="c">
 	                   <tr>
-	                       <td><img src="../resources/img/kakao_icon.png" alt="상품이미지" /></td>
+	                       <td><img src="../resources/uploads/${c.saveFile1}" alt="${c.p_name}" /></td>
 	                       <td>
 	                          <h5>${c.brand}</h5>
 	                          <p>${c.p_name}</p>
@@ -559,7 +588,9 @@
 	                           <c:set var="discount" value="${(c.price*(c.discount/100))*c.amount}"></c:set>
 	                           <c:set var="price_discount" value="${(c.price*c.amount)- discount}"></c:set>                            
 	                           <h4><fmt:formatNumber value="${price_discount}" pattern="#,###" />원</h4>
-	                           <span><fmt:formatNumber value="${c.price*c.amount}" pattern="#,###" />원</span>
+	                           <c:if test="${c.discount ne 0}">
+                                    <span><fmt:formatNumber value="${c.price*c.amount}" pattern="#,###" />원</span>
+	                           </c:if>
 	                           <p>${c.amount}개</p>
 	                           <c:set var="price_before" value="${price_before+c.price*c.amount}"></c:set>
 	                           <c:set var="price_final" value="${price_final+price_discount}"></c:set>
@@ -588,10 +619,10 @@
 	                <tr>
 	                    <td><h5>포인트사용</h5></td>
 	                    <td id="point_container">	                       
-	                       <span><input id="input_point" type="text" value="0"/><span>원</span></span>	                       
+	                       <span><input id="input_point" type="number" min="0" value="0"/><span>원</span></span>	                       
 	                       <input id="use_allPoint" type="button" value="전체사용"/>
 	                       <p>(잔여: <fmt:formatNumber value="${member.point}" pattern="#,###" />원)</p>
-	                       <input id="mPoint" type="hidden" value="${member.point}"/>
+	                       <input id="mPoint" type="hidden" value="${member.point}"/>	                       
 	                    </td>
 	                    <td></td>
 	                </tr>

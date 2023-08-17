@@ -1,6 +1,7 @@
 package com.omart.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.omart.service.cart.CartService;
 import com.omart.vo.AddressVo;
 import com.omart.vo.CartVo;
+import com.omart.vo.MemberVo;
 
 import lombok.Setter;
 
@@ -23,7 +25,30 @@ import lombok.Setter;
 public class AjaxCartController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private CartService cUpdate, cAddress;
+	private CartService cUpdate, cAddress, cAdd;
+	
+	//찜목록 선택 상품 장바구니 추가
+	@PostMapping("/addCart.do")
+	public String addCart(@RequestParam("p_id[]") String [] p_id,
+			 			  HttpSession session) {
+		
+		System.out.println(Arrays.toString(p_id));
+		System.out.println("addCart.do 요청됨");
+		
+		MemberVo member = (MemberVo) session.getAttribute("member");
+		int m_idx = member.getM_idx();
+		
+		int result = cAdd.addCart2(m_idx, p_id);
+		
+		if (result != 0) {
+			return "success";
+		} else if (result == 0) {
+			return "max";
+		} else {
+			return "fail";
+		}
+		
+	}
 
 	// 장바구니 품목 수량 변경
 	@PostMapping("/update_cart_amount.do")

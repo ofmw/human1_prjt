@@ -910,12 +910,12 @@
                                    			<tr>
 		                                        <td class="td_img">
 		                                            <div>
-		                                                <a href="#"><img src="#" alt="이미지" width="90" height="90"></a>
+		                                                <a href="../product/product_view.do?p_id=${c.p_id}"><img src="../resources/uploads/${c.saveFile1}" alt="${c.p_name}" width="90" height="90"></a>
 		                                                <input type="checkbox" class="sel_product">
 		                                            </div>
 		                                        </td>
 		                                        <td class="td_pname">
-		                                        	<a href="#">
+		                                        	<a href="../product/product_view.do?p_id=${c.p_id}">
 		                                        		[${c.brand}] ${c.p_name} ${c.standard}${c.unit}
 		                                        	</a>
 		                                        </td>

@@ -43,7 +43,7 @@ $(function() {
         
             $.ajax({
                 type: "POST",
-                url: "cart/addCart.do",
+                url: "../cart/addCart.do",
                 data: {
                     p_id: p_idArray,
                 },
