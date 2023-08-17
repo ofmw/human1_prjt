@@ -71,7 +71,6 @@
 	    text-align: center;
 	}
 	#div_preview img{
-	    border: 1px solid gray;
 	    width: 500px;
 	    height: 500px;
 	    margin: 20px 40px;
@@ -275,7 +274,7 @@
 	    width: 750px;
 	    height: auto;
 	    resize: none;
-	    color: black;
+/* 	    color: black; */
 	    background-color: white;
 	    border: none;
 	}
@@ -367,6 +366,7 @@
 	}
 	#div_stars{
 	   display: flex;
+	   justify-content: flex-start;
 	}
 	.stars_img{
 	   width: 97px;
@@ -386,7 +386,7 @@
         
         if(starsAvg == 0){
         	$(".stars_avg").text("리뷰없음");
-        	$(".stars_avg").css("color", "lightgray");
+        	$(".stars_avg").css("color", "gray");
         }
         
         let starsWidth = starsImg.width();
@@ -585,13 +585,13 @@
 </header>
 <div id="div_view">
     <div id="div_preview">
-        <img src="" alt="">
+        <img src="../resources/uploads/${product.saveFile1}" alt="">
     </div>
     <div id="div_buy_main">        
         <p>${product.brand}</p>
         <h1>${product.p_name}</h1>
         <div id="div_stars">
-            <h3 id="stars">☆☆☆☆☆</h3><h3 class="stars_img">★★★★★</h3><h3 class="stars_avg"> ${product.stars_avg}</h3>
+            <h3 id="stars">☆☆☆☆☆</h3><h3 class="stars_img">★★★★★</h3><h3 class="stars_avg"> ${product.stars_avg}</h3><h3 class="reviews">( ${product.reviews}건 )</h3>
         </div>        
         <h3>원산지 : 상세설명참조</h3>
         <div id="div_dcPrice">
@@ -821,8 +821,7 @@
     </div>
     <div id="div_review" class="other">
         <div>
-            <c:set var="reviewNum" value="${ReviewList.size()}"></c:set>
-            <h3>리뷰(${reviewNum}건)</h3>
+            <h3>리뷰(${product.reviews}건)</h3>
             <select name="" id="">
                 <option value="">최신순</option>
                 <option value="">평점높은순</option>

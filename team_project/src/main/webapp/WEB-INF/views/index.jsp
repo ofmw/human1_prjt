@@ -48,7 +48,7 @@
     }
     #hp_area_contents{
         width: 1280px;
-        margin-top: 20px;
+        margin-top: 30px;
         /* background-color: aquamarine; */
     }
 
@@ -205,22 +205,22 @@
     }
 
     .swiper {
-        max-width: 550px;
+        max-width: 700px;
         width:100%;
-        height: 360px;
+        height: 320px;
         position: relative;
         overflow: visible;
     }
 
     .swiper-slide {
-        max-width: 550px;
+        max-width: 700px;
         width:100%;
-        height:360px;
+        height:320px;
         text-align: center;
         font-size: 18px;
         background: #fff;
         border-radius: 10px;
-
+        
         /* Center slide text vertically */
         display: -webkit-box;
         display: -ms-flexbox;
@@ -239,9 +239,9 @@
     .swiper-slide img {
         display: block;
         width: 100%;
-        width: 480px;
         height: 100%;
         object-fit: cover;
+        border-radius: 20px;
     }
 
     /**/
@@ -262,7 +262,7 @@
     /* pagination */
     .mySwiper .swiper-pagination {
         position: absolute;
-        bottom: -30px;
+        bottom: -40px;
         /* text-align:left; */
         
     }
@@ -300,7 +300,7 @@
             autoplay: true,
             loop: true,
             centeredSlides: true,
-            spaceBetween: 10,
+            spaceBetween: 5,
     
             // pagination 기본은 bullet
             pagination: {
@@ -543,21 +543,11 @@
                 <!-- Swiper -->
                 <div class="swiper mySwiper">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide">Slide 1</div>
-                    <div class="swiper-slide">Slide 2</div>
+                    <div class="swiper-slide"><a href="product/product_view.do?p_id=AA0001"><img src="resources/img/구운_삼겹살.jpg" alt="구운_삼겹살" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=BB&check=2_1"><img src="resources/img/과자모음.jpg" alt="과자모음" /></a></div>
                     <div class="swiper-slide">Slide 3</div>
                     <div class="swiper-slide">Slide 4</div>
-                    <div class="swiper-slide">Slide 5</div>
-                    <div class="swiper-slide">Slide 6</div>
-                    <div class="swiper-slide">Slide 7</div>
-                    <div class="swiper-slide">Slide 8</div>
-                    <div class="swiper-slide">Slide 9</div>
-                    <div class="swiper-slide">Slide 7</div>
-                    <div class="swiper-slide">Slide 8</div>
-                    <div class="swiper-slide">Slide 9</div>
-                    <div class="swiper-slide">Slide 7</div>
-                    <div class="swiper-slide">Slide 8</div>
-                    <div class="swiper-slide">Slide 9</div>
+                    <div class="swiper-slide">Slide 5</div> 
                   </div>
                   <div class="swiper-pagination"></div>
                   <div class="swiper-button-next"></div>

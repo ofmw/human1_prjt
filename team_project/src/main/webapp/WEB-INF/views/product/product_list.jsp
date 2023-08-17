@@ -255,6 +255,15 @@
 <script>
 	$(function(){
 		
+		let check_request = $("#check_request");
+		
+		if(check_request.val() == '2_1'){
+			setTimeout(function(){
+				$("#2_1").click();
+			}, 1);
+			
+		}
+		
 		/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
     	//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
         $(document).on("mouseenter", ".p_img", function() {
@@ -470,7 +479,7 @@
 	            if (product !== null) {
 	                rebuilding += "<div class='p_products'>";
 	                rebuilding += "<a href='product_view.do?p_id=" + product.p_id + "'>";
-	                rebuilding += "<div class='p_img'><img src='#' alt='#'></div>";
+	                rebuilding += "<div class='p_img'><img class='thumbnail' src='../resources/uploads/" + product.saveFile1 + "' alt='" + product.p_name + "'></div>";
 	                rebuilding += "<div class='p_info'>";
 	                rebuilding += "<div class='p_info_brand'>" + product.brand + "</div>";
 	                rebuilding += "<div class='p_info_name'>" + product.p_name + "</div>";
@@ -517,15 +526,15 @@
     <div id="pl_area">
         <div id="pl_area_contents">
         <input type="hidden" id="m_idx" value="${member.m_idx}">
-
+        <input type="hidden" id="check_request" value="${param.check}"/>
             <!-- 상단 버튼 모음 -->
             <div id="pl_header">
                 <div id="pl_header_btn_box">
                     <div class="quick_btn"><a href="product_list.do?"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="#" alt="#"></a></div>                    
+                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="../resources/img/육류.png" alt="육류"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="../resources/img/가공.png" alt="가공"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="../resources/img/수산.png" alt="수산"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="../resources/img/야채.png" alt="야채"></a></div>
                 </div>
             </div>
 
@@ -626,7 +635,9 @@
 		                                                           <c:set var="discount" value="${productList[j].price*(productList[j].discount/100)}"></c:set>
 		                                                           <fmt:formatNumber value="${productList[j].price - discount}" pattern="#,###" />원
 		                                                        </div>
-		                                                        <div class="p_info_stars">★ 4.5 (1043)</div>
+		                                                        <c:if test="${productList[j].reviews ne 0}">
+					                                               <div class="p_info_stars">★ ${productList[j].stars_avg} (${productList[j].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+					                                            </c:if>
 		                                                    </div>
 
 	                                                    </a>
