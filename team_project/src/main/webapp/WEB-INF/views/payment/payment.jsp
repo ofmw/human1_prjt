@@ -391,7 +391,7 @@
 	var makeMerchantUid = year + month + day + hours + minutes + seconds + milliseconds;
     
     //다음 페이지로 전달해야하는 값
-    var frm, requestor, merchant_uid, name, amount, point, receiver, selnum, address;
+    var frm, requestor, merchant_uid, name, amount, point, receiver, selnum, address, request, pgName;
         
     function requestPay() {
     	frm = $("#frm_payment");
@@ -401,8 +401,9 @@
     	point = parseInt($("#input_point").val().replace(/\D/g, ''));
     	receiver = $("#receiver").text().replace('받는분 : ','');
     	selnum = $("#selnum").text().replace('연락처 : ','').replace(/\-/g, '').trim();
-    	address = $("#address").text().replace('주소 : ','');
-    	
+    	address = $("#address").text().replace('배송지 : ','');
+    	requestMessage = $("#request option:selected").text().replace('배송기사에게 전달되는 메시지입니다. 선택해주세요.','');
+    	paymentInfo = "카카오페이";
     	
     	// 가상의 input 요소를 생성하고 폼에 추가
     	var orderNumInput = $("<input>").attr("type", "hidden").attr("name", "orderNum").val(orderNum);
@@ -411,6 +412,9 @@
         var receiverInput = $("<input>").attr("type", "hidden").attr("name", "receiver").val(receiver);
         var selnumInput = $("<input>").attr("type", "hidden").attr("name", "selnum").val(selnum);
         var addressInput = $("<input>").attr("type", "hidden").attr("name", "address").val(address);
+        var paid_priceInput = $("<input>").attr("type", "hidden").attr("name", "paid_price").val(amount);
+        var requestMessageInput = $("<input>").attr("type", "hidden").attr("name", "requestMessage").val(requestMessage);
+        var paymentInfoInput = $("<input>").attr("type", "hidden").attr("name", "paymentInfo").val(paymentInfo);
         
         frm.append(orderNumInput);
         frm.append(nameInput);
@@ -418,6 +422,9 @@
         frm.append(receiverInput);
         frm.append(selnumInput);
         frm.append(addressInput);
+        frm.append(paid_priceInput);
+        frm.append(requestMessageInput);
+        frm.append(paymentInfoInput);
     	
         IMP.request_pay({
             pg : 'kakaopay.TC0ONETIME',
@@ -474,7 +481,6 @@
 	                           <c:when test="${!empty AddressList}">
 	                               <c:forEach items="${AddressList}" var="a">
 	                                   <c:if test="${a.def_add eq '1'}">
-<<<<<<< HEAD
 	                                       <c:set var="phoneNumber" value="${a.selnum}" />
 											<c:set var="formattedPhoneNumber" value="" />											
 											<c:forEach var="i" begin="0" end="${fn:length(phoneNumber) / 4 - 1}">
@@ -494,9 +500,7 @@
 	                                       <p id="receiver">받는분 : ${a.receiver}</p>
 	                                       <p id="selnum">연락처 : ${formattedPhoneNumber}</p>
 	                                       <p id="address">배송지 : (${a.a_name}) [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
-=======
-	                                       <p>${a.a_name} (기본배송지) : [${a.postnum}] ${a.roadAddr} ${a.detail}</p>
->>>>>>> branch 'inhyeok' of https://github.com/ofmw/human1_prjt.git
+
 	                                   </c:if>
 	                               </c:forEach>
 	                           </c:when>

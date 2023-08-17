@@ -9,7 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.omart.vo.ProductVo;
-import com.omart.vo.WishVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -64,6 +63,18 @@ public class ProductDao{
 	
 	public void updateTotalSales(ProductVo pVo) {
 		sqlSession.update(MAPPER+".updateTotalSales", pVo);
+	}
+	
+	public int checkReview(ProductVo pVo) {
+		return sqlSession.selectOne(MAPPER+".checkReview", pVo);
+	}
+	
+	public double getStarsAvg(String p_id) {
+		return sqlSession.selectOne(MAPPER+".getStarsAvg", p_id);
+	}
+	
+	public int getReviews(String p_id) {
+		return sqlSession.selectOne(MAPPER+".getReviews", p_id);
 	}
 	
 }

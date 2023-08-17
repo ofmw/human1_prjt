@@ -1,36 +1,441 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>mypage</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <title>주문/배송조회</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link href="../resources/css/purchase_history.css" rel="stylesheet">
+    
     <style>
+	    /* a태그 공통 */
+		a:hover{text-decoration: underline;}
+    	/* 버튼 및 선택 요소 공통 */
+        button:hover, #sel_box:hover{
+        	background-color: #222 !important;
+        	color: white;
+        }
         
+        #mp_header_area li span:hover{
+	    	text-decoration: underline;
+	    	cursor: pointer;
+	    }
+	    /* ---------------------마이페이지 메인영역 헤더--------------------- */
+        #mp_main_ph_header{
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #222;
+        }
+        .mp_main_ph_header_title{
+            padding-bottom: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #mp_main_ph_header_opt-box{
+        	display: flex;
+        	flex-direction: row;
+        	justify-content: flex-end;
+        	
+        	font-size: 12px;
+        	user-select: none;
+        }
+        #sel_box{
+            background-color: #fcfcfc;
+		    padding: 2px 5px;
+		    border: 1px solid #ddd;
+		    border-radius: 3px;
+        }
+        #mp_main_wish_notice{
+            border-top: 1px solid #e5e5e5;
+            padding-top: 10px;
+            font-size: 13px;
+            color: #777;
+        }
+        /* ---------------------페이지 내비게이션--------------------- */
+        .p-nav{
+        	width: 25px;
+        	height: 25px;
+        	margin: 0 5px;
+        	padding: 2px 5px;
+        	
+		    font-size: 14px;
+		    cursor: pointer;
+		    
+		    border: 1px solid #ddd;
+		    border-radius: 3px;
+		    background-color: #fcfcfc;
+        }
+        #mp_main_ph_search_quicksel{
+        	user-select: none;
+        }
     </style>
+    
     <script>
         $(function() {
-            $("input[name=dates]").daterangepicker({
-                locale: {
-                "format": 'YYYY-MM-DD',                  // 일시 노출 포맷
-                "applyLabel": "확인",                    // 확인 버튼 텍스트
-                "cancelLabel": "취소",                   // 취소 버튼 텍스트
-                "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
-                "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-                },
-                showDropdowns: true,                     // 년월 수동 설정 여부
-                autoApply: true,                         // 확인/취소 버튼 사용여부
-                singleDatePicker: true                   // 하나의 달력 사용 여부
+
+            /* ---------------------버튼 색상 변경--------------------- */
+	      	//*** 기간조회 라디오 버튼 클릭 이벤트 처리 ***//
+	        $('.quicksel_radio').change(function() {
+	            // 모든 radio를 순회한다.
+	            $('.quicksel_radio').each(function() {
+	            	
+	                let checked = $(this).prop('checked');
+	                let label = $(this).next();
+	        
+	                if(checked) {
+	                	
+	                    label.css({
+	                    	'background-color': '#222',
+	                    	'color': 'white'
+	                    });
+	                } else {
+	                	
+	                	label.css({
+	                    	'background-color': '',
+	                    	'color': ''
+	                    });
+	                }
+	            });
+	        });
+          	
+            /* ---------------------주문내역 기간 설정(라디오 버튼)------------------- */
+            $('.quicksel_radio').change(function() {
+                let range = $(this).val();
+                console.log("기간조회 (라디오 버튼): " + range);
+                
+                let today = new Date();
+                let targetDate = new Date();  // 초기값은 오늘 날짜로 설정
+
+                switch (range) {
+                    case "1":
+                        targetDate.setDate(targetDate.getDate() - 8);
+                        break;
+                    case "2":
+                        targetDate.setDate(targetDate.getDate() - 16);
+                        break;
+                    case "3":
+                        targetDate.setMonth(targetDate.getMonth() - 1);
+                        targetDate.setDate(targetDate.getDate() - 1);
+                        break;
+                    case "4":
+                        targetDate.setMonth(targetDate.getMonth() - 3);
+                        targetDate.setDate(targetDate.getDate() - 1);
+                        break;
+                }
+
+                console.log("조회 날짜 구간: " + targetDate);
+
+                $(".tr_history").removeClass('hide');
+
+                $('.td_date').each(function() {
+                    let dateString = $(this).text();
+                    let dateParts = dateString.split('-');
+                    let tdDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+                    if (tdDate > targetDate && tdDate < today) {
+                        $(this).closest('tr').show();
+                        console.log("표시");
+                    } else {
+                        $(this).closest('tr').hide().addClass('hide');
+                        console.log("숨김");
+                    }
+                    
+                    checkEmpty();
+                    
+                });
+
+                setNav(Math.ceil(countVisibleRows() / 4));
+                changePage(1);
+                
             });
-            $("input[name=dates]").on('show.daterangepicker', function (ev, picker) {
-                $(".yearselect").css("float", "left");
-                $(".monthselect").css("float", "right");
-                $(".cancelBtn").css("float", "right");
+
+            /* ---------------------달력 초기 날짜 설정------------------- */
+            // 오늘 날짜 저장
+            const today = new Date();
+            today.setDate(today.getDate() + 1);
+            // 6개월 전 날짜 계산
+            const limitedMonth = new Date();
+            limitedMonth.setMonth(today.getMonth() - 6);
+            // 날짜를 YYYY-MM-DD 형식으로 변환
+            const limitedtoday = today.toISOString().split("T")[0];
+            const limitedStartDate = limitedMonth.toISOString().split("T")[0];
+            // 시작, 종료 날짜 달력 생성            
+            const calStart = $('<input>').attr('type', 'date').addClass('cal_date').attr('id', 'cal-start').attr('min', limitedStartDate).attr('max', limitedtoday);
+            const calEnd = $('<input>').attr('type', 'date').addClass('cal_date').attr('id', 'cal-end').attr('min', limitedStartDate).attr('max', limitedtoday);
+            
+            // '~' 앞뒤에 달력 추가
+            calStart.insertBefore('#cal_hipen');
+            calEnd.insertAfter('#cal_hipen');
+
+            /* ---------------------달력 날짜 설정------------------- */
+            //*** 시작 날짜 달력 설정 ***//
+            function setCalStart() {
+
+                /***
+                * 시작 날짜 달력 날짜 선택시
+                * 종료 날짜 달력의 최소 날짜를 시작 날짜와 동기화
+                ***/
+                let calStart = $("#cal-start");
+                let calEnd = $("#cal-end");
+                let calStartDate = calStart.val();
+
+                calEnd.prop("min", calStartDate);
+
+                let dateString = calStart.val();
+                let dateParts = dateString.split('-');
+                console.log(dateParts[1]);
+                if (dateParts[1] === undefined) {
+                    $(".tr_history").show();
+                    calStart.prop("min", limitedStartDate);
+                    calStart.prop("max", limitedtoday);
+                    calEnd.prop("min", limitedStartDate);
+                    calEnd.prop("max", limitedtoday);
+                }
+            }
+
+            //*** 종료 날짜 달력 설정 ***//
+            function setCalEnd() {
+
+                /***
+                * 종료 날짜 달력 날짜 선택시
+                * 시작 날짜 달력의 최대 날짜를 종료 날짜와 동기화
+                ***/
+                let calStart = $("#cal-start");
+                let calEnd = $("#cal-end");
+                let calEndDate = calEnd.val();
+
+                calStart.prop("max", calEndDate);
+
+                let dateString = calEnd.val();
+                let dateParts = dateString.split('-');
+                console.log(dateParts[1]);
+                if (dateParts[1] === undefined) {
+                    $(".tr_history").show();
+                    calStart.prop("min", limitedStartDate);
+                    calStart.prop("max", limitedtoday);
+                    calEnd.prop("min", limitedStartDate);
+                    calEnd.prop("max", limitedtoday);
+                }
+            }
+
+            //*** 시작 날짜 달력 날짜 선택 이벤트 처리 ***//
+            $(document).on("change", "#cal-start", function() {
+                setCalStart();
             });
+
+            //*** 종료 날짜 달력 날짜 선택 이벤트 처리 ***//
+            $(document).on("change", "#cal-end", function() {
+                setCalEnd();
+            });
+
+
+            /* ---------------------주문내역 기간 설정(달력 선택 조회하기)------------------- */
+            //*** 조회하기 버튼 클릭 이벤트 처리 ***//
+            $('#mp_main_ph_search_detail_btn').click(function() {
+                
+                let radio = $('.quicksel_radio:checked');
+                radio.prop("checked", false);
+                let label = radio.next();
+                label.css({
+                    'background-color': '',
+                    'color': ''
+                });
+
+
+                let today = new Date();
+                let startDate = new Date($('#cal-start').val());
+		        let endDate = new Date($('#cal-end').val());
+                let rows = 0;
+
+                if (isNaN(startDate)) {
+                    alert("시작 날짜를 선택해주세요");
+                } else if (isNaN(endDate)) {
+                    alert("끝 날짜를 선택해주세요");
+                } else {
+
+                    startDate.setDate(startDate.getDate() - 1);
+                    endDate.setDate(endDate.getDate() + 1);
+                    
+                    console.log("조회 날짜 구간(시작): " +startDate);
+                    console.log("조회 날짜 구간(끝): " +endDate);
+                    
+                    $(".tr_history").removeClass('hide');
+
+                    $('.td_date').each(function() {
+                        let dateString = $(this).text();
+                        let dateParts = dateString.split('-');
+                        let tdDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                        console.log(tdDate);
+
+                        if (tdDate > startDate && tdDate < endDate) {
+                            $(this).closest('tr').show();
+                            console.log("표시");
+                            rows += 1;
+                        } else {
+                            $(this).closest('tr').hide().addClass('hide');;
+                            console.log("숨김");
+                            rows -= 1;
+                        }
+                        
+                        // 조회 결과가 비었을 경우 체크
+                        checkEmpty();
+                        
+                    });
+                    
+                }
+
+                setNav(Math.ceil(countVisibleRows() / 4));
+                changePage(1);
+
+            });
+            
+		    /* ---------------------주문내역 표시 개수--------------------- */
+            //*** 표시 개수 설정 ***//
+            function showElements(option) {
+                
+            	console.log("표시 개수: "+option);
+            	
+            	let elements = $('.tr_history:not(.hide)');
+            	let page = 0;
+            	
+            	if (elements.length > option) { // 주문내역 개수가 선택한 표시 수보다 클 경우
+                	
+            		page = Math.ceil(elements.length / option);
+            		
+            		console.log("내역 개수: "+elements.length);
+                    console.log("페이지 수: "+page);
+                    
+                    setNav(page);
+                    changePage(1);
+                    
+                } else { // 주문내역 개수가 선택한 표시 수보다 같거나 작을 경우
+                	
+                	page = 1; // 표시할 페이지 내비게이션 버튼 1개
+                	
+                	console.log("내역 개수: "+elements.length);
+                    console.log("페이지 수: "+page);
+                    
+                    setNav(page);
+                    changePage(1);
+                }
+            }
+            
+          	//*** sel2 표시 옵션 선택 이벤트 처리 ***//
+            $("#sel2").change(function() {
+                let selectedOption = parseInt($(this).val());
+                
+                if (selectedOption === 4) { // 4개씩 표시
+                    showElements(4);
+                } else if (selectedOption === 8) { // 8개씩 표시
+                	showElements(8);
+                } else if (selectedOption === 100) { // 100개씩 표시
+                	showElements(100);
+                }
+            });
+            
+	        /* ---------------------페이지 내비게이션------------------- */
+	        //*** 테이블에 표시되는 주문내역 tr 요소 개수 확인 ***//
+	        function countVisibleRows() {
+			    // display가 block인 tr들만 선택하여 개수 반환
+			    return $('.tr_history:visible').length;
+			}
+	        
+            //*** 페이지 내비게이션 버튼 생성 ***//
+            function setNav(page) {
+            	
+            	let visibleTr = countVisibleRows();
+
+                console.log("몇개냐: " +visibleTr);
+            	
+            	console.log("내역 개수: " +countVisibleRows());
+            	console.log("페이지 개수: " +page);
+				
+            	if (visibleTr === 0) {
+            		page = 1;
+            	}
+            	
+				let navDiv = $("#td_pnav"); // 페이지 내비게이션 버튼 생성 위치
+				navDiv.empty(); // 기존 버튼 삭제
+			
+				for (var i = 1; i <= page; i++) {
+					let pagebtn = $("<button>", {
+						class: "p-nav",
+						type: "button",
+						value: i,
+						text: i
+					});
+				
+					navDiv.append(pagebtn);
+				}
+				
+				// 페이지 버튼 생성과 동시에 1페이지로 보내기
+				changePage(1);
+				
+			}
+            
+            //페이지 로드시 기본 버튼 생성
+            setNav(Math.ceil(countVisibleRows() / 4)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+            
+          	//*** 페이지 변환 ***//
+            function changePage(pageNum) {
+            
+          		// 주문 내역 tr
+          		elements = $('.tr_history:not(.hide)');
+          		// 한 페이지에 표시할 내역 개수
+          		// let showAmount = parseInt($("#sel2").val());
+                let showAmount = 4;
+          		
+          	    // 해당 페이지에서 표시할 첫번째 내역 인덱스 번호
+          		let startIndex = (pageNum - 1) * showAmount;
+          		// 해당 페이지에서 표시할 마지막 내역 인덱스 번호
+          		let endIndex = startIndex + showAmount - 1;
+          		console.log("해당 페이지 상품 인덱스 시작값: " +startIndex);
+          		console.log("해당 페이지 상품 인덱스 끝값: " +endIndex);
+          		
+          		for (let i=0; i<elements.length; i++) {
+          			if (i >= startIndex && i <= endIndex) {
+          				console.log("현재 인덱스: " +i)
+          	            $(elements[i]).show();
+          	        } else {
+          	        	console.log("else 현재 인덱스: " +i)
+          	            $(elements[i]).hide();
+          	        }
+				}
+          	}
+          	
+          	//*** 페이지 내비게이션 버튼 클릭 이벤트 처리 ***//
+          	$(document).on("click", ".p-nav", function() {
+
+          		// 클릭한 페이지 내비게이션 버튼 값
+          		let pageNum = parseInt($(this).val());
+          		console.log(pageNum);
+          		changePage(pageNum);
+			});
+          	
+          	
+          	/* ---------------------빈 주문내역--------------------- */
+          	//*** 빈 주문내역 목록 표시 ***//
+          	function checkEmpty() {
+
+          		let tr = countVisibleRows();
+          		
+          		console.log("현재 표시된 내역: " +tr);
+          		
+          		if (tr === 0) {
+                    $("#tr_empty_history").show();
+                } else {
+                    $("#tr_empty_history").hide();
+                }
+
+                // setNav(Math.ceil(tr / 4));
+          	}
+
+            checkEmpty();
+
         });
     </script>
 </head>
@@ -46,11 +451,15 @@
 
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
+            <input type="hidden" id="session_m_idx" value="${member.m_idx}">
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="#">회원정보 변경</a></li>
-                    <li><a href="#">비밀번호 변경</a></li>
-                    <li><a href="#">배송지 관리</a></li>
+                	<c:if test="${member.platform eq 'omart'}">
+	                    <li><a href="#">회원정보 변경</a></li>
+	                    <li><a href="#">비밀번호 변경</a></li>
+	                </c:if>
+                    <li><span id="manage_address">배송지 관리</span></li>
+                    <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
@@ -86,9 +495,7 @@
                 <div class="mp_main_menu_title">나의 주문관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <!-- <li><a href="mypage 주문배송.html">주문/배송조회</a></li> -->
                         <li><a href="purchase_history.do">주문/배송조회</a></li>
-                        <!-- <li><a href="#">자주 구매한 상품</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -97,7 +504,7 @@
                 <div class="mp_main_menu_title">나의 활동관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <li><a href="mypage 찜목록.html">찜목록</a></li>
+                        <li><a href="wish.do">찜목록</a></li>
                         <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
                         <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
@@ -110,9 +517,23 @@
         <form>
             <div id="mp_main">
                 <div id="mp_main_ph" class="mp_main_obj">
+                
+                	<!-- 메인영역 헤더 -->
+	                <div id="mp_main_ph_header">
+	                    <div class="mp_main_title">주문/배송 내역</div>
+	                    <div id="mp_main_ph_header_opt-box">
+		                    <div id="mp_main_ph_header_sel-box">
+		                        <select id="sel2">
+		                            <option value="4" selected>4개씩</option>
+		                            <option value="8">8개씩</option>
+		                            <option value="100">100개씩</option>
+		                        </select>
+		                    </div>
+	                    </div>
+	                </div>
 
                     <!-- 마이페이지 주문/배송내역  -->
-                    <div class="mp_main_title">주문/배송 내역</div>
+                    
                     <div id="mp_main_ph_searchbar">
 
                         <div>기간조회</div>
@@ -128,15 +549,8 @@
                         </div>
 
                         <div class="mp_main_ph_search_detail">
-                            <span class="mp_main_ph_search_calbox">
-                                <input type="text" name="" class="cal_date" value="">
-                                <span class="mp_main_ph_search_calbox_icon"></span>
-                            </span>
                             <span id="cal_hipen">~</span>
-                            <span class="mp_main_ph_search_calbox">
-                                <input type="text" name="" class="cal_date">
-                            </span>
-                            <span><input type="button" value="조회하기" id="mp_main_ph_search_detail_btn"></span>
+                            <div><input type="button" value="조회하기" id="mp_main_ph_search_detail_btn"></div>
                         </div>
 
                     </div>
@@ -146,8 +560,8 @@
                         <table>
                             <colgroup>
                                 <col style="width:9%;">
-                                <col style="width:17%;">
-                                <col style="width:50%;">
+                                <col style="width:19%;">
+                                <col style="width:48%;">
                                 <col style="width:10%;">
                                 <col style="width:14%;">
                             </colgroup>
@@ -158,36 +572,45 @@
                                 <th scope="col">배송상태</th>
                                 <th scope="col">선택</th>
                             </tr>
+                            
+                            <c:if test="${!empty orderList}">
+	                            <c:forEach begin="0" end="${fn:length(orderList) - 1}" var="i">
+		                            <tr class="tr_history">
+		                                <td class="td_date"><fmt:formatDate value="${orderList[i].order_date}" pattern="yyyy-MM-dd"/></td>
+		                                <td class="td_ordernum">${orderList[i].order_idx}</td>
+		                                <td class="td_pname">
+		                                	<div>
+			                                	<a href="order_detail.do?order_idx=${orderList[i].order_idx}">
+			                                		[${phfInfo[i].brand}] ${phfInfo[i].p_name} ${phfInfo[i].standard}${phfInfo[i].unit}
+			                                	</a>
+		                                	</div>
+		                                	<c:if test="${orderList[i].p_amount gt 1}">
+		                                		<div class="extra_p">외 ${orderList[i].p_amount - 1}건</div>
+		                                	</c:if>
+		                                </td>
+		                                <td class="td_shipstate">
+		                                    <c:choose>
+		                                         <c:when test="${orderList[i].order_state eq 0}">
+		                                             결제완료
+		                                         </c:when>
+		                                         <c:when test="${orderList[i].order_state eq 1}">
+	                                                       상품준비중
+	                                                   </c:when>
+	                                                   <c:when test="${orderList[i].order_state eq 2}">
+	                                                       배송중
+	                                                   </c:when>
+	                                                   <c:when test="${orderList[i].order_state eq 3}">
+	                                                       배송완료
+	                                                   </c:when>
+		                                    </c:choose>
+		                                </td>
+		                                <td><a href="order_detail.do?order_idx=${orderList[i].order_idx}" class="ph_detail_btn button">주문상세내역</a></td>
+		                            </tr>
+	                            </c:forEach>
+                            </c:if>
+                            <tr id="tr_empty_history" style="display:none;height:210px;"><td colspan="5">주문/배송 내역이 없습니다!</td></tr>
                             <tr>
-                                <td class="td_date">2023-07-17</td>
-                                <td class="td_ordernum">20230717-00000012</td>
-                                <td class="td_pname">[국산] 고구마500kg <span>외 8건</span></td>
-                                <td class="td_shipstate">결제완료</td>
-                                <td><a href="order_detail.do" class="ph_detail_btn">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-07-14</td>
-                                <td class="td_ordernum">20230714-00000001</td>
-                                <td class="td_pname">[오뚜기] 삼양라면 <span>외 5건</span></td>
-                                <td>상품준비중</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-05-29</td>
-                                <td class="td_ordernum">20230529-00012351</td>
-                                <td class="td_pname">[풀무원] AA건전지 X 20입 <span>외 14건</span></td>
-                                <td>베송중</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td class="td_date">2023-04-01</td>
-                                <td class="td_ordernum">20230401-00037541</td>
-                                <td class="td_pname">불스원 와이퍼 외 <span>외 2건</span></td>
-                                <td>배송완료</td>
-                                <td><a href="mypage 주문내역 상세.html" class="ph_detail_btn">주문상세내역</a></td>
-                            </tr>
-                            <tr>
-                                <td colspan="5" id="td_pnav">네비게이션</td>
+                                <td colspan="5" id="td_pnav"></td>
                             </tr>
                         </table>
                     </div>

@@ -10,7 +10,7 @@
     </select>
     
     <insert id="insertProduct" parameterType="productVo">
-        insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state})
+        insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state, sub_category, originfile1, savefile1) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state}, #{sub_category}, #{originFile1}, #{saveFile1})
     </insert>
     
     <update id="editProduct" parameterType="productVo">
@@ -24,7 +24,10 @@
             unit = #{unit},
             stock = #{stock},
             discount = #{discount},
-            post_state = #{post_state}
+            post_state = #{post_state},
+            sub_category = #{sub_category},
+            originfile1 = #{originFile1},
+            savefile1 = #{saveFile1}
         where p_id = #{p_id}
             
     </update>
@@ -54,6 +57,10 @@
         select * from member_omart where grade in (7, 8, 9)
     </select>
     
+    <select id="orderList" resultType="orderVo">
+        select * from order_list
+    </select>
+    
     <insert id="createAccount" parameterType="memberVo">
         insert into member_omart (m_id, m_pw, grade, m_name) values (#{m_id}, #{m_pw}, #{grade}, #{m_name})
     </insert>
@@ -65,5 +72,17 @@
     <select id="getAccount" resultType="_int" parameterType="string">
         select count(*) from member_omart where m_id = #{m_id} and grade in (7, 8, 9)
     </select>
+    
+    <update id="changeOrderState" parameterType="string">
+	    <![CDATA[
+	    update order_list
+	    set order_state =
+	        case
+	            when order_state <= 2 then order_state + 1
+	            else order_state
+	        end
+	    where order_idx = #{order_idx}
+	    ]]>
+	</update>
     
 </mapper>

@@ -627,9 +627,6 @@
                     // "주문금액"에 합산
                     totalPrice += calPriceValue;
                 });
-
-                // "주문금액" 에 주문금액 반영
-                $("#ordered-price").text(totalPrice.toLocaleString() + " 원");       
                 
                 let beforePrice = 0;
                 
@@ -638,6 +635,9 @@
                 	
                 	beforePrice += bfPriceValue;
                 });
+                
+                // "주문금액" 에 주문금액 반영
+                $("#ordered-price").text(beforePrice.toLocaleString() + " 원");
                 
                 $("#discount-price").text("- " + (beforePrice-totalPrice).toLocaleString() + " 원");   
                 
@@ -671,13 +671,15 @@
                 
                 // "전체상품" 수량에 반영
                 $("#product_total span").text(totalAmount);
-
+                
             } else { // 장바구니에 상품이 있을 경우
-                $("#shipping-fee").text("0 원");
+                $("#shipping-fee").text("+0 원");
                 $("#ordered-price").text("0 원");
                 $("#payment-price").text("0");
                 $("#product_total span").text("0");
             }
+            
+            
         }
 
         
@@ -831,7 +833,7 @@
         let childWindow = null;
         
         //*** 배송지 변경 자식창 열기 ***//
-        function openChangeAddress() {
+        function openManageAddress() {
         	
         	// 기존에 자식창이 열려있는지에 대한 여부
         	if (childWindow) { // 이미 자식창이 열려있으면
@@ -839,14 +841,14 @@
             }
         	
         	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
-        	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val();
+        	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=2";
         	// 자식창을 열고 그 여부를 변수에 저장
         	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
         	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
         }
         
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
-        $("#manage_address").on("click", openChangeAddress);
+        $("#manage_address").on("click", openManageAddress);
         
         //let current_add = opener.sessionStorage.getItem("current_add");
         //sessionStorage.setItem("current_add", current_add);
@@ -931,9 +933,18 @@
 		                                            	<span class="calprice"></span>
 		                                            	<span style="font-size:11px;padding-left:1px;">원</span>
 		                                            </div>
-		                                            <div class="td_odinfo_op">		                                            	
-		                                            	&nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원		                                            	
-		                                            </div>
+		                                            <c:choose>
+		                                              <c:when test="${c.discount gt 0}">
+		                                                  <div class="td_odinfo_op">                                                      
+                                                              &nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원                                                      
+                                                          </div>
+		                                              </c:when>
+		                                              <c:otherwise>
+		                                                  <div class="td_odinfo_op" style="display: none;">
+                                                              &nbsp;<fmt:formatNumber value="${c.price*c.amount}" pattern="#,###"/>원                                                      
+                                                          </div>
+		                                              </c:otherwise>
+		                                            </c:choose>		                                            
 		                                            <div class="td_odinfo_amount">
 		                                                <button type="button" class="plist_minus-btn">-</button>
 		                                                <input type="text" class="plist_amount_value" value="${c.amount}">
@@ -1057,8 +1068,8 @@
                                         <span id="ordered-price"></span>
                                     </div>
                                     <div id="product_discount-price">
-                                        <span>상품할인</span>
-                                        <span id="discount-price">-0 원</span>
+                                        <span>할인금액</span>
+                                        <span id="discount-price">- 0 원</span>
                                     </div>
                                     <div id="product_shipping-fee">
                                         <span>배송비</span>

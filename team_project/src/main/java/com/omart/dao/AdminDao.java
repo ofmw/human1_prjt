@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.omart.vo.MemberVo;
+import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class AdminDao{
 	};
 	
 	public int editProduct(ProductVo productVo) {
+		System.out.println("관리자DAO fileCheck: "+productVo.getOriginFile1());
 		return sqlSession.update(MAPPER+".editProduct", productVo);
 	}
 	
@@ -67,5 +69,13 @@ public class AdminDao{
 	public int getAccount(String m_id) {
 		return sqlSession.selectOne(MAPPER+".getAccount", m_id);
 	};	
+	
+	public List<OrderVo> orderList(){
+		return sqlSession.selectList(MAPPER+".orderList");
+	}
+	
+	public void changeOrderState(String order_idx) {
+		sqlSession.update(MAPPER+".changeOrderState", order_idx);
+	}
 	
 }

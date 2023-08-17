@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,7 +82,7 @@
         width: 25px;
         padding: 0;
     }
-    #div_right tr td:nth-child(n + 8):nth-child(-n + 11){
+    #div_right tr td:nth-child(n + 9):nth-child(-n + 12){
         width: 35px;
     }
     #div_right button, #div_right img{
@@ -140,6 +141,20 @@
         border-radius: 0px;
         font-size: 11px;
     }    
+    .tbl_product tr:nth-child(2) td:nth-child(4) fieldset{
+        border: 1px solid lightgray;
+    }
+    .tbl_product tr:nth-child(2) td:nth-child(4) input{
+        border: none;
+        text-align: left;
+    }
+    .tbl_product tr:nth-child(2) td:nth-child(4) input:first-child{
+        width: 70px;
+    }
+    .tbl_product tr:nth-child(2) td:nth-child(4) input:last-child{
+        width: 60px;
+    }
+    
     .tbl_product input[type="text"], .tbl_product input[type="number"]{
         border: 1px solid lightgray;
         padding-left: 5px;
@@ -190,14 +205,14 @@
         height: 37px;
         margin-left: 300px;        
     }
-    .tbl_product tr:nth-child(6) td:last-child *{
+    .tbl_product tr:nth-child(7) td:nth-child(2) *{
         float: left;
     }
-    .tbl_product tr:nth-child(6) td:last-child input[type="radio"]{
+    .tbl_product tr:nth-child(7) td:nth-child(2) input[type="radio"]{
         margin-top: 3px;
         margin-left: 10px;
     }
-    .tbl_product tr:nth-child(6) td:last-child label{
+    .tbl_product tr:nth-child(7) td:nth-child(2) label{
         margin-left: 5px;
         margin-right: 10px;
     }
@@ -228,6 +243,10 @@
         let stock; //재고
         let discount; //할인율
         let post_state; //게시상태
+        let inputFile1; //썸네일 이미지 input
+        let inputFile2; //상품정보 이미지 input
+        let thumbnail; //썸네일 이미지
+        let product_info; //상품정보 이미지
 		
         $("#category").change(function(){
             
@@ -284,38 +303,50 @@
 		$("#btn_add").click(function(){			
 			
 			p_id = $("#p_id").val();
-			p_name = $("#p_name").val();
-			brand = $("#brand").val();
-			price = $("#price").val();
-			cost = $("#cost").val();
-			standard = $("#standard").val();
-		    unit = $("#unit").val();
-		    stock = $("#stock").val();
-		    discount = $("#discount").val();
-		    post_state = $("input[name='option']:checked").val() || 0;
+            p_name = $("#p_name").val();
+            brand = $("#brand").val();
+            price = parseInt($("#price").val());
+            cost = parseInt($("#cost").val());
+            standard = parseInt($("#standard").val());
+            unit = $("#unit").val();
+            stock = parseInt($("#stock").val());
+            discount = parseInt($("#discount").val());
+            post_state = $("input[name='option']:checked").val();
+            sub_category = $("#sub_category").val();
+            inputFile1 = $("#thumbnail");
+            inputFile2 = $("#product_info");
+            thumbnail = inputFile1[0].files;
+            product_info = inputFile2[0].files;    	    
 			
-			if(p_name == "" || brand == "" || price == "" || cost == "" || standard == "" || unit == "" ){
+			if(p_name == "" || brand == "" || price == "" || cost == "" || standard == "" || unit == "" || sub_category == ""){
 				alert("모든 항목을 입력해주세요.");
 			}else if(category == "0"){
 				alert("분류를 선택해주세요.");
-			}else{
-				let formData = {
-						p_id: p_id,
-						p_name: p_name,
-			            brand: brand,
-			            price: parseInt(price),
-			            cost: parseInt(cost),
-			            standard: parseInt(standard),
-			            unit: unit,
-			            stock: parseInt(stock),
-			            discount: parseInt(discount),
-			            post_state: post_state,
-				};
-				
+			}else{					
+			    let formData = new FormData();
+                
+                //일반 필드
+                formData.append("p_id", p_id);
+                formData.append("p_name", p_name);
+                formData.append("brand", brand);
+                formData.append("price", price);
+                formData.append("cost", cost);
+                formData.append("standard", standard);
+                formData.append("unit", unit);
+                formData.append("stock", stock);
+                formData.append("discount", discount);
+                formData.append("post_state", post_state);
+                formData.append("sub_category", sub_category);
+                
+                //파일 필드
+                formData.append("thumbnail", thumbnail[0]);
+								
 				$.ajax({
 					
 					type: "post",
 					url: "insertProduct.do",
+					processData: false,
+                    contentType: false,
 					data: formData,
 					success: function(response){
 						alert("상품이 성공적으로 등록되었습니다.")
@@ -423,18 +454,19 @@
                 });
                 
                 $("#p_id_edit").val(productId);
-                $("#p_name_edit").val(productRow.find("td:nth-child(4)").text());
-                $("#brand_edit").val(productRow.find("td:nth-child(5)").text());
-                $("#price_edit").val(productRow.find("td:nth-child(7)").text());
-                $("#cost_edit").val(productRow.find("td:nth-child(6)").text());                
-                $("#standard_edit").val(productRow.find("td:nth-child(8)").text());
-                $("#unit_edit").val(productRow.find("td:nth-child(9)").text());
-                $("#stock_edit").val(productRow.find("td:nth-child(10)").text());
-                $("#discount_edit").val(productRow.find("td:nth-child(11)").text());
+                $("#p_name_edit").val(productRow.find("td:nth-child(5)").text());
+                $("#brand_edit").val(productRow.find("td:nth-child(6)").text());
+                $("#price_edit").val(productRow.find("td:nth-child(8)").text());
+                $("#cost_edit").val(productRow.find("td:nth-child(7)").text());                
+                $("#standard_edit").val(productRow.find("td:nth-child(9)").text());
+                $("#unit_edit").val(productRow.find("td:nth-child(10)").text());
+                $("#stock_edit").val(productRow.find("td:nth-child(11)").text());
+                $("#discount_edit").val(productRow.find("td:nth-child(12)").text());
                 $("#category_edit").val(categoryOptionValue);
+                $("#sub_category_edit").val(productRow.find("td:nth-child(4)").text());
                 
-             // 게시상태에 따라 라디오 버튼 선택
-                let postState = productRow.find("td:nth-child(12)").text().trim();
+                // 게시상태에 따라 라디오 버튼 선택
+                let postState = productRow.find("td:nth-child(13)").text().trim();
                 setPostStateRadio(postState);
         		
         	});
@@ -450,7 +482,7 @@
             if (postState === "판매중") {
                 $("#option1_edit").prop("checked", true);
             } else {
-                $("#option2_edit").prop("checked", true);
+                $("#option0_edit").prop("checked", true);
             }
         }
         
@@ -463,35 +495,47 @@
         	p_id = $("#p_id_edit").val();
             p_name = $("#p_name_edit").val();
             brand = $("#brand_edit").val();
-            price = $("#price_edit").val();
-            cost = $("#cost_edit").val();
-            standard = $("#standard_edit").val();
+            price = parseInt($("#price_edit").val());
+            cost = parseInt($("#cost_edit").val());
+            standard = parseInt($("#standard_edit").val());
             unit = $("#unit_edit").val();
-            stock = $("#stock_edit").val();
-            discount = $("#discount_edit").val();
-            post_state = $("input[name='option_edit']:checked").val() || 0;
+            stock = parseInt($("#stock_edit").val());
+            discount = parseInt($("#discount_edit").val());
+            post_state = $("input[name='option_edit']:checked").val();
+            sub_category = $("#sub_category_edit").val();
+            inputFile1 = $("#thumbnail_edit");
+            inputFile2 = $("#product_info_edit");
+            thumbnail = inputFile1[0].files;
+            product_info = inputFile2[0].files;            
         	
-            if(p_name == "" || brand == "" || price == "" || cost == "" || standard == "" || unit == "" ){
+            if(p_name == "" || brand == "" || price == "" || cost == "" || standard == "" || unit == "" || sub_category == ""){
                 alert("모든 항목을 입력해주세요.");
             }else{
-                let formData = {
-                        p_id: p_id,
-                        p_name: p_name,
-                        brand: brand,
-                        price: parseInt(price),
-                        cost: parseInt(cost),
-                        standard: parseInt(standard),
-                        unit: unit,
-                        stock: parseInt(stock),
-                        discount: parseInt(discount),
-                        post_state: post_state,
-                };
+                let formData = new FormData();
+                
+                //일반 필드
+                formData.append("p_id", p_id);
+                formData.append("p_name", p_name);
+                formData.append("brand", brand);
+                formData.append("price", price);
+                formData.append("cost", cost);
+                formData.append("standard", standard);
+                formData.append("unit", unit);
+                formData.append("stock", stock);
+                formData.append("discount", discount);
+                formData.append("post_state", post_state);
+                formData.append("sub_category", sub_category);
+                
+                //파일 필드
+                formData.append("thumbnail", thumbnail[0]);
                 
                 $.ajax({
                     
                     type: "post",
                     url: "editProduct.do",
                     data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response){
                         alert("상품이 성공적으로 수정되었습니다.")
                         location.reload();
@@ -503,6 +547,10 @@
                 }); //end of ajax
                 
             }
+            
+
+
+            
             
         });
         
@@ -696,6 +744,7 @@
                 <td><input type="checkbox" id="checkAll"></td>
                 <td></td>
                 <td>코드</td>
+                <td>소분류</td>
                 <td>제품명</td>
                 <td>브랜드</td>
                 <td>구매가</td>
@@ -715,6 +764,7 @@
                         </button>
                     </td>
 	                <td>${product.p_id}</td>
+	                <td>${product.sub_category}</td>
 	                <td>${product.p_name}</td>
 	                <td>${product.brand}</td>
 	                <td>${product.cost}</td>
@@ -740,37 +790,45 @@
 	       <form action="" name="frm_add">
 		       <table id="tbl_product_add" class="tbl_product">
 		           <tr>
-			           <th>상품명</th>
-			           <td><input id="p_name" type="text"/></td>
-			           <th>분류</th>
-			           <td>
-				           <select id="category">
-				                <option value="0">선택</option>
-				                <option value="1">육류</option>
-				                <option value="2">가공</option>
-				                <option value="3">수산</option>
-				                <option value="4">야채</option>
-				           </select>
-			           </td>
-		           </tr>
-		           <tr>
-			           <th>브랜드</th>
-			           <td><input id="brand" type="text"/></td>
+		               <th>대분류</th>
+                       <td>
+                           <select id="category">
+                                <option value="0">선택</option>
+                                <option value="1">육류</option>
+                                <option value="2">가공</option>
+                                <option value="3">수산</option>
+                                <option value="4">야채</option>
+                           </select>
+                       </td>
 			           <th>상품코드</th>
                        <td><input id="p_id" type="text" disabled/></td>
 			           
 		           </tr>
 		           <tr>
-			           <th>판매금액</th>
-			           <td><input id="price" type="text"/></td>
-			           <th>규격</th>
-                       <td><input id="standard"  type="text" /></td>
+			           <th>소분류</th>
+			           <td><input id="sub_category" type="text"/></td>
+			           <th>규격/단위</th>
+                       <td>
+                            <fieldset>
+                                <input id="standard"  type="text" placeholder="숫자입력"/> /
+                                <input id="unit" type="text" placeholder="단위입력"/>
+                            </fieldset>
+                       </td>
 		           </tr>
+		              
 		           <tr>
+			           <th>브랜드</th>
+			           <td><input id="brand" type="text"/></td>
+			           <th>상품명</th>
+                       <td><input id="p_name" type="text"/></td>
+			           
+			           
+		           </tr>		           
+		           <tr>
+			           <th>판매금액</th>
+			           <td><input id="price" type="text"/></td>		           
 			           <th>구매금액</th>
-                       <td><input id="cost" type="text"/></td>
-                       <th>단위</th>
-                       <td><input id="unit" type="text" /></td>
+                       <td><input id="cost" type="text"/></td>                       
 		           </tr>
 		           <tr>
 			           <th>할인율</th>
@@ -780,16 +838,16 @@
 		           </tr>		           
 		           <tr>
 			           <th>썸네일</th>
-			           <td><input type="file" /></td>
-			           <th>게시상태</th>
+			           <td><input type="file" id="thumbnail"/></td>
+			           <th>상품정보</th>
+                       <td><input type="file" id="product_info"/></td>
+		           </tr>
+		           <tr>    
+		               <th>게시상태</th>
                        <td>
                            <input type="radio" name="option" id="option1" value="1"/><label for="option1">판매중</label>
-                           <input type="radio" name="option" id="option2" value="0"/><label for="option2">판매중단</label>
-                       </td>
-		           </tr>
-		           <tr>                
-		               <th>상품정보</th>
-                       <td><input type="file" /></td>
+                           <input type="radio" name="option" id="option0" value="0"/><label for="option0">판매중단</label>
+                       </td>		               
 		               <td colspan="2">
 		                   <input id="btn_add" type="button" value="등록"/>
 			               <input class="btn_cancel" id="btn_cancel" type="button" value="취소"/>
@@ -805,9 +863,7 @@
            <form action="" name="frm_edit">
                <table id="tbl_product_edit" class="tbl_product">
                    <tr>
-                       <th>상품명</th>
-                       <td><input id="p_name_edit" type="text"/></td>
-                       <th>분류</th>
+                       <th>대분류</th>
                        <td>
                            <select id="category_edit">
                                 <option value="0">선택</option>
@@ -817,25 +873,35 @@
                                 <option value="4">야채</option>
                            </select>
                        </td>
-                   </tr>
-                   <tr>
-                       <th>브랜드</th>
-                       <td><input id="brand_edit" type="text"/></td>
                        <th>상품코드</th>
                        <td><input id="p_id_edit" type="text" disabled/></td>
                        
                    </tr>
                    <tr>
-                       <th>판매금액</th>
-                       <td><input id="price_edit" type="text"/></td>
-                       <th>규격</th>
-                       <td><input id="standard_edit"  type="text" /></td>
+                       <th>소분류</th>
+                       <td><input id="sub_category_edit" type="text"/></td>
+                       <th>규격/단위</th>
+                       <td>
+                            <fieldset>
+                                <input id="standard_edit"  type="text" placeholder="숫자입력"/> /
+                                <input id="unit_edit" type="text" placeholder="단위입력"/>
+                            </fieldset>
+                       </td>
                    </tr>
+                      
                    <tr>
+                       <th>브랜드</th>
+                       <td><input id="brand_edit" type="text"/></td>
+                       <th>상품명</th>
+                       <td><input id="p_name_edit" type="text"/></td>
+                       
+                       
+                   </tr>                   
+                   <tr>
+                       <th>판매금액</th>
+                       <td><input id="price_edit" type="text"/></td>                
                        <th>구매금액</th>
-                       <td><input id="cost_edit" type="text"/></td>
-                       <th>단위</th>
-                       <td><input id="unit_edit" type="text" /></td>
+                       <td><input id="cost_edit" type="text"/></td>                       
                    </tr>
                    <tr>
                        <th>할인율</th>
@@ -845,16 +911,16 @@
                    </tr>                   
                    <tr>
                        <th>썸네일</th>
-                       <td><input type="file" /></td>
+                       <td><input type="file" id="thumbnail_edit"/></td>
+                       <th>상품정보</th>
+                       <td><input type="file" id="product_info_edit"/></td>
+                   </tr>
+                   <tr>    
                        <th>게시상태</th>
                        <td>
                            <input type="radio" name="option_edit" id="option1_edit" value="1"/><label for="option1_edit">판매중</label>
-                           <input type="radio" name="option_edit" id="option2_edit" value="0"/><label for="option2_edit">판매중단</label>
-                       </td>
-                   </tr>
-                   <tr>                
-                       <th>상품정보</th>
-                       <td><input type="file" /></td>
+                           <input type="radio" name="option_edit" id="option0_edit" value="0"/><label for="option0_edit">판매중단</label>
+                       </td>    
                        <td colspan="2">
                            <input id="btn_edit" type="button" value="수정"/>
                            <input class="btn_cancel" type="button" value="취소"/>

@@ -66,5 +66,19 @@
 	   set total_sales = total_sales + #{salesAmount}
 	   where p_id = #{p_id}
 	</update>
+	
+	<select id="checkReview" parameterType="productVo" resultType="_int">
+	   select count(*) from review where order_idx = #{order_idx} and p_id = #{p_id}
+	</select>
+    
+    <!-- 평균 별점 -->
+    <select id="getStarsAvg" parameterType="string" resultType="_double">
+        select coalesce(avg(stars), 0.0) as value from review where p_id = #{p_id}
+    </select>
+    
+    <!-- 리뷰갯수 -->
+    <select id="getReviews" parameterType="string" resultType="_int">
+        select count(*) from review where p_id = #{p_id}
+    </select>
     
 </mapper>

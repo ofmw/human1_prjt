@@ -26,4 +26,6 @@ public class BoardFileVo {
 	private int reply_state;
 	private String ans_content;
 	private Timestamp ans_date;
+	private String order_idx;
+	private int grade;
 }

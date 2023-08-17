@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,9 +109,12 @@
             <div id="mp_header_user_name">${member.m_name}님</div>
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="#">회원정보 변경</a></li>
-                    <li><a href="#">비밀번호 변경</a></li>
-                    <li><a href="#">배송지 관리</a></li>
+                	<c:if test="${member.platform eq 'omart'}">
+	                    <li><a href="#">회원정보 변경</a></li>
+	                    <li><a href="#">비밀번호 변경</a></li>
+	                </c:if>
+                    <li><span id="manage_address">배송지 관리</span></li>
+                    <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
@@ -132,9 +134,12 @@
             </div>
         </div>
 
+        <!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">30 P</div>
+            <div id="mp_header_point_num">
+            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
+            </div>
         </div>
 
     </div>
@@ -142,14 +147,13 @@
     <!-- 마이페이지 내용부분 -->
     <div id="mp_main_area">
 
+        <!-- 좌측 메뉴 영역 -->
         <div id="mp_main_menu">
             <div id="mp_main_menu_order">
                 <div class="mp_main_menu_title">나의 주문관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <!-- <li><a href="mypage 주문배송.html">주문/배송조회</a></li> -->
                         <li><a href="purchase_history.do">주문/배송조회</a></li>
-                        <!-- <li><a href="#">자주 구매한 상품</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -158,7 +162,7 @@
                 <div class="mp_main_menu_title">나의 활동관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <li><a href="mypage 찜목록.html">찜목록</a></li>
+                        <li><a href="wish.do">찜목록</a></li>
                         <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
                         <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>

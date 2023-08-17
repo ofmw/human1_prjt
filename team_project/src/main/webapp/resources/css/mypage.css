@@ -36,13 +36,16 @@ ul{list-style: none;}
 
     width: 426px;
     height: 100%;
-    background-color: rgb(214, 214, 214);
+    background-color: rgb(250, 250, 250);
 
     padding: 30px 30px;
     box-sizing: border-box
 }
 /* 마이페이지 헤더 내부 요소 제목 공통(쿠폰, 포인트) */
-.mp_header_obj_title{font-size: 23px;}
+.mp_header_obj_title{
+	font-size: 23px;
+	font-weight: bold;
+}
 
 /* 마이페이지 헤더 유저 이름 */
 #mp_header_user_name{font-size: 35px; font-weight: bold;}
@@ -52,7 +55,7 @@ ul{list-style: none;}
     margin-top: 40px;
 }
 #mp_header_user_menu li{margin: 10px 0;}
-#mp_header_user_menu a{color: #222;}
+#mp_header_user_menu a, #mp_header_user_menu span{color: #222;}
 
 /* 마이페이지 헤더 쿠폰 공통 */
 #mp_header_coupon{color: #222;}
@@ -60,7 +63,6 @@ ul{list-style: none;}
 #mp_header_coupon_num{margin-top: 15px;}
 /* 소지 쿠폰 숫자 */
 #mp_header_coupon_num span{
-    font-weight: bold;
     font-size: 20px;
     margin-right: 5px;
 }
@@ -144,15 +146,13 @@ ul{list-style: none;}
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
     width: 100%;
     height: 50px;
     /* padding: 0 20px; */
-
     border: 2px solid black;
     border-radius: 4px;
-
     box-sizing: border-box;
+    user-select: none;    
 }
 #mp_main_osc_infobar div{
     display: flex;
@@ -166,11 +166,11 @@ ul{list-style: none;}
 
     color: #222;
 }
-#mp_main_osc_infobar a{
-    margin-bottom: 4px;
+#mp_main_osc_infobar p{
     font-size: 17px;
     font-weight: bold;
     color: #222;
+    font-weight: bold;
 }
 .mp_main_osc_infobar_obj_btw::after{
     position: absolute;
@@ -193,7 +193,9 @@ ul{list-style: none;}
 #mp_main_review, #mp_main_wish{
     display: flex;
     flex-direction: column;
-    height: 300px;
+}
+#mp_main_review{
+	height: 300px;
 }
 #mp_main_review_content, #mp_main_wish_content{
     width: 100%;

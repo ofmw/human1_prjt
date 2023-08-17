@@ -41,7 +41,7 @@
 							<c:when test="${empty member}">
 			         		    <span id="login_btn2">로그인</span>
 								<a href="member/join.do">회원가입</a>
-								<a href="boardFile/list_faq_member.do">고객센터</a>
+								<a href="boardFile/faq_member.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
 							    <input type="hidden" id="m_idx" value="${member.m_idx}"/>
@@ -53,7 +53,7 @@
 										<a href="mypage/mypage.do">${member.m_name}님</a>
 									</c:otherwise>
 							    </c:choose>								
-								<a href="boardFile/list_faq_member.do">고객센터</a>
+								<a href="boardFile/faq_member.do">고객센터</a>
 								<c:choose>
 									<c:when test="${member.platform eq 'kakao'}">
 										<a href="kakaologout.do">로그아웃</a>
@@ -66,17 +66,16 @@
 						</c:choose>
 					</div>
 					<div id="div_persnal_menu">
-						<a href="">ㅇ</a>
 						<c:choose>
 							<c:when test="${empty member}">
-	                     		<a class="need_login" href="#">ㅁ</a>
+	                     		<a class="need_login" href="#">마이페이지</a>
+	                     		<a class="need_login" href="#">장바구니</a>
 	                     	</c:when>
 	                     	<c:otherwise>
-	                     		<a href="mypage/mypage.do">ㅁ</a>
+	                     		<a href="mypage/mypage.do">마이페이지</a>
+	                     		<a href="cart/cart.do">장바구니</a>
 	                    	</c:otherwise>
-						</c:choose>
-						<a href="cart/cart.do">카</a>
-						<a href="">ㅇ</a>
+						</c:choose>						
 					</div>
 				</div>
 			</div>
@@ -145,12 +144,7 @@
 				<div id="login_sns_area">
 				    <div id="sns_title">SNS 로그인</div>
 				    <div id="sns_box">
-						<label id="sns_naver" class="sns">
-						    <a href="#" id="sns_naver_btn" class="sns_button">네이버 로그인</a>
-						</label>
-						<label id="sns_kakao" class="sns">
-						    <a href="#" id="sns_kakao_btn" class="sns_button">카카오 로그인</a>
-						</label>
+					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="resources/img/kakao_login_large_wide.png" alt="카카오로그인"></a>
 					</div>
 				</div>
 				

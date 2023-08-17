@@ -17,12 +17,23 @@
         FROM member_omart
         WHERE selNum=#{selNUm}
     </select>
-    <!-- 회원정보 입력구문 -->
+    <!-- 회원가입 구문 -->
     <insert id="join" parameterType="MemberVo">
-        INSERT
-        INTO member_omart(m_name, birth, gender, selNum, m_id, m_pw, platform)
-        VALUES(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw}, "omart")
+        CALL join_member(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw}, "omart")
     </insert>
+    
+    <!-- 회원가입시 찜목록에 행 생성하기 위해 가입정보 조회 -->
+    <select id="checkM_idx" parameterType="MemberVo" resultType="_int">
+    	SELECT m_idx
+    	FROM member_omart
+    	WHERE m_id = #{m_id}
+    </select>
+    
+    <update id="recordLogin" parameterType="_int">
+        update member_omart
+        set login_date = now()
+        where m_idx = #{m_idx}
+    </update>
     
     <!-- 로그인 처리구문 -->
     <select id="login" parameterType="map" resultType="memberVo">
@@ -45,17 +56,22 @@
         WHERE m_id=#{m_id}
     </select>
     
+    <!-- 회원탈퇴 -->
+    <delete id="cancel" parameterType="_int">
+	    CALL cancel_member(#{m_idx})
+    </delete>
+    
     <!-- 정보 찾기 -->
 	<select id="klogin" parameterType="string" resultType="memberVo">
 		SELECT *
-		FROM member_kakao
+		FROM member_omart
 		WHERE m_id=#{email}
 	</select>
 	
-	<!-- 정보 저장 -->
+	<!-- 카카오 회원 정보 저장 -->
 	<insert id="kjoin" parameterType="map">
-		INSERT INTO member_kakao(m_id, m_name, platform, gender)
-		VALUES(#{email}, #{nickname}, "kakao", #{gender}) 
+		INSERT INTO member_omart(m_id, m_pw, m_name, birth, platform, gender)
+		VALUES(#{email}, "kakao", #{nickname}, #{birthday}, "kakao", #{gender}) 
 	</insert>
 	
 	<insert id="insertWish" parameterType="_int">
@@ -70,9 +86,15 @@
         select point from point where m_idx = #{m_idx}
     </select>
     
-    <update id="setPoint" parameterType="memberVo">
+    <update id="usePoint" parameterType="memberVo">
         UPDATE point
         SET point = point - #{point}
+        WHERE m_idx=#{m_idx}
+    </update>
+    
+    <update id="addPoint" parameterType="pointVo">
+        UPDATE point
+        SET point = point + #{savePoint}
         WHERE m_idx=#{m_idx}
     </update>
     
@@ -97,4 +119,31 @@
 	    SET w_list = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', w_list, ','), CONCAT(',', #{p_id}, ','), ','))
 	    WHERE m_idx = #{m_idx}
 	</update>
+	
+    <select id="orderList" parameterType="_int" resultType="orderVo">
+        select * from order_list where m_idx = #{m_idx}
+    </select>
+    
+    <insert id="write_review_process" parameterType="boardFileVo">
+        insert into review(order_idx, p_id, content, stars) values(#{order_idx}, #{p_id}, #{content}, #{stars})
+    </insert>
+    
+    <select id="selectReviewList" parameterType="string" resultType="boardFileVo">
+        select * from review where p_id = #{p_id} order by post_date desc
+    </select>
+    
+    <select id="getMemberNameFromOrder" parameterType="string" resultType="string">
+        SELECT m.m_name
+	    FROM member_omart m
+		JOIN order_list o ON m.m_idx = o.m_idx
+		WHERE o.order_idx = #{order_idx}
+    </select>
+    
+    <select id="getGradeFromOrder" parameterType="string" resultType="_int">
+        SELECT m.grade
+        FROM member_omart m
+        JOIN order_list o ON m.m_idx = o.m_idx
+        WHERE o.order_idx = #{order_idx}
+    </select>
+	
 </mapper>

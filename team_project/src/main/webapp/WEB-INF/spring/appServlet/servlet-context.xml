@@ -33,26 +33,18 @@
     <context:component-scan base-package="com.omart.sms" />
 	
 	<!-- Interceptor 관련 설정: 사용자의 요청에 대해서 로그인 여부를 체크하는 LoginIntorceptor 설정 -->
-	<!-- <interceptors>
+	<interceptors>
 		<interceptor>
 			<mapping path="/**/*.do"/>
-			경로 패턴을 가리키는 특수문자(*: 0개 또는 그 이상의 글자, ?: 1개 글자, **: 0개 또는 그 이상의 폴더
-			exclude-mapping: intercepte 하지 않을 페이지들 설정
+			<!-- 경로 패턴을 가리키는 특수문자(*: 0개 또는 그 이상의 글자, ?: 1개 글자, **: 0개 또는 그 이상의 폴더
+			exclude-mapping: intercepte 하지 않을 페이지들 설정 -->
 			<exclude-mapping path="/index.do"/>
-			<exclude-mapping path="/member/join.do"/>
-			<exclude-mapping path="/member/emailCheck.do"/>
-			<exclude-mapping path="/member/checkId.do"/>
-			<exclude-mapping path="/member/checkId_process.do"/>
-			<exclude-mapping path="/member/login.do"/>
-			<exclude-mapping path="/member/logout.do"/>
-			<exclude-mapping path="/member/join_process.do"/>
-			<exclude-mapping path="/boardFile/list_notice.do"/>
-			<exclude-mapping path="/boardFile/view.do"/>
-			<exclude-mapping path="/klogin.do"/>
-			<exclude-mapping path="/klogout.do"/>
+			<exclude-mapping path="/**/login.do"/>
+			<exclude-mapping path="/product/*"/>
+			<exclude-mapping path="boardFile/*"/>
 			
 			<beans:bean id="loginInterceptor" class="com.omart.interceptor.LoginInterceptor"/>
 		</interceptor>
-	</interceptors> -->
+	</interceptors>
 	
 </beans:beans>

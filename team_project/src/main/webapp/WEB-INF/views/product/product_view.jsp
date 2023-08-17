@@ -71,7 +71,6 @@
 	    text-align: center;
 	}
 	#div_preview img{
-	    border: 1px solid gray;
 	    width: 500px;
 	    height: 500px;
 	    margin: 20px 40px;
@@ -259,7 +258,8 @@
 	}
 	#div_reviewContents * {
 	    float: left;
-	    margin: 5px 7px;
+	    margin-left: 7px;
+	    margin-bottom: 7px;
 	    line-height: 20px;
 	}
 	#div_reviewContents h6 {
@@ -271,15 +271,18 @@
 	    color: gray;
 	}
 	#div_reviewContents textarea {
-	    width: 780px;
+	    width: 750px;
+	    height: auto;
 	    resize: none;
-	    color: black;
+/* 	    color: black; */
 	    background-color: white;
 	    border: none;
 	}
-	#div_reviewContent {
+	.div_reviewContent {
 	    width: 780px;
-	    height: 80px;
+	    display: flex;
+	    align-items: center;
+	    height: 50px;
 	}
 	#div_pageNav {
 	    /* border: 1px solid green; */
@@ -358,11 +361,39 @@
 	   position: absolute;
 	   right: 100px;
 	}
-	
+	.div_reviewContent *{
+	   white-space: nowrap;
+	}
+	#div_stars{
+	   display: flex;
+	   justify-content: flex-start;
+	}
+	.stars_img{
+	   width: 97px;
+	}
+	#stars{
+	   position: absolute;
+	   font-weight: normal;
+	   color: gray;
+	}
     
 </style>
 <script>
     window.onload = function(){
+    	
+    	let starsAvg = parseFloat($(".stars_avg").text()) * 20;
+        let starsImg = $(".stars_img");
+        
+        if(starsAvg == 0){
+        	$(".stars_avg").text("리뷰없음");
+        	$(".stars_avg").css("color", "gray");
+        }
+        
+        let starsWidth = starsImg.width();
+        let visibleWidth = 100 - (starsWidth * starsAvg) / 100;
+
+        starsImg.css("clip-path", "inset(0 " + visibleWidth + "px 0 0)");
+    	
         let productBar = document.getElementById("div_productBar");
         let buy_quick = document.getElementById("div_buy_quick");
         let detail = document.getElementById("div_productDetail");
@@ -397,10 +428,17 @@
         let minusBtn = $(".btn_minus");
         let plusBtn = $(".btn_plus");
         let amount = $(".input_amount");
+        let dcPrice = parseInt($("#div_dcPrice h1").text().replace(/\D/g, ''));
+        let dCalPrice = $("#div_calPrice");
+        let hCalPrice = $("#h3_calPrice");
+        let totalPrice = $("#h1_totalPrice");
         
         minusBtn.on("click",function(){
        		if(amount.val()>1){
        			amount.val(amount.val()-1);
+       			dCalPrice.text((dcPrice*amount.val()).toLocaleString()+"원");
+       			hCalPrice.text(dCalPrice.text());
+       			totalPrice.text(hCalPrice.text());
             }
             
         });
@@ -408,6 +446,9 @@
         plusBtn.on("click",function(){
        		if(amount.val()<20){
                 amount.val(parseInt(amount.val())+1);
+                dCalPrice.text((dcPrice*amount.val()).toLocaleString()+"원");
+                hCalPrice.text(dCalPrice.text());
+                totalPrice.text(hCalPrice.text());
             }else{
                 alert("상품 최대 구매갯수는 20개입니다.");
             }            
@@ -440,13 +481,13 @@
         	
         	frm_buyThis.append(requestor);
         	
-        	frm_buyThis.attr("action", "../payment/payment.do");
+        	frm_buyThis.attr("action", "../payment/buyThis.do");
         	
         	frm_buyThis.submit();
         	        	
         });
         
-        // 찜 버튼 클릭 이벤터 처리
+        // 찜 버튼 클릭 이벤트 처리
         $("#div_wish_btn").click(function() {
         	
         	// 로그인 상태 판멸
@@ -490,10 +531,12 @@
                     p_id: p_id,
                 },
                 success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
-                   if (response != null) { // 수량 업데이트가 성공한 경우
-                	   	alert("찜 추가됨!");
-                   		//찜 버튼 새로고침
+                   if (response === "success") { // 수량 업데이트가 성공한 경우
+                	   	alert("찜목록에 추가되었습니다!");
+                   		//페이지 새로고침
                 	   	location.reload();
+                    } else if (response === "max") {
+                        alert("찜목록이 꽉 찼습니다! (최대 100개)");
                     } else {
                         alert("찜목록 추가에 실패했습니다.");
                     }
@@ -520,7 +563,7 @@
                 },
                 success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
                    if (response != null) { // 수량 업데이트가 성공한 경우
-                	   	alert("찜 삭제됨!");
+                	   	alert("찜목록에서 삭제되었습니다!");
                 	  	//찜 버튼 새로고침
                 	   	location.reload();
                     } else {
@@ -542,24 +585,27 @@
 </header>
 <div id="div_view">
     <div id="div_preview">
-        <img src="" alt="">
+        <img src="../resources/uploads/${product.saveFile1}" alt="">
     </div>
     <div id="div_buy_main">        
         <p>${product.brand}</p>
         <h1>${product.p_name}</h1>
-        <h3>★★★★★ 5.0</h3>
+        <div id="div_stars">
+            <h3 id="stars">☆☆☆☆☆</h3><h3 class="stars_img">★★★★★</h3><h3 class="stars_avg"> ${product.stars_avg}</h3><h3 class="reviews">( ${product.reviews}건 )</h3>
+        </div>        
         <h3>원산지 : 상세설명참조</h3>
-        <c:choose>
-            <c:when test="${product.discount eq 0}">
-                <h1><fmt:formatNumber value="${product.price}" pattern="#,###" />원</h1>
-            </c:when>
-            <c:otherwise>
-                <c:set var="discount_price" value="${product.price * ((100 - product.discount)/100)}"></c:set>
-                <h4><fmt:formatNumber value="${product.price}" pattern="#,###" />원</h4>
-                <span>${product.discount}%</span><h1><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h1>
-            </c:otherwise>
-        </c:choose>
-        
+        <div id="div_dcPrice">
+	        <c:choose>
+	            <c:when test="${product.discount eq 0}">
+	                <h1><fmt:formatNumber value="${product.price}" pattern="#,###" />원</h1>
+	            </c:when>
+	            <c:otherwise>
+	                <c:set var="discount_price" value="${product.price * ((100 - product.discount)/100)}"></c:set>
+	                <h4><fmt:formatNumber value="${product.price}" pattern="#,###" />원</h4>
+	                <span>${product.discount}%</span><h1><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h1>
+	            </c:otherwise>
+	        </c:choose>
+        </div>
         <select name="" id="select_product">
             <option class="option_product" value="1">
                 ${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}
@@ -568,15 +614,24 @@
         <br>
         <form id="frm_buyThis">
             <div id="div_main_price_area">
-	            <input type="hidden" id="p_id" value="${product.p_id}"/>
-	            <input type="hidden" id="m_idx" value="${member.m_idx}">
+	            <input type="hidden" id="p_id" name="p_id" value="${product.p_id}"/>
+	            <input type="hidden" id="m_idx" name="m_idx" value="${member.m_idx}">
 	            ${product.brand}&nbsp;${product.p_name}&nbsp;${product.standard}${product.unit}
 	            <fieldset>
 	                <input type="button" class="btn_minus" value="-">
-	                <input type="text" class="input_amount" value="1" id="amount">
+	                <input type="text" class="input_amount" value="1" id="amount" name="amount">
 	                <input type="button" class="btn_plus" value="+">
 	            </fieldset>
-	            <div><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</div>
+	            <div id="div_calPrice">
+	               <c:choose>
+	                   <c:when test="${product.discount eq 0}">
+	                       <fmt:formatNumber value="${product.price}" pattern="#,###" />원
+	                   </c:when>
+	                   <c:otherwise>
+	                       <fmt:formatNumber value="${discount_price}" pattern="#,###" />원
+	                   </c:otherwise>
+	               </c:choose>	               
+	            </div>
 	        </div>
         </form>        
         <br>
@@ -619,12 +674,31 @@
                     <input type="button" class="btn_minus" value="-">
                     <input type="text" class="input_amount" value="1">
                     <input type="button" class="btn_plus" value="+">
-                </fieldset>
-                <h3><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h3>
+                </fieldset>                
+                <h3 id="h3_calPrice">
+                    <c:choose>
+                       <c:when test="${product.discount eq 0}">
+                           <fmt:formatNumber value="${product.price}" pattern="#,###" />원
+                       </c:when>
+                       <c:otherwise>
+                           <fmt:formatNumber value="${discount_price}" pattern="#,###" />원
+                       </c:otherwise>
+                   </c:choose>                 
+                </h3>
             </div>
         </div>
         <div id="div_totalPrice">
-            <h1><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h1><h2>합계</h2>
+            <h1 id="h1_totalPrice">
+                <c:choose>
+                    <c:when test="${product.discount eq 0}">
+                        <fmt:formatNumber value="${product.price}" pattern="#,###" />원
+                    </c:when>
+                    <c:otherwise>
+                        <fmt:formatNumber value="${discount_price}" pattern="#,###" />원
+                    </c:otherwise>
+                </c:choose>       
+            </h1>
+            <h2>합계</h2>
         </div>
         <c:choose>
             <c:when test="${empty member}">
@@ -635,7 +709,7 @@
             <c:otherwise>
                 <div class="btn_addWish btn2" id="div_wish_btn2">
                     <c:choose>
-                        <c:when test="${not empty wishList and wishList.contains(product.p_id)}">
+                        <c:when test="${!empty wishList and wishList.contains(product.p_id)}">
                            <span style="color: red;">♥</span>
                         </c:when>
                         <c:otherwise>♡</c:otherwise>
@@ -659,7 +733,7 @@
                         <h5>제품의 유형</h5>
                     </td>
                     <td>
-                        <p>과자(유탕처리제품)</p>
+                        <p>${product.sub_category}</p>
                     </td>
                 </tr>
                 <tr>
@@ -680,10 +754,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <h5>제조연월일/유통기한,소비기한 또는 품질유지기한</h5>
+                        <h5>제조연월일/유통기한, 소비기한 또는 품질유지기한</h5>
                     </td>
                     <td>
-                        <p>점포 배송 상품으로 각 점포별 제조일과 입고일이 상이하여, 유통기한이 다릅니다. 이마트 점포상품과 동일한 품질을 유지한 상품이 배송됩니다. ※ 해당 정보에 대한 문의는 고객센터(1577-3419)로 문의해주세요. 유통기한-점포 배송 상품으로 각 점포별 제조일과 입고일이 상이하여, 유통기한이 다릅니다. 이마트 점포상품과 동일한 품질을 유지한 상품이 배송됩니다. ※ 해당 정보에 대한 문의는 고객센터(1577-3419)로 문의해주세요.</p>
+                        <p>점포 배송 상품으로 각 점포별 제조일과 입고일이 상이하여, 유통기한이 다릅니다. 오마트 점포상품과 동일한 품질을 유지한 상품이 배송됩니다. ※ 해당 정보에 대한 문의는 고객센터(1577-3419)로 문의해주세요.</p>
                     </td>
                 </tr>
                 <tr>
@@ -691,7 +765,7 @@
                         <h5>포장 단위별 내용물의 용량 (중량), 수량, 크기</h5>
                     </td>
                     <td>
-                        <p>134g</p>
+                        <p>${product.standard}${product.unit}</p>
                     </td>
                 </tr>
                 <tr>
@@ -747,7 +821,7 @@
     </div>
     <div id="div_review" class="other">
         <div>
-            <h3>리뷰(2건)</h3>
+            <h3>리뷰(${product.reviews}건)</h3>
             <select name="" id="">
                 <option value="">최신순</option>
                 <option value="">평점높은순</option>
@@ -755,23 +829,21 @@
             </select>                
         </div>
         <div id="div_reviewContents">
-            <div id="div_reviewContent">
-                <h5>★ 5</h5>
-                <h6>브론즈</h6>
-                <p>회원id</p>
-                <p>2023.07.20</p>
-                <p>No.2</p>
-                <textarea name="" id="" cols="30" rows="1" disabled>그러게요~</textarea>
-            </div>
-            <div id="div_reviewContent">
-                <h5>★ 5</h5>
-                <h6>브론즈</h6>
-                <p>회원id</p>
-                <p>2023.07.20</p>
-                <p>No.1</p>
-                <textarea name="" id="" cols="30" rows="1" disabled>정말 맛있네요~</textarea>
-            </div>
-            <div id="div_pageNav">여기에 페이지 네비게이션</div>
+            <c:forEach items="${ReviewList}" var="review">
+	            <div class="div_reviewContent">
+	                <h5>★ ${review.stars}</h5>
+	                <c:choose>
+	                   <c:when test="${review.grade eq 0}"><h6>브론즈</h6></c:when>
+	                   <c:when test="${review.grade eq 1}"><h6>실버</h6></c:when>
+	                   <c:when test="${review.grade eq 2}"><h6>골드</h6></c:when>
+                       <c:otherwise><h6>관리자</h6></c:otherwise>
+	                </c:choose>
+	                <p>${review.m_name.substring(0, 2)}**</p>
+	                <p><fmt:formatDate value="${review.post_date}" pattern="yyyy-MM-dd" /></p>
+	                <textarea name="" id="" cols="30" rows="1" disabled>${review.content}</textarea>
+	            </div>  
+            </c:forEach>            
+<!--             <div id="div_pageNav">여기에 페이지 네비게이션</div> -->
         </div>
     </div>
     <div id="div_refundInfo" class="other">

@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.omart.service.member.MemberService;
 import com.omart.service.product.ProductService;
+import com.omart.vo.BoardFileVo;
+import com.omart.vo.MemberVo;
 import com.omart.vo.ProductVo;
 
 import lombok.Setter;
@@ -26,6 +29,9 @@ public class ProductController {
 	
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdList, pdInfo;
+	
+	@Setter(onMethod_= {@Autowired})
+	private MemberService mReview, mInfo;
 		
 	//상품페이지
 	@GetMapping("/product_list.do")
@@ -35,9 +41,6 @@ public class ProductController {
 		
 			
 		List<ProductVo> productList = pdList.productList();
-		
-		// post_state가 1이 아닌 제품 제거
-	    productList.removeIf(product -> product.getPost_state() != 1);
 	    
 	    if(category != null) {
 	    	productList.removeIf(product -> !product.getP_id().startsWith(category));
@@ -62,8 +65,11 @@ public class ProductController {
 	    categoryList.put("분류", subCategoryList);
 	    
 		//model.addAttribute("productList", productList);
+	    
+		// post_state가 1이 아닌 제품 제거
+	    productList.removeIf(product -> product.getPost_state() != 1);
 		
-		HttpSession session = request.getSession();		
+		HttpSession session = request.getSession();
 		session.setAttribute("productList", productList);
 	    
 		model.addAttribute("categoryList", categoryList);
@@ -74,7 +80,25 @@ public class ProductController {
 	@GetMapping("/product_view.do")
 	public String productView(@RequestParam("p_id") String p_id, Model model) {
 		ProductVo vo = pdInfo.getProduct(p_id);
+		
+		vo.setStars_avg(pdInfo.getStarsAvg(p_id));
+		vo.setReviews(pdInfo.getReviews(p_id));
+		
+		List<BoardFileVo> ReviewList =  mReview.selectReviewList(p_id);
+		
+		if(ReviewList != null) {
+			for(BoardFileVo review : ReviewList) {
+				String order_idx = review.getOrder_idx();
+				String m_name = mInfo.getMemberNameFromOrder(order_idx);
+				int grade = mInfo.getGradeFromOrder(order_idx);
+				
+				review.setM_name(m_name);
+				review.setGrade(grade);
+			}
+		}
+		
 		model.addAttribute("product",vo);		
+		model.addAttribute("ReviewList", ReviewList);
 		return "product/product_view";
 	}
 

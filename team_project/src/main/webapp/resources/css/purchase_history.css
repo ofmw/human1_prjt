@@ -96,7 +96,7 @@ ul{list-style: none;}
     flex-direction: column;
 
     width: 150px;
-    height: 287px;
+    height: 260px;
     border: 1px solid #e5e5e5;
     border-radius: 8px;
 
@@ -135,10 +135,8 @@ ul{list-style: none;}
     margin-bottom: 50px;
 }     
 .mp_main_title{
-    padding-bottom: 15px;
     font-size: 20px;
     font-weight: bold;
-    border-bottom: 2px solid #222;
 }
 #mp_main_ph_searchbar{
     display: flex;
@@ -196,25 +194,18 @@ ul{list-style: none;}
     align-items: center;
     margin-left: auto;
 }
-.mp_main_ph_search_calbox{
-    display: block;
-
-    width: 114px;
-    position: relative;
-    padding: 5px 32px 5px 5px;
-    border: 1px solid #c0c0c0;
-    background: #fff;
-    line-height: 16px;
-}
 .cal_date{
-    width: 100%;
-    height: 16px;
-    margin: -1px 0;
-    border: 0 none;
-    background: transparent;
+	width: 110px;
+	max-width: 110px;
+    height: 28px;
+    padding-right: 6px;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    outline: 0;
     font-size: 12px;
     text-align: center;
-    vertical-align: top;
+    line-height: 20px;
+    box-sizing: border-box;
 }
 #cal_hipen{
     display: inline;
@@ -254,22 +245,31 @@ ul{list-style: none;}
 }
 /* 리스트 테이블 구매일자 */
 .td_date{
-    /* background-color: skyblue; */
     font-size: 14px;
     color: #777;
 }
 /* 리스트 테이블 주문번호 */
 .td_ordernum{
-    /* background-color: lightgreen; */
-    color: #222;
+    color: #333;
 }
 /* 리스트 테이블 구매상품 이름 */
 .td_pname{
     text-align: left;
-    color: #222;
+}
+.td_pname div{
+	display: inline-flex;
+}
+.td_pname a{
+	max-width: 400px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+	display: -webkit-box;
+    -webkit-line-clamp: 1; /* 라인수 */
+    -webkit-box-orient: vertical;
 }
 /* 리스트 테이블 구매상품 (~외 n건) */
-.td_pname span{
+.td_pname .extra_p{
+	margin-left: 5px;
     color: #e24f4f;
 }
 /* 리스트 테이블 배송상태 */
@@ -279,17 +279,21 @@ ul{list-style: none;}
 /* 리스트 테이블 주문상세내역 버튼 */
 .ph_detail_btn{
     display: inline-block;
-    padding-top: 3px;
     width: 110px;
     height: 30px;
-    font-size: 14px;
+    line-height: 30px;
+    font-size: 13px;
     color: #777;
     border: 1px solid #cfcfcf;
     box-sizing: border-box;
 }
+#tr_empty_history{
+	height: 100px;
+}
 /* 리스트 페이지 네비게이션 */
 #td_pnav{
     height: 50px;
+    user-select: none;
 }
 /* -----------------구매내역 하단 안내문구----------------- */
 /* 안내문구 전체영역 */

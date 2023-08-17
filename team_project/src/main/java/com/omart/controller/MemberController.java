@@ -1,5 +1,6 @@
 package com.omart.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import lombok.Setter;
 public class MemberController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private MemberService mJoin, mWish;
+	private MemberService mJoin, mCancel, mWish;
 	
 	@Autowired
     private SmsCertifiedService sms;
@@ -46,6 +47,7 @@ public class MemberController {
 		int result = mJoin.join(memberVo);
   
 		if(result == 1) {
+
 			return "success";
 		} else {
 			return "fail";
@@ -97,4 +99,5 @@ public class MemberController {
 //		
 //		return "member/logout";
 //	}
+	
 }
