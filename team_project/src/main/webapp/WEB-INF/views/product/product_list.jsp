@@ -433,48 +433,53 @@
         	addCart(p_idArray);
         	
         });
-        
 
+      	let optCheckbox = $(".opt_checkbox");
+      	let selectSort = $("#select_sort");
       	
+      	optCheckbox.change(function(){
+      		changeList();
+      	});
       	
-      	
-		$(".opt_checkbox").change(function(){
-			  let checkedItems = $(".opt_checkbox:checked");
-			  
-			  let checkedMap = {};
-			  
-			  
+      	selectSort.change(function(){
+      		changeList();
+      	});
+		
+		function changeList(){
+	        let checkedItems = $(".opt_checkbox:checked");              
+	        let checkedMap = {};                        
+	        let selectedSort = selectSort.val();
 
-			  checkedItems.each(function(){
-				  let key = this.id.charAt(0);
-				  let value = this.value;				  
+	        checkedItems.each(function(){
+	            let key = this.id.charAt(0);
+	            let value = this.value;                 
 
-		            if (!checkedMap[key]) {
-		                checkedMap[key] = [];  // 배열 초기화
-		            }
+	              if (!checkedMap[key]) {
+	                  checkedMap[key] = [];  // 배열 초기화
+	              }
 
-		            checkedMap[key].push(value);  // 배열에 값 추가
-			  });
-			  
-			  console.log(checkedMap);
-			  console.log(checkedMap[1]);
-			  
-			  $.ajax({
-				 type: "post",
-				 url: "update_product_list.do?category="+category,
-				 data : JSON.stringify(checkedMap),
-				 dataType: "json",
-				 contentType:"application/json;charset=UTF-8",
-				 success: function(response){					 					 
-					 updateProduct(response);
-					 console.log("ajax 통신 성공");
-				 },
-				 error: function(error){
-					 alert("ajax 통신 테스트 실패")
-				 }
-			  });
-			  
-		});
+	              checkedMap[key].push(value);  // 배열에 값 추가
+	        });
+	        
+	        console.log(checkedMap);
+	        console.log(checkedMap[1]);
+	        
+	        $.ajax({
+	           type: "post",
+	           url: "update_product_list.do?category="+category+"&selectedSort="+selectedSort,
+	           data : JSON.stringify(checkedMap),
+	           dataType: "json",
+	           contentType:"application/json;charset=UTF-8",
+	           success: function(response){                                        
+	               updateProduct(response);
+	               console.log("ajax 통신 성공");
+	           },
+	           error: function(error){
+	               alert("ajax 통신 테스트 실패")
+	           }
+	        });
+	    }
+		
 	});
 	
 	function updateProduct(response) {
@@ -512,7 +517,9 @@
 	                }
 	                
 	                rebuilding += "</div>";
-	                rebuilding += "<div class='p_info_stars'>★ 4.5 (1043)</div>";
+	                if(product.reviews > 0){
+	                	rebuilding += "<div class='p_info_stars'>★ "+ product.stars_avg +" ("+ product.reviews +")</div>";
+	                }	                
 	                rebuilding += "</div></a></div>";
 	            }
 	        }
@@ -543,7 +550,7 @@
             <!-- 상단 버튼 모음 -->
             <div id="pl_header">
                 <div id="pl_header_btn_box">
-                    <div class="quick_btn"><a href="product_list.do?"><img src="../resources/img/ALL.png" alt="전체상품"><p>전체상품</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?"><img src="../resources/img/ALL.png" alt="전체"><p>전체</p></a></div>
                     <div class="quick_btn"><a href="product_list.do?category=AA"><img src="../resources/img/육류.jpg" alt="육류"><p>육류</p></a></div>
                     <div class="quick_btn"><a href="product_list.do?category=BB"><img src="../resources/img/가공.jpg" alt="가공"><p>가공</p></a></div>
                     <div class="quick_btn"><a href="product_list.do?category=CC"><img src="../resources/img/수산.jpg" alt="수산"><p>수산</p></a></div>
@@ -561,11 +568,11 @@
                             <c:when test="${param.category eq 'BB'}">가공</c:when>
                             <c:when test="${param.category eq 'CC'}">수산</c:when>
                             <c:when test="${param.category eq 'DD'}">야채</c:when>
-                            <c:otherwise>전체상품</c:otherwise>
+                            <c:otherwise>전체</c:otherwise>
                         </c:choose>                    
                     </div>
                     <div id="pl_main_header_sel_box">
-                        <select id="sel1">
+                        <select id="select_sort">
                             <option value="1">추천순</option>
                             <option value="2">판매량순</option>
                             <option value="3">낮은가격순</option>
@@ -573,6 +580,7 @@
                             <option value="5">할인율순</option>
                             <option value="6">신상품순</option>
                             <option value="7">리뷰많은순</option>
+                            <option value="8">별점높은순</option>
                         </select>                        
                     </div>
                 </div>

@@ -129,7 +129,7 @@ public class paymentController {
 			cDel.deleteCartAll(m_idx);
 			
 		}else {
-			OrderDetails = (List<CartVo>)session.getAttribute("CartList");			
+			OrderDetails = (List<CartVo>)session.getAttribute("CartList");	
 		}
 		
 		model.addAttribute("OrderDetails", OrderDetails);
@@ -142,7 +142,7 @@ public class paymentController {
 			productAmounts.add(Integer.toString(product.getAmount()));
 			int price = product.getPrice();
 			int discount = product.getDiscount();
-			productsPrice.add(Integer.toString(price*(100-discount)/100));			
+			productsPrice.add(Integer.toString(price*(100-discount)/100));	
 		}
 		String products = String.join(",", productIds);
 		String amounts = String.join(",", productAmounts);

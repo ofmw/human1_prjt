@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<link rel="shortcut icon" href="#">
 <meta charset="UTF-8">
 <title>오!마트</title>
 
@@ -200,7 +202,7 @@
     
     .wrapper {
         max-width:1200px;
-        width:75%;
+        width:100%;
         margin:0 auto;
     }
 
@@ -318,7 +320,7 @@
             breakpoints: {
                 // 600px 이하가 되면 슬라이드 간 간격을 0으로
                 600: {
-                    spaceBetween: 10
+                    spaceBetween: 100
                 },
             },
     
@@ -561,7 +563,6 @@
 
             <!-- 상품 게시 영역 -->
             <div id="hp_area_products_box">
-
 				<!-- 베스트 상품 -->
                 <div class="p_best">
                     <div class="p_elements">

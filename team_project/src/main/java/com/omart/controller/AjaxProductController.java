@@ -1,6 +1,7 @@
 package com.omart.controller;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import lombok.Setter;
 public class AjaxProductController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private ProductService pdWish, pdList;
+	private ProductService pdWish, pdList, pdInfo;
 	@Setter(onMethod_={ @Autowired })
 	private MemberService mWish;	
 	@Setter(onMethod_= {@Autowired})
@@ -113,7 +114,7 @@ public class AjaxProductController {
 	}
 
 	@RequestMapping("/update_product_list.do")
-	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, String category){
+	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, String category, String selectedSort){
 		
 		String[] checked_brand = checkedMap.get("1");
 		String[] checked_sub_category = checkedMap.get("2");
@@ -125,6 +126,13 @@ public class AjaxProductController {
 		
 		//post_state가 1이 아닌 객체 삭제
 		productList.removeIf(product -> product.getPost_state() != 1);
+		
+		//별점, 리뷰갯수 불러오기
+		for(ProductVo product : productList) {
+			String p_id = product.getP_id();
+			product.setStars_avg(pdInfo.getStarsAvg(p_id));
+			product.setReviews(pdInfo.getReviews(p_id));
+		}
 		
 		//대분류가 선택되었을때 대분류에 속하지 않은 객체 삭제
 		if(category != null) {
@@ -141,8 +149,20 @@ public class AjaxProductController {
 	        productList.removeIf(product -> !Arrays.asList(checked_sub_category).contains(product.getSub_category()));
 	    }
 	    
-	    for(ProductVo product : productList) {
-	    	System.out.println(product.toString());
+	    if (selectedSort.equals("2")) { // selectedSort가 2일 때
+	        productList.sort(Comparator.comparing(ProductVo::getTotal_sales).reversed());
+	    }else if(selectedSort.equals("3")) {
+	    	productList.sort(Comparator.comparingDouble(product -> (int)(product.getPrice() - (product.getPrice() * product.getDiscount() / 100))));
+	    }else if(selectedSort.equals("4")) {
+	    	productList.sort(Comparator.comparingDouble(product -> (((ProductVo)product).getPrice() - (((ProductVo)product).getPrice() * ((ProductVo)product).getDiscount() / 100))).reversed());
+	    }else if(selectedSort.equals("5")) {
+	    	productList.sort(Comparator.comparing(ProductVo::getDiscount).reversed());
+	    }else if(selectedSort.equals("6")) {
+	    	productList.sort(Comparator.comparing(ProductVo::getAdd_date).reversed());
+	    }else if(selectedSort.equals("7")) {
+	    	productList.sort(Comparator.comparing(ProductVo::getReviews).reversed());
+	    }else if(selectedSort.equals("8")) {
+	    	productList.sort(Comparator.comparing(ProductVo::getStars_avg).reversed());
 	    }
 	    	    
 		return productList;
