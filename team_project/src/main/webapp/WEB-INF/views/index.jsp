@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<link rel="shortcut icon" href="#">
 <meta charset="UTF-8">
 <title>오!마트</title>
 
@@ -200,12 +202,12 @@
     
     .wrapper {
         max-width:1200px;
-        width:75%;
+        width:100%;
         margin:0 auto;
     }
 
     .swiper {
-        max-width: 550px;
+        max-width: 510px;
         width:100%;
         height: 360px;
         position: relative;
@@ -213,7 +215,7 @@
     }
 
     .swiper-slide {
-        max-width: 550px;
+        max-width: 510px;
         width:100%;
         height:360px;
         text-align: center;
@@ -238,8 +240,9 @@
 
     .swiper-slide img {
         display: block;
+        border-radius: 10px;
         width: 100%;
-        width: 480px;
+        /*width: 480px;*/
         height: 100%;
         object-fit: cover;
     }
@@ -295,8 +298,9 @@
             autoplay: true,
             loop: true,
             centeredSlides: true,
-            spaceBetween: 10,
-    
+            spaceBetween: 2000,
+            loopAdditionalSlides: 1,
+            
             // pagination 기본은 bullet
             pagination: {
                 el: ".swiper-pagination",
@@ -312,7 +316,7 @@
             breakpoints: {
                 // 600px 이하가 되면 슬라이드 간 간격을 0으로
                 600: {
-                    spaceBetween: 10
+                    spaceBetween: 100
                 },
             },
     
@@ -537,22 +541,31 @@
             <div class="wrapper">
                 <!-- Swiper -->
                 <div class="swiper mySwiper">
-                  <div class="swiper-wrapper">
-                    <div class="swiper-slide">Slide 1</div>
-                    <div class="swiper-slide">Slide 2</div>
-                    <div class="swiper-slide">Slide 3</div>
-                    <div class="swiper-slide">Slide 4</div>
-                    <div class="swiper-slide">Slide 5</div>
-                    <div class="swiper-slide">Slide 6</div>
+                  <div class="swiper-wrapper" style="width:100%;">
+                    <div class="swiper-slide"><img alt="" src="resources/img/123123.jpg"></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:red;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:orange;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:yellow;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:green;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:blue;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:pink;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:purple;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:deepblue;">asdf</div></div>
                     <div class="swiper-slide">Slide 7</div>
                     <div class="swiper-slide">Slide 8</div>
                     <div class="swiper-slide">Slide 9</div>
                     <div class="swiper-slide">Slide 7</div>
                     <div class="swiper-slide">Slide 8</div>
                     <div class="swiper-slide">Slide 9</div>
-                    <div class="swiper-slide">Slide 7</div>
-                    <div class="swiper-slide">Slide 8</div>
-                    <div class="swiper-slide">Slide 9</div>
+                    <div class="swiper-slide"><img alt="" src="resources/img/123123.jpg"></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:red;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:orange;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:yellow;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:green;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:blue;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:pink;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:purple;">asdf</div></div>
+                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:deepblue;">asdf</div></div>
                   </div>
                   <div class="swiper-pagination"></div>
                   <div class="swiper-button-next"></div>
@@ -565,7 +578,6 @@
 
             <!-- 상품 게시 영역 -->
             <div id="hp_area_products_box">
-
 				<!-- 베스트 상품 -->
                 <div class="p_best">
                     <div class="p_elements">

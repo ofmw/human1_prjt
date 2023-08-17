@@ -51,7 +51,7 @@
             box-sizing: border-box
         }
         /* 마이페이지 헤더 내부 요소 제목 공통(쿠폰, 포인트) */
-        .mp_header_obj_title{font-size: 23px;}
+        .mp_header_obj_title{font-size: 23px; font-weight: bold;}
 
         /* 마이페이지 헤더 유저 이름 */
         #mp_header_user_name{font-size: 35px; font-weight: bold;}
@@ -69,7 +69,6 @@
         #mp_header_coupon_num{margin-top: 15px;}
         /* 소지 쿠폰 숫자 */
         #mp_header_coupon_num span{
-            font-weight: bold;
             font-size: 20px;
             margin-right: 5px;
         }

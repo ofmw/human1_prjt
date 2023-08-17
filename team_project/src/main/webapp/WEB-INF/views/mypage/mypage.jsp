@@ -11,7 +11,7 @@
 <style>
 
 	/* a태그 공통 */
-	a:hover{text-decoration: underline;}
+	a:hover:not(#div_category a){text-decoration: underline;}
 	/* 버튼 및 선택 요소 공통 */
 	button:hover, #sel_box:hover{
 		background-color: #222 !important;
@@ -372,7 +372,7 @@
             </div>
 
             <div id="mp_main_wish" class="mp_main_obj">
-                <div class="mp_main_title"><a href="wish.do?option1=none">찜목록</a></div>
+                <div class="mp_main_title"><a href="wish.do">찜목록</a></div>
                 <div id="mp_w_main_products">
 
                     <div id="w_box">
