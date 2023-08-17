@@ -65,23 +65,29 @@
         position: relative;
         width: 70px;
         height: 70px;
-        background-color: orange;
-        border-radius: 15px;
-        overflow: hidden;
         margin-top: 35px;
-        margin-right: 20px;
+        margin-right: 20px;  
+        border-radius: 15px;    
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* 수정 가능 */                  
     }
     .quick_btn a{
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: palevioletred;
     }
     .quick_btn img{
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: chartreuse;
+        background-color: chartreuse;        
+    }
+    .quick_btn p{
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        color: #333;
+        font-size: 14px;
+        text-align: center;
     }
 
     /* ---------------------상품페이지 메인--------------------- */
@@ -256,13 +262,20 @@
 	$(function(){
 		
 		let check_request = $("#check_request");
+		let check_param = check_request.val();
 		
-		if(check_request.val() == '2_1'){
-			setTimeout(function(){
-				$("#2_1").click();
-			}, 1);
+		let opt_checkbox = $(".opt_checkbox");
+		opt_checkbox.each(function(){
+			if(check_param == $(this).val()){
+				let check_this = $(this); // 현재 요소를 변수에 저장
+		        setTimeout(function(){
+		        	check_this.click(); // 저장한 변수 사용
+		        }, 1);
+			}
+		});
+		
+		
 			
-		}
 		
 		/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
     	//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
@@ -530,11 +543,11 @@
             <!-- 상단 버튼 모음 -->
             <div id="pl_header">
                 <div id="pl_header_btn_box">
-                    <div class="quick_btn"><a href="product_list.do?"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="../resources/img/육류.png" alt="육류"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="../resources/img/가공.png" alt="가공"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="../resources/img/수산.png" alt="수산"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="../resources/img/야채.png" alt="야채"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?"><img src="../resources/img/ALL.png" alt="전체상품"><p>전체상품</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="../resources/img/육류.jpg" alt="육류"><p>육류</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="../resources/img/가공.jpg" alt="가공"><p>가공</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="../resources/img/수산.jpg" alt="수산"><p>수산</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="../resources/img/야채.jpg" alt="야채"><p>야채</p></a></div>
                 </div>
             </div>
 

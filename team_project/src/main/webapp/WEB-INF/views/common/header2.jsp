@@ -56,8 +56,7 @@
                                     <c:otherwise>
                                         <a href="../mypage/mypage.do">${member.m_name}님</a>
                                     </c:otherwise>
-                                </c:choose>                                
-                                <a href="../boardFile/list_notice.do">고객센터</a>
+                                </c:choose> 
                                 <c:choose>
                                     <c:when test="${member.platform eq 'kakao'}">
                                         <a href="kakaologout.do">로그아웃</a>
@@ -65,7 +64,8 @@
                                     <c:when test="${member.platform eq 'omart'}">
                                         <a href="member/logout.do">로그아웃</a>
                                     </c:when>
-                                </c:choose>
+                                </c:choose>                               
+                                <a href="../boardFile/list_notice.do">고객센터</a>                               
                             </c:otherwise>
 						</c:choose>
 					</div>

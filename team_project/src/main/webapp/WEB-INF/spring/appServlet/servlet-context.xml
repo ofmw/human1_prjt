@@ -41,7 +41,7 @@
 			<exclude-mapping path="/index.do"/>
 			<exclude-mapping path="/**/login.do"/>
 			<exclude-mapping path="/product/*"/>
-			<exclude-mapping path="boardFile/*"/>
+			<exclude-mapping path="/boardFile/*"/>
 			
 			<beans:bean id="loginInterceptor" class="com.omart.interceptor.LoginInterceptor"/>
 		</interceptor>

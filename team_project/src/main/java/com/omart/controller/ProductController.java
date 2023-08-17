@@ -51,6 +51,11 @@ public class ProductController {
 	    List<String> brandList = new ArrayList<String>(); //브랜드
 	    List<String> subCategoryList = new ArrayList<String>(); //카테고리 소분류
 	    for(ProductVo product : productList) {
+	    	
+	    	String p_id = product.getP_id();
+	    	product.setStars_avg(pdInfo.getStarsAvg(p_id));
+	    	product.setReviews(pdInfo.getReviews(p_id));
+	    	
 	    	//중복 방지
 	    	if(!brandList.contains(product.getBrand())) {
 	    		brandList.add(product.getBrand());

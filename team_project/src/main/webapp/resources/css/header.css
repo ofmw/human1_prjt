@@ -134,6 +134,9 @@
         color: white;
         font-size: 14px;
 	}
+	#div_category ul{
+	   list-style: none;
+	}
 	/* 카테고리 */
 	#div_category_block {
 	    position: absolute;
