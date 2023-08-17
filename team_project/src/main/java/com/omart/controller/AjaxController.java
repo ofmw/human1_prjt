@@ -48,13 +48,14 @@ public class AjaxController {
 	}
 	
 	@PostMapping("/admin/insertProduct.do")
-	public void insertProduct(ProductVo productVo) {		
-		pdInsert.insertProduct(productVo);
+	public void insertProduct(ProductVo productVo, @RequestParam("thumbnail") MultipartFile thumbnail, HttpServletRequest request) {		
+		pdInsert.insertProduct(productVo, thumbnail, request);
 	}
 	
 	@PostMapping("/admin/editProduct.do")
-	public void editProduct(ProductVo productVo) {		
-		pdEdit.editProduct(productVo);
+	public void editProduct(ProductVo productVo, @RequestParam("thumbnail") MultipartFile thumbnail, HttpServletRequest request) {
+		System.out.println("컨트롤러 fileCheck: "+thumbnail);
+		pdEdit.editProduct(productVo, thumbnail, request);
 	}
 	
 	@PostMapping("/admin/productStateTrue.do")

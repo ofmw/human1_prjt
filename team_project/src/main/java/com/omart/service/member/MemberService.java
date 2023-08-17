@@ -6,6 +6,7 @@ import com.omart.vo.AddressVo;
 import com.omart.vo.BoardFileVo;
 import com.omart.vo.MemberVo;
 import com.omart.vo.OrderVo;
+import com.omart.vo.PointVo;
 import com.omart.vo.ProductVo;
 
 public interface MemberService {
@@ -16,7 +17,7 @@ public interface MemberService {
 	default int checkM_idx(MemberVo vo) {return 0;}
 	default List<String> getWishList(int m_idx){return null;}
 	default int getPoint(int m_idx){return 0;}
-	default void setPoint(MemberVo memberVo){}
+	default void usePoint(MemberVo memberVo){}
 	default List<ProductVo> getP_info(List<String> wish) {return null;}
 	default void insertWish(int m_idx) {}
 	default int removeWishList(int m_idx, String [] p_id) {return 0;}
@@ -40,5 +41,7 @@ public interface MemberService {
 	default List<BoardFileVo> selectReviewList(String p_id){return null;}
 	default String getMemberNameFromOrder(String order_idx) {return null;}
 	default int getGradeFromOrder(String order_idx) {return 0;}
-
+	default public void addPoint(PointVo pointVo) {}
+	default MemberVo update(MemberVo memberVo) {return null;}
+	
 }

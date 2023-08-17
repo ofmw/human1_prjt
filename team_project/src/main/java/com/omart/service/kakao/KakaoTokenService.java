@@ -17,7 +17,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.omart.dao.KakaoDao;
 import com.omart.dao.MemberDao;
-import com.omart.service.member.MemberWishService;
 import com.omart.vo.MemberVo;
 
 import lombok.Setter;

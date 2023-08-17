@@ -10,7 +10,7 @@
     </select>
     
     <insert id="insertProduct" parameterType="productVo">
-        insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state, sub_category) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state}, #{sub_category})
+        insert into product (p_id, p_name, brand, cost, price, standard, unit, stock, discount, post_state, sub_category, originfile1, savefile1) values (#{p_id}, #{p_name}, #{brand}, #{cost}, #{price}, #{standard}, #{unit}, #{stock}, #{discount}, #{post_state}, #{sub_category}, #{originFile1}, #{saveFile1})
     </insert>
     
     <update id="editProduct" parameterType="productVo">
@@ -25,7 +25,9 @@
             stock = #{stock},
             discount = #{discount},
             post_state = #{post_state},
-            sub_category = #{sub_category}
+            sub_category = #{sub_category},
+            originfile1 = #{originFile1},
+            savefile1 = #{saveFile1}
         where p_id = #{p_id}
             
     </update>

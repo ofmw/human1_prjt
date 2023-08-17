@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+/* ---------------------하단 안내문구--------------------- */
+/* 안내문구 전체영역 */
+#mp_notice{
+   	margin-top: 50px;
+}
+/* 안내문구 제목 */
+#mp_notice_title{
+	border-bottom: 1px solid #e5e5e5;
+	font-size: 17px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+/* 안내문구 내용영역 */
+#mp_notice_content{
+	margin-top: 10px;
+	padding-left: 30px;
+	color: #777;
+}
+/* 안내문구 내용 리스트 */
+#mp_notice_content ul{
+	list-style-type: circle;
+	font-size: 13px;
+}

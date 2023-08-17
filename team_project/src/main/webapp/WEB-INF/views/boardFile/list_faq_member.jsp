@@ -16,6 +16,18 @@
         padding: 0;
         font-family: 'Noto Sans KR', sans-serif;
     }
+    #div_logo{
+    	position: absolute;
+    	margin-right: 1000px;
+    	height: 70px;
+    	width: 195px;
+    	cursor: pointer;
+    }
+    img{
+    	width: 100%;
+    	height: 100%;
+    	cursor: pointer;
+    }
     /*전체 영역*/
     #div_notice {
     	height: auto;
@@ -23,6 +35,7 @@
         position: relative;
         display: flex;
         justify-content: center;
+        padding-top: 20px;
     }
     /*사이드메뉴, 공지사항내용 엮은 영역*/
     #div_div_notice {
@@ -62,7 +75,7 @@
     #div_section {
         position: relative;
         width: 750px;
-        margin-left: 130px; /* 왼쪽 여백 추가 */
+        margin-left: 150px; /* 왼쪽 여백 추가 */
     }
     #div_section p:first-child {
         margin-bottom: 20px;
@@ -125,7 +138,7 @@
 	    border-top: 3px solid black;
 	    font-size: 23px;
 	    min-width: 1260px;
-	    height: 80px;
+	    height: 50px;
     }
     #div_footer span{
         font-size: 17px;
@@ -189,6 +202,9 @@
 </script>
 <body>
     <div id="div_notice">
+     <div id="div_logo">
+		<img src="../resources/img/로고_블랙.png" onclick="location.href='../index.do'">
+	 </div>
         <div id="div_div_notice">
             <div id="div_side_menu">
                 <table id="tbl_side_menu">
@@ -200,7 +216,7 @@
                         <td><a href="list_notice.do">공지사항</a></td>
                     </tr>
                     <tr>
-                        <td><a href="list_event.do">이벤트</a></td>
+                        <td><a href="#">이벤트</a></td>
                     </tr>
                     <tr>
                         <td><a href="list_inquiry.do">1:1문의하기</a></td>

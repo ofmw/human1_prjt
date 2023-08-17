@@ -106,23 +106,20 @@
     #ca_m_table{
     	width: 100%;
         border-spacing: 0;
-        border-collapse: collapse;
         font-size: 12px;
         color: #666;
         text-align: center;
         border-top: 1px solid #222;
         border-bottom: 1px solid #222;
     }
-    #ca_m_table tr:first-child{
+    #ca_m_table tr:first-child th{
+        height: 40px;
         border-bottom: 1px solid #e5e5e5;
         font-size: 13px;
         color: #222;
-    }
-    #ca_m_table tr:first-child th{
-        height: 40px;
         background-color: #f2f2f2;
     }
-    #ca_m_table tr:not(:last-child){
+    #ca_m_table tr:not(:last-child) td{
         border-bottom: 1px solid #e5e5e5;
     }
     .td_sel_address, .td_selnum{

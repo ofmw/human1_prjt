@@ -8,6 +8,7 @@
 <head>
     <title>주문상세 조회</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="../resources/js/mypage.js"></script>
     <link href="../resources/css/order_detail.css" rel="stylesheet">
     
     <style>
@@ -94,19 +95,23 @@
     <!-- 마이페이지 헤더부분 -->
     <div id="mp_header_area">
 
+		<!-- 회원 정보 영역 -->
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
+            <input type="hidden" id="session_m_idx" value="${member.m_idx}">
+            <input type="hidden" id="session_platform" value="${member.platform}">
+            
             <div id="mp_header_user_menu">
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
-	                    <li><a href="#">회원정보 변경</a></li>
-	                    <li><a href="#">비밀번호 변경</a></li>
+	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
+
 
         <div id="mp_header_coupon" class="mp_header_obj">
             <div class="mp_header_obj_title">쿠폰</div>

@@ -50,7 +50,7 @@
     }
     #hp_area_contents{
         width: 1280px;
-        margin-top: 20px;
+        margin-top: 30px;
         /* background-color: aquamarine; */
     }
 
@@ -207,22 +207,23 @@
     }
 
     .swiper {
-        max-width: 510px;
+        max-width: 700px;
+        max-height: 350px;
         width:100%;
-        height: 360px;
+        height: 320px;
         position: relative;
         overflow: visible;
     }
 
     .swiper-slide {
-        max-width: 510px;
+        max-width: 700px;
         width:100%;
-        height:360px;
+        height:320px;
         text-align: center;
         font-size: 18px;
         background: #fff;
         border-radius: 10px;
-
+        
         /* Center slide text vertically */
         display: -webkit-box;
         display: -ms-flexbox;
@@ -240,11 +241,10 @@
 
     .swiper-slide img {
         display: block;
-        border-radius: 10px;
-        width: 100%;
-        /*width: 480px;*/
-        height: 100%;
+        width: 650px;
+        height: 320px;
         object-fit: cover;
+        border-radius: 20px;
     }
 
     /**/
@@ -265,7 +265,7 @@
     /* pagination */
     .mySwiper .swiper-pagination {
         position: absolute;
-        bottom: -30px;
+        bottom: -40px;
         /* text-align:left; */
         
     }
@@ -285,7 +285,12 @@
 
     .custom-fraction {text-align:right; margin:15px 5px 0 0;}
     .btn-wrapper {
-        margin-top:50px;
+        margin-top:50px;        
+    
+    }
+    .thumbnail{
+        width: 295px;
+        height: 295px;
     }
 </style>
 <script>
@@ -298,9 +303,8 @@
             autoplay: true,
             loop: true,
             centeredSlides: true,
-            spaceBetween: 2000,
-            loopAdditionalSlides: 1,
-            
+            spaceBetween: 5,
+    
             // pagination 기본은 bullet
             pagination: {
                 el: ".swiper-pagination",
@@ -541,38 +545,17 @@
             <div class="wrapper">
                 <!-- Swiper -->
                 <div class="swiper mySwiper">
-                  <div class="swiper-wrapper" style="width:100%;">
-                    <div class="swiper-slide"><img alt="" src="resources/img/123123.jpg"></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:red;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:orange;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:yellow;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:green;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:blue;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:pink;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:purple;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:deepblue;">asdf</div></div>
-                    <div class="swiper-slide">Slide 7</div>
-                    <div class="swiper-slide">Slide 8</div>
-                    <div class="swiper-slide">Slide 9</div>
-                    <div class="swiper-slide">Slide 7</div>
-                    <div class="swiper-slide">Slide 8</div>
-                    <div class="swiper-slide">Slide 9</div>
-                    <div class="swiper-slide"><img alt="" src="resources/img/123123.jpg"></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:red;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:orange;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:yellow;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:green;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:blue;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:pink;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:purple;">asdf</div></div>
-                    <div class="swiper-slide"><div style="width:100%;height:100%;background-color:deepblue;">asdf</div></div>
+
+                  <div class="swiper-wrapper">
+                    <div class="swiper-slide"><a href="product/product_view.do?p_id=AA0001"><img src="resources/img/삼겹살.jpg" alt="구운_삼겹살" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=BB&check=과자"><img src="resources/img/과자모음.jpg" alt="과자모음" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=DD"><img src="resources/img/야채모음.jpg" alt="야채모음" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=CC"><img src="resources/img/해산물요리.jpg" alt="해산물요리" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=BB&check=김치"><img src="resources/img/김치.jpg" alt="김치" /></a></div> 
                   </div>
                   <div class="swiper-pagination"></div>
                   <div class="swiper-button-next"></div>
                   <div class="swiper-button-prev"></div>
-                  <!-- <div class="custom-fraction">
-                    <span class="current">1</span>/<span class="all">9
-                  </div> -->
                 </div>
             </div>
 
@@ -588,7 +571,7 @@
 	                            
 	                            <div class="p_products">
 	                                <div class="p_img">
-	                                	<a href="product/product_view.do?p_id=${bestList[i].p_id}"><img src="#" alt="상품 이미지"></a>
+	                                	<a href="product/product_view.do?p_id=${bestList[i].p_id}"><img class="thumbnail" src="resources/uploads/${bestList[i].saveFile1}" alt="${bestList[i].p_name}"></a>
 		                                <div style="display:none" class="p_img_opt-box">
 		                                	<div class="p_img_opt-box-innerDiv">
 				                                <input type="hidden" class="p_id" value="${bestList[i].p_id}">
@@ -639,7 +622,7 @@
                             <c:forEach begin="0" end="3" var="i">
 	                            <div class="p_products">
 	                                <div class="p_img">
-	                                	<a href="product/product_view.do?p_id=${saleList[i].p_id}"><img src="#" alt="상품 이미지"></a>
+	                                	<a href="product/product_view.do?p_id=${saleList[i].p_id}"><img class="thumbnail" src="resources/uploads/${saleList[i].saveFile1}" alt="${saleList[i].p_name}"></a>
 		                                <div style="display:none" class="p_img_opt-box">
 		                                	<div class="p_img_opt-box-innerDiv">
 				                                <input type="hidden" class="p_id" value="${saleList[i].p_id}">
@@ -689,7 +672,7 @@
                             <c:forEach begin="0" end="3" var="i">                                 
                                 <div class="p_products">
 	                                <div class="p_img">
-	                                	<a href="product/product_view.do?p_id=${newList[i].p_id}"><img src="#" alt="상품 이미지"></a>
+	                                	<a href="product/product_view.do?p_id=${newList[i].p_id}"><img class="thumbnail" src="resources/uploads/${newList[i].saveFile1}" alt="${newList[i].p_name}"></a>
 		                                <div style="display:none" class="p_img_opt-box">
 		                                	<div class="p_img_opt-box-innerDiv">
 				                                <input type="hidden" class="p_id" value="${newList[i].p_id}">

@@ -9,7 +9,7 @@
     <title>비로그인 헤더</title>
 
 <link href="../resources/css/header.css?v=1234" rel="stylesheet">
-<link href="../resources/css/login.css" rel="stylesheet">
+<link href="../resources/css/login.css?v=1234" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="../resources/js/login.js?v=1234"></script>
@@ -56,8 +56,7 @@
                                     <c:otherwise>
                                         <a href="../mypage/mypage.do">${member.m_name}님</a>
                                     </c:otherwise>
-                                </c:choose>                                
-                                <a href="../boardFile/list_notice.do">고객센터</a>
+                                </c:choose> 
                                 <c:choose>
                                     <c:when test="${member.platform eq 'kakao'}">
                                         <a href="kakaologout.do">로그아웃</a>
@@ -65,16 +64,22 @@
                                     <c:when test="${member.platform eq 'omart'}">
                                         <a href="member/logout.do">로그아웃</a>
                                     </c:when>
-                                </c:choose>
+                                </c:choose>                               
+                                <a href="../boardFile/list_notice.do">고객센터</a>                               
                             </c:otherwise>
 						</c:choose>
 					</div>
-	                    	
-                    <div id="div_persnal_menu">
-                        <a href="">ㅇ</a>
-                        <a href="member/mypage.do">ㅁ</a>
-                        <a href="../cart/cart.do">카</a>
-                        <a href="">ㅇ</a>
+	                <div id="div_persnal_menu">
+                        <c:choose>
+                            <c:when test="${empty member}">
+                                <a class="need_login" href="#">마이페이지</a>
+                                <a class="need_login" href="#">장바구니</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="../mypage/mypage.do">마이페이지</a>
+                                <a href="../cart/cart.do">장바구니</a>
+                            </c:otherwise>
+                        </c:choose>                     
                     </div>
 				</div>
 			</div>
@@ -143,7 +148,7 @@
 				<div id="login_sns_area">
 				    <div id="sns_title">SNS 로그인</div>
 				    <div id="sns_box">
-					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="../resources/img/kakao_login_medium_wide.png" alt="카카오로그인"></a>
+					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="../resources/img/kakao_login_large_wide.png" alt="카카오로그인"></a>
 					</div>
 				</div>
 				

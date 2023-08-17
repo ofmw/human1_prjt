@@ -8,6 +8,9 @@
     <title>회원탈퇴</title>
 
 <link href="../resources/css/mypage.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="../resources/js/mypage.js"></script>
+
 <style>
 
 	/* a태그 공통 */
@@ -55,47 +58,48 @@
 	
 </style>
 
+<script>
+	$(function() {
+        
+		/* ---------------------회원 탈퇴--------------------- */
+		//*** 회원탈퇴 버튼 클릭 이벤트 처리 ***//
+		$("#cancel-confirm").on("click", function(){
+        	
+			// 페이지에서 회원의 가입 플랫폼 정보 가져옴
+			let platform = $("#session_platform").val();
+        	
+			// 회원의 가입 플랫폼 체크 및 회원탈퇴 요청
+			if (platform === "omart") {
+				cancel("omart");
+			} else if (platform === "kakao") {
+				cancel("kakao");
+			}
+        	
+		});
+        
+		//*** 회원탈퇴 처리 ***//
+		function cancel(platform) {
+      	
+			$.ajax({
+				type: "POST",
+				url: platform +"Cancel.do",
+				success: function (response) {
+					if (response === "success") {
+						alert('회원탈퇴가 정상적으로 완료되었습니다.');
+						// 회원탈퇴 완료 후 메인 페이지로 이동
+						location.href = "index.do"
+					} else {
+						alert("회원탈퇴 도중 문제가 발생했습니다.");
+					}
+				},
+				error: function () {
+				alert("오류가 발생하였습니다.");
+				}
+			}); // end of ajax
+		}
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-
-	<script>
-        $(function() {
-            
-            /* ---------------------회원 탈퇴--------------------- */
-            //*** 회원탈퇴 버튼 클릭 이벤트 처리 ***//
-            $("#cancel-confirm").on("click", function(){
-            	
-            	let platform = $("#session_platform").val();
-            	
-            	if (platform === "omart") {
-            		cancel("omart");
-            	} else if (platform === "kakao") {
-            		cancel("kakao");
-            	}
-            	
-            });
-            
-           	function cancel(platform) {
-          	
-	           	$.ajax({
-	                type: "POST",
-	                url: platform +"Cancel.do",
-	                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
-	                   if (response === "success") { // 수량 업데이트가 성공한 경우
-	                	   	alert('회원탈퇴가 정상적으로 완료되었습니다.');
-	                	  	location.href = "index.do"
-	                    } else {
-	                        alert("회원탈퇴 도중 문제가 발생했습니다.");
-	                    }
-	                },
-	                error: function () {
-	                    alert("오류가 발생하였습니다.");
-	                }
-	        	}); // end of ajax
-           	}
-           	
-        });
-    </script>
+	});
+</script>
 
 </head>
 <body>
@@ -108,7 +112,7 @@
     <!-- 마이페이지 헤더부분 -->
     <div id="mp_header_area">
 
-		<!-- 회원 정보 영역 -->
+				<!-- 회원 정보 영역 -->
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
             <input type="hidden" id="session_m_idx" value="${member.m_idx}">
@@ -117,11 +121,10 @@
             <div id="mp_header_user_menu">
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
-	                    <li><a href="#">회원정보 변경</a></li>
-	                    <li><a href="#">비밀번호 변경</a></li>
+	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
-                    <li><span id="cancel">회원 탈퇴</span></li>
+                    <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>

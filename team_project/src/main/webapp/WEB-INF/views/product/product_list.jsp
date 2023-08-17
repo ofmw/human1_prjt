@@ -65,23 +65,29 @@
         position: relative;
         width: 70px;
         height: 70px;
-        background-color: orange;
-        border-radius: 15px;
-        overflow: hidden;
         margin-top: 35px;
-        margin-right: 20px;
+        margin-right: 20px;  
+        border-radius: 15px;    
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* 수정 가능 */                  
     }
     .quick_btn a{
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: palevioletred;
     }
     .quick_btn img{
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: chartreuse;
+        background-color: chartreuse;        
+    }
+    .quick_btn p{
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        color: #333;
+        font-size: 14px;
+        text-align: center;
     }
 
     /* ---------------------상품페이지 메인--------------------- */
@@ -247,9 +253,29 @@
         font-size: 13px;
         color: #8b96a1;
     }
+    .thumbnail{
+        width: 230px;
+        height: 230px;
+    }
     </style>
 <script>
 	$(function(){
+		
+		let check_request = $("#check_request");
+		let check_param = check_request.val();
+		
+		let opt_checkbox = $(".opt_checkbox");
+		opt_checkbox.each(function(){
+			if(check_param == $(this).val()){
+				let check_this = $(this); // 현재 요소를 변수에 저장
+		        setTimeout(function(){
+		        	check_this.click(); // 저장한 변수 사용
+		        }, 1);
+			}
+		});
+		
+		
+			
 		
 		/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
     	//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
@@ -466,7 +492,7 @@
 	            if (product !== null) {
 	                rebuilding += "<div class='p_products'>";
 	                rebuilding += "<a href='product_view.do?p_id=" + product.p_id + "'>";
-	                rebuilding += "<div class='p_img'><img src='#' alt='#'></div>";
+	                rebuilding += "<div class='p_img'><img class='thumbnail' src='../resources/uploads/" + product.saveFile1 + "' alt='" + product.p_name + "'></div>";
 	                rebuilding += "<div class='p_info'>";
 	                rebuilding += "<div class='p_info_brand'>" + product.brand + "</div>";
 	                rebuilding += "<div class='p_info_name'>" + product.p_name + "</div>";
@@ -513,15 +539,15 @@
     <div id="pl_area">
         <div id="pl_area_contents">
         <input type="hidden" id="m_idx" value="${member.m_idx}">
-
+        <input type="hidden" id="check_request" value="${param.check}"/>
             <!-- 상단 버튼 모음 -->
             <div id="pl_header">
                 <div id="pl_header_btn_box">
-                    <div class="quick_btn"><a href="product_list.do?"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="#" alt="#"></a></div>                    
+                    <div class="quick_btn"><a href="product_list.do?"><img src="../resources/img/ALL.png" alt="전체상품"><p>전체상품</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="../resources/img/육류.jpg" alt="육류"><p>육류</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="../resources/img/가공.jpg" alt="가공"><p>가공</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="../resources/img/수산.jpg" alt="수산"><p>수산</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="../resources/img/야채.jpg" alt="야채"><p>야채</p></a></div>
                 </div>
             </div>
 
@@ -547,13 +573,7 @@
                             <option value="5">할인율순</option>
                             <option value="6">신상품순</option>
                             <option value="7">리뷰많은순</option>
-                        </select>
-                        <select id="sel2">
-                            <option value="40">40개씩</option>
-                            <option value="60">60개씩</option>
-                            <option value="80">80개씩</option>
-                            <option value="100">100개씩</option>
-                        </select>
+                        </select>                        
                     </div>
                 </div>
             
@@ -591,9 +611,8 @@
                                             <c:forEach begin="${i*4}" end="${i*4+3}" var="j">
 	                                            <div class="p_products">
                                                     <c:if test="${productList[j] ne null}">
-
 	                                                    <div class="p_img">
-	                                                    	<a href="product_view.do?p_id=${productList[j].p_id}"><img src="#" alt="#"></a>
+	                                                    	<a href="product_view.do?p_id=${productList[j].p_id}"><img class="thumbnail" src="../resources/uploads/${productList[j].saveFile1}" alt="#"></a>
 	                                                    	<div style="display:none" class="p_img_opt-box">
 										                		<div class="p_img_opt-box-innerDiv">
 										                			<input type="hidden" class="p_id" value="${productList[j].p_id}">
@@ -623,7 +642,9 @@
 		                                                           <c:set var="discount" value="${productList[j].price*(productList[j].discount/100)}"></c:set>
 		                                                           <fmt:formatNumber value="${productList[j].price - discount}" pattern="#,###" />원
 		                                                        </div>
-		                                                        <div class="p_info_stars">★ 4.5 (1043)</div>
+		                                                        <c:if test="${productList[j].reviews ne 0}">
+					                                               <div class="p_info_stars">★ ${productList[j].stars_avg} (${productList[j].reviews})</div><!-- 괄호 안 숫자는 리뷰 갯수 -->
+					                                            </c:if>
 		                                                    </div>
 
 	                                                    </a>

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.omart.dao.CartDao;
 import com.omart.vo.CartVo;
-import com.omart.vo.ProductVo;
 
 import lombok.RequiredArgsConstructor;
 
