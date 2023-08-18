@@ -41,7 +41,7 @@
 							<c:when test="${empty member}">
 			         		    <span id="login_btn2">로그인</span>
 								<a href="member/join.do">회원가입</a>
-								<a href="boardFile/list_faq_member.do">고객센터</a>
+								<a href="boardFile/faq_member.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
 							    <input type="hidden" id="m_idx" value="${member.m_idx}"/>

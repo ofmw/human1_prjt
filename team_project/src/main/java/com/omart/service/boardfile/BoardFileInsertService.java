@@ -49,19 +49,13 @@ private BoardFileDao dao;
 	}
 
 	public int insertEvent(MultipartFile attachedFile, 
-			String title, String period, String content, HttpServletRequest request) {
-		
-		System.out.println("insertEvent실행");
-		
+			String title, String period, String content, int m_idx, HttpServletRequest request) {
 		String originFileName = attachedFile.getOriginalFilename();
 		String ext = originFileName.substring(originFileName.lastIndexOf("."));
 		String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
 		String saveFileName = now+ext;
-		
 		String saveDirectory = request.getServletContext().getRealPath("resources/uploads/");
 		String fullPath = saveDirectory + saveFileName;
-		
-		System.out.println("fullPath:"+fullPath);
 		
 		try {
 			attachedFile.transferTo(new File(fullPath));
@@ -74,10 +68,18 @@ private BoardFileDao dao;
 		vo.setTitle(title);
 		vo.setPeriod(period);
 		vo.setContent(content);
+		vo.setM_idx(m_idx);
 		vo.setOriginFile(originFileName);
 		vo.setSaveFile(saveFileName);
 		
-		return dao.insertEvent(vo);
+		int result = dao.insertEvent(vo);{
+			if (result > 0) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
 	}
+		
 
 }

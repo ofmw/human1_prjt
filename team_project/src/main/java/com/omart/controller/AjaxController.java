@@ -182,18 +182,6 @@ public class AjaxController {
     }
 	
 	
-	@PostMapping("/boardFile/insert_notice_write_process.do")
-	public void insert_notice_write_process(BoardFileVo boardFileVo) {
-		String viewPage = "boardFile/list_notice";
-		
-		int result = bfInsert.insertNotice(boardFileVo);
-		
-		if(result == 1) {
-			viewPage = "redirect: list_notice.do";
-		}
-//		return viewPage;
-	}
-	
 	@PostMapping("/admin/createAccount.do")
 	public void createAccount(MemberVo memberVo) {
 		System.out.println("controller에 넘어온 m_id: " + memberVo.getM_id());
@@ -218,20 +206,35 @@ public class AjaxController {
 		System.out.println("체크패스워드.두 진입확인");
 		return mLogin.login(m_id, m_pw);
 	}
-	@PostMapping("/boardFile/insert_faq_write_process.do")
-    public String insert_faq_write_process(BoardFileVo boardFileVo) {
-        bfInsert.insertFaq(boardFileVo);
-        return "boardFile/list_faq_write"; // 글 저장에 실패한 경우 다시 글 작성 페이지로 이동
-    }
 
+	//FAQ 글 등록
+	@PostMapping("/boardFile/insert_faq_write.do")
+    public String insert_faq_write(BoardFileVo boardFileVo) {
+		
+		bfInsert.insertFaq(boardFileVo);
+			
+		return "redirect:/boardFile/faq";
+    }
+	
+	//공지사항 글 등록
+	@PostMapping("/boardFile/insert_notice_write_process.do")
+	public String insert_notice_write_process(BoardFileVo boardFileVo) {
+		
+		bfInsert.insertNotice(boardFileVo);
+
+		return "redirect:/boardFile/notice";
+	}
+	
+	//이벤트 글 등록
 	@PostMapping("/boardFile/insert_event_write_process.do")
 	public void insert_event_write_process(@RequestPart(value="attachedFile",required = false)  MultipartFile attachedFile, String title, 
-			String period, String content,  HttpServletRequest request) {
-		System.out.println("insert_event_write_process실행");
+			String period, String content, @RequestParam("m_idx") int m_idx,  HttpServletRequest request) {
+		System.out.println(m_idx);
 		System.out.println(attachedFile.getOriginalFilename());
 
-		bfInsert.insertEvent(attachedFile, title, period, content, request);
+		bfInsert.insertEvent(attachedFile, title, period, content, m_idx, request);
 		
 	}
+
 
 }

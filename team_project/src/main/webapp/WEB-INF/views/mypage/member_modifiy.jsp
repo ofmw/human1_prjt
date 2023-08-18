@@ -105,7 +105,10 @@
 	
 	$(document).ready(function(){
 		$("#btn_update").click(function(){
-			var formData = $("#frm_update").serialize();
+			var formData = {
+					selNum: $("#selNum").val(),
+					m_pw: $("#m_pw").val()
+			};
 			
 			console.log("formData : " + formData);
 			
@@ -256,11 +259,11 @@
                             	<div class="check" id="id_check"></div>
                     
                             <p>비밀번호</p>
-                                <input type="password" name="m_pw" id="m_pw" value="${member.m_pw}" disabled><br>
+                                <input type="password" name="m_pw" id="m_pw" value="${member.m_pw}" ><br>
                                 <div class="check" id="pw_check"></div>
                         
                             <p>비밀번호 확인</p>
-                           		<input type="password" name="m_pwCheck" id="m_pwCheck" value="${member.m_pw}" disabled><br>
+                           		<input type="password" name="m_pwCheck" id="m_pwCheck"><br>
                             	<div class="check" id="pw_check2"></div>
                         
                             <button type="submit" name="btn_update" id="btn_update">수정하기</button>

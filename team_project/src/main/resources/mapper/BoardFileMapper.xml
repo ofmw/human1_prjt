@@ -19,7 +19,7 @@
 	</insert>
     <!-- 공지사항 글 추가 처리구문 -->
     <insert id="insertNotice" parameterType='boardFileVo'>
-    	insert into notice (m_idx, m_id, title, content) values(#{m_idx}, #{m_id}, #{title}, #{content})
+    	insert into notice (m_idx, m_name, title, content) values(#{m_idx}, #{m_name}, #{title}, #{content})
     </insert>
     <!-- FAQ 게시글 추가 처리구문 -->
     <insert id="insertFaq" parameterType='boardFileVo'>
