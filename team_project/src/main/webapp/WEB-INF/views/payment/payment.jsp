@@ -277,6 +277,8 @@
 <script>	
 	$(function() {
 		
+		dc_final();
+		
 		let shadow = $("#shadow");
 		/* 로그인 모달창 열기 메서드 */
 	    function showShadow() {
@@ -335,13 +337,17 @@
         
         function dc_final(){
         	let dc_product = parseInt($("#discount_product").val());
-        	let inputPoint = parseInt($("#input_point").val().replace(/\D/g, ''));   
+        	/* let inputPoint = parseInt($("#input_point").val().replace(/\D/g, '')); */   
+        	let inputPoint = 0;
+        	
+        	if(!isNaN($("#input_point").val()) && $("#input_point").val() != null && $("#input_point").val() != ''){
+        		inputPoint = parseInt($("#input_point").val().replace(/\D/g, ''));
+        	}
+        	
         	let dc_final = dc_product + inputPoint;
         	let price_before = parseInt($("#price_before").val().replace(/\D/g, ''));
         	let shipping_fee = parseInt($("#shipping-fee").text().replace(/\D/g, ''));
         	let price_final = price_before - dc_final + shipping_fee;
-        	        	
-        	
         	
         	$("#dc_final").text(" - "+Number(dc_final).toLocaleString()+"원");
         	$("#dc_final_nav").text(" - "+Number(dc_final).toLocaleString()+"원");
@@ -349,8 +355,6 @@
         	$("#btn_payment_main").text(Number(price_final).toLocaleString()+"원 결제하기");
         	
         }
-        
-        dc_final();
         
         $("#order-nav_btn").click(function(){
         	$("#btn_payment_main").click();
