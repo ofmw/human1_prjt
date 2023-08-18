@@ -8,7 +8,7 @@
 <head>
     <title>비로그인 헤더</title>
 
-<link href="resources/css/header.css?v=1234" rel="stylesheet">
+<link href="resources/css/header.css?v=123" rel="stylesheet">
 <link href="resources/css/login.css" rel="stylesheet">
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -52,16 +52,16 @@
 							        <c:otherwise>
 										<a href="mypage/mypage.do">${member.m_name}님</a>
 									</c:otherwise>
-							    </c:choose>								
-								<a href="boardFile/faq_member.do">고객센터</a>
-								<c:choose>
-									<c:when test="${member.platform eq 'kakao'}">
-										<a href="kakaologout.do">로그아웃</a>
-									</c:when>
-									<c:when test="${member.platform eq 'omart'}">
-										<a href="member/logout.do">로그아웃</a>
-									</c:when>
-								</c:choose>
+							    </c:choose>
+							    <c:choose>
+                                    <c:when test="${member.platform eq 'kakao'}">
+                                        <a href="kakaologout.do">로그아웃</a>
+                                    </c:when>
+                                    <c:when test="${member.platform eq 'omart'}">
+                                        <a href="member/logout.do">로그아웃</a>
+                                    </c:when>
+                                </c:choose>							
+								<a href="boardFile/list_faq_member.do">고객센터</a>								
 							</c:otherwise>
 						</c:choose>
 					</div>

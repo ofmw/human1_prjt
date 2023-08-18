@@ -64,7 +64,7 @@
             box-sizing: border-box
         }
         /* 마이페이지 헤더 내부 요소 제목 공통(쿠폰, 포인트) */
-        .mp_header_obj_title{font-size: 23px;}
+        .mp_header_obj_title{font-size: 23px; font-weight: bold;}
 
         /* 마이페이지 헤더 유저 이름 */
         #mp_header_user_name{font-size: 35px; font-weight: bold;}
@@ -82,7 +82,6 @@
         #mp_header_coupon_num{margin-top: 15px;}
         /* 소지 쿠폰 숫자 */
         #mp_header_coupon_num span{
-            font-weight: bold;
             font-size: 20px;
             margin-right: 5px;
         }
@@ -329,7 +328,6 @@
 		    border-radius: 3px;
 		    background-color: #fcfcfc;
         }
-        
         #mp_main_wish_notice {
 		    margin-top: 10px;
 		    padding-left: 30px;
@@ -660,10 +658,10 @@
             $("#sel2").change(function() {
                 let selectedOption = parseInt($(this).val());
                 
-                if (selectedOption === 4) { // 4개씩 표시
-                    showElements(4);
-                } else if (selectedOption === 8) { // 8개씩 표시
-                	showElements(8);
+                if (selectedOption === 20) { // 20개씩 표시
+                    showElements(20);
+                } else if (selectedOption === 40) { // 40개씩 표시
+                	showElements(40);
                 } else if (selectedOption === 100) { // 100개씩 표시
                 	showElements(100);
                 }
@@ -694,7 +692,7 @@
 			}
             
             //페이지 로드시 기본 버튼 생성
-            setNav(Math.ceil($(".w_products").length / 4)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+            setNav(Math.ceil($(".w_products").length / 20)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
             
           	//*** 페이지 변환 ***//
             function changePage(pageNum) {
@@ -834,8 +832,8 @@
                        			<option value="name">이름순</option>
 							</select>
 	                        <select id="sel2">
-	                            <option value="4">4개씩</option>
-	                            <option value="8">8개씩</option>
+	                            <option value="20">20개씩</option>
+	                            <option value="40">40개씩</option>
 	                            <option value="100">100개씩</option>
 	                        </select>
 	                    </div>

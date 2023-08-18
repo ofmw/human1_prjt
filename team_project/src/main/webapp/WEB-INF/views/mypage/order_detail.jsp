@@ -259,7 +259,7 @@
                             </colgroup>
                             <c:forEach items="${p_info}" var="p">
 	                            <tr>
-	                                <td class="td_img"><a href="#"><img src="#" alt="이미지" width="90" height="90"></a></td>
+	                                <td class="td_img"><a href="#"><img src="../resources/uploads/${p.saveFile1}" alt="이미지" width="90" height="90"></a></td>
 	                                <td class="td_pname">
 	                                	<input type="hidden" class="p_id" value="${p.p_id}">
 	                                	<a href="../product/product_view.do?p_id=${p.p_id}">
@@ -277,9 +277,20 @@
 	                                   <c:otherwise>
 	                                       <td class="td_review"><a class="btn_writeReview" >리뷰작성</a></td>	                                       
 	                                   </c:otherwise>
-	                                </c:choose>
-	                                
+	                                </c:choose>	                                
 	                            </tr>
+                            </c:forEach>
+                            <c:forEach items="${orderList}" var="o">
+	                            <c:if test="${o.order_idx eq param.order_idx}">
+			                        <tr>
+	                                    <th>최종결제금액</th>
+	                                    <td></td>
+	                                    <td class="td_odinfo">
+	                                       <span class="td_odinfo_price"><fmt:formatNumber value="${o.paid_price}" pattern="#,###"/><span>원</span></span><br>
+	                                       <span class="td_odinfo_amount">(포인트차감 : -<fmt:formatNumber value="${o.used_point}" pattern="#,###" />원)</span>
+	                                    </td>
+	                                </tr>
+			                    </c:if>			                    
                             </c:forEach>
                         </table>
                     </div>

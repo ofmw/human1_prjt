@@ -65,23 +65,29 @@
         position: relative;
         width: 70px;
         height: 70px;
-        background-color: orange;
-        border-radius: 15px;
-        overflow: hidden;
         margin-top: 35px;
-        margin-right: 20px;
+        margin-right: 20px;  
+        border-radius: 15px;    
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* 수정 가능 */                  
     }
     .quick_btn a{
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: palevioletred;
     }
     .quick_btn img{
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: chartreuse;
+        background-color: chartreuse;        
+    }
+    .quick_btn p{
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        color: #333;
+        font-size: 14px;
+        text-align: center;
     }
 
     /* ---------------------상품페이지 메인--------------------- */
@@ -256,13 +262,20 @@
 	$(function(){
 		
 		let check_request = $("#check_request");
+		let check_param = check_request.val();
 		
-		if(check_request.val() == '2_1'){
-			setTimeout(function(){
-				$("#2_1").click();
-			}, 1);
+		let opt_checkbox = $(".opt_checkbox");
+		opt_checkbox.each(function(){
+			if(check_param == $(this).val()){
+				let check_this = $(this); // 현재 요소를 변수에 저장
+		        setTimeout(function(){
+		        	check_this.click(); // 저장한 변수 사용
+		        }, 1);
+			}
+		});
+		
+		
 			
-		}
 		
 		/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
     	//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
@@ -420,48 +433,53 @@
         	addCart(p_idArray);
         	
         });
-        
 
+      	let optCheckbox = $(".opt_checkbox");
+      	let selectSort = $("#select_sort");
       	
+      	optCheckbox.change(function(){
+      		changeList();
+      	});
       	
-      	
-		$(".opt_checkbox").change(function(){
-			  let checkedItems = $(".opt_checkbox:checked");
-			  
-			  let checkedMap = {};
-			  
-			  
+      	selectSort.change(function(){
+      		changeList();
+      	});
+		
+		function changeList(){
+	        let checkedItems = $(".opt_checkbox:checked");              
+	        let checkedMap = {};                        
+	        let selectedSort = selectSort.val();
 
-			  checkedItems.each(function(){
-				  let key = this.id.charAt(0);
-				  let value = this.value;				  
+	        checkedItems.each(function(){
+	            let key = this.id.charAt(0);
+	            let value = this.value;                 
 
-		            if (!checkedMap[key]) {
-		                checkedMap[key] = [];  // 배열 초기화
-		            }
+	              if (!checkedMap[key]) {
+	                  checkedMap[key] = [];  // 배열 초기화
+	              }
 
-		            checkedMap[key].push(value);  // 배열에 값 추가
-			  });
-			  
-			  console.log(checkedMap);
-			  console.log(checkedMap[1]);
-			  
-			  $.ajax({
-				 type: "post",
-				 url: "update_product_list.do?category="+category,
-				 data : JSON.stringify(checkedMap),
-				 dataType: "json",
-				 contentType:"application/json;charset=UTF-8",
-				 success: function(response){					 					 
-					 updateProduct(response);
-					 console.log("ajax 통신 성공");
-				 },
-				 error: function(error){
-					 alert("ajax 통신 테스트 실패")
-				 }
-			  });
-			  
-		});
+	              checkedMap[key].push(value);  // 배열에 값 추가
+	        });
+	        
+	        console.log(checkedMap);
+	        console.log(checkedMap[1]);
+	        
+	        $.ajax({
+	           type: "post",
+	           url: "update_product_list.do?category="+category+"&selectedSort="+selectedSort,
+	           data : JSON.stringify(checkedMap),
+	           dataType: "json",
+	           contentType:"application/json;charset=UTF-8",
+	           success: function(response){                                        
+	               updateProduct(response);
+	               console.log("ajax 통신 성공");
+	           },
+	           error: function(error){
+	               alert("ajax 통신 테스트 실패")
+	           }
+	        });
+	    }
+		
 	});
 	
 	function updateProduct(response) {
@@ -499,7 +517,9 @@
 	                }
 	                
 	                rebuilding += "</div>";
-	                rebuilding += "<div class='p_info_stars'>★ 4.5 (1043)</div>";
+	                if(product.reviews > 0){
+	                	rebuilding += "<div class='p_info_stars'>★ "+ product.stars_avg +" ("+ product.reviews +")</div>";
+	                }	                
 	                rebuilding += "</div></a></div>";
 	            }
 	        }
@@ -530,11 +550,11 @@
             <!-- 상단 버튼 모음 -->
             <div id="pl_header">
                 <div id="pl_header_btn_box">
-                    <div class="quick_btn"><a href="product_list.do?"><img src="#" alt="#"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="../resources/img/육류.png" alt="육류"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="../resources/img/가공.png" alt="가공"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="../resources/img/수산.png" alt="수산"></a></div>
-                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="../resources/img/야채.png" alt="야채"></a></div>
+                    <div class="quick_btn"><a href="product_list.do?"><img src="../resources/img/ALL.png" alt="전체"><p>전체</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=AA"><img src="../resources/img/육류.jpg" alt="육류"><p>육류</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=BB"><img src="../resources/img/가공.jpg" alt="가공"><p>가공</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=CC"><img src="../resources/img/수산.jpg" alt="수산"><p>수산</p></a></div>
+                    <div class="quick_btn"><a href="product_list.do?category=DD"><img src="../resources/img/야채.jpg" alt="야채"><p>야채</p></a></div>
                 </div>
             </div>
 
@@ -548,11 +568,11 @@
                             <c:when test="${param.category eq 'BB'}">가공</c:when>
                             <c:when test="${param.category eq 'CC'}">수산</c:when>
                             <c:when test="${param.category eq 'DD'}">야채</c:when>
-                            <c:otherwise>전체상품</c:otherwise>
+                            <c:otherwise>전체</c:otherwise>
                         </c:choose>                    
                     </div>
                     <div id="pl_main_header_sel_box">
-                        <select id="sel1">
+                        <select id="select_sort">
                             <option value="1">추천순</option>
                             <option value="2">판매량순</option>
                             <option value="3">낮은가격순</option>
@@ -560,13 +580,8 @@
                             <option value="5">할인율순</option>
                             <option value="6">신상품순</option>
                             <option value="7">리뷰많은순</option>
-                        </select>
-                        <select id="sel2">
-                            <option value="40">40개씩</option>
-                            <option value="60">60개씩</option>
-                            <option value="80">80개씩</option>
-                            <option value="100">100개씩</option>
-                        </select>
+                            <option value="8">별점높은순</option>
+                        </select>                        
                     </div>
                 </div>
             

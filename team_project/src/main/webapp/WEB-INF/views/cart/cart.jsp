@@ -16,6 +16,11 @@
 
     /* a태그 공통 */
     a{text-decoration: none; color: #222;}
+    
+	button:hover, #sel_box:hover{
+		background-color: #222 !important;
+       	color: white !important;
+	}
 
     /* ---------------------상품 페이지--------------------- */
     #pl_area{
@@ -67,8 +72,7 @@
         font-weight: bold;
     }
     #cart_plist_header_opt_box *{
-        color: #777;
-        font-size: 13px;
+        font-size: 12px;
     }
     #cart_plist_header_opt_box{
         display: flex;
@@ -76,19 +80,23 @@
         justify-content: space-between;
     }
     #cart_plist_header_opt_box label{
-        padding-right: 10px;
         user-select: none;
     }
     #sel_box{
-    	user-select: none;
+        background-color: #fcfcfc;
+		padding: 2px 5px;
+		border: 1px solid #ddd;
+		border-radius: 3px;
     }
     #sel_all{
         position: relative;
         top: 1.5px;
     }
     #sel_delete{
-        border: 0;
-        background-color: white;
+        background-color: #fcfcfc;
+	    padding: 2px 5px;
+	    border: 1px solid #ddd;
+	    border-radius: 3px;
     }
 
 /* ---------------------장바구니 주문결제 네비게이션 메뉴--------------------- */
@@ -350,13 +358,16 @@
     #notice_title{
         font-weight: bold;
     }
-    #notice_contents ul{
-        list-style: none;
-    }
-    #notice_contents li{
-        margin: 5px 0;
-        font-size: 12px;
-    }
+	#notice_contents {
+		margin-top: 10px;
+		padding-left: 30px;
+		color: #777;
+	}
+
+	#notice_contents ul {
+		list-style-type: circle;
+		font-size: 13px;
+	}
 
     </style>
 
@@ -509,24 +520,6 @@
                 ordernav.css("position", "static"); // 내비게이션 포지션 속성 초기화
             }
 
-        });
-
-        /* ---------------------버튼 색상 변경--------------------- */
-        //*** 버튼에 마우스 커서가 올라갔을 때의 이벤트 처리 ***//
-        $("button").mouseenter(function() {
-            $(this).css({
-                "background-color": "#222",
-                "color": "white"
-                });
-        });
-
-
-        //*** 버튼에서 마우스 커서가 벗어났을 때의 이벤트 처리 ***//
-        $("button").mouseleave(function() {
-            $(this).css({
-                "background-color": "",
-                "color": ""
-            }); // 원래 배경색 및 폰트 색상으로 되돌리기
         });
 
         /* ---------------------빈 장바구니 표시--------------------- */
@@ -891,13 +884,11 @@
                             <div id="cart_plist_header">
                                 <div class="cart_plist_header_title">장바구니</div>
                                 <div id="cart_plist_header_opt_box">
-                                    <form>
-                                        <div id="sel_box">
-                                            <input type="checkbox" id="sel_all">
-                                            <label for="sel_all">전체선택 / 선택해제</label>
-                                        </div>
-                                        <button type="button" id="sel_delete">선택품목 삭제</button>
-                                    </form>
+                                    <div id="sel_box">
+                                        <input type="checkbox" id="sel_all">
+                                        <label for="sel_all">전체선택 / 선택해제</label>
+                                    </div>
+                                    <button type="button" id="sel_delete">선택품목 삭제</button>
                                 </div>
                             </div>
 
@@ -970,9 +961,9 @@
                                 <div id="notice_title">장바구니 상품 안내</div>
                                 <div id="notice_contents">
                                     <ul>
-                                        <li>·&nbsp;&nbsp;장바구니에 담은 상품은 최대 150개까지 보관됩니다.</li>
-                                        <li>·&nbsp;&nbsp;포인트, 쿠폰 적용 금액은 결제 페이지에서 확인 가능합니다.</li>
-                                        <li>·&nbsp;&nbsp;비회원 주문인 경우 브라우저 종료 시 장바구니가 초기화됩니다.</li>
+                                        <li>장바구니에 담은 상품은 최대 150개까지 보관됩니다.</li>
+                                        <li>포인트, 쿠폰 적용 금액은 결제 페이지에서 확인 가능합니다.</li>
+                                        <li>비회원 주문인 경우 브라우저 종료 시 장바구니가 초기화됩니다.</li>
                                     </ul>
                                 </div>
                             </div>

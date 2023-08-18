@@ -172,7 +172,7 @@
 	$(function() {
 		
 		let close_btn = $("#btn_close_window");
-		let write_review_btn = $("#btn_write_review");				
+		let write_review_btn = $("#btn_write_review");
 		let stars = $(".stars");
 		let score = 0;
 		let orderIdx = $("#order_idx").val();
@@ -195,6 +195,7 @@
         stars.click(function(){
 
             let starIndex = $(this).index();
+            score = starIndex + 1;
             
             for (let i = 0; i < stars.length; i++) {
                 if (i <= starIndex) {

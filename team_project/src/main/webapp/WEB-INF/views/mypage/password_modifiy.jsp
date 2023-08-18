@@ -33,6 +33,10 @@
             color: #222;
             width: 100%;
         }
+        #tbl_join{
+        	border-top: 1px solid black;
+        	background-color: rgb(250, 250, 250);
+        }
         #td_pnav{
             height: 50px;
         }
@@ -45,10 +49,10 @@
         	position: absolute;
         	
         }
-        .mp_member_modifiy{
+        .mp_password_modifiy{
         	display: none;
         }
-        #mp_member_modify{
+        #mp_password_modify{
         	width: 400px;
         }
         p{
@@ -84,7 +88,6 @@
 	
 	function checkPw() {
 		var password = $('#pw_check').val();
-		console.log("비번: " + password);
 		$.ajax({
             type: 'POST',
             url: 'check_password', // 서버의 비밀번호 확인 엔드포인트 URL
@@ -92,7 +95,7 @@
             success: function(response) {
                 if (response === 'match') {
                     document.getElementById("mp_memberPw_check").style.display = "none";
-                    document.getElementById("mp_member_modifiy").style.display = "block";
+                    document.getElementById("mp_password_modifiy").style.display = "block";
                     // 비밀번호 일치 시 추가 작업 수행
                 } else {
                     alert("비밀번호를 확인해주세요");
@@ -103,14 +106,16 @@
         });
 	}
 	
-	/* $(document).ready(function(){
-		$("#btn_update").click(function(){
-			var formData = {
-					selNum: $("#selNum").val(),
-					m_pw: $("#m_pw").val()
-			};
+	$(document).ready(function(){
+		var passwordPattern = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,12}$/;
+		
+		/* $("#btn_update").click(function(){
+			var newPassword = $("#m_pw").val();
+			var newPasswordCheck = $("#m_pwCheck").val();
 			
-			console.log("formData : " + formData);
+			if (newPassword !== newPasswordCheck){
+				
+			}
 			
 			$.ajax({
 				type: 'POST',
@@ -118,16 +123,41 @@
 				data: formData,
 				success: function(response) {
 					if (response === 'success') {
-						alert("회원정보 수정이 완료되었습니다.");
+						alert("비밀번호 변경이 완료되었습니다.");
 					} else {
-						alert("회원정보 수정을 실패하였습니다.");
+						alert("비밀번호 변경을 실패하였습니다.");
 					}
 				}
 			});
 			return false;
-		});
-	}); */
+		}); */
 	
+	
+	$('#m_pw').blur(function(){
+        var passwordInput = $(this);
+        var passwordCheck = $('#pw_check');
+        
+        if (passwordPattern.test(passwordInput.val())) {
+            passwordCheck.text('');
+        } else {
+            passwordCheck.text('8~12자리의 영소문자, 숫자 및 특수문자(@$!%*?&)를 포함해야 합니다.');
+            passwordCheck.css('color', 'red');
+        }
+    });
+
+    $('#m_pwCheck').blur(function(){
+        var passwordInput = $('#m_pw');
+        var passwordConfirmInput = $(this);
+        var passwordConfirmCheck = $('#pw_check2');
+        
+        if (passwordInput.val() === passwordConfirmInput.val()) {
+            passwordConfirmCheck.text('');
+        } else {
+            passwordConfirmCheck.text('비밀번호가 일치하지 않습니다.');
+            passwordConfirmCheck.css('color', 'red');
+        }
+    });
+});
 </script>
 <body>
 
@@ -143,8 +173,8 @@
             <div id="mp_header_user_name">${member.m_name}님</div>
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
-                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
+                    <li><a href="#">회원정보 변경</a></li>
+                    <li><a href="#">비밀번호 변경</a></li>
                     <li><a href="#">배송지 관리</a></li>
                 </ul>
             </div>
@@ -214,48 +244,28 @@
 					<button type="button" onclick="checkPw()">확인</button>
 				</div>
         	</div>
-        	<div id="mp_member_modifiy" class="mp_member_modifiy">
+        	<div id="mp_password_modifiy" class="mp_password_modifiy">
         		<div id="div_box">
-        			<h4>회원정보수정</h4>
+        			<h4>비밀번호변경</h4>
         		</div>
-        		<form action="updateMember_process.do" method="post" name="frm_update" id="frm_update">
-        		<table id="tbl_join">
-                    <tr>
-                        <td>
-                            <p>이름</p>
-                            <input type="text" name="m_name" id="m_name" value="${member.m_name}">
-                            <div class="check" id="name_check"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>생년월일 및 성별</p>
-                                <fieldset>
-                                    <input type="text" name="birth" id="birth" maxlength="6" value="${member.birth}" readonly>
-                                    <p>-</p>
-                                    <input type="text" name="gender" id="gender" maxlength="1" value="${member.gender}" readonly>
-                                    <input type="text" id="fld_block" value="●●●●●●" readonly style="background-color: white;">
-                                </fieldset>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="sel_aNum">
-                            <p>휴대폰 번호</p>
-                                    <input type="text" name="selNum" id="selNum" value="${member.selNum}">
-                                    <div class="check" id="selNum_check"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="aNum_behind">
-                            <p>아이디</p>
-                            	<input type="text" name="m_id" id="m_id" value="${member.m_id}" readonly><br>
-                            	<div class="check" id="id_check"></div>
-                        	
-                        	<input type="button" id="cancel_btn" value="취소하기" onclick="history.back()">
-                            <button type="submit" name="btn_update" id="btn_update">수정하기</button>
-                        </td>
-                    </tr>
-                </table>
+        		<form action="updatePw_process.do" method="post" name="frm_update" id="frm_update">
+        		<input type="hidden" name="m_id" value="${member.m_id}">
+	        		<table id="tbl_join">
+	                    <tr>
+	                        <th>비밀번호</th>
+	                        <td><input type="password" name="m_pw" id="m_pw"><br>
+	                            <div class="check" id="pw_check"></div>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <th>비밀번호 확인</th>
+	                        <td>
+	                        	<input type="password" name="m_pwCheck" id="m_pwCheck"><br>
+	                            <div class="check" id="pw_check2"></div>
+	                        </td>
+	                    </tr>
+	                </table>
+	                <button type="submit" name="sbm_edit" id="sbm_edit">확인</button>
                 </form>
         	</div>
 

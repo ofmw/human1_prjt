@@ -235,6 +235,5 @@ public class AjaxController {
 		bfInsert.insertEvent(attachedFile, title, period, content, m_idx, request);
 		
 	}
-
-
+	
 }

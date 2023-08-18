@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<link rel="shortcut icon" href="#">
 <meta charset="UTF-8">
 <title>오!마트</title>
 
@@ -200,12 +202,13 @@
     
     .wrapper {
         max-width:1200px;
-        width:75%;
+        width:100%;
         margin:0 auto;
     }
 
     .swiper {
         max-width: 700px;
+        max-height: 350px;
         width:100%;
         height: 320px;
         position: relative;
@@ -238,8 +241,8 @@
 
     .swiper-slide img {
         display: block;
-        width: 100%;
-        height: 100%;
+        width: 650px;
+        height: 320px;
         object-fit: cover;
         border-radius: 20px;
     }
@@ -317,7 +320,7 @@
             breakpoints: {
                 // 600px 이하가 되면 슬라이드 간 간격을 0으로
                 600: {
-                    spaceBetween: 10
+                    spaceBetween: 100
                 },
             },
     
@@ -543,11 +546,11 @@
                 <!-- Swiper -->
                 <div class="swiper mySwiper">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide"><a href="product/product_view.do?p_id=AA0001"><img src="resources/img/구운_삼겹살.jpg" alt="구운_삼겹살" /></a></div>
-                    <div class="swiper-slide"><a href="product/product_list.do?category=BB&check=2_1"><img src="resources/img/과자모음.jpg" alt="과자모음" /></a></div>
-                    <div class="swiper-slide">Slide 3</div>
-                    <div class="swiper-slide">Slide 4</div>
-                    <div class="swiper-slide">Slide 5</div> 
+                    <div class="swiper-slide"><a href="product/product_view.do?p_id=AA0001"><img src="resources/img/삼겹살.jpg" alt="구운_삼겹살" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=BB&check=과자"><img src="resources/img/과자모음.jpg" alt="과자모음" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=DD"><img src="resources/img/야채모음.jpg" alt="야채모음" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=CC"><img src="resources/img/해산물요리.jpg" alt="해산물요리" /></a></div>
+                    <div class="swiper-slide"><a href="product/product_list.do?category=BB&check=김치"><img src="resources/img/김치.jpg" alt="김치" /></a></div> 
                   </div>
                   <div class="swiper-pagination"></div>
                   <div class="swiper-button-next"></div>
@@ -560,7 +563,6 @@
 
             <!-- 상품 게시 영역 -->
             <div id="hp_area_products_box">
-
 				<!-- 베스트 상품 -->
                 <div class="p_best">
                     <div class="p_elements">

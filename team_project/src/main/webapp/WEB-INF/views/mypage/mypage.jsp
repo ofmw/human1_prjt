@@ -11,7 +11,7 @@
 <style>
 
 	/* a태그 공통 */
-	a:hover{text-decoration: underline;}
+	a:hover:not(#div_category a){text-decoration: underline;}
 	/* 버튼 및 선택 요소 공통 */
 	button:hover, #sel_box:hover{
 		background-color: #222 !important;
@@ -273,6 +273,9 @@
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
 	                </c:if>
+	                <c:if test="${member.platform eq 'omart'}">
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
+	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
 
@@ -372,7 +375,7 @@
             </div>
 
             <div id="mp_main_wish" class="mp_main_obj">
-                <div class="mp_main_title"><a href="wish.do?option1=none">찜목록</a></div>
+                <div class="mp_main_title"><a href="wish.do">찜목록</a></div>
                 <div id="mp_w_main_products">
 
                     <div id="w_box">

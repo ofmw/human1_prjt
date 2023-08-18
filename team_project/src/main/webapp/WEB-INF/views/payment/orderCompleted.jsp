@@ -177,6 +177,19 @@
 	                        <td><fmt:formatNumber value="${product.price * product.amount}" pattern="#,###" />원</td>
 	                    </tr>
                     </c:forEach>
+                    <c:if test="${orderVo.used_point gt 0}">
+                        <tr>
+                        	<th></th>
+                        	<td></td>                        	
+                        	<td colspan="2" style="text-align: right; padding-right: 10px;">(포인트차감 : -<fmt:formatNumber value="${orderVo.used_point}" pattern="#,###" />원)</td>
+                        </tr>
+                    </c:if>
+                    <tr>
+                    	<th>최종결제금액</th>
+                    	<td></td>
+                    	<td></td>
+                    	<td><fmt:formatNumber value="${orderVo.paid_price}" pattern="#,###" />원</td>
+                    </tr>
                     <tr>
                     	<td colspan="4">
                     	   <a href="../index.do"><h3>메인으로 돌아가기</h3></a>
