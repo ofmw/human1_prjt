@@ -8,7 +8,7 @@
 <head>
     <title>주문상세 조회</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <link href="../resources/css/order_detail.css" rel="stylesheet">
+    <link href="../resources/css/order_detail.css?v=1234" rel="stylesheet">
     
     <style>
    		/* a태그 공통 */
@@ -25,6 +25,10 @@
 			background-color: #222; !important;
 			color: white;
 		}
+		#tr_total th, #tr_total td{
+		  height: 60px;
+		}
+		
     </style>
     
     <script>
@@ -282,12 +286,27 @@
                             </c:forEach>
                             <c:forEach items="${orderList}" var="o">
 	                            <c:if test="${o.order_idx eq param.order_idx}">
-			                        <tr>
+	                                <c:if test="${o.used_point gt 0}">
+	                                    <tr id="tr_total">
+	                                        <th>포인트사용</th>
+	                                        <td></td>
+	                                        <td class="td_odinfo" colspan="2" style="border-right: none; border-left: none;">
+	                                           <span class="td_odinfo_price">-<fmt:formatNumber value="${o.used_point}" pattern="#,###"/><span>원</span></span>                                      
+	                                        </td>
+	                                    </tr>
+	                                </c:if>
+	                                <tr id="tr_total">
+                                        <th>배송비</th>
+                                        <td></td>
+                                        <td class="td_odinfo" colspan="2" style="border-right: none; border-left: none;">
+                                           <span class="td_odinfo_price">+<fmt:formatNumber value="${o.s_fee}" pattern="#,###"/><span>원</span></span>                                     
+                                        </td>
+                                    </tr>
+			                        <tr id="tr_total">
 	                                    <th>최종결제금액</th>
 	                                    <td></td>
-	                                    <td class="td_odinfo">
-	                                       <span class="td_odinfo_price"><fmt:formatNumber value="${o.paid_price}" pattern="#,###"/><span>원</span></span><br>
-	                                       <span class="td_odinfo_amount">(포인트차감 : -<fmt:formatNumber value="${o.used_point}" pattern="#,###" />원)</span>
+	                                    <td class="td_odinfo" colspan="2" style="border-right: none; border-left: none;">
+	                                       <span class="td_odinfo_price"><fmt:formatNumber value="${o.paid_price}" pattern="#,###"/><span>원</span></span>                                    
 	                                    </td>
 	                                </tr>
 			                    </c:if>			                    
