@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="resources/js/cart.js"></script>
+<script src="resources/js/cart.js?v=1234"></script>
 
 <style>
     /* ---------------------전체 요소 공통--------------------- */
@@ -36,7 +36,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 100px;
         width: 100%;
         min-width: 1280px;
     }
@@ -102,12 +101,16 @@
 /* ---------------------상품 영역--------------------- */
     .p_best{
         width: 100%;
+        margin-top: 30px;
+    }
+    .p_best:first-child{
         margin-top: 100px;
     }
     .p_title{
         font-size: 35px;
         font-weight: bold;
         padding-left: 20px;
+        user-select: none;
     }
     .p_inner_elements{
         display: flex;
@@ -292,6 +295,18 @@
     .thumbnail{
         width: 295px;
         height: 295px;
+    }
+    .soldout{
+        position: absolute;
+        width: 295px;
+        height: 295px;
+        background-color: rgba(100, 100, 100, 0.5);
+        text-align: center;
+        line-height: 295px;
+        font-size: 17px;
+        color: white;
+        font-weight: bold;
+        user-select: none;
     }
 </style>
 <script>
@@ -530,10 +545,14 @@
 	                            
 	                            <div class="p_products">
 	                                <div class="p_img">
+	                                    <c:if test="${bestList[i].stock eq 0}">
+	                                       <div class="soldout">품절</div>
+	                                    </c:if>		                                    
 	                                	<a href="product/product_view.do?p_id=${bestList[i].p_id}"><img class="thumbnail" src="resources/uploads/${bestList[i].saveFile1}" alt="${bestList[i].p_name}"></a>
 		                                <div style="display:none" class="p_img_opt-box">
 		                                	<div class="p_img_opt-box-innerDiv">
 				                                <input type="hidden" class="p_id" value="${bestList[i].p_id}">
+				                                <input type="hidden" class="stock" value="${bestList[i].stock}"/>
 						                		<button type="button" class="c_btn">🛒</button>
 						                		<c:choose>
 	               									<c:when test="${!empty wishList and wishList.contains(bestList[i].p_id)}">
@@ -545,7 +564,7 @@
 					                			</c:choose>
 		                                	</div>
 		                                </div>                                
-	                                </div>
+	                                </div>	                                
 	                                <a href="product/product_view.do?p_id=${bestList[i].p_id}">
 		                                <div class="p_info">
 		                                    <div class="p_info_brand">${bestList[i].brand}</div>

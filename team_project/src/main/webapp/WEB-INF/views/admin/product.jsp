@@ -402,7 +402,7 @@
 	            let productId = $(this).find("td:nth-child(3)").text();
 	            let brandName = $(this).find("td:nth-child(5)").text();
 	            let postState = $(this).find("td:nth-child(12)").text();
-	            let stockState = $(this).find("td:nth-child(10)").text();
+	            let stockState = $(this).find("td:nth-child(11)").text().trim();
 	            let showCategory = selectedCategories.length === 0 || selectedCategories.includes(productId.substring(0, 2));
 	            let showBrand = selectedBrands.length === 0 || selectedBrands.includes(brandName);
 	            let showPostState = selectedPostStates.length === 0 || selectedPostStates.includes(postState.trim());

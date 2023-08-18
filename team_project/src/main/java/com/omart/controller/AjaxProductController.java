@@ -1,9 +1,12 @@
 package com.omart.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -114,7 +117,7 @@ public class AjaxProductController {
 	}
 
 	@RequestMapping("/update_product_list.do")
-	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, String category, String selectedSort){
+	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, String category, String selectedSort, String keyword){
 		
 		String[] checked_brand = checkedMap.get("1");
 		String[] checked_sub_category = checkedMap.get("2");
@@ -123,6 +126,57 @@ public class AjaxProductController {
 		System.out.println(Arrays.toString(checked_sub_category));
 		
 		List<ProductVo> productList = pdList.productList();
+		
+		if(keyword != null && !keyword.isEmpty()) {
+			final String keywordLowerCase = keyword.toLowerCase();
+			
+			List<ProductVo> matchedName = new ArrayList<>(); 		// 이름 비교
+			List<ProductVo> matchedSub = new ArrayList<>(); 		// 소분류 비교
+			List<ProductVo> matchedBrand = new ArrayList<>(); 		// 브랜드 비교
+			List<ProductVo> matchedCategory = new ArrayList<>(); 	// 대분류 비교
+		    
+		    // p_name에 keyword가 포함되는 요소를 matchedName 리스트에 추가
+		    for (ProductVo product : productList) {
+		        if (product.getP_name().toLowerCase().contains(keywordLowerCase)) {
+		            matchedName.add(product); // 조건에 맞는 요소를 새로운 리스트에 추가
+		        }
+		    }
+		    
+		    // sub_category에 keyword가 포함되는 요소를 matchedName 리스트에 추가
+		    for (ProductVo product : productList) {
+		        if (product.getSub_category().toLowerCase().contains(keywordLowerCase)) {
+		        	matchedSub.add(product); // 조건에 맞는 요소를 새로운 리스트에 추가
+		        }
+		    }
+		    
+		    // brand에 keyword가 포함되는 요소를 matchedName 리스트에 추가
+		    for (ProductVo product : productList) {
+		        if (product.getBrand().toLowerCase().contains(keywordLowerCase)) {
+		        	matchedBrand.add(product); // 조건에 맞는 요소를 새로운 리스트에 추가
+		        }
+		    }
+		    
+		    
+		    List<ProductVo> matchedTotal = new ArrayList<ProductVo>();
+		    matchedTotal.addAll(matchedName);
+		    matchedTotal.addAll(matchedSub);
+		    matchedTotal.addAll(matchedBrand);
+		    
+		    Set<String> uniqueIds = new HashSet<>();
+		    List<ProductVo> deduplication = new ArrayList<ProductVo>();
+		    
+		    for (ProductVo product : matchedTotal) {
+		        if (!uniqueIds.contains(product.getP_id())) {
+		        	deduplication.add(product);
+		            uniqueIds.add(product.getP_id());
+		        }
+		    }	
+		    
+		    productList = deduplication;
+		    
+		    model.addAttribute("keyword", keyword);
+			
+		}
 		
 		//post_state가 1이 아닌 객체 삭제
 		productList.removeIf(product -> product.getPost_state() != 1);

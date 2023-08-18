@@ -77,4 +77,8 @@ public class ProductDao{
 		return sqlSession.selectOne(MAPPER+".getReviews", p_id);
 	}
 	
+	public void setStock(ProductVo pVo) {
+		sqlSession.update(MAPPER+".setStock", pVo);
+	}
+	
 }

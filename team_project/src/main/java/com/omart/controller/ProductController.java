@@ -1,9 +1,11 @@
 package com.omart.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.omart.service.member.MemberService;
 import com.omart.service.product.ProductService;
 import com.omart.vo.BoardFileVo;
-import com.omart.vo.MemberVo;
 import com.omart.vo.ProductVo;
 
 import lombok.Setter;
@@ -35,17 +36,66 @@ public class ProductController {
 		
 	//상품페이지
 	@GetMapping("/product_list.do")
-	public String productList(String category, Model model, HttpServletRequest request) {
-		
-		System.out.println("카테고리 체크 : "+category);
-		
+	public String productList(String keyword, String category, Model model, HttpServletRequest request) {	
 			
+		System.out.println("키워드체크: "+keyword);
+		
 		List<ProductVo> productList = pdList.productList();
+		
+		if(keyword != null && !keyword.isEmpty()) {
+			final String keywordLowerCase = keyword.toLowerCase();
+			
+			List<ProductVo> matchedName = new ArrayList<>(); 		// 이름 비교
+			List<ProductVo> matchedSub = new ArrayList<>(); 		// 소분류 비교
+			List<ProductVo> matchedBrand = new ArrayList<>(); 		// 브랜드 비교
+			List<ProductVo> matchedCategory = new ArrayList<>(); 	// 대분류 비교
+		    
+		    // p_name에 keyword가 포함되는 요소를 matchedName 리스트에 추가
+		    for (ProductVo product : productList) {
+		        if (product.getP_name().toLowerCase().contains(keywordLowerCase)) {
+		            matchedName.add(product); // 조건에 맞는 요소를 새로운 리스트에 추가
+		        }
+		    }
+		    
+		    // sub_category에 keyword가 포함되는 요소를 matchedName 리스트에 추가
+		    for (ProductVo product : productList) {
+		        if (product.getSub_category().toLowerCase().contains(keywordLowerCase)) {
+		        	matchedSub.add(product); // 조건에 맞는 요소를 새로운 리스트에 추가
+		        }
+		    }
+		    
+		    // brand에 keyword가 포함되는 요소를 matchedName 리스트에 추가
+		    for (ProductVo product : productList) {
+		        if (product.getBrand().toLowerCase().contains(keywordLowerCase)) {
+		        	matchedBrand.add(product); // 조건에 맞는 요소를 새로운 리스트에 추가
+		        }
+		    }
+		    
+		    
+		    List<ProductVo> matchedTotal = new ArrayList<ProductVo>();
+		    matchedTotal.addAll(matchedName);
+		    matchedTotal.addAll(matchedSub);
+		    matchedTotal.addAll(matchedBrand);
+		    
+		    Set<String> uniqueIds = new HashSet<>();
+		    List<ProductVo> deduplication = new ArrayList<ProductVo>();
+		    
+		    for (ProductVo product : matchedTotal) {
+		        if (!uniqueIds.contains(product.getP_id())) {
+		        	deduplication.add(product);
+		            uniqueIds.add(product.getP_id());
+		        }
+		    }	
+		    
+		    productList = deduplication;
+		    
+		    model.addAttribute("keyword", keyword);
+			
+		}
 	    
 	    if(category != null) {
 	    	productList.removeIf(product -> !product.getP_id().startsWith(category));
 	    }
-	    
 	    
 	    //좌측 체크박스 생성을 위한 List 생성
 	    List<String> brandList = new ArrayList<String>(); //브랜드

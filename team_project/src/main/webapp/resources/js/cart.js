@@ -24,6 +24,13 @@ $(function() {
     
     //*** 장바구니 버튼 클릭 이벤트 처리 ***//
     $(".c_btn").click(function() {
+        let stock = $(this).siblings(".stock").val();
+        
+        if(stock == 0){
+            alert("품절상품은 담을 수 없습니다.");
+            return;
+        }
+    
         let p_idArray = [$(this).siblings(".p_id").val()];
         console.log(p_idArray);
         

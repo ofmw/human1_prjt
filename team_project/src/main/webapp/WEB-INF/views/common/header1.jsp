@@ -31,7 +31,9 @@
 	            </div>
 	            <!-- 검색 -->
 	            <div id="input_search_area">
-	                <input id="input_search" type="search">
+	                <form action="product/product_list.do" method="get" name="frm_keyword">
+	                   <input id="input_search" type="search" name="keyword" value="${keyword}">
+	                </form>
 	            </div>
              
 				<!-- ㅁㄴㅇㄹ -->
