@@ -46,16 +46,7 @@ public class CartController {
 		}
 
 		return "cart/cart";
-	}
-	
-	// 장바구니에 상품 추가
-	@PostMapping("/addCart.do")
-	public void addCart(CartVo cartVo) {
-		System.out.println("addCart실행");
-		System.out.println("p_id: "+cartVo.getP_id());
-		System.out.println("m_idx: "+cartVo.getM_idx());
-		cAdd.addCart(cartVo);
-	}
+	}	
 	
 	@GetMapping("cart/cart.do")
 	public String cart2() {

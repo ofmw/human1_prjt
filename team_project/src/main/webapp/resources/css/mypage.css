@@ -1,0 +1,124 @@
+@charset "UTF-8";
+
+/* ---------------------마이페이지 내용--------------------- */
+#mp_main_area{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: 1280px;
+    /* background-color: plum; */
+}
+
+/* ---------------------마이페이지 내용 좌측 메뉴영역--------------------- */
+#mp_main_menu{
+    display: flex;
+    flex-direction: column;
+
+    width: 150px;
+    height: 260px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+
+    padding: 20px 20px;
+}
+/* 메뉴 각 범주 사이 구분선 */
+#mp_main_menu_division{
+    margin: 30px auto;
+    content: "";
+    width: 150px;
+    height: 1px;
+    background-color: #e5e5e5;
+}
+/* 메뉴 각 범주 타이틀 공통 */
+.mp_main_menu_title{
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+/* 메뉴 li 공통 */
+.mp_main_menu_list li{
+    margin-top: 3px;
+}
+/* 메뉴 a태그 공통 */
+.mp_main_menu_list a{
+    color: #777;
+}
+
+/* ---------------------마이페이지 메인영역--------------------- */
+#mp_main{
+    width: 1000px;
+    padding-right: 30px;
+}
+.mp_main_obj{
+    margin-bottom: 50px;
+}
+#mp_main_osc_title{
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+#mp_main_osc_infobar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    /* padding: 0 20px; */
+    border: 2px solid black;
+    border-radius: 4px;
+    box-sizing: border-box;
+    user-select: none;    
+}
+#mp_main_osc_infobar div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 240px;
+    padding: 0 20px;
+    /* background-color: orange; */
+
+    color: #222;
+}
+#mp_main_osc_infobar p{
+    font-size: 17px;
+    font-weight: bold;
+    color: #222;
+    font-weight: bold;
+}
+.mp_main_osc_infobar_obj_btw::after{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 1px;
+    height: 14px;
+    background: #e5e5e5;
+    transform: translateY(-50%);
+    content: "";
+}
+
+.mp_main_title{
+    padding-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid #222;
+}
+
+#mp_main_review, #mp_main_wish{
+    display: flex;
+    flex-direction: column;
+}
+#mp_main_review{
+	height: 300px;
+}
+#mp_main_review_content, #mp_main_wish_content{
+    width: 100%;
+    height: 100%;
+    margin-top: 120px;
+    text-align: center;
+    font-size: 18px;
+    color: #222;
+}

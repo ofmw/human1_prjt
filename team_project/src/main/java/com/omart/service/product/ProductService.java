@@ -17,5 +17,6 @@ public interface ProductService {
 	default int checkReview(ProductVo pVo) {return 0;}
 	default double getStarsAvg(String p_id) {return 0.0;}
 	default int getReviews(String p_id) {return 0;}
+	default void setStock(ProductVo pVo) {}
 	
 }

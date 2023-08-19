@@ -13,10 +13,6 @@
 <link href="../resources/css/mypage/mypage.css" rel="stylesheet">
 <link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
 <style>
-	#mp_header_area li span:hover{
-		text-decoration: underline;
-		cursor: pointer;
-	}
 	.mp_main_title{
 		padding-bottom: 15px;
 		font-size: 20px;

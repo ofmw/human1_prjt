@@ -165,7 +165,7 @@
   		padding-top: 5px;
   	}
   	.hidden_row{
-  		display: none;
+  		display: ;
   	}
 
    
@@ -284,7 +284,7 @@
 	        	                success: function(response) {
 	        	                    if (response === 'success') {
 	        	                        alert('회원 가입이 완료되었습니다.');
-	        	                        location.href = '/index.do';
+	        	                        location.href = '../index.do';
 	        	                    } else {
 	        	                        alert('회원 가입에 실패했습니다.');
 	        	                    }
@@ -357,10 +357,12 @@
         });
         
         $('#btn_get_aNum').click(function(){
-        	var aNum = $('#aNum');
+        	var selNum = $('#selNum');
         	
-        	if(aNum.val() === ""){
+        	if(selNum.val() === ""){
         		alert("휴대폰 번호를 입력해주세요.");
+        	} else {
+        		alert("인증번호가 발송되었습니다. 인증번호를 확인해주세요.");
         	}
         });
         
@@ -486,7 +488,7 @@ $(document).ready(function() {
 <body>
     <form action="join_process.do" method="POST">
         <div id="div_join">
-        <img src="../resources/img/로고_블랙.png" onclick="location.href='/index.do'">
+        <img src="../resources/img/로고_블랙.png" onclick="location.href='../index.do'">
             <div  id="div_box">
                 <h4>회원가입</h4>
             </div>

@@ -13,16 +13,6 @@
     <link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
     
     <style>
-    	/* 버튼 및 선택 요소 공통 */
-        button:hover, #sel_box:hover{
-        	background-color: #222 !important;
-        	color: white;
-        }
-        
-        #mp_header_area li span:hover{
-	    	text-decoration: underline;
-	    	cursor: pointer;
-	    }
 	    /* ---------------------마이페이지 메인영역 헤더--------------------- */
         #mp_main_ph_header{
             display: flex;
@@ -54,7 +44,6 @@
         	width: 25px;
         	height: 25px;
         	margin: 0 5px;
-        	padding: 2px 5px;
         	
 		    font-size: 14px;
 		    cursor: pointer;
@@ -511,7 +500,7 @@
         
         <!-- 마이페이지 중앙 내용 -->
         <form>
-            <div id="mp_main">
+            <div id="mp_main_contents">
                 <div id="mp_main_ph" class="mp_main_obj">
                 
                 	<!-- 메인영역 헤더 -->
@@ -529,7 +518,6 @@
 	                </div>
 
                     <!-- 마이페이지 주문/배송내역  -->
-                    
                     <div id="mp_main_ph_searchbar">
 
                         <div>기간조회</div>

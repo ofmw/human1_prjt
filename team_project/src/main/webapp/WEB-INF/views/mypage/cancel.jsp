@@ -181,7 +181,7 @@
         </div>
 		
 		<!-- 중앙 본문 영역 -->
-        <div id="mp_main">
+        <div id="mp_main_contents">
             <div id="mp_main_cancel" class="mp_main_obj">
                 <div id="mp_main_cancel_title">정말로 회원탈퇴 하시겠습니까?</div>
                 <div id="mp_main_cancel_notice">회원탈퇴 관련 고지 내용</div>

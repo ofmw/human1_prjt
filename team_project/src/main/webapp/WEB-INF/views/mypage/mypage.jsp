@@ -14,16 +14,6 @@
 <link href="../resources/css/mypage/mypage-common.css?v=1234" rel="stylesheet">
 
 <style>
-	/* 버튼 및 선택 요소 공통 */
-	button:hover, #sel_box:hover{
-		background-color: #222 !important;
-		color: white;
-    }
-    
-    #mp_header_area li span:hover{
-    	text-decoration: underline;
-    	cursor: pointer;
-    }
 	/* ---------------------섹션 상품 표시 영역--------------------- */
 	#mp_w_main_products{
     	margin: 20px 0;

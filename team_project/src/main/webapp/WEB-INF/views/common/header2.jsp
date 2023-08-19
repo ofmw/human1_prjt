@@ -32,7 +32,9 @@
                 </div>
                 <!-- 검색 -->
                 <div id="input_search_area">
-                    <input id="input_search" type="search">
+                    <form action="../product/product_list.do" method="get" name="frm_keyword">
+                       <input id="input_search" type="search" name="keyword" value="${keyword}">
+                    </form>
                 </div>
                 
                 <!-- ㅁㄴㅇㄹ -->
@@ -42,7 +44,7 @@
 							<c:when test="${empty member}">
             		            <span id="login_btn2">로그인</span>
     		                    <a href="../member/join.do">회원가입</a>
-		                        <a href="../boardFile/list_faq_member.do">고객센터</a>
+		                        <a href="../boardFile/faq_member.do">고객센터</a>
 							</c:when>
 							<c:otherwise>
                                 <input type="hidden" id="m_idx" value="${member.m_idx}"/>

@@ -38,7 +38,7 @@ public class paymentController {
 	@Setter(onMethod_= {@Autowired})	
 	private PaymentService pmOrder;
 	@Setter(onMethod_= {@Autowired})	
-	private ProductService pdInfo;
+	private ProductService pdInfo, pdSet;
 	
 	//결제 페이지
 	@GetMapping("/payment.do")
@@ -129,7 +129,7 @@ public class paymentController {
 			cDel.deleteCartAll(m_idx);
 			
 		}else {
-			OrderDetails = (List<CartVo>)session.getAttribute("CartList");			
+			OrderDetails = (List<CartVo>)session.getAttribute("CartList");	
 		}
 		
 		model.addAttribute("OrderDetails", OrderDetails);
@@ -138,11 +138,16 @@ public class paymentController {
 		List<String> productAmounts = new ArrayList<String>();
 		List<String> productsPrice = new ArrayList<String>();
 		for(CartVo product : OrderDetails) {
-			productIds.add(product.getP_id());
-			productAmounts.add(Integer.toString(product.getAmount()));
+			
+			String p_id = product.getP_id();
+			int amount = product.getAmount();
+			
+			productIds.add(p_id);
+			productAmounts.add(Integer.toString(amount));
+			
 			int price = product.getPrice();
 			int discount = product.getDiscount();
-			productsPrice.add(Integer.toString(price*(100-discount)/100));			
+			productsPrice.add(Integer.toString(price*(100-discount)/100));	
 		}
 		String products = String.join(",", productIds);
 		String amounts = String.join(",", productAmounts);

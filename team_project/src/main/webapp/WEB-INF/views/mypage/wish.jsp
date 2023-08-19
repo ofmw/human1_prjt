@@ -15,150 +15,22 @@
 <style>
 	body{min-width: 1280px;}
 
-	/* 섹션 */
-	section{
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-	/* 버튼 및 선택 요소 공통 */
-	button:hover, #sel_box:hover{
-		background-color: #222 !important;
-		color: white !important;
-	}
-	#mp_header_area li span:hover{
-		text-decoration: underline;
-		cursor: pointer;
-	}
-
-	/* ---------------------마이페이지 헤더--------------------- */
-	#mp_header_area{
-		display: flex;
-		justify-content: space-between;
-
-		width: 1280px;
-		height: 280px;
-		/* background-color: rgb(230, 230, 230); */
-
-		margin: 40px 0;
-	}
-
-	/* 마이페이지 헤더 내부 요소 공통 */
-	.mp_header_obj{
-		display: flex;
-		flex-direction: column;
-
-		width: 426px;
-		height: 100%;
-		background-color: rgb(250, 250, 250);
-
-		padding: 30px 30px;
-		box-sizing: border-box
-	}
-	/* 마이페이지 헤더 내부 요소 제목 공통(쿠폰, 포인트) */
-	.mp_header_obj_title{font-size: 23px; font-weight: bold;}
-
-	/* 마이페이지 헤더 유저 이름 */
-	#mp_header_user_name{font-size: 35px; font-weight: bold;}
-	/* 마이페이지 헤더 유저 메뉴 */
-	#mp_header_user_menu ul{
-		font-size: 16px;
-		margin-top: 40px;
-	}
-	#mp_header_user_menu li{margin: 10px 0;}
-	#mp_header_user_menu a{color: #222;}
-
-	/* 마이페이지 헤더 쿠폰 공통 */
-	#mp_header_coupon{color: #222;}
-	/* 마이페이지 헤더 소지 쿠폰 영역 */
-	#mp_header_coupon_num{margin-top: 15px;}
-	/* 소지 쿠폰 숫자 */
-	#mp_header_coupon_num span{
-		font-size: 20px;
-		margin-right: 5px;
-	}
-	/* 마이페이지 헤더 쿠폰 정보 영역 */
-	#mp_header_coupon_info{margin-top: 50px;}
-	.mp_coupon{
-		display: flex;
-		justify-content: space-between;
-
-		margin: 5px 0;
-
-		font-size: 16px;
-		color: #444;
-	}
-	/* 마이페이지 헤더 포인트 영역 공통 */
-	#mp_header_point{color: #222;}
-	/* 마이페이지 헤더 소지 포인트 */
-	#mp_header_point_num{margin-top: 15px; font-size: 20px;}
-
-	/* ---------------------마이페이지 내용--------------------- */
-	#mp_main_area{
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-
-		width: 1280px;
-	}
-
-	/* ---------------------마이페이지 내용 좌측 메뉴영역--------------------- */
-	#mp_main_menu{
-		display: flex;
-		flex-direction: column;
-
-		width: 150px;
-		height: 260px;
-		border: 1px solid #e5e5e5;
-		border-radius: 8px;
-
-		padding: 20px 20px;
-	}
-	/* 메뉴 각 범주 사이 구분선 */
-	#mp_main_menu_division{
-		margin: 30px auto;
-		content: "";
-		width: 150px;
-		height: 1px;
-		background-color: #e5e5e5;
-	}
-	/* 메뉴 각 범주 타이틀 공통 */
-	.mp_main_menu_title{
-		font-size: 17px;
-		font-weight: bold;
-		margin-bottom: 10px;
-	}
-	/* 메뉴 li 공통 */
-	.mp_main_menu_list li{
-		margin-top: 3px;
-	}
-	/* 메뉴 a태그 공통 */
-	.mp_main_menu_list a{
-		color: #777;
-	}
-
-	/* ---------------------마이페이지 메인영역--------------------- */
-	#mp_main{
-		width: 1000px;
-		padding-right: 30px;
-	}
-	.mp_main_obj{
-		margin-bottom: 50px;
-	}
-
-	/* ---------------------마이페이지 메인영역 헤더--------------------- */
+	/* ---------------------마이페이지 메인 내용 헤더--------------------- */
+	/* 헤더 영역 */
 	#mp_w_main_header{
 		display: flex;
 		flex-direction: column;
 		padding-bottom: 5px;
 		border-bottom: 2px solid #222;
 	}
+	/* 헤더 제목 (찜목록) */
 	.mp_w_main_header_title{
 		padding-bottom: 15px;
 		font-size: 20px;
 		font-weight: bold;
 	}
-	#mp_w_main_header_opt-box{
+	/* 헤더 옵션영역 */
+	#mp_w_main_header_opt-area{
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -166,14 +38,17 @@
 		font-size: 12px;
 		user-select: none;
 	}
+	/* 헤더 옵션영역 버튼 박스 */
 	#mp_w_main_header_btn-box{
 		display: flex;
 		align-items: center;
 	}
+	/* 전체선택/선택해제 버튼 (div) */
 	#sel-all{
 		position: relative;
 		top: 1.5px;
 	}
+	/* 선택품목 삭제, 선택품목 장바구니 추가 버튼 */
 	#mp_w_main_header_btn-box button {
 		margin-left: 10px;
 		font-size: 12px;
@@ -182,6 +57,7 @@
 		border-radius: 3px;
 		background-color: #fcfcfc;
 	}
+	/* 헤더 옵션영역 선택 박스 */
 	#sel_box{
 		background-color: #fcfcfc;
 		padding: 2px 5px;
@@ -189,13 +65,19 @@
 		border-radius: 3px;
 	}
 
-	/* ---------------------섹션 상품 표시 영역--------------------- */
+	/* ---------------------마이페이지 메인 내용 찜목록 표시 영역--------------------- */
+	/* 찜목록 상품 표시 영역 */
 	#mp_w_main_products{
 		margin: 20px 0;
-	}
-	#w_box{
 		width: 100%;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-between;
+		align-items: center;
+
+		box-sizing: border-box;
 	}
+	/* 비어있는 찜목록 */
 	#w_empty{
 		height: 367px;
 		font-size: 20px;
@@ -203,25 +85,12 @@
 		text-align: center;
 		user-select: none;
 	}
-	.w_inner_elements_box{
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: space-between;
-		align-items: center;
-
-		width: 100%;
-		box-sizing: border-box;
-	}
+	/* 개별 상품 정보 박스 */
 	.w_products{
 		width: 230px;
 		min-height: 367px;
 	}
-	.w_inner_elements{
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: space-between;
-	}
+	/* 상품 이미지 */
 	.w_img{
 		position: relative;
 		display: inline-block;
@@ -230,11 +99,13 @@
 		margin-bottom: 5px;
 		background-color: gold;
 	}
+	/* 상품 이미지 a태그 */
 	.w_img a{
 		display: block;
 		width: 100%;
 		height: 100%;
 	}
+	/* 상품 이미지 호버 메뉴 박스 */
 	.w_img_opt-box {
 		width: 100%;
 		height: 40px;
@@ -245,6 +116,7 @@
           
 		background-color: rgba(255,255,255,0.9);
 	}
+	/* 상품 이미지 호버 메뉴 */
 	.w_img_opt-box-innerDiv{
 		height: 100%;
 		display: flex;
@@ -252,6 +124,7 @@
 		flex-direction: row;
 		justify-content: center;
 	}
+	/* 상품 이미지 호버 메뉴 버튼 */
 	.w_img_opt-box-innerDiv button{
 		width: 30px;
 		height: 28px;
@@ -264,27 +137,33 @@
 		box-sizing: content-box;
 		line-height: 28px;
 	}
+	/* 상품 브랜드명 */
 	.w_info_brand{
 		font-size: 14px;
 		font-weight: bold;
 	}
+	/* 상품 이름 */
 	.w_info_name{
 		font-size: 15px;
 	}
+	/* 상품 원가 */
 	.w_info_price{
 		font-size: 13px;
 		font-weight: bold;
 		color: #8b96a1;
 		text-decoration: line-through;
 	}
+	/* 상품 할인율 */
 	.w_info_price_final{
 		font-size: 18px;
 		font-weight: bold;
 	}
+	/* 상품 할인가격 */
 	.w_info_price_final span{
 		font-size: 20px;
 		color: rgb(255, 59, 32);
 	}
+	/* 별점, 리뷰 수 */
 	.w_info_stars{
 		font-size: 13px;
 		color: #8b96a1;
@@ -300,7 +179,6 @@
 		width: 25px;
 		height: 25px;
 		margin: 0 5px;
-		padding: 2px 5px;
       	
 		font-size: 14px;
 		cursor: pointer;
@@ -451,12 +329,12 @@
 				});
 	         	    
 				sortedProducts = sortedProducts.concat(emptyProductData);
-				$(".w_inner_elements").empty().append(sortedProducts);
+				$("#mp_w_main_products").empty().append(sortedProducts);
 	         	    
 			} else if (option === "date") {
 	         		
-				// alert("날짜 정렬 시도!");
-				$(".w_inner_elements").empty().append(originalOrder);
+				//alert("날짜 정렬 시도!");
+				$("#mp_w_main_products").empty().append(originalOrder);
 			}
 	         	
 			// 정렬과 동시에 1페이지 보내기
@@ -508,10 +386,10 @@
 		$("#sel2").change(function() {
 			let selectedOption = parseInt($(this).val());
 	            
-			if (selectedOption === 20) { // 20개씩 표시
-				showElements(20);
-			} else if (selectedOption === 40) { // 40개씩 표시
-				showElements(40);
+			if (selectedOption === 4) { // 20개씩 표시
+				showElements(4);
+			} else if (selectedOption === 8) { // 40개씩 표시
+				showElements(8);
 			} else if (selectedOption === 100) { // 100개씩 표시
 				showElements(100);
 			}
@@ -542,7 +420,7 @@
 		}
 	         
 		//*** 페이지 로드시 기본 버튼 생성 ***//
-		setNav(Math.ceil($(".w_products").length / 20)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+		setNav(Math.ceil($(".w_products").length / 4)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
 	
 		//*** 페이지 전환 ***//
 		function changePage(pageNum) {
@@ -578,6 +456,23 @@
 			let pageNum = parseInt($(this).val());
 			console.log(pageNum);
 			changePage(pageNum);
+			
+			//선택된 페이지의 페이지 내비게이션 버튼 색상 고정
+			$(".p-nav").each(function() {
+				
+				if (parseInt($(this).val()) === pageNum) {
+					$(this).css({
+						'background-color':'#222',
+						'color':'white'
+					});
+				} else {
+					$(this).css({
+						'background-color':'',
+						'color':''
+					});
+				}
+			
+			});
 		});	
 	       	
 	});
@@ -663,12 +558,13 @@
             </div>
         </div>
 
-        <div id="mp_main">
+        <div id="mp_main_contents">
 			<div id="mp_main_wish" class="mp_main_obj">
+			
                 <!-- 메인영역 헤더 -->
                 <div id="mp_w_main_header">
                     <div class="mp_w_main_header_title">찜목록</div>
-                    <div id="mp_w_main_header_opt-box">
+                    <div id="mp_w_main_header_opt-area">
                     	<div id="mp_w_main_header_btn-box">
                     		<div id="sel_box">
 								<input type="checkbox" id="sel-all">
@@ -683,8 +579,8 @@
                        			<option value="name">이름순</option>
 							</select>
 	                        <select id="sel2">
-	                            <option value="20">20개씩</option>
-	                            <option value="40">40개씩</option>
+	                            <option value="4">20개씩</option>
+	                            <option value="8">40개씩</option>
 	                            <option value="100">100개씩</option>
 	                        </select>
 	                    </div>
@@ -694,55 +590,56 @@
                 <!-- 상품 게시 영역 -->
                 <div id="mp_w_main_products">
 
-                    <div id="w_box">
-                    	<c:choose>
-							<c:when test="${!empty p_info[0]}">
-                       			<div class="w_inner_elements">
-									<c:forEach begin="0" end="${(fn:length(p_info) - 1) div 4}" var="i">
-		                            	<c:forEach begin="${i*4}" end="${i*4+3}" var="j">
-								            <div class="w_products">
-								            	<c:if test="${!empty p_info[j]}">
-								            		<input type="checkbox" class="w_checkbox">
-									                <div class="w_img">
-									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
-									                	<div style="display:none" class="w_img_opt-box">
-									                		<div class="w_img_opt-box-innerDiv">
-										                		<button type="button" class="c_btn">🛒</button>
-										                		<button type="button" class="w_btn" style="color:red;font-size:22px;">❤</button>
-										                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
-									                		</div>
-									                	</div>
-									                </div>
-									                <div class="w_info">
-									                    <div class="w_info_brand">${p_info[j].brand}</div>
-									                    <div class="w_info_name">
-									                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name}</a>
-									                    </div>
-									                    <c:if test="${p_info[j].discount gt 0}">
-										                    <div class="w_info_price">
-										                        <fmt:formatNumber value="${p_info[j].price}" pattern="#,###"/>원
-										                    </div>
-									                    </c:if>
-									                    <div class="w_info_price_final">
-				                                            <c:if test="${p_info[j].discount gt 0}">
-				                                                <span>${p_info[j].discount}% </span>
-				                                            </c:if>
-				                                            <c:set var="discount_new" value="${p_info[j].price*(p_info[j].discount/100)}"></c:set>
-				                                            <fmt:formatNumber value="${p_info[j].price - discount_new}" pattern="#,###" />원
-				                                        </div>
-									                    <div class="w_info_stars">★ 4.5 (1043)</div>
-									                </div>
-								                </c:if>
-								            </div>
-										</c:forEach>
-	                            	</c:forEach>
-                        		</div>
-                        	</c:when>
-                        	<c:otherwise>
-								<div id="w_empty">찜목록에 상품이 없습니다!</div>
-							</c:otherwise>
-						</c:choose>
-                    </div>
+                   	<c:choose>
+						<c:when test="${!empty p_info[0]}">
+							<c:forEach begin="0" end="${(fn:length(p_info) - 1) div 4}" var="i">
+                            	<c:forEach begin="${i*4}" end="${i*4+3}" var="j">
+						            <div class="w_products">
+						            	<c:if test="${!empty p_info[j]}">
+						            		<input type="checkbox" class="w_checkbox">
+							                <div class="w_img">
+							                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
+							                	<div style="display:none" class="w_img_opt-box">
+							                		<div class="w_img_opt-box-innerDiv">
+								                		<button type="button" class="c_btn">🛒</button>
+								                		<button type="button" class="w_btn" style="color:red;font-size:22px;">❤</button>
+								                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
+							                		</div>
+							                	</div>
+							                </div>
+							                <div class="w_info">
+							                    <div class="w_info_brand">${p_info[j].brand}</div>
+							                    <div class="w_info_name">
+							                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name}</a>
+							                    </div>
+							                    <c:if test="${p_info[j].discount gt 0}">
+								                    <div class="w_info_price">
+								                        <fmt:formatNumber value="${p_info[j].price}" pattern="#,###"/>원
+								                    </div>
+							                    </c:if>
+							                    <div class="w_info_price_final">
+		                                            <c:if test="${p_info[j].discount gt 0}">
+		                                                <span>${p_info[j].discount}% </span>
+		                                            </c:if>
+		                                            <c:set var="discount_new" value="${p_info[j].price*(p_info[j].discount/100)}"></c:set>
+		                                            <fmt:formatNumber value="${p_info[j].price - discount_new}" pattern="#,###" />원
+		                                        </div>
+		                                        <c:if test="${p_info[j].reviews ne 0}">
+													<div class="w_info_stars">★
+														${p_info[j].stars_avg}
+														(${p_info[j].reviews})</div>
+													<!-- 괄호 안 숫자는 리뷰 갯수 -->
+												</c:if>
+							                </div>
+						                </c:if>
+						            </div>
+								</c:forEach>
+                           	</c:forEach>
+                       	</c:when>
+                       	<c:otherwise>
+							<div id="w_empty">찜목록에 상품이 없습니다!</div>
+						</c:otherwise>
+					</c:choose>
 
                 </div><!-- end of mp_w_main_products -->
                 

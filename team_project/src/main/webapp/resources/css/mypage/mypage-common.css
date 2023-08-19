@@ -1,12 +1,141 @@
 @charset "UTF-8";
 
 /* ━━━━━━━━━━━━━━━━━━━━공통 기본━━━━━━━━━━━━━━━━━━━━ */
+/* 섹션 */
+section{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 /* a태그 공통 */
-a{text-decoration: none;}
+a{text-decoration: none; color:#222;}
 a:hover:not(#div_category a){text-decoration: underline;}
-
 /* list 공통 */
 ul{list-style: none;}
+/* 버튼 및 선택 요소 공통 */
+button:hover, #sel_box:hover{
+	background-color: #222 !important;
+	color: white !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━마이페이지 헤더━━━━━━━━━━━━━━━━━━━━ */
+/* 마이페이지 헤더 영역 */
+#mp_header_area{
+	display: flex;
+	justify-content: space-between;
+	width: 1280px;
+	height: 280px;
+	margin: 40px 0;
+}
+/* 마이페이지 헤더 li 공통 */
+#mp_header_area li span:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+/* 마이페이지 헤더 내부 요소 공통 */
+.mp_header_obj{
+	display: flex;
+	flex-direction: column;
+
+	width: 426px;
+	height: 100%;
+	background-color: rgb(250, 250, 250);
+
+	padding: 30px 30px;
+	box-sizing: border-box
+}
+/* 마이페이지 헤더 내부 요소 제목 공통(쿠폰, 포인트) */
+.mp_header_obj_title{font-size: 23px; font-weight: bold;}
+
+/* 마이페이지 헤더 유저 이름 */
+#mp_header_user_name{font-size: 35px; font-weight: bold;}
+/* 마이페이지 헤더 유저 메뉴 */
+#mp_header_user_menu ul{
+	font-size: 16px;
+	margin-top: 40px;
+}
+#mp_header_user_menu li{margin: 10px 0;}
+#mp_header_user_menu a{color: #222;}
+
+/* 마이페이지 헤더 쿠폰 공통 */
+#mp_header_coupon{color: #222;}
+/* 마이페이지 헤더 소지 쿠폰 영역 */
+#mp_header_coupon_num{margin-top: 15px;}
+/* 소지 쿠폰 숫자 */
+#mp_header_coupon_num span{
+	font-size: 20px;
+	margin-right: 5px;
+}
+/* 마이페이지 헤더 쿠폰 정보 영역 */
+#mp_header_coupon_info{margin-top: 50px;}
+.mp_coupon{
+	display: flex;
+	justify-content: space-between;
+
+	margin: 5px 0;
+
+	font-size: 16px;
+	color: #444;
+}
+/* 마이페이지 헤더 포인트 영역 공통 */
+#mp_header_point{color: #222;}
+/* 마이페이지 헤더 소지 포인트 */
+#mp_header_point_num{margin-top: 15px; font-size: 20px;}
+
+/* ━━━━━━━━━━━━━━━━━━━━마이페이지 메인━━━━━━━━━━━━━━━━━━━━ */
+/* 마이페이지 메인영역 */
+#mp_main_area{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	width: 1280px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━마이페이지 메인 좌측 메뉴영역━━━━━━━━━━━━━━━━━━━━ */
+/*  */
+#mp_main_menu{
+	display: flex;
+	flex-direction: column;
+
+	width: 150px;
+	height: 260px;
+	border: 1px solid #e5e5e5;
+	border-radius: 8px;
+
+	padding: 20px 20px;
+}
+/* 메뉴 각 범주 사이 구분선 */
+#mp_main_menu_division{
+	margin: 30px auto;
+	content: "";
+	width: 150px;
+	height: 1px;
+	background-color: #e5e5e5;
+}
+/* 메뉴 각 범주 타이틀 공통 */
+.mp_main_menu_title{
+	font-size: 17px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+/* 메뉴 li 공통 */
+.mp_main_menu_list li{
+	margin-top: 3px;
+}
+/* 메뉴 a태그 공통 */
+.mp_main_menu_list a{
+	color: #777;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━마이페이지 메인 내용━━━━━━━━━━━━━━━━━━━━ */
+#mp_main_contents{
+	width: 1000px;
+	padding-right: 30px;
+}
+.mp_main_obj{
+	margin-bottom: 50px;
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━하단 안내문구━━━━━━━━━━━━━━━━━━━━ */
 /* 안내문구 전체영역 */

@@ -27,4 +27,7 @@ public class CartVo {
 	private int stock;						//재고
 	private int discount;					//할인율
 	private int post_state;					//제품 게시여부(판매 등록여부)
+	
+	//썸네일
+	private String saveFile1;
 }
