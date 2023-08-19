@@ -58,6 +58,7 @@
                                     <c:otherwise>
                                         <a href="../mypage/mypage.do">${member.m_name}님</a>
                                     </c:otherwise>
+
                                 </c:choose> 
                                 <c:choose>
                                     <c:when test="${member.platform eq 'kakao'}">

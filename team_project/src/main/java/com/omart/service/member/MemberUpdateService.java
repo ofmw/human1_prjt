@@ -15,9 +15,14 @@ public class MemberUpdateService implements MemberService {
 		this.dao = dao;
 	}
 
-	public MemberVo update(MemberVo memberVo) {
+	public MemberVo updatePw(MemberVo memberVo) {
 		
-		return dao.update(memberVo);
+		return dao.updatePw(memberVo);
+	}
+	
+	public MemberVo updateMember(MemberVo memberVo) {
+		
+		return dao.updateMember(memberVo);
 	}
 	
 }

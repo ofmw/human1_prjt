@@ -177,10 +177,20 @@ public class MemberDao{
 		return sqlSession.selectOne(MAPPER+".getGradeFromOrder", order_idx);
 	}
 	
-	//업데이트 처리
-	public MemberVo update(MemberVo vo) {
-		int result = -1;
-		result = sqlSession.update(MAPPER+".login", vo);
+	//비밀번호변경 업데이트 처리
+	public MemberVo updatePw(MemberVo vo) {
+		int result = sqlSession.update(MAPPER+".updatePwInfo", vo);
+		MemberVo updateVo = null;
+		if(result == 1) {
+			updateVo = sqlSession.selectOne(MAPPER+".selectOne", vo.getM_id());
+		}
+		
+		return updateVo;
+	}
+	
+	//회원정보변경 업데이트 처리
+	public MemberVo updateMember(MemberVo vo) {
+		int result = sqlSession.update(MAPPER+".updateMemberInfo", vo);
 		MemberVo updateVo = null;
 		if(result == 1) {
 			updateVo = sqlSession.selectOne(MAPPER+".selectOne", vo.getM_id());

@@ -35,7 +35,6 @@ public class MypageController {
 	
 	@Setter(onMethod_={ @Autowired })
 	private MemberService mPh, mAddress, mWish, mBenefit, mOdrList, mUpdate;
-
 	@Setter(onMethod_= {@Autowired})
 	private ProductService pdInfo, pdCheck;
 	@Setter(onMethod_= {@Autowired})
@@ -105,7 +104,12 @@ public class MypageController {
 	public String member_modifiy() {
 		return "mypage/member_modifiy";
 	}
-
+	
+	//마이페이지 - 비밀번호변경
+		@GetMapping("/password_modifiy.do")
+		public String password_modifiy() {
+			return "mypage/password_modifiy";
+		}
 	
 	//마이페이지 - 주문/배송조회
 	@GetMapping("/purchase_history.do")
@@ -264,8 +268,6 @@ public class MypageController {
 		
 		List<BoardFileVo> inquiryContent = bfList.getInquiryByBIdx(b_idx);
 		
-		System.out.println("컨트롤러b_idx값 :" + bfList.getInquiryByBIdx(b_idx));
-
 		model.addAttribute("inquiryContent", inquiryContent);
 		
 		return "mypage/inquiry_content";
@@ -333,7 +335,7 @@ public class MypageController {
 	//마이페이지 -> 공지사항
 	@GetMapping("/list_notice.do")
 	public String list_notice() {
-		return "redirect:/boardFile/list_notice.do";
+		return "redirect:/boardFile/notice.do";
 	}
 	
 	
@@ -417,7 +419,7 @@ public class MypageController {
 		model.addAttribute("m_idx", m_idx);
 		return "mypage/addAddress";
 	}
-		
+	//회원정보수정 비밀번호 확인	
 	@PostMapping("/check_password")
 	@ResponseBody
 	public String checkPassword(@RequestParam String password, HttpSession session) {
@@ -431,27 +433,59 @@ public class MypageController {
 		} else {
 			return "mismatch";
 		}
-	}else {
-		return "mismatch";
-	}
+		}else {
+			return "mismatch";
+		}
 	}
 	
-	//회원정보 수정페이지 
-	@PostMapping("/update_process.do")
-	@ResponseBody
-	public String updateProcess(MemberVo memberVo, HttpServletRequest request) {
+	//비밀번호 수정페이지 
+	@PostMapping("/updatePw_process.do")
+	public String updatePwProcess(MemberVo memberVo, HttpServletRequest request) {
 		
-		MemberVo vo = mUpdate.update(memberVo);
+		String newPassword = request.getParameter("input_pw");
+		
+		String encryptedPassword = passwordEncoder.encode(newPassword);
+	    memberVo.setM_pw(encryptedPassword);
+		
+		MemberVo vo = mUpdate.updatePw(memberVo);
+		
+		String viewPage = "mypage/mypage";
+		
+		System.out.println("멤버브이" + memberVo);
 		
 		if(vo != null) {
 			HttpSession session = request.getSession();
 			session.removeAttribute("member");
 			session.setAttribute("member", vo);
-			return "success";
-		} else
-		return "fail";
+			viewPage = "redirect:/mypage/mypage.do";
+		}
+		return viewPage;
 	}
 	
+	//회원정보 수정페이지 
+		@PostMapping("/updateMember_process.do")
+		public String updateMemberProcess(MemberVo memberVo, HttpServletRequest request) {
+			
+			String newName = request.getParameter("input_name");
+			memberVo.setM_name(newName);
+			
+			String newSelNum = request.getParameter("input_selNum");
+			memberVo.setSelNum(newSelNum);
+			
+			MemberVo vo = mUpdate.updateMember(memberVo);
+			
+			String viewPage = "mypage/mypage";
+			
+			System.out.println("멤버브이" + memberVo);
+			
+			if(vo != null) {
+				HttpSession session = request.getSession();
+				session.removeAttribute("member");
+				session.setAttribute("member", vo);
+				viewPage = "redirect:/mypage/mypage.do";
+			}
+			return viewPage;
+		}
 	
 	//마이페이지 - 회원탈퇴
 	@GetMapping("/cancel.do")

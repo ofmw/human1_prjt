@@ -47,10 +47,17 @@
         WHERE m_id=#{m_id}
     </select>
     
-    <!-- 회원정보 수정구문 -->
-    <update id="update" parameterType="memberVo">
+    <!-- 비밀번호 수정구문 -->
+    <update id="updatePwInfo" parameterType="memberVo">
         UPDATE member_omart
-        SET m_pw=#{m_pw}, m_name=#{m_name}, gender=#{gender}, selNum=#{selNum}, update_date=now()
+        SET m_pw=#{m_pw}
+        WHERE m_id=#{m_id}
+    </update>
+    
+    <!-- 회원정보 수정구문 -->
+    <update id="updateMemberInfo" parameterType="memberVo">
+        UPDATE member_omart
+        SET m_name=#{m_name}, selNum=#{selNum}
         WHERE m_id=#{m_id}
     </update>
     

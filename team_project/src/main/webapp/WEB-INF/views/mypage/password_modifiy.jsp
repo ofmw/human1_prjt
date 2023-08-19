@@ -9,15 +9,14 @@
 <head>
     <title>회원정보수정</title>
     
-    <link href="../resources/css/mypage/mypage.css" rel="stylesheet">
+    <link href="../resources/css/mypage.css" rel="stylesheet">
     
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript" src="../resources/js/mypage.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     
     <style>
     	#mp_main {
-    		height: 600px;
     		position: relative;
+    		height: 600px;
     	}
     	
         .mp_main_title{
@@ -34,6 +33,10 @@
             border-collapse: collapse;
             color: #222;
             width: 100%;
+        }
+        #tbl_join{
+        	border-top: 1px solid black;
+        	background-color: rgb(250, 250, 250);
         }
         #td_pnav{
             height: 50px;
@@ -62,11 +65,11 @@
         }
         .mp_memberPw_check table input{
         	padding-left: 5px;
-        	width: 200px;
+       		width: 200px;
         	height: 24px;
         	border: 1px solid #777;
         }
-        .mp_memberPw_check button {
+        .mp_memberPw_check button, #sbm_edit{
         	margin-top: 30px;
 		    margin-left: -65px;
 		    display: flex;
@@ -83,114 +86,39 @@
     		color: #fff;
     		cursor: pointer;
 		}
-        .mp_member_modifiy{
+        .mp_password_modifiy{
         	display: none;
         }
-        .mp_member_modifiy tr:first-child{
-        	border-top: 1px solid black;
-        }
-        .mp_member_modifiy tr:last-child{
-        	border-bottom: 1px solid black;
-        }
-        .mp_member_modifiy tr{
-        	border-bottom: 1px solid #e5e5e5;
-        }
-        .mp_member_modifiy th{
+        .mp_password_modifiy td{
         	text-align: left;
+        	padding: 20px 0 20px 0;
+        }
+        .mp_password_modifiy input{
         	width: 200px;
-        	user-select: none;
+        	height: 24px;
+        	border: 1px solid #777;
         }
-        .mp_member_modifiy td{
-        	text-align: left;
-        	padding: 15px 0 15px 0;
-        }
-        .mp_member_modifiy input{
-        	padding: 0 5px 0 5px;
-        	height: 22px;
-        	border: 1px solid black;
-        }
-		#div_box p{
-			margin-bottom: 40px;
+        #div_box p{
           	padding-bottom: 10px;
-          	border-bottom: 1px solid black;
         	font-size: 24px;		
-		}        
-        fieldset{
-	        display: flex;
-	        justify-content: flex-start;
-	        align-items: center;
-	        padding: 0;
-	        width: 200px;
-	        height: 24px;
-	        border: none;
-	        user-select: none;
-	        pointer-events: none;
-	    }
-	    fieldset input{
-	        outline: none;
-	        font-size: 17px;
-	        letter-spacing: 2px;
-	    }
-	    #birth, #gender, #fld_block{
-	        font-size: 13px;
-	        border: none;
-	    } 
-	    #birth{
-	        padding-left: 5px;
-	        padding-right: 10px;
-	        width: 55px;
-	    }
-	    #gender{
-	        width: 13px;
-	        padding-left: 10px;
-	        padding-right: 1px;
-	        margin-right: 0px;
-	    }
-	    #fld_block{
-	        width: 90px;
-	        padding-left: 0px;
-	        padding-right: 20px;
-	    }
-	    #m_id{
-	    	border: none;
-	    	user-select: none;
-	    	pointer-events: none;
-	    }
-	    #star{
-	    	color: red;
-	    }
-	    #div_button{
-			position: absolute;
-	    	margin-top: 30px;
-		    margin-left: -140px;
-        	padding: 12px 16px 10px;
-		    width: 280px;
-		    height: 42px;
-		    left: 50%;
-	    }
-	    #cancel_btn, #btn_update{
-		    width: 130px;
-		    height: 42px;
-		    font-size: 16px;
-		    background: #f14f4f;
-    		border: 1px solid #da3a3a;
-    		color: #fff;
-    		cursor: pointer;
-	    }
-	    #cancel_btn{
-	    	margin-right: 16px;
-	    	background: #e5e5e5;
-	    	border: 1px solid #777; 
-	    	color: black; 
-	    }
-	    .td_input-container{
-	    	display: flex;
-	    	align-items: center;	
-	    }
-	    #name_check, #selNum_check {
-	    	padding-left: 5px;
-	    	font-size: 13px;
-	    }
+		}
+		#div_premier {
+			margin-top: 120px;	
+		} 
+		#div_premier p:first-child {
+			padding-bottom: 5px;
+			font-size: 13px;
+			font-weight: bold;
+			border-bottom: 1px solid rgb(224,224,224);
+		}
+        #div_premier p:nth-child(2),#div_premier p:last-child {
+        	padding-top: 5px;
+        	font-size: 10px;
+        	color: gray;
+        }
+        #div_premier span {
+        	color: red;
+        }
         p{
         	font-size: 14px;
         	user-select: none;
@@ -223,7 +151,6 @@
 	
 	function checkPw() {
 		var password = $('#pw_check').val();
-		console.log("비번: " + password);
 		$.ajax({
             type: 'POST',
             url: 'check_password', // 서버의 비밀번호 확인 엔드포인트 URL
@@ -231,7 +158,7 @@
             success: function(response) {
                 if (response === 'match') {
                     document.getElementById("mp_memberPw_check").style.display = "none";
-                    document.getElementById("mp_member_modifiy").style.display = "block";
+                    document.getElementById("mp_password_modifiy").style.display = "block";
                     // 비밀번호 일치 시 추가 작업 수행
                 } else {
                     alert("비밀번호를 확인해주세요");
@@ -242,41 +169,32 @@
         });
 	}
 	
-
-	document.addEventListener("DOMContentLoaded", function(){
-		var birthInput = document.getElementById("birth");
-		var formattedBirth = birthInput.value.split("-").join("").substring(2);
-		birthInput.value = formattedBirth;
-	});
-	
 	$(document).ready(function(){
-		var namePattern = /^[가-힣]{2,6}$/;
-		var selNumPattern = /^(010|011)[0-9]{7,8}$/;
-		
-		$('#input_name').blur(function(){
-            var nameInput = $(this);
-            var nameCheck = $('#name_check');
-            
-            if (namePattern.test(nameInput.val())) {
-                nameCheck.text('');
-            } else {
-                nameCheck.text('이름을 확인해주세요');
-                nameCheck.css('color', 'red');
-            }
-        });
-		
-		$('#input_selNum').blur(function(){
-            var selNumInput = $(this);
-            var selNumCheck = $('#selNum_check');
-            
-            if(selNumPattern.test(selNumInput.val())) {
-                selNumCheck.text('');
-            } else {
-                selNumCheck.text('올바른 핸드폰 번호 형식이 아닙니다.');
-                selNumCheck.css('color', 'red');
-            }
-            console.log(selNumInput.val());
-        });
+	    var passwordPattern = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,12}$/;
+
+	    $('#frm_update').submit(function(event){
+
+	        var passwordInput = $('#input_pw');
+	        var passwordConfirmInput = $('#m_pwCheck');
+	        
+	        console.log('Password Input:', passwordInput.val());
+	        console.log('Password Confirm Input:', passwordConfirmInput.val());
+
+	        if (!passwordPattern.test(passwordInput.val())) {
+	            alert('비밀번호는 8~12자리의 영소문자, 숫자 및 특수문자(@$!%*?&)를 포함해야 합니다.');
+	            event.preventDefault(); // 폼 전송 막기
+	            return; // 전송 중단
+	        }
+
+	        if (passwordInput.val() !== passwordConfirmInput.val()) {
+	        	event.preventDefault(); // 폼 전송 막기
+	            alert('비밀번호가 일치하지 않습니다.');
+	            return; // 전송 중단
+	        }
+
+	        // 유효성 검사를 모두 통과한 경우, 폼 전송
+	        this.submit();
+	    });
 	});
 </script>
 <body>
@@ -294,7 +212,7 @@
             <div id="mp_header_user_menu">
                 <ul>
                     <li><a href="member_modifiy.do">회원정보 변경</a></li>
-                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
+                    <li><a href="password_modifiy">비밀번호 변경</a></li>
                     <li><a href="#">배송지 관리</a></li>
                 </ul>
             </div>
@@ -352,7 +270,7 @@
 
         <div id="mp_main">
 			<div id="mp_memberPw_check" class="mp_memberPw_check">
-				<p>회원정보 변경</p>
+				<p>비밀번호 변경</p>
                 <table>
                 	<tr>
 						<th>비밀번호 확인</th>
@@ -364,51 +282,34 @@
 					<button type="button" onclick="checkPw()">확인</button>
 				</div>
         	</div>
-        	<div id="mp_member_modifiy" class="mp_member_modifiy">
+        	<div id="mp_password_modifiy" class="mp_password_modifiy">
         		<div id="div_box">
-        			<p>회원정보 변경</p>
+        			<p>비밀번호변경</p>
         		</div>
-        			<h4>필수정보입력</h4><br>
-        			<p><span id="star">*</span>표시는 필수입력 항목 이오니 반드시 입력해 주세요.</p>
-        		<form action="updateMember_process.do" method="post" name="frm_update" id="frm_update">
-        		<table id="tbl_join">
-                    <tr>
-                    	<th>이름&nbsp;<span id="star">*</span></th>
-                        <td class="td_input-container">
-                            <input type="text" name="input_name" id="input_name" value="${member.m_name}">
-                            <div class="check" id="name_check"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                    	<th>생년월일 및 성별&nbsp;<span id="star">*</span></th>
-                        <td>
-                                <fieldset>
-                                    <input type="text" name="birth" id="birth" maxlength="6" value="${member.birth}" readonly>
-                                    <p>-</p>
-                                    <input type="text" name="gender" id="gender" maxlength="1" value="${member.gender}" readonly>
-                                    <input type="text" id="fld_block" value="●●●●●●" readonly style="background-color: white;">
-                                </fieldset>
-                        </td>
-                    </tr>
-                    <tr>
-                    	<th>휴대폰 번호&nbsp;<span id="star">*</span></th>
-                        <td class="td_input-container">
-                                    <input type="text" name="input_selNum" id="input_selNum" value="${member.selNum}">
-                                    <div class="check" id="selNum_check"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                    	<th>아이디&nbsp;<span id="star">*</span></th>
-                        <td id="aNum_behind">
-                            	<input type="text" name="m_id" id="m_id" value="${member.m_id}" readonly><br>
-                            	<div class="check" id="id_check"></div>
-                        </td>
-                    </tr>
-                </table>
-                	<div id="div_button">
-                			<input type="button" id="cancel_btn" value="취소하기" onclick="history.back()">
-                            <button type="submit" name="btn_update" id="btn_update">수정하기</button>
-                    </div>
+        		<form action="updatePw_process.do" method="post" name="frm_update" id="frm_update">
+        		<input type="hidden" name="m_id" value="${member.m_id}">
+	        		<table id="tbl_join">
+	                    <tr>
+	                        <th>비밀번호</th>
+	                        <td><input type="password" name="input_pw" id="input_pw"><br>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <th>비밀번호 확인</th>
+	                        <td>
+	                        	<input type="password" name="m_pwCheck" id="m_pwCheck"><br>
+	                            <div class="check" id="pw_check2"></div>
+	                        </td>
+	                    </tr>
+	                </table>
+	                <button type="submit" name="sbm_edit" id="sbm_edit">확인</button>
+	                <div id="div_premier">
+	                	<p>! 주의하세요</p>
+	                	<p>- 비밀번호는 <span>영문과 숫자 특수문자를 조합하여 8~12자리로 입력</span>해 주세요.</p>
+	                	<p>- 아이디와 같은 비밀번호나 주민등록번호, 생일, 학번, 전화번호 등 개인정보와 관련된 숫자, 연속된 숫자, 동일 반복된 숫자 등<br>
+	                		&nbsp;&nbsp;다른 사람이 쉽게 알아낼 수 있는 비밀번호는 사용하지 않도록 주의하여 주시기 바랍니다.
+	                	</p>
+	                </div>
                 </form>
         	</div>
 
