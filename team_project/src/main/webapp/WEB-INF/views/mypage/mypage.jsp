@@ -269,7 +269,12 @@
 				                                            <c:set var="discount_new" value="${p_info[j].price*(p_info[j].discount/100)}"></c:set>
 				                                            <fmt:formatNumber value="${p_info[j].price - discount_new}" pattern="#,###" />원
 				                                        </div>
-									                    <div class="w_info_stars">★ 4.5 (1043)</div>
+									                    <c:if test="${p_info[j].reviews ne 0}">
+															<div class="w_info_stars">★
+																${p_info[j].stars_avg}
+																(${p_info[j].reviews})</div>
+															<!-- 괄호 안 숫자는 리뷰 갯수 -->
+														</c:if>
 									                </div>
 								                </c:if>
 								            </div>
