@@ -105,11 +105,13 @@ $(function() {
 		width: 100%;
 	}
 	#w_empty{
-		height: 150px;
-		font-size: 18px;
-		line-height: 150px;
-		text-align: center;
-		user-select: none;
+		display: flex;
+		justify-content: center;
+	    align-items: center;
+	    height: 150px;
+		width: 100%;
+	    font-size: 18px;
+	    color: #222;
 	}
     .w_inner_elements_box{
         display: flex;

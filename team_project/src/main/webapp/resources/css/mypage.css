@@ -114,11 +114,12 @@
 #mp_main_review{
 	height: 300px;
 }
-#mp_main_review_content, #mp_main_wish_content{
-    width: 100%;
+#mp_main_review_content{
+	display: flex;
+	justify-content: center;
+    align-items: center;
+	width: 100%;
     height: 100%;
-    margin-top: 120px;
-    text-align: center;
     font-size: 18px;
     color: #222;
 }

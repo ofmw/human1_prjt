@@ -79,11 +79,14 @@
 	}
 	/* 비어있는 찜목록 */
 	#w_empty{
-		height: 367px;
-		font-size: 20px;
-		line-height: 367px;
-		text-align: center;
-		user-select: none;
+		display: flex;
+		align-items: center;
+	    justify-content: center;
+	    width: 100%;
+	    height: 367px;
+	    font-size: 20px;
+	    text-align: center;
+	    user-select: none;
 	}
 	/* 개별 상품 정보 박스 */
 	.w_products{
