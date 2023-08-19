@@ -775,8 +775,15 @@
                         <c:otherwise>♡</c:otherwise>
                     </c:choose>
                 </div>
-		        <div class="btn_addCart2 btn2" id="div_cart_btn">장바구니</div>
-		        <div class="btn_buyThis btn2" id="div_buy_btn">구매하기</div>
+                <c:choose>
+                    <c:when test="${product.stock ne 0}">
+				        <div class="btn_addCart2 btn2" id="div_cart_btn">장바구니</div>
+				        <div class="btn_buyThis btn2" id="div_buy_btn">구매하기</div>
+				    </c:when>
+                    <c:otherwise>
+                        <div class="soldout btn2" style="width: 270px;">품절상품</div>
+                    </c:otherwise>
+                </c:choose>                        
             </c:otherwise>
         </c:choose>        
     </div>

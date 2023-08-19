@@ -301,6 +301,7 @@ section {
 	color: white;
 	font-weight: bold;
 	user-select: none;
+	cursor: pointer;
 }
 </style>
 <script>
@@ -410,7 +411,7 @@ section {
 				if (product !== null) {
 					rebuilding += "<div class='p_products'>";
 					if (product.stock == 0) {
-						rebuilding += "<div class='p_img'><div class='soldout'>품절</div><a href='product_view.do?p_id=" + product.p_id + "'><img class='thumbnail' src='../resources/uploads/" + product.saveFile1 + "' alt='" + product.p_name + "'></a>";
+						rebuilding += "<div class='p_img'><div class='soldout' onclick=\"location.href='product_view.do?p_id=" + product.p_id + "'\">품절</div><a href='product_view.do?p_id=" + product.p_id + "'><img class='thumbnail' src='../resources/uploads/" + product.saveFile1 + "' alt='" + product.p_name + "'></a>";
 					} else {
 						rebuilding += "<div class='p_img'><a href='product_view.do?p_id=" + product.p_id + "'><img class='thumbnail' src='../resources/uploads/" + product.saveFile1 + "' alt='" + product.p_name + "'></a>";
 					}
@@ -769,7 +770,7 @@ section {
 														<c:if test="${productList[j] ne null}">
 															<div class="p_img">
 																<c:if test="${productList[j].stock eq 0}">
-																	<div class="soldout">품절</div>
+																	<div class="soldout" onclick="location.href='product_view.do?p_id=${productList[j].p_id}'">품절</div>
 																</c:if>
 																<a href="product_view.do?p_id=${productList[j].p_id}"><img
 																	class="thumbnail"
