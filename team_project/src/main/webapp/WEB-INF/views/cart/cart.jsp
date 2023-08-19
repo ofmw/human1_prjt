@@ -665,11 +665,12 @@
                 // "전체상품" 수량에 반영
                 $("#product_total span").text(totalAmount);
                 
-            } else { // 장바구니에 상품이 있을 경우
+            } else { // 장바구니에 상품이 없을 경우
                 $("#shipping-fee").text("+0 원");
                 $("#ordered-price").text("0 원");
                 $("#payment-price").text("0");
                 $("#product_total span").text("0");
+                $("#discount-price").text("0 원");
             }
             
             
