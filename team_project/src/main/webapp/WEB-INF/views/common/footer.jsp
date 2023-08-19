@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,6 +84,7 @@
 		    border: 1px solid #cacaca;
 		    color: gray;
 		    cursor: pointer;
+		    margin-left: 5px;
         }
         #div_support input[type="button"]{
             text-align: center;
@@ -121,7 +123,14 @@
                 <div id="div_support">
                     <span>(주)오마트닷컴</span><br>
                     <p>0000-0000</p>
-                    <input type="button" value="1:1문의" onclick="location.href='${pageContext.request.contextPath}/boardFile/inquiry.do';"/>
+                    <c:choose>
+                        <c:when test="${!empty member}">
+                            <input type="button" value="1:1문의" onclick="location.href='${pageContext.request.contextPath}/boardFile/inquiry.do';"/>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="button" value="1:1문의" class="need_login"/>
+                        </c:otherwise>
+                    </c:choose>                    
                     <input type="button" value="고객센터" onclick="location.href='${pageContext.request.contextPath}/boardFile/faq_member.do';">
                 </div>
                 <div id="div_business_info">
