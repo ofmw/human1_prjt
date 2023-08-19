@@ -325,8 +325,8 @@
                 <div class="mp_main_menu_list">
                     <ul>
                         <li><a href="wish.do">찜목록</a></li>
-                        <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
-                        <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
+                        <li><a href="#">상품 리뷰</a></li>
+                        <li><a href="#">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>

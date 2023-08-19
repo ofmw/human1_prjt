@@ -42,6 +42,7 @@
 			<exclude-mapping path="/**/login.do"/>
 			<exclude-mapping path="/product/*"/>
 			<exclude-mapping path="/boardFile/*"/>
+			<exclude-mapping path="/member/join.do"/>
 			
 			<beans:bean id="loginInterceptor" class="com.omart.interceptor.LoginInterceptor"/>
 		</interceptor>

@@ -67,7 +67,7 @@
                                         <a href="member/logout.do">로그아웃</a>
                                     </c:when>
                                 </c:choose>                               
-                                <a href="../boardFile/list_notice.do">고객센터</a>                               
+                                <a href="../boardFile/faq_member.do">고객센터</a>                               
                             </c:otherwise>
 						</c:choose>
 					</div>

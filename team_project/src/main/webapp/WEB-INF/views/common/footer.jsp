@@ -126,8 +126,8 @@
                 <div id="div_support">
                     <span>(주)오마트닷컴</span><br>
                     <p>0000-0000</p>
-                    <input type="button" value="1:1문의" onclick="location.href='${pageContext.request.contextPath}/boardFile/list_inquiry.do';"/>
-                    <input type="button" value="고객센터" onclick="location.href='${pageContext.request.contextPath}/boardFile/list_faq_member.do';">
+                    <input type="button" value="1:1문의" onclick="location.href='${pageContext.request.contextPath}/boardFile/inquiry.do';"/>
+                    <input type="button" value="고객센터" onclick="location.href='${pageContext.request.contextPath}/boardFile/faq_member.do';">
                 </div>
                 <div id="div_business_info">
                     <span>대표자:홍길동 천안시 동남구 대흥로 215 사업자등록번호: 000-00-00000 통신판매업 신고번호:제2023-서울강남-00000호</span><br>
