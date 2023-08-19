@@ -36,6 +36,10 @@
 	    display: flex;
 	    align-items: center;
 	    justify-content: center;
+	    flex-direction: column;
+	}
+	#mp_main_cancel_notice_innerDiv{
+		text-align: left;
 	}
 	#mp_main_cancel_btn_box button {
 	    width: 250px;
@@ -184,7 +188,18 @@
         <div id="mp_main_contents">
             <div id="mp_main_cancel" class="mp_main_obj">
                 <div id="mp_main_cancel_title">정말로 회원탈퇴 하시겠습니까?</div>
-                <div id="mp_main_cancel_notice">회원탈퇴 관련 고지 내용</div>
+                <div id="mp_main_cancel_notice">
+                	<div id="mp_main_cancel_notice_innerDiv">
+	                	<b>"확인" 버튼을 누를 시 즉시 탈퇴 처리되며 취소하실 수 없습니다.</b><br>
+	                	-신중하게 탈퇴 부탁드립니다.<br>
+	                	-탈퇴 후 같은 아이디 및 개인정보로 재가입이 가능합니다.<br><br>
+	                	<b>회원탈퇴시 회원님의 모든 정보가 즉시 삭제됩니다.</b><br>
+	                	-삭제되는 정보<br>
+	                	· 모든 개인정보 (결제 수단, 배송지 포함)<br>
+	                	· 쿠폰 및 포인트<br>
+	                	· 주문 및 결제, 문의와 관련된 모든 내역<br>
+					</div>
+                </div>
                 <div id="mp_main_cancel_btn_box">
                 	<button id="cancel-confirm">확인</button>
                 	<button id="cancel-decline" onclick="history.back();">취소</button>
