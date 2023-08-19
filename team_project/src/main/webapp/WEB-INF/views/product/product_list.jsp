@@ -71,7 +71,7 @@ section {
 	align-items: center;
 	width: 100%;
 	height: 100%;
-	padding-left: 180px;
+	padding-left: 200px;
 }
 
 .quick_btn {
@@ -185,6 +185,10 @@ section {
 /* ---------------------섹션 상품 표시 영역--------------------- */
 #p_box {
 	width: 100%;
+}
+
+.p_inner_elements{
+    margin-left: 30px;
 }
 
 .p_inner_elements_box {

@@ -192,17 +192,12 @@
         
         function extendSession() {
             // 서버에 연장 요청 보내기
-            $.ajax({
-                url: "extendSession.do",
-                type: "post",
-                success: function(response) {
-                    // 연장 성공 시 메시지 표시하고 남은 시간 갱신
-                    alert("세션 연장에 성공하였습니다.");
-                    updateRemainingTime();
-                },
-                error: function(error) {
-                    console.log("세션 연장에 실패하였습니다.");
-                }
+            $.post("extendSession.do", function(response) {
+                // 연장 성공 시 메시지 표시하고 남은 시간 갱신
+                alert("세션 연장에 성공하였습니다.");
+                updateRemainingTime();
+            }).fail(function(error) {
+                console.log("세션 연장에 실패하였습니다.");
             });
         }
         

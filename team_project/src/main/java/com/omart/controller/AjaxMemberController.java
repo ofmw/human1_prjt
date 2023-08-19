@@ -72,8 +72,7 @@ public class AjaxMemberController {
 						
 			if(vo.getGrade() == 9 || vo.getGrade() == 8 || vo.getGrade() == 7) {
 				session.setMaxInactiveInterval(60 * 60);
-				long startTime = System.currentTimeMillis();
-				session.setAttribute("startTime", startTime);
+				session.setAttribute("startTime", System.currentTimeMillis());
 			}else {
 				session.setMaxInactiveInterval(-1);
 			}
