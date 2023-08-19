@@ -241,7 +241,7 @@
                 } else {
 
                     startDate.setDate(startDate.getDate() - 1);
-                    endDate.setDate(endDate.getDate() + 1);
+                    endDate.setDate(endDate.getDate());
                     
                     console.log("조회 날짜 구간(시작): " +startDate);
                     console.log("조회 날짜 구간(끝): " +endDate);
