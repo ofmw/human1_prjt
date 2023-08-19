@@ -1,6 +1,7 @@
 package com.omart.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -123,6 +124,9 @@ public class MypageController {
 		
 		// 주문내역이 있는지 체크
 		if (orderList != null) {
+			
+			// 주문 내역을 역순으로 정렬
+	        Collections.reverse(orderList);
 			
 			/***
 			 * 주문내역이 있을 경우 주문/배송조회 페이지의 주문내역 테이블의
