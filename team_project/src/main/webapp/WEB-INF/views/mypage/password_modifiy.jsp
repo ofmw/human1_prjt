@@ -15,7 +15,8 @@
     
     <style>
     	#mp_main {
-    		height: auto;
+    		position: relative;
+    		height: 600px;
     	}
     	
         .mp_main_title{
@@ -47,13 +48,76 @@
         }
         .mp_memberPw_check{
         	position: absolute;
-        	
+        	width: 1000px;
         }
+        .mp_memberPw_check p{
+          	margin-bottom: 40px;
+          	padding-bottom: 10px;
+          	border-bottom: 1px solid black;
+        	font-size: 24px;
+        }
+        .mp_memberPw_check th{
+        	text-align: left;
+        	width: 200px;
+        }
+        .mp_memberPw_check td{
+        	text-align: left;
+        }
+        .mp_memberPw_check table input{
+        	padding-left: 5px;
+       		width: 200px;
+        	height: 24px;
+        	border: 1px solid #777;
+        }
+        .mp_memberPw_check button, #sbm_edit{
+        	margin-top: 30px;
+		    margin-left: -65px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+        	position: absolute;
+        	padding: 12px 16px 10px;
+		    width: 130px;
+		    height: 42px;
+		    font-size: 16px;
+		    left: 50%;
+		    background: #f14f4f;
+    		border: 1px solid #da3a3a;
+    		color: #fff;
+    		cursor: pointer;
+		}
         .mp_password_modifiy{
         	display: none;
         }
-        #mp_password_modify{
-        	width: 400px;
+        .mp_password_modifiy td{
+        	text-align: left;
+        	padding: 20px 0 20px 0;
+        }
+        .mp_password_modifiy input{
+        	width: 200px;
+        	height: 24px;
+        	border: 1px solid #777;
+        }
+        #div_box p{
+          	padding-bottom: 10px;
+        	font-size: 24px;		
+		}
+		#div_premier {
+			margin-top: 120px;	
+		} 
+		#div_premier p:first-child {
+			padding-bottom: 5px;
+			font-size: 13px;
+			font-weight: bold;
+			border-bottom: 1px solid rgb(224,224,224);
+		}
+        #div_premier p:nth-child(2),#div_premier p:last-child {
+        	padding-top: 5px;
+        	font-size: 10px;
+        	color: gray;
+        }
+        #div_premier span {
+        	color: red;
         }
         p{
         	font-size: 14px;
@@ -79,8 +143,7 @@
 		
 		});
 	});	
-</script>
-<script>
+
 	function hashPassword(password) {
 		var hash = sha256(password);
 		return hash;
@@ -107,57 +170,32 @@
 	}
 	
 	$(document).ready(function(){
-		var passwordPattern = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,12}$/;
-		
-		/* $("#btn_update").click(function(){
-			var newPassword = $("#m_pw").val();
-			var newPasswordCheck = $("#m_pwCheck").val();
-			
-			if (newPassword !== newPasswordCheck){
-				
-			}
-			
-			$.ajax({
-				type: 'POST',
-				url: 'update_process.do',
-				data: formData,
-				success: function(response) {
-					if (response === 'success') {
-						alert("비밀번호 변경이 완료되었습니다.");
-					} else {
-						alert("비밀번호 변경을 실패하였습니다.");
-					}
-				}
-			});
-			return false;
-		}); */
-	
-	
-	$('#m_pw').blur(function(){
-        var passwordInput = $(this);
-        var passwordCheck = $('#pw_check');
-        
-        if (passwordPattern.test(passwordInput.val())) {
-            passwordCheck.text('');
-        } else {
-            passwordCheck.text('8~12자리의 영소문자, 숫자 및 특수문자(@$!%*?&)를 포함해야 합니다.');
-            passwordCheck.css('color', 'red');
-        }
-    });
+	    var passwordPattern = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,12}$/;
 
-    $('#m_pwCheck').blur(function(){
-        var passwordInput = $('#m_pw');
-        var passwordConfirmInput = $(this);
-        var passwordConfirmCheck = $('#pw_check2');
-        
-        if (passwordInput.val() === passwordConfirmInput.val()) {
-            passwordConfirmCheck.text('');
-        } else {
-            passwordConfirmCheck.text('비밀번호가 일치하지 않습니다.');
-            passwordConfirmCheck.css('color', 'red');
-        }
-    });
-});
+	    $('#frm_update').submit(function(event){
+
+	        var passwordInput = $('#input_pw');
+	        var passwordConfirmInput = $('#m_pwCheck');
+	        
+	        console.log('Password Input:', passwordInput.val());
+	        console.log('Password Confirm Input:', passwordConfirmInput.val());
+
+	        if (!passwordPattern.test(passwordInput.val())) {
+	            alert('비밀번호는 8~12자리의 영소문자, 숫자 및 특수문자(@$!%*?&)를 포함해야 합니다.');
+	            event.preventDefault(); // 폼 전송 막기
+	            return; // 전송 중단
+	        }
+
+	        if (passwordInput.val() !== passwordConfirmInput.val()) {
+	        	event.preventDefault(); // 폼 전송 막기
+	            alert('비밀번호가 일치하지 않습니다.');
+	            return; // 전송 중단
+	        }
+
+	        // 유효성 검사를 모두 통과한 경우, 폼 전송
+	        this.submit();
+	    });
+	});
 </script>
 <body>
 
@@ -173,8 +211,8 @@
             <div id="mp_header_user_name">${member.m_name}님</div>
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="#">회원정보 변경</a></li>
-                    <li><a href="#">비밀번호 변경</a></li>
+                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+                    <li><a href="password_modifiy">비밀번호 변경</a></li>
                     <li><a href="#">배송지 관리</a></li>
                 </ul>
             </div>
@@ -232,13 +270,13 @@
 
         <div id="mp_main">
 			<div id="mp_memberPw_check" class="mp_memberPw_check">
-				<p>회원정보수정</p>
+				<p>비밀번호 변경</p>
                 <table>
                 	<tr>
 						<th>비밀번호 확인</th>
 						<td><input type="password" id="pw_check"></td>
-						                	
                		</tr>
+               		<tr style="border-bottom: 1px solid black; height: 40px;"></tr>
 				</table>
 				<div>
 					<button type="button" onclick="checkPw()">확인</button>
@@ -246,15 +284,14 @@
         	</div>
         	<div id="mp_password_modifiy" class="mp_password_modifiy">
         		<div id="div_box">
-        			<h4>비밀번호변경</h4>
+        			<p>비밀번호변경</p>
         		</div>
         		<form action="updatePw_process.do" method="post" name="frm_update" id="frm_update">
         		<input type="hidden" name="m_id" value="${member.m_id}">
 	        		<table id="tbl_join">
 	                    <tr>
 	                        <th>비밀번호</th>
-	                        <td><input type="password" name="m_pw" id="m_pw"><br>
-	                            <div class="check" id="pw_check"></div>
+	                        <td><input type="password" name="input_pw" id="input_pw"><br>
 	                        </td>
 	                    </tr>
 	                    <tr>
@@ -266,6 +303,13 @@
 	                    </tr>
 	                </table>
 	                <button type="submit" name="sbm_edit" id="sbm_edit">확인</button>
+	                <div id="div_premier">
+	                	<p>! 주의하세요</p>
+	                	<p>- 비밀번호는 <span>영문과 숫자 특수문자를 조합하여 8~12자리로 입력</span>해 주세요.</p>
+	                	<p>- 아이디와 같은 비밀번호나 주민등록번호, 생일, 학번, 전화번호 등 개인정보와 관련된 숫자, 연속된 숫자, 동일 반복된 숫자 등<br>
+	                		&nbsp;&nbsp;다른 사람이 쉽게 알아낼 수 있는 비밀번호는 사용하지 않도록 주의하여 주시기 바랍니다.
+	                	</p>
+	                </div>
                 </form>
         	</div>
 

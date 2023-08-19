@@ -15,7 +15,8 @@
     
     <style>
     	#mp_main {
-    		height: auto;
+    		height: 600px;
+    		position: relative;
     	}
     	
         .mp_main_title{
@@ -43,14 +44,152 @@
         }
         .mp_memberPw_check{
         	position: absolute;
-        	
+        	width: 1000px;
         }
+        .mp_memberPw_check p{
+          	margin-bottom: 40px;
+          	padding-bottom: 10px;
+          	border-bottom: 1px solid black;
+        	font-size: 24px;
+        }
+        .mp_memberPw_check th{
+        	text-align: left;
+        	width: 200px;
+        }
+        .mp_memberPw_check td{
+        	text-align: left;
+        }
+        .mp_memberPw_check table input{
+        	padding-left: 5px;
+        	width: 200px;
+        	height: 24px;
+        	border: 1px solid #777;
+        }
+        .mp_memberPw_check button {
+        	margin-top: 30px;
+		    margin-left: -65px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+        	position: absolute;
+        	padding: 12px 16px 10px;
+		    width: 130px;
+		    height: 42px;
+		    font-size: 16px;
+		    left: 50%;
+		    background: #f14f4f;
+    		border: 1px solid #da3a3a;
+    		color: #fff;
+    		cursor: pointer;
+		}
         .mp_member_modifiy{
         	display: none;
         }
-        #mp_member_modify{
-        	width: 400px;
+        .mp_member_modifiy tr:first-child{
+        	border-top: 1px solid black;
         }
+        .mp_member_modifiy tr:last-child{
+        	border-bottom: 1px solid black;
+        }
+        .mp_member_modifiy tr{
+        	border-bottom: 1px solid #e5e5e5;
+        }
+        .mp_member_modifiy th{
+        	text-align: left;
+        	width: 200px;
+        	user-select: none;
+        }
+        .mp_member_modifiy td{
+        	text-align: left;
+        	padding: 15px 0 15px 0;
+        }
+        .mp_member_modifiy input{
+        	padding: 0 5px 0 5px;
+        	height: 22px;
+        	border: 1px solid black;
+        }
+		#div_box p{
+			margin-bottom: 40px;
+          	padding-bottom: 10px;
+          	border-bottom: 1px solid black;
+        	font-size: 24px;		
+		}        
+        fieldset{
+	        display: flex;
+	        justify-content: flex-start;
+	        align-items: center;
+	        padding: 0;
+	        width: 200px;
+	        height: 24px;
+	        border: none;
+	        user-select: none;
+	        pointer-events: none;
+	    }
+	    fieldset input{
+	        outline: none;
+	        font-size: 17px;
+	        letter-spacing: 2px;
+	    }
+	    #birth, #gender, #fld_block{
+	        font-size: 13px;
+	        border: none;
+	    } 
+	    #birth{
+	        padding-left: 5px;
+	        padding-right: 10px;
+	        width: 55px;
+	    }
+	    #gender{
+	        width: 13px;
+	        padding-left: 10px;
+	        padding-right: 1px;
+	        margin-right: 0px;
+	    }
+	    #fld_block{
+	        width: 90px;
+	        padding-left: 0px;
+	        padding-right: 20px;
+	    }
+	    #m_id{
+	    	border: none;
+	    	user-select: none;
+	    	pointer-events: none;
+	    }
+	    #star{
+	    	color: red;
+	    }
+	    #div_button{
+			position: absolute;
+	    	margin-top: 30px;
+		    margin-left: -140px;
+        	padding: 12px 16px 10px;
+		    width: 280px;
+		    height: 42px;
+		    left: 50%;
+	    }
+	    #cancel_btn, #btn_update{
+		    width: 130px;
+		    height: 42px;
+		    font-size: 16px;
+		    background: #f14f4f;
+    		border: 1px solid #da3a3a;
+    		color: #fff;
+    		cursor: pointer;
+	    }
+	    #cancel_btn{
+	    	margin-right: 16px;
+	    	background: #e5e5e5;
+	    	border: 1px solid #777; 
+	    	color: black; 
+	    }
+	    .td_input-container{
+	    	display: flex;
+	    	align-items: center;	
+	    }
+	    #name_check, #selNum_check {
+	    	padding-left: 5px;
+	    	font-size: 13px;
+	    }
         p{
         	font-size: 14px;
         	user-select: none;
@@ -75,8 +214,7 @@
 		
 		});
 	});	
-</script>
-<script>
+
 	function hashPassword(password) {
 		var hash = sha256(password);
 		return hash;
@@ -103,31 +241,41 @@
         });
 	}
 	
-	/* $(document).ready(function(){
-		$("#btn_update").click(function(){
-			var formData = {
-					selNum: $("#selNum").val(),
-					m_pw: $("#m_pw").val()
-			};
-			
-			console.log("formData : " + formData);
-			
-			$.ajax({
-				type: 'POST',
-				url: 'update_process.do',
-				data: formData,
-				success: function(response) {
-					if (response === 'success') {
-						alert("회원정보 수정이 완료되었습니다.");
-					} else {
-						alert("회원정보 수정을 실패하였습니다.");
-					}
-				}
-			});
-			return false;
-		});
-	}); */
+	document.addEventListener("DOMContentLoaded", function(){
+		var birthInput = document.getElementById("birth");
+		var formattedBirth = birthInput.value.split("-").join("").substring(2);
+		birthInput.value = formattedBirth;
+	});
 	
+	$(document).ready(function(){
+		var namePattern = /^[가-힣]{2,6}$/;
+		var selNumPattern = /^(010|011)[0-9]{7,8}$/;
+		
+		$('#input_name').blur(function(){
+            var nameInput = $(this);
+            var nameCheck = $('#name_check');
+            
+            if (namePattern.test(nameInput.val())) {
+                nameCheck.text('');
+            } else {
+                nameCheck.text('이름을 확인해주세요');
+                nameCheck.css('color', 'red');
+            }
+        });
+		
+		$('#input_selNum').blur(function(){
+            var selNumInput = $(this);
+            var selNumCheck = $('#selNum_check');
+            
+            if(selNumPattern.test(selNumInput.val())) {
+                selNumCheck.text('');
+            } else {
+                selNumCheck.text('올바른 핸드폰 번호 형식이 아닙니다.');
+                selNumCheck.css('color', 'red');
+            }
+            console.log(selNumInput.val());
+        });
+	});
 </script>
 <body>
 
@@ -202,13 +350,13 @@
 
         <div id="mp_main">
 			<div id="mp_memberPw_check" class="mp_memberPw_check">
-				<p>회원정보수정</p>
+				<p>회원정보 변경</p>
                 <table>
                 	<tr>
 						<th>비밀번호 확인</th>
 						<td><input type="password" id="pw_check"></td>
-						                	
                		</tr>
+               		<tr style="border-bottom: 1px solid black; height: 40px;"></tr>
 				</table>
 				<div>
 					<button type="button" onclick="checkPw()">확인</button>
@@ -216,20 +364,22 @@
         	</div>
         	<div id="mp_member_modifiy" class="mp_member_modifiy">
         		<div id="div_box">
-        			<h4>회원정보수정</h4>
+        			<p>회원정보 변경</p>
         		</div>
+        			<h4>필수정보입력</h4><br>
+        			<p><span id="star">*</span>표시는 필수입력 항목 이오니 반드시 입력해 주세요.</p>
         		<form action="updateMember_process.do" method="post" name="frm_update" id="frm_update">
         		<table id="tbl_join">
                     <tr>
-                        <td>
-                            <p>이름</p>
-                            <input type="text" name="m_name" id="m_name" value="${member.m_name}">
+                    	<th>이름&nbsp;<span id="star">*</span></th>
+                        <td class="td_input-container">
+                            <input type="text" name="input_name" id="input_name" value="${member.m_name}">
                             <div class="check" id="name_check"></div>
                         </td>
                     </tr>
                     <tr>
+                    	<th>생년월일 및 성별&nbsp;<span id="star">*</span></th>
                         <td>
-                            <p>생년월일 및 성별</p>
                                 <fieldset>
                                     <input type="text" name="birth" id="birth" maxlength="6" value="${member.birth}" readonly>
                                     <p>-</p>
@@ -239,23 +389,24 @@
                         </td>
                     </tr>
                     <tr>
-                        <td id="sel_aNum">
-                            <p>휴대폰 번호</p>
-                                    <input type="text" name="selNum" id="selNum" value="${member.selNum}">
+                    	<th>휴대폰 번호&nbsp;<span id="star">*</span></th>
+                        <td class="td_input-container">
+                                    <input type="text" name="input_selNum" id="input_selNum" value="${member.selNum}">
                                     <div class="check" id="selNum_check"></div>
                         </td>
                     </tr>
                     <tr>
+                    	<th>아이디&nbsp;<span id="star">*</span></th>
                         <td id="aNum_behind">
-                            <p>아이디</p>
                             	<input type="text" name="m_id" id="m_id" value="${member.m_id}" readonly><br>
                             	<div class="check" id="id_check"></div>
-                        	
-                        	<input type="button" id="cancel_btn" value="취소하기" onclick="history.back()">
-                            <button type="submit" name="btn_update" id="btn_update">수정하기</button>
                         </td>
                     </tr>
                 </table>
+                	<div id="div_button">
+                			<input type="button" id="cancel_btn" value="취소하기" onclick="history.back()">
+                            <button type="submit" name="btn_update" id="btn_update">수정하기</button>
+                    </div>
                 </form>
         	</div>
 

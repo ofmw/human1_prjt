@@ -433,11 +433,13 @@ public class MypageController {
 		}
 	}
 	
-	//회원정보 수정페이지 
+	//비밀번호 수정페이지 
 	@PostMapping("/updatePw_process.do")
 	public String updatePwProcess(MemberVo memberVo, HttpServletRequest request) {
 		
-		String encryptedPassword = passwordEncoder.encode(memberVo.getM_pw());
+		String newPassword = request.getParameter("input_pw");
+		
+		String encryptedPassword = passwordEncoder.encode(newPassword);
 	    memberVo.setM_pw(encryptedPassword);
 		
 		MemberVo vo = mUpdate.updatePw(memberVo);
@@ -458,6 +460,12 @@ public class MypageController {
 	//회원정보 수정페이지 
 		@PostMapping("/updateMember_process.do")
 		public String updateMemberProcess(MemberVo memberVo, HttpServletRequest request) {
+			
+			String newName = request.getParameter("input_name");
+			memberVo.setM_name(newName);
+			
+			String newSelNum = request.getParameter("input_selNum");
+			memberVo.setSelNum(newSelNum);
 			
 			MemberVo vo = mUpdate.updateMember(memberVo);
 			
