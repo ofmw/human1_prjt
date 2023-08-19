@@ -67,6 +67,7 @@ public class CartController {
 	
 	@GetMapping("/index.do")
 	public String index() {
+		System.out.println("CartController index() 실행");
 		
 		return "redirect:/index.do";/* 뷰의 이름 */
 	}

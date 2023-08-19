@@ -68,6 +68,7 @@
         }
         #div_support p {
             float: left;
+            margin-right: 15px
         }
         #div_support span {
             line-height: 40px;

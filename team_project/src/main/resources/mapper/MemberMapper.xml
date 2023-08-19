@@ -17,9 +17,14 @@
         FROM member_omart
         WHERE selNum=#{selNUm}
     </select>
-    <!-- 회원가입 구문 -->
+    <!-- 회원가입 구문 (오마트) -->
     <insert id="join" parameterType="MemberVo">
         CALL join_member(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw}, "omart")
+    </insert>
+    
+    <!-- 회원가입 구문 (카카오) -->
+    <insert id="kjoin" parameterType="MemberVo">
+        CALL join_member(#{nickname}, #{birthday}, #{gender}, #{selNum}, #{email}, "kakao", "kakao")
     </insert>
     
     <!-- 회원가입시 찜목록에 행 생성하기 위해 가입정보 조회 -->
@@ -69,10 +74,10 @@
 	</select>
 	
 	<!-- 카카오 회원 정보 저장 -->
-	<insert id="kjoin" parameterType="map">
+<!--<insert id="kjoin" parameterType="map">
 		INSERT INTO member_omart(m_id, m_pw, m_name, birth, platform, gender)
 		VALUES(#{email}, "kakao", #{nickname}, #{birthday}, "kakao", #{gender}) 
-	</insert>
+	</insert>-->
 	
 	<insert id="insertWish" parameterType="_int">
 	   insert into wish (m_idx) values(#{m_idx})

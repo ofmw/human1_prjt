@@ -65,7 +65,7 @@ public class HomeController {
 		
 		return "index";/* 뷰의 이름 */
 	}
-	
+
 	@GetMapping("boardFile/list_inquiry")
 	public String home2() {
 

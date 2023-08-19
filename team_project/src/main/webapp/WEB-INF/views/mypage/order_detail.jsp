@@ -10,6 +10,7 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="../resources/js/mypage.js"></script>
     <link href="../resources/css/mypage/order_detail.css" rel="stylesheet">
+    <link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
     
     <style>	
 		#od_header_btn-addcart{
@@ -45,7 +46,7 @@
     				
    	            	$.ajax({
    		                type: "POST",
-   		                url: "addCart.do",
+   		                url: "../cart/addCart.do",
    		                data: {
    		                    p_id: p_idArray,
    		                },

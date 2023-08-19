@@ -324,6 +324,8 @@ public class MypageController {
 	//마이페이지 -> 인덱스
 	@GetMapping("/index.do")
 	public String mypage_index() {
+		System.out.println("MypageController index() 실행");
+		
 		return "redirect:/index.do";/* 뷰의 이름 */
 	}
 	
