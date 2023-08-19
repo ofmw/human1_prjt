@@ -232,7 +232,6 @@
                 let today = new Date();
                 let startDate = new Date($('#cal-start').val());
 		        let endDate = new Date($('#cal-end').val());
-                let rows = 0;
 
                 if (isNaN(startDate)) {
                     alert("시작 날짜를 선택해주세요");
@@ -241,7 +240,6 @@
                 } else {
 
                     startDate.setDate(startDate.getDate() - 1);
-                    endDate.setDate(endDate.getDate() + 1);
                     
                     console.log("조회 날짜 구간(시작): " +startDate);
                     console.log("조회 날짜 구간(끝): " +endDate);
@@ -257,11 +255,9 @@
                         if (tdDate > startDate && tdDate < endDate) {
                             $(this).closest('tr').show();
                             console.log("표시");
-                            rows += 1;
                         } else {
                             $(this).closest('tr').hide().addClass('hide');;
                             console.log("숨김");
-                            rows -= 1;
                         }
                         
                         // 조회 결과가 비었을 경우 체크
