@@ -303,7 +303,6 @@ public class MypageController {
 				 * 1이 아닌 (0은 판매 등록되지 않은 상품) 상품들의 정보를 제거
 				 ***/
 				p_info.removeIf(product -> product.getPost_state() != 1);
-				System.out.println("찜목록에 담긴 상품들의 정보(미등록 상품 제외): " +p_info);
 			}
 			
 			/***
