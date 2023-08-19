@@ -39,7 +39,6 @@ $(function() {
 		
 	}
         
-        
 	//*** 찜 버튼 클릭 이벤트 처리 ***//
 	$(".w_btn").click(function() {
 	
@@ -55,40 +54,6 @@ $(function() {
 
 		}
 
-	});
-  
-	/* ---------------------찜한 상품 장바구니 추가--------------------- */
-	//*** 장바구니에 선택한 상품 추가 ***//
-	function addCart(p_idArray) {
-
-		$.ajax({
-			type: "POST",
-			url: "addCart.do",
-			data: {
-				p_id: p_idArray,
-			},
-			success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
-				if (response === "success") { // 수량 업데이트가 성공한 경우
-					alert('장바구니에 상품이 추가되었습니다.');
-					//페이지 새로고침
-					location.reload();
-				} else {
-					alert("장바구니 상품 추가에 실패했습니다.");
-				}
-			},
-			error: function () {
-				alert("오류가 발생하였습니다.");
-			}
-		}); // end of ajax
-        	
-	}
-        
-	//*** 장바구니 버튼 클릭 이벤트 처리 ***//
-	$(".c_btn").click(function() {
-	
-		let p_idArray = [$(this).siblings(".p_id").val()];
-        	addCart(p_idArray);
-        	
 	});
    	
 });

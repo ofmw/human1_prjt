@@ -2,7 +2,9 @@ package com.omart.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ import lombok.Setter;
 public class AdminController {
 	
 	@Setter(onMethod_= {@Autowired})
-	private ProductService pdList;
+	private ProductService pdList, pdInfo;
 	@Setter(onMethod_= {@Autowired})	
 	private AdminService mList, odrList;
 	@Setter(onMethod_= {@Autowired})
@@ -47,7 +49,33 @@ public class AdminController {
 		model.addAttribute("status", "product");
 		
 		List<ProductVo> productList = pdList.productList();
+		
+		//좌측 체크박스 생성을 위한 List 생성
+	    List<String> brandList = new ArrayList<String>(); //브랜드
+	    List<String> subCategoryList = new ArrayList<String>(); //카테고리 소분류
+	    for(ProductVo product : productList) {
+	    	
+	    	String p_id = product.getP_id();
+	    	product.setStars_avg(pdInfo.getStarsAvg(p_id));
+	    	product.setReviews(pdInfo.getReviews(p_id));
+	    	
+	    	//중복 방지
+	    	if(!brandList.contains(product.getBrand())) {
+	    		brandList.add(product.getBrand());
+	    	}
+	    	if(!subCategoryList.contains(product.getSub_category())) {
+	    		subCategoryList.add(product.getSub_category());
+	    	}
+	    }
+		
+	    Map<String, List<String>> categoryList = new LinkedHashMap<String, List<String>>();	    
+	    categoryList.put("brand",brandList);	 
+	    categoryList.put("sub", subCategoryList);
+		
 		model.addAttribute("productList", productList);
+		
+		model.addAttribute("categoryList", categoryList);
+		
 		return "admin/admin";
 	}		
 	@GetMapping("/authority.do")
