@@ -15,7 +15,6 @@ $(function() {
     let close_btn = $("#close_btn");
     let login_btn2 = $("#login_btn2");
     let need_login = $(".need_login"); //로그인이 필요한 서비스
-    let addWish_btn = $(".btn_addWish"); //찜목록 상품 추가
     
     /* 로그인 모달창 열기 메서드 */
     function showShadow() {
@@ -35,25 +34,6 @@ $(function() {
     need_login.on("click", function(event){
         event.preventDefault();
         showShadow();
-    });
-    
-    addWish_btn.on("click", function(){
-        let m_idx = $("#m_idx").val();
-        let p_id = $("#p_id").val();
-        
-        $.ajax({
-            type: "post",
-            url: "/addWish.do",
-            data: {m_idx: m_idx, p_id: p_id},
-            success: function(response){
-                console.log("AJAX 요청 성공:", response);
-            },
-            error: function(error){
-                // 오류 시 처리할 로직
-                console.error("AJAX 오류 발생", error);               
-            }
-        }); <!-- end of ajax -->
-        
     });
     
     /* 비밀번호 입력 CapsLock 감지 */
