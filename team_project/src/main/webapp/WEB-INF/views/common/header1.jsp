@@ -67,6 +67,7 @@
 							</c:otherwise>
 						</c:choose>
 					</div>
+					<div id="div_division"></div>
 					<div id="div_persnal_menu">
 						<c:choose>
 							<c:when test="${empty member}">
