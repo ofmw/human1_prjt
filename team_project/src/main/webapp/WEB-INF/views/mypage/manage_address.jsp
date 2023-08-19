@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -441,7 +443,7 @@
 										<div id="selected_address_title">현재 선택된 배송지</div>
 										<div id="selected_address_nickname">
 							                <span>[${a.a_name}]</span>
-							                <span>홍길동</span>
+							                <span>${a.receiver}</span>
 							            </div>
 										<div id="selected_address_postnum">(${a.postnum})</div>
 										<div id="selected_address_1">도로명: ${a.roadAddr}, ${a.detail}</div>
@@ -453,7 +455,7 @@
 										<div id="selected_address_title">현재 선택된 배송지</div>
 										<div id="selected_address_nickname">
 							                <span>[${a.a_name}]</span>
-							                <span>홍길동</span>
+							                <span>${a.receiver}</span>
 							            </div>
 										<div id="selected_address_postnum">(${a.postnum})</div>
 										<div id="selected_address_1">도로명: ${a.roadAddr}, ${a.detail}</div>
@@ -521,13 +523,15 @@
 										</c:otherwise>
 									</c:choose>
 								</td>
-								<td class="td_receiver">홍길동</td>
+								<td class="td_receiver">${a.receiver}</td>
 								<td class="td_address">
 		                            <div>(${a.postnum})</div>
 		                            <div>도로명: ${a.roadAddr}, ${a.detail}</div>
 		                            <div>지번: ${a.jibunAddr}, ${a.detail}</div>
 		                        </td>
-								<td class="td_selnum">010-1234-1324</td>
+								<td class="td_selnum">
+								    <c:out value="${a.selnum.substring(0, 3)}-${a.selnum.substring(3, 7)}-${a.selnum.substring(7)}" />
+                                </td>
 								<td class="td_option">
 									<c:choose>
 										<c:when test="${a.def_add eq '1' or page eq '2' and a.a_name eq current_add}">
