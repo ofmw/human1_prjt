@@ -155,7 +155,7 @@
     </div><!-- end of shadow -->
     <div id="shadow_addCart" style="display:none;">
         <div id="addCart_container">
-            제품이 장바구니에 추가되었습니다.
+            상품이 장바구니에 추가되었습니다.
         </div>
     </div>
 </body>

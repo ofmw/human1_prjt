@@ -9,7 +9,7 @@
 <title>상품 페이지</title>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="../resources/js/cart2.js?v=1234"></script>
+<!-- <script src="../resources/js/cart2.js?v=1234"></script> -->
 
 <style>
 /* ---------------------전체 요소 공통--------------------- */
@@ -478,7 +478,7 @@ section {
 					console.log("ajax 통신 성공");
 				},
 				error : function(error) {
-					alert("ajax 통신 테스트 실패")
+					alert("ajax 통신 테스트 실패");
 				}
 			});
 		}
@@ -586,14 +586,14 @@ section {
 	    let p_idArray = [$obj.parent().find(".p_id").val()];
 	    console.log(p_idArray);
 
-	    addCart2(p_idArray);
+	    addCart(p_idArray);
     };
     
     /* ---------------------장바구니 상품 추가--------------------- */
     //*** 장바구니에 선택한 상품 추가 ***//
-    function addCart2(p_idArray) {
+    function addCart(p_idArray) {
         
-        let m_idx = parseInt($("#m_idx").val());
+        let m_idx = parseInt($("#m_idx").val());        
         
         if (isNaN(m_idx)) {
             alert("로그인 후 이용 가능합니다.");
@@ -609,6 +609,7 @@ section {
                 success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
                    if (response === "success") { // 수량 업데이트가 성공한 경우
                        showShadow_addCart();
+                       /* alert("상품이 장바구니에 추가되었습니다.") */
                         //페이지 새로고침
                     } else if (response === "max"){
                         alert("해당 상품이 장바구니 최대 상품 수량을 초과했습니다.\n(최대 20개)");
@@ -622,12 +623,12 @@ section {
             }); // end of ajax
         }
             
-    }
-    
-    let shadow_addCart = $("#shadow_addCart");
+    }  
     
     /* 장바구니 추가 알림창 열기 메서드 */
     function showShadow_addCart() {
+    	let shadow_addCart = $("#shadow_addCart");
+    	
         shadow_addCart.css({
             'display': 'block',
             'z-index': '5000'
@@ -637,6 +638,8 @@ section {
 
     /* 장바구니 추가 알림창 닫기 메서드 */
     function hideShadow_addCart() {
+    	let shadow_addCart = $("#shadow_addCart");
+    	
         shadow_addCart.fadeOut(500, function() {
             $(this).css({
                 'display': 'none',
@@ -772,7 +775,7 @@ section {
 																	<div class="p_img_opt-box-innerDiv">
 																		<input type="hidden" class="p_id" value="${productList[j].p_id}">
 																        <input type="hidden" class="stock" value="${productList[j].stock}" />
-																		<button type="button" class="c_btn">🛒</button>
+																		<button type="button" class="c_btn" onclick='addCartBtn(this)'>🛒</button>
 																		<c:choose>
 																			<c:when
 																				test="${!empty wishList and wishList.contains(productList[j].p_id)}">
