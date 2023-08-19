@@ -159,16 +159,10 @@ section {
 #opt_table th {
 	text-align: left;
 	font-size: 17px;
-	padding: 5px 0px;
 }
 
 #opt_table tr:not(:first-child) th {
-    padding-top: 10px;
-	border-top: 1px solid lightgray;
-}
-
-#opt_table tr:nth-child(2) td:last-child {
-	padding-bottom: 10px
+    padding-top: 5px;
 }
 
 #opt_table td {
@@ -185,6 +179,12 @@ section {
 	font-size: 14px;
 	position: absolute;
 	margin: 1px 5px;
+}
+#opt_table tr th p{
+    line-height: 35px;
+}
+#opt_table tr:not(:first-child) th p{
+    border-top: 1px solid lightgray;
 }
 
 /* ---------------------섹션 상품 표시 영역--------------------- */
@@ -312,6 +312,7 @@ section {
 	user-select: none;
 	cursor: pointer;
 }
+
 </style>
 <script>
 	$(function() {		
@@ -750,7 +751,7 @@ section {
 									<c:forEach items="${categoryList}" var="category"
 										varStatus="status">
 										<tr>
-											<th>${category.key}</th>
+											<th><p>${category.key}</p></th>
 										</tr>
 										<c:forEach items="${category.value}" var="item" varStatus="s">
 											<tr>
