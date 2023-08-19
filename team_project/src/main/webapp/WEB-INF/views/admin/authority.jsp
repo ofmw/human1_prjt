@@ -26,7 +26,7 @@
     #tbl_left td{
         border: 1px solid lightgray;
     }
-    #tbl_left tr:nth-child(odd) td{
+    #tbl_left tr:nth-child(1) td{
 	    height: 27px;
 	    font-size: 13px;
 	    line-height: 14px;
@@ -172,7 +172,7 @@
 	   padding-bottom: 5px;
 	   padding-right: 10px;
     }
-    #btn_input, #btn_edit, #btn_create{
+    #btn_input, #btn_edit, #btn_create, #td_btns input[type="button"]{
        width: 80px;
        height: 27px;
        margin-left: 5px;
@@ -191,7 +191,15 @@
     }
     #btn_edit:hover, #btn_create:hover {
 	   background-color: rgb(230, 230, 230);
-    }    
+    }
+    #td_btns input{
+        float: right;
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
+    #td_btns input:first-child {
+	   margin-left: 59px !important;
+	}
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
@@ -427,7 +435,7 @@ $(function(){
                 </td>
             </tr>
             <tr>
-                <td>
+                <td id="td_btns">                                      
                    <input id="btn_reset" type="button" value="초기화"/>
                    <input id="btn_filter" type="button" value="선택완료"/>
                 </td>

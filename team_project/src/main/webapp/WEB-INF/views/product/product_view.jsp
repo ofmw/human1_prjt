@@ -445,6 +445,7 @@
         let dCalPrice = $("#div_calPrice");
         let hCalPrice = $("#h3_calPrice");
         let totalPrice = $("#h1_totalPrice");
+        let stock =  parseInt($(".p_stock").text().replace(/\D/g, ''));
         
         minusBtn.on("click",function(){
        		if(amount.val()>1){
@@ -457,6 +458,11 @@
         });
         
         plusBtn.on("click",function(){
+        	if(amount.val() > stock-1){
+        		alert("해당 상품의 재고는 " + stock + "개입니다.");
+        		return;
+        	}
+        	
        		if(amount.val()<20){
                 amount.val(parseInt(amount.val())+1);
                 dCalPrice.text((dcPrice*amount.val()).toLocaleString()+"원");
@@ -625,7 +631,17 @@
 	            <c:otherwise>
 	                <c:set var="discount_price" value="${product.price * ((100 - product.discount)/100)}"></c:set>
 	                <h4><fmt:formatNumber value="${product.price}" pattern="#,###" />원</h4>
-	                <span>${product.discount}%</span><h1><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h1>
+	                <div id="div_horizon">
+		                <span>${product.discount}%</span><h1><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h1>
+		                <c:choose>
+	                        <c:when test="${product.stock gt 0}">
+	                            <p class="p_stock">(재고 : ${product.stock}개)</p>
+	                        </c:when>
+	                        <c:otherwise>
+	                            <p class="p_stock">재고없음</p>
+	                        </c:otherwise>
+	                    </c:choose>
+                    </div>
 	            </c:otherwise>
 	        </c:choose>
         </div>
