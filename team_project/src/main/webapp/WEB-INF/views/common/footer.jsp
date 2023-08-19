@@ -62,9 +62,7 @@
             color: #222;
         }
         #div_support {
-            /* width: 1280px; */
             height: 80px;
-            /* padding-left: 10px; */
             padding-top: 10px;
         }
         #div_support p {
@@ -76,15 +74,15 @@
             font-weight: bold;
         }
         #div_support input {
-            margin-left: 7px;
-            width: 60px;
-            height: 23px;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: left;
-            background-color: white;
-            border-radius: 3px;
-            cursor: pointer;
+		    width: 60px;
+		    height: 23px;
+		    font-size: 11px;
+		    text-align: left;
+		    background-color: white;
+		    border-radius: 3px;
+		    border: 1px solid #cacaca;
+		    color: gray;
+		    cursor: pointer;
         }
         #div_support input[type="button"]{
             text-align: center;
