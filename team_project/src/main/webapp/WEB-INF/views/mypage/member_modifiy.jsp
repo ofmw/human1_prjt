@@ -9,9 +9,10 @@
 <head>
     <title>회원정보수정</title>
     
-    <link href="../resources/css/mypage.css" rel="stylesheet">
+    <link href="../resources/css/mypage/mypage.css" rel="stylesheet">
     
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="../resources/js/mypage.js"></script>
     
     <style>
     	#mp_main {
@@ -105,10 +106,7 @@
 	
 	$(document).ready(function(){
 		$("#btn_update").click(function(){
-			var formData = {
-					selNum: $("#selNum").val(),
-					m_pw: $("#m_pw").val()
-			};
+			var formData = $("#frm_update").serialize();
 			
 			console.log("formData : " + formData);
 			
@@ -259,11 +257,11 @@
                             	<div class="check" id="id_check"></div>
                     
                             <p>비밀번호</p>
-                                <input type="password" name="m_pw" id="m_pw" value="${member.m_pw}" ><br>
+                                <input type="password" name="m_pw" id="m_pw" value="${member.m_pw}" disabled><br>
                                 <div class="check" id="pw_check"></div>
                         
                             <p>비밀번호 확인</p>
-                           		<input type="password" name="m_pwCheck" id="m_pwCheck"><br>
+                           		<input type="password" name="m_pwCheck" id="m_pwCheck" value="${member.m_pw}" disabled><br>
                             	<div class="check" id="pw_check2"></div>
                         
                             <button type="submit" name="btn_update" id="btn_update">수정하기</button>

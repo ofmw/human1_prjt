@@ -1,0 +1,164 @@
+@charset "UTF-8";
+
+/* ---------------------마이페이지 메인영역--------------------- */
+.mp_main_title{
+    font-size: 20px;
+    font-weight: bold;
+}
+#mp_main_ph_searchbar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    height: 50px;
+    padding: 0 15px;
+    margin-top: 10px;
+
+    border: 1px dotted #b8b8b8;
+    border-left: 0 none;
+    border-right: 0 none;
+    background: #f9f9f9;
+}
+#mp_main_ph_search_seld{
+    margin-left: 20px;
+}
+#mp_main_ph_search_quicksel li{
+    display: inline;
+    float: left;
+    position: relative;
+}
+.quicksel_radio{
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    z-index: -1;
+    width: 13px;
+    height: 13px;
+}
+#mp_main_ph_search_quicksel li:first-child label{
+    border-radius: 3px 0 0 3px;
+}
+#mp_main_ph_search_quicksel li:last-child label{
+    border-radius: 0 3px 3px 0;
+}
+#mp_main_ph_search_quicksel label{
+    display: inline-block;
+    min-width: 46px;
+    margin: 0 -1px 0 0;
+    padding: 1px 0;
+    border: 1px solid #ccc;
+    background: #fcfcfc;
+    font-size: 11px;
+    line-height: 24px;
+    color: #666;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.mp_main_ph_search_detail {
+    display: inline-flex;
+    align-items: center;
+    margin-left: auto;
+}
+.cal_date{
+	width: 110px;
+	max-width: 110px;
+    height: 28px;
+    padding-right: 6px;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    outline: 0;
+    font-size: 12px;
+    text-align: center;
+    line-height: 20px;
+    box-sizing: border-box;
+}
+#cal_hipen{
+    display: inline;
+    width: 17px;
+    text-align: center;
+}
+#mp_main_ph_search_detail_btn{
+    background: #3b3b3b;
+    border: 1px solid #3b3b3b;
+    color: #fff;
+    padding: 5px 12px;
+    margin-left: 10px;
+    font-size: 11px;
+    cursor: pointer;
+}
+/* -----------------구매내역 리스트(테이블)----------------- */
+/* 리스트 테이블 전체영역 */
+#mp_main_ph_content table{
+    width: 100%;
+    text-align: center;
+    border-spacing: 0;
+    border-collapse : collapse;
+    margin-top: 10px;
+}
+/* 리스트 테이블 헤더(tr) */
+#mp_main_ph_content_header{
+    height: 40px;
+    font-size: 15px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: #f9f9f9;
+}
+/* 리스트 테이블 td 공통 */
+#mp_main_ph_content table td:not(#td_pnav){
+    height: 70px;
+    border-bottom: 1px solid #e5e5e5;
+}
+/* 리스트 테이블 구매일자 */
+.td_date{
+    font-size: 14px;
+    color: #777;
+}
+/* 리스트 테이블 주문번호 */
+.td_ordernum{
+    color: #333;
+}
+/* 리스트 테이블 구매상품 이름 */
+.td_pname{
+    text-align: left;
+}
+.td_pname div{
+	display: inline-flex;
+}
+.td_pname a{
+	max-width: 400px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+	display: -webkit-box;
+    -webkit-line-clamp: 1; /* 라인수 */
+    -webkit-box-orient: vertical;
+}
+/* 리스트 테이블 구매상품 (~외 n건) */
+.td_pname .extra_p{
+	margin-left: 5px;
+    color: #e24f4f;
+}
+/* 리스트 테이블 배송상태 */
+.td_shipstate{
+    color: #222;
+}
+/* 리스트 테이블 주문상세내역 버튼 */
+.ph_detail_btn{
+    display: inline-block;
+    width: 110px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    color: #777;
+    border: 1px solid #cfcfcf;
+    box-sizing: border-box;
+}
+#tr_empty_history{
+	height: 100px;
+}
+/* 리스트 페이지 네비게이션 */
+#td_pnav{
+    height: 50px;
+    user-select: none;
+}

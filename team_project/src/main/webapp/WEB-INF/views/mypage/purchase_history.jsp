@@ -8,21 +8,11 @@
 <head>
     <title>주문/배송조회</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <link href="../resources/css/purchase_history.css" rel="stylesheet">
+    <script type="text/javascript" src="../resources/js/mypage.js"></script>
+    <link href="../resources/css/mypage/purchase_history.css" rel="stylesheet">
+    <link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
     
     <style>
-	    /* a태그 공통 */
-		a:hover{text-decoration: underline;}
-    	/* 버튼 및 선택 요소 공통 */
-        button:hover, #sel_box:hover{
-        	background-color: #222 !important;
-        	color: white;
-        }
-        
-        #mp_header_area li span:hover{
-	    	text-decoration: underline;
-	    	cursor: pointer;
-	    }
 	    /* ---------------------마이페이지 메인영역 헤더--------------------- */
         #mp_main_ph_header{
             display: flex;
@@ -49,18 +39,11 @@
 		    border: 1px solid #ddd;
 		    border-radius: 3px;
         }
-        #mp_main_wish_notice{
-            border-top: 1px solid #e5e5e5;
-            padding-top: 10px;
-            font-size: 13px;
-            color: #777;
-        }
         /* ---------------------페이지 내비게이션--------------------- */
         .p-nav{
         	width: 25px;
         	height: 25px;
         	margin: 0 5px;
-        	padding: 2px 5px;
         	
 		    font-size: 14px;
 		    cursor: pointer;
@@ -156,7 +139,7 @@
             /* ---------------------달력 초기 날짜 설정------------------- */
             // 오늘 날짜 저장
             const today = new Date();
-            today.setDate(today.getDate() + 1);
+            today.setDate(today.getDate());
             // 6개월 전 날짜 계산
             const limitedMonth = new Date();
             limitedMonth.setMonth(today.getMonth() - 6);
@@ -449,14 +432,16 @@
     <!-- 마이페이지 헤더부분 -->
     <div id="mp_header_area">
 
+        <!-- 회원 정보 영역 -->
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
             <input type="hidden" id="session_m_idx" value="${member.m_idx}">
+            <input type="hidden" id="session_platform" value="${member.platform}">
+            
             <div id="mp_header_user_menu">
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
-	                    <li><a href="#">회원정보 변경</a></li>
-	                    <li><a href="#">비밀번호 변경</a></li>
+	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
@@ -515,12 +500,12 @@
         
         <!-- 마이페이지 중앙 내용 -->
         <form>
-            <div id="mp_main">
+            <div id="mp_main_contents">
                 <div id="mp_main_ph" class="mp_main_obj">
                 
                 	<!-- 메인영역 헤더 -->
 	                <div id="mp_main_ph_header">
-	                    <div class="mp_main_title">주문/배송 내역</div>
+	                    <div class="mp_main_title">주문/배송조회</div>
 	                    <div id="mp_main_ph_header_opt-box">
 		                    <div id="mp_main_ph_header_sel-box">
 		                        <select id="sel2">
@@ -533,7 +518,6 @@
 	                </div>
 
                     <!-- 마이페이지 주문/배송내역  -->
-                    
                     <div id="mp_main_ph_searchbar">
 
                         <div>기간조회</div>
@@ -615,14 +599,14 @@
                         </table>
                     </div>
 
-                    <!-- 마이페이지 구매내역 하단 안내문구 -->
-                    <div id="mp_main_ph_notice">
-                        <div id="mp_main_ph_notice_title">구매내역 안내</div>
-                        <div id="mp_main_ph_notice_content">
+                    <!-- 마이페이지 주문/배송 조회 하단 안내문구 -->
+					<div id="mp_notice">
+						<div id="mp_notice_title">주문/배송조회 안내</div>
+		                <div id="mp_notice_content">
                             <ul>
-                                <li>구매한 상품이력은 당일부터 최근 6개월까지의 정보를 제공합니다.</li>
-                                <li>구메할 수 없는 판매제한 상품은 구매내역에 표기되지 않습니다.</li>
-                                <li>123</li>
+                                <li>주문 이력은 당일부터 최근 6개월까지의 정보만 조회 가능합니다.</li>
+                                <li>판매제한 상품은 주문내역에 표시되지 않습니다.</li>
+                                <li>추가할 내용</li>
                             </ul>
                         </div>
                     </div>

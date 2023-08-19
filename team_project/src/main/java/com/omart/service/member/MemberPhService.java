@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.omart.dao.MemberDao;
 import com.omart.dao.OrderDao;
 import com.omart.vo.OrderVo;
 import com.omart.vo.ProductVo;

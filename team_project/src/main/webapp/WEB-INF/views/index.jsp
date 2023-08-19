@@ -251,8 +251,6 @@
         border-radius: 20px;
     }
 
-    /**/
-
     .swiper-slide {opacity:0.5; transition:opacity 0.5s;}
     .swiper-slide-active {opacity:1;}
 
@@ -320,7 +318,7 @@
             loop: true,
             centeredSlides: true,
             spaceBetween: 5,
-    
+
             // pagination 기본은 bullet
             pagination: {
                 el: ".swiper-pagination",
@@ -527,9 +525,6 @@
                   <div class="swiper-pagination"></div>
                   <div class="swiper-button-next"></div>
                   <div class="swiper-button-prev"></div>
-                  <!-- <div class="custom-fraction">
-                    <span class="current">1</span>/<span class="all">9
-                  </div> -->
                 </div>
             </div>
 

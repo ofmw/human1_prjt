@@ -5,9 +5,6 @@
 <head>
     <title>footer</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-        *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
-
         #div_footer {
             position: relative;
             display: flex;

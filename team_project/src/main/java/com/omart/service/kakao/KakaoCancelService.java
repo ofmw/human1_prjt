@@ -1,24 +1,15 @@
 package com.omart.service.kakao;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.omart.dao.KakaoDao;
 import com.omart.dao.MemberDao;
-import com.omart.service.member.MemberWishService;
-import com.omart.vo.MemberVo;
 
 import lombok.Setter;
 

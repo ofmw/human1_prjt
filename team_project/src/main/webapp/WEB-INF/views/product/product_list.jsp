@@ -163,7 +163,12 @@ section {
 }
 
 #opt_table tr:not(:first-child) th {
+    padding-top: 10px;
 	border-top: 1px solid lightgray;
+}
+
+#opt_table tr:nth-child(2) td:last-child {
+	padding-bottom: 10px
 }
 
 #opt_table td {

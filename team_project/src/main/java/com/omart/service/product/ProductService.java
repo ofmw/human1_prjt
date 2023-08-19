@@ -3,7 +3,6 @@ package com.omart.service.product;
 import java.util.List;
 
 import com.omart.vo.ProductVo;
-import com.omart.vo.WishVo;
 
 public interface ProductService {
 	

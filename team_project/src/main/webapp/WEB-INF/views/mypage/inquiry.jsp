@@ -8,207 +8,67 @@
 <head>
     <title>1:1 문의</title>
     
-    <link href="../resources/css/mypage.css" rel="stylesheet">
-    
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    
-    <style>
-
-        /* Noto Sans KR */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-        
-        *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
-
-        /* 섹션 */
-        section{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* a태그 공통 */
-        a{text-decoration: none; color: black;}
-        /* list 공통 */
-        ul{list-style: none;}
-
-        /* ---------------------마이페이지 헤더--------------------- */
-        #mp_header_area{
-            display: flex;
-            justify-content: space-between;
-
-            width: 1280px;
-            height: 280px;
-            /* background-color: rgb(230, 230, 230); */
-
-            margin: 40px 0;
-        }
-
-        /* 마이페이지 헤더 내부 요소 공통 */
-        .mp_header_obj{
-            display: flex;
-            flex-direction: column;
-
-            width: 426px;
-            height: 100%;
-            background-color: rgb(250, 250, 250);
-
-            padding: 30px 30px;
-            box-sizing: border-box
-        }
-        /* 마이페이지 헤더 내부 요소 제목 공통(쿠폰, 포인트) */
-        .mp_header_obj_title{font-size: 23px; font-weight: bold;}
-
-        /* 마이페이지 헤더 유저 이름 */
-        #mp_header_user_name{font-size: 35px; font-weight: bold;}
-        /* 마이페이지 헤더 유저 메뉴 */
-        #mp_header_user_menu ul{
-            font-size: 16px;
-            margin-top: 40px;
-        }
-        #mp_header_user_menu li{margin: 10px 0;}
-        #mp_header_user_menu a{color: #222;}
-        
-        /* 마이페이지 헤더 쿠폰 공통 */
-        #mp_header_coupon{color: #222;}
-        /* 마이페이지 헤더 소지 쿠폰 영역 */
-        #mp_header_coupon_num{margin-top: 15px;}
-        /* 소지 쿠폰 숫자 */
-        #mp_header_coupon_num span{
-            font-size: 20px;
-            margin-right: 5px;
-        }
-        /* 마이페이지 헤더 쿠폰 정보 영역 */
-        #mp_header_coupon_info{margin-top: 50px;}
-        .mp_coupon{
-            display: flex;
-            justify-content: space-between;
-
-            margin: 5px 0;
-
-            font-size: 16px;
-            color: #444;
-        }
-        /* 마이페이지 헤더 포인트 영역 공통 */
-        #mp_header_point{color: #222;}
-        /* 마이페이지 헤더 소지 포인트 */
-        #mp_header_point_num{margin-top: 15px; font-size: 20px;}
-
-        /* ---------------------마이페이지 내용--------------------- */
-        #mp_main_area{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            width: 1280px;
-            /* background-color: plum; */
-        }
-
-        /* ---------------------마이페이지 내용 좌측 메뉴영역--------------------- */
-        #mp_main_menu{
-            display: flex;
-            flex-direction: column;
-
-            width: 150px;
-            height: 287px;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-
-            padding: 20px 20px;
-        }
-        /* 메뉴 각 범주 사이 구분선 */
-        #mp_main_menu_division{
-            margin: 30px auto;
-            content: "";
-            width: 150px;
-            height: 1px;
-            background-color: #e5e5e5;
-        }
-        /* 메뉴 각 범주 타이틀 공통 */
-        .mp_main_menu_title{
-            font-size: 17px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        /* 메뉴 li 공통 */
-        .mp_main_menu_list li{
-            margin-top: 3px;
-        }
-        /* 메뉴 a태그 공통 */
-        .mp_main_menu_list a{
-            color: #777;
-        }
-
-        /* ---------------------마이페이지 메인영역--------------------- */
-        #mp_main{
-            width: 1000px;
-            padding-right: 30px;
-            /* background-color: aquamarine; */
-        }
-        .mp_main_obj{
-            margin-bottom: 50px;
-        }     
-        .mp_main_title{
-            padding-bottom: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom: 2px solid #222;
-        }
-
-        table{
-            margin-top: 10px;
-            text-align: center;
-            border-spacing: 0;
-            border-collapse: collapse;
-            color: #222;
-            width: 100%;
-        }
-        th{
-            height: 40px;
-            font-size: 15px;
-            border-top: 1px solid black;
-            border-bottom: 1px solid #e5e5e5;
-            background-color: #f9f9f9;
-        }
-        /* 리스트 테이블 td 공통 */
-        td:not(#td_pnav){
-            height: 50px;
-            border-bottom: 1px solid #e5e5e5;
-        }
-        /* 리스트 테이블 구매일자 */
-        .td_date{
-            /* background-color: skyblue; */
-            font-size: 14px;
-            color: #777;
-        }
-        /* 리스트 테이블 구매상품 이름 */
-        .td_title{
-            text-align: center;
-        }
-        /* 리스트 테이블 주문상세내역 버튼 */
-        .inquiry_detail_btn{
-            display: inline-block;
-            padding-top: 3px;
-            width: 110px;
-            height: 30px;
-            font-size: 14px;
-            color: #777;
-            border: 1px solid #cfcfcf;
-            box-sizing: border-box;
-            cursor: pointer;
-        }
-        .td_ans_date{
-        	font-size: 14px;
-            color: #777;
-        }
-        #td_pnav{
-            height: 50px;
-        }
-        #mp_main_inquiry_info{
-            margin-top: 10px;
-            font-size: 13px;
-            color: #777;
-        }
-    </style>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="../resources/js/mypage.js"></script>
+<link href="../resources/css/mypage/mypage.css" rel="stylesheet">
+<link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
+<style>
+	.mp_main_title{
+		padding-bottom: 15px;
+		font-size: 20px;
+		font-weight: bold;
+		border-bottom: 2px solid #222;
+	}
+	table{
+		margin-top: 10px;
+		text-align: center;
+		border-spacing: 0;
+		border-collapse: collapse;
+		color: #222;
+		width: 100%;
+	}
+	th{
+		height: 40px;
+		font-size: 15px;
+		border-top: 1px solid black;
+		border-bottom: 1px solid #e5e5e5;
+		background-color: #f9f9f9;
+	}
+	/* 리스트 테이블 td 공통 */
+	td:not(#td_pnav){
+		height: 50px;
+		border-bottom: 1px solid #e5e5e5;
+	}
+	/* 리스트 테이블 구매일자 */
+	.td_date{
+		/* background-color: skyblue; */
+		font-size: 14px;
+		color: #777;
+	}
+	/* 리스트 테이블 구매상품 이름 */
+	.td_title{
+		text-align: center;
+	}
+	/* 리스트 테이블 주문상세내역 버튼 */
+	.inquiry_detail_btn{
+		display: inline-block;
+		padding-top: 3px;
+		width: 110px;
+		height: 30px;
+		font-size: 14px;
+		color: #777;
+		border: 1px solid #cfcfcf;
+		box-sizing: border-box;
+		cursor: pointer;
+	}
+	.td_ans_date{
+		font-size: 14px;
+		color: #777;
+	}
+	#td_pnav{
+		height: 50px;
+	}
+</style>
 
 </head>
 <script type="text/javascript">
@@ -226,6 +86,30 @@
 		childWindow = window.open(url, '리뷰 작성', 'menubar=no,width=700,height=750');
 		
 		});
+		
+		/* ---------------------배송지 변경--------------------- */
+        // 기존에 열려있는 자식 창에 대한 변수 초기화
+        let childWindow = null;
+        
+        //*** 배송지 변경 자식창 열기 ***//
+        function openManageAddress() {
+        	
+        	// 기존에 자식창이 열려있는지에 대한 여부
+        	if (childWindow) { // 이미 자식창이 열려있으면
+                childWindow.close(); // 자식창을 닫음
+            }
+        	
+        	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
+        	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=1";
+        	// 자식창을 열고 그 여부를 변수에 저장
+        	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
+        	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
+        }
+        
+        //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
+        $("#manage_address").on("click", function(){
+        	openManageAddress();
+        });
 	});	
 </script>
 <body>
@@ -238,19 +122,23 @@
     <!-- 마이페이지 헤더부분 -->
     <div id="mp_header_area">
 
+		<!-- 회원 정보 영역 -->
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
+            <input type="hidden" id="session_m_idx" value="${member.m_idx}">
+            <input type="hidden" id="session_platform" value="${member.platform}">
+            
             <div id="mp_header_user_menu">
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
-	                    <li><a href="#">회원정보 변경</a></li>
-	                    <li><a href="#">비밀번호 변경</a></li>
+	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
+
 
         <div id="mp_header_coupon" class="mp_header_obj">
             <div class="mp_header_obj_title">쿠폰</div>
@@ -307,12 +195,6 @@
         <div id="mp_main">
 			<div id="mp_main_inquiry" class="mp_main_obj">
                 <div class="mp_main_title">1:1 문의</div>
-                <div id="mp_main_inquiry_info">
-                	<p>
-                		＊ 고객님께서 고객센터 1:1문의에 작성하신 문의 내역입니다.<br>
-                		＊ 상세 내용은 문의내역상세 버튼을 클릭하여 확인 가능합니다.
-                	</p>
-                </div>
                 <div id="mp_main_inquiry_content">
                     <table >
                         <colgroup>
@@ -364,12 +246,21 @@
                         </c:forEach>
                         
                         <tr>
-                            <td colspan="4" id="td_pnav">네비게이션</td>
+                            <td colspan="4" id="td_pnav">내비게이션</td>
                         </tr>
+                        
                     </table>
                 </div>
-            </div>
-
+					<div id="mp_notice">
+						<div id="mp_notice_title">1:1 문의 안내</div>
+		                <div id="mp_notice_content">
+	                	<ul>
+	                		<li>고객센터 1:1문의에 작성하신 문의 내역입니다.</li>
+	                		<li>상세 내용은 '자세히보기' 버튼을 클릭하여 확인 가능합니다.</li>
+	                	</ul>
+	                </div>
+	            </div>
+           	</div>
         </div>
 
     </div>

@@ -1,5 +1,79 @@
 @charset "UTF-8";
 
+/* 섹션 */
+section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* a태그 공통 */
+a{text-decoration: none; color: black;}
+/* list 공통 */
+ul{list-style: none;}
+
+/* ---------------------마이페이지 헤더--------------------- */
+#mp_header_area{
+    display: flex;
+    justify-content: space-between;
+
+    width: 1280px;
+    height: 280px;
+    /* background-color: rgb(230, 230, 230); */
+
+    margin: 40px 0;
+}
+
+/* 마이페이지 헤더 내부 요소 공통 */
+.mp_header_obj{
+    display: flex;
+    flex-direction: column;
+
+    width: 426px;
+    height: 100%;
+    background-color: rgb(250, 250, 250);
+
+    padding: 30px 30px;
+    box-sizing: border-box
+}
+/* 마이페이지 헤더 내부 요소 제목 공통(쿠폰, 포인트) */
+.mp_header_obj_title{font-size: 23px; font-weight: bold;}
+
+/* 마이페이지 헤더 유저 이름 */
+#mp_header_user_name{font-size: 35px; font-weight: bold;}
+/* 마이페이지 헤더 유저 메뉴 */
+#mp_header_user_menu ul{
+    font-size: 16px;
+    margin-top: 40px;
+}
+#mp_header_user_menu li{margin: 10px 0;}
+#mp_header_user_menu a, #mp_header_user_menu span{color: #222;}
+
+/* 마이페이지 헤더 쿠폰 공통 */
+#mp_header_coupon{color: #222;}
+/* 마이페이지 헤더 소지 쿠폰 영역 */
+#mp_header_coupon_num{margin-top: 15px;}
+/* 소지 쿠폰 숫자 */
+#mp_header_coupon_num span{
+    font-size: 20px;
+    margin-right: 5px;
+}
+/* 마이페이지 헤더 쿠폰 정보 영역 */
+#mp_header_coupon_info{margin-top: 50px;}
+.mp_coupon{
+    display: flex;
+    justify-content: space-between;
+
+    margin: 5px 0;
+
+    font-size: 16px;
+    color: #444;
+}
+/* 마이페이지 헤더 포인트 영역 공통 */
+#mp_header_point{color: #222;}
+/* 마이페이지 헤더 소지 포인트 */
+#mp_header_point_num{margin-top: 15px; font-size: 20px;}
+
 /* ---------------------마이페이지 내용--------------------- */
 #mp_main_area{
     display: flex;
@@ -49,6 +123,7 @@
 #mp_main{
     width: 1000px;
     padding-right: 30px;
+    /* background-color: aquamarine; */
 }
 .mp_main_obj{
     margin-bottom: 50px;
