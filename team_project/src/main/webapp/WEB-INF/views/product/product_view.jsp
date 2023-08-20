@@ -595,7 +595,54 @@
             }); // end of ajax
         }
         
+        $(".btn_addCart2").click(function(){
+            
+        	let p_id = $("#p_id").val();
+        	let amount = parseInt($("#amount").val());
+        	
+        	$.ajax({
+        		type: "POST",
+        		url: "../cart/addCart2.do",
+        		data: {
+        			p_id: p_id,
+        			amount: amount
+        		},
+        		success: function(){
+        			console.log("장바구니 추가 메서드 ajax 통신 success");
+        			showShadow_addCart();
+        		},
+        		error: function(error){
+        			console.log("장바구니 추가 메서드 ajax 통신 중 error 발생");
+        		}
+        	});
+        	
+        });        
+        
     }
+    
+    /* 장바구니 추가 알림창 열기 메서드 */
+    function showShadow_addCart() {
+        let shadow_addCart = $("#shadow_addCart");
+        
+        shadow_addCart.css({
+            'display': 'block',
+            'z-index': '5000'
+        });
+        setTimeout(hideShadow_addCart, 500);
+    }
+
+    /* 장바구니 추가 알림창 닫기 메서드 */
+    function hideShadow_addCart() {
+        let shadow_addCart = $("#shadow_addCart");
+        
+        shadow_addCart.fadeOut(500, function() {
+            $(this).css({
+                'display': 'none',
+                'z-index': '0'
+            });
+        });
+        $("body").css('overflow-y', 'visible');
+    };
 </script>
 </head>
 <body>

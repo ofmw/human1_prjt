@@ -95,6 +95,7 @@ public class paymentController {
 			cVo.setStock(pVo.getStock());
 			cVo.setDiscount(pVo.getDiscount());
 			cVo.setPost_state(pVo.getPost_state());
+			cVo.setSaveFile1(pVo.getSaveFile1());
 			
 			System.out.println(cVo.getP_name());
 			

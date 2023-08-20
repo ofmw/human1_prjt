@@ -49,6 +49,25 @@ public class AjaxCartController {
 		}
 		
 	}
+	
+	// view페이지 장바구니 추가
+	@PostMapping("/addCart2.do")
+	public void addCart(@RequestParam("p_id") String p_id, @RequestParam("amount") int amount, HttpSession session) {
+		
+		System.out.println("addCart2.do 요청됨");
+		
+		MemberVo member = (MemberVo) session.getAttribute("member");
+		int m_idx = member.getM_idx();
+		
+		CartVo cVo = new CartVo();
+		
+		cVo.setM_idx(m_idx);
+		cVo.setP_id(p_id);
+		cVo.setAmount(amount);
+		
+		cAdd.addCart(cVo);
+		
+	}
 
 	// 장바구니 품목 수량 변경
 	@PostMapping("/update_cart_amount.do")
