@@ -16,7 +16,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.omart.dao.KakaoDao;
-import com.omart.dao.MemberDao;
 import com.omart.vo.MemberVo;
 
 import lombok.Setter;
@@ -26,8 +25,6 @@ public class KakaoTokenService implements KakaoService {
 	
 	@Setter(onMethod_={ @Autowired })
 	private KakaoDao kd;
-	@Setter(onMethod_={ @Autowired })
-	private MemberDao dao;
 	
 	//엑세스 토큰 얻어오는 메서드
 	public String getKakaoAccessToken (String code) {

@@ -32,30 +32,27 @@ public class KakaoController {
 		
 		System.out.println("카카오로그인 메서드 실행");
 
-	    // userInfo가 null이 아닐 때만 다시 access_Token을 가져오는 로직을 실행
-	    MemberVo userInfo = (MemberVo) session.getAttribute("member");
+		MemberVo userInfo = new MemberVo();
 	    String access_Token = null;
-	    if (userInfo == null) {
 	    	
-	    	// code는 카카오 서버로부터 받은 인가 코드
-		    System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그인 요청>━━━━━━━━━━━━━━━━━");
-		    System.out.println("인가 코드: " + code);
-		    
-	        access_Token = kToken.getKakaoAccessToken(code);
-	        userInfo = kToken.getKakaoUserInfo(access_Token);
-	        
-	        List<String> wishList = mWish.getWishList(userInfo.getM_idx());
-	        System.out.println("카카오 유저 m_idx: " +userInfo.getM_idx());
-	        
-	        session.setAttribute("access_token", access_Token);
-	        session.setAttribute("member", userInfo);
-	        session.setAttribute("wishList", wishList);
-	        
-	        // 출력
-		    System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
-		    System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
-		    System.out.println("가입된 회원 성별 : " + userInfo.getGender());
-	    }
+    	// code는 카카오 서버로부터 받은 인가 코드
+	    System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그인 요청>━━━━━━━━━━━━━━━━━");
+	    System.out.println("인가 코드: " + code);
+	    
+        access_Token = kToken.getKakaoAccessToken(code);
+        userInfo = kToken.getKakaoUserInfo(access_Token);
+        
+        List<String> wishList = mWish.getWishList(userInfo.getM_idx());
+        System.out.println("카카오 유저 m_idx: " +userInfo.getM_idx());
+        
+        session.setAttribute("access_token", access_Token);
+        session.setAttribute("member", userInfo);
+        session.setAttribute("wishList", wishList);
+        
+        // 출력
+	    System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
+	    System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
+	    System.out.println("가입된 회원 성별 : " + userInfo.getGender());
 
 	    return "redirect:/index.do";
 		
