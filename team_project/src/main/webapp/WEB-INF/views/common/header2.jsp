@@ -32,7 +32,9 @@
                 </div>
                 <!-- 검색 -->
                 <div id="input_search_area">
-                    <input id="input_search" type="search">
+                    <form action="../product/product_list.do" method="get" name="frm_keyword">
+                       <input id="input_search" type="search" name="keyword" value="${keyword}">
+                    </form>
                 </div>
                 
                 <!-- ㅁㄴㅇㄹ -->
@@ -56,6 +58,7 @@
                                     <c:otherwise>
                                         <a href="../mypage/mypage.do">${member.m_name}님</a>
                                     </c:otherwise>
+
                                 </c:choose> 
                                 <c:choose>
                                     <c:when test="${member.platform eq 'kakao'}">
@@ -69,6 +72,7 @@
                             </c:otherwise>
 						</c:choose>
 					</div>
+					<div id="div_division"></div>
 	                <div id="div_persnal_menu">
                         <c:choose>
                             <c:when test="${empty member}">

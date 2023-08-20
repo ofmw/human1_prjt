@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="resources/js/cart.js?v=1234"></script>
 
 <style>
     /* ---------------------전체 요소 공통--------------------- */
@@ -35,7 +36,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 100px;
         width: 100%;
         min-width: 1280px;
     }
@@ -101,12 +101,16 @@
 /* ---------------------상품 영역--------------------- */
     .p_best{
         width: 100%;
+        margin-top: 30px;
+    }
+    .p_best:first-child{
         margin-top: 100px;
     }
     .p_title{
         font-size: 35px;
         font-weight: bold;
         padding-left: 20px;
+        user-select: none;
     }
     .p_inner_elements{
         display: flex;
@@ -247,8 +251,6 @@
         border-radius: 20px;
     }
 
-    /**/
-
     .swiper-slide {opacity:0.5; transition:opacity 0.5s;}
     .swiper-slide-active {opacity:1;}
 
@@ -292,6 +294,18 @@
         width: 295px;
         height: 295px;
     }
+    .soldout{
+        position: absolute;
+        width: 295px;
+        height: 295px;
+        background-color: rgba(100, 100, 100, 0.5);
+        text-align: center;
+        line-height: 295px;
+        font-size: 17px;
+        color: white;
+        font-weight: bold;
+        user-select: none;
+    }
 </style>
 <script>
     $("document").ready(function () {
@@ -304,7 +318,7 @@
             loop: true,
             centeredSlides: true,
             spaceBetween: 5,
-    
+
             // pagination 기본은 bullet
             pagination: {
                 el: ".swiper-pagination",
@@ -483,50 +497,6 @@
 	           	addWish(p_id);
 	  	    }
 	  	});
-		
-	    /* ---------------------장바구니 상품 추가--------------------- */
-	    //*** 장바구니에 선택한 상품 추가 ***//
-	    function addCart(p_idArray) {
-	    	
-	    	let m_idx = parseInt($("#m_idx").val());
-	    	
-	    	if (isNaN(m_idx)) {
-	    		alert("로그인 후 이용 가능합니다.");
-	    		$("#shadow").show();
-	    	} else {
-	    	
-	        	$.ajax({
-	                type: "POST",
-	                url: "mypage/addCart.do",
-	                data: {
-	                    p_id: p_idArray,
-	                },
-	                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
-	                   if (response === "success") { // 수량 업데이트가 성공한 경우
-	                	   	alert('장바구니에 상품이 추가되었습니다.');
-	                	  	//페이지 새로고침
-	                    } else if (response === "max"){
-	                        alert("해당 상품이 장바구니 최대 상품 수량을 초과했습니다.\n(최대 20개)");
-	                    } else {
-	                        alert("장바구니 상품 추가에 실패했습니다.");
-	                    }
-	                },
-	                error: function () {
-	                    alert("오류가 발생하였습니다.");
-	                }
-	        	}); // end of ajax
-	    	}
-	    	
-	    }
-	    
-	    
-	  	//*** 장바구니 버튼 클릭 이벤트 처리 ***//
-	    $(".c_btn").click(function() {
-	    	let p_idArray = [$(this).siblings(".p_id").val()];
-	    	console.log(p_idArray);
-	    	
-	    	addCart(p_idArray);
-	    });
 	  	
     });
 </script>
@@ -555,9 +525,6 @@
                   <div class="swiper-pagination"></div>
                   <div class="swiper-button-next"></div>
                   <div class="swiper-button-prev"></div>
-                  <!-- <div class="custom-fraction">
-                    <span class="current">1</span>/<span class="all">9
-                  </div> -->
                 </div>
             </div>
 
@@ -573,10 +540,14 @@
 	                            
 	                            <div class="p_products">
 	                                <div class="p_img">
+	                                    <c:if test="${bestList[i].stock eq 0}">
+	                                       <div class="soldout">품절</div>
+	                                    </c:if>		                                    
 	                                	<a href="product/product_view.do?p_id=${bestList[i].p_id}"><img class="thumbnail" src="resources/uploads/${bestList[i].saveFile1}" alt="${bestList[i].p_name}"></a>
 		                                <div style="display:none" class="p_img_opt-box">
 		                                	<div class="p_img_opt-box-innerDiv">
 				                                <input type="hidden" class="p_id" value="${bestList[i].p_id}">
+				                                <input type="hidden" class="stock" value="${bestList[i].stock}"/>
 						                		<button type="button" class="c_btn">🛒</button>
 						                		<c:choose>
 	               									<c:when test="${!empty wishList and wishList.contains(bestList[i].p_id)}">
@@ -588,7 +559,7 @@
 					                			</c:choose>
 		                                	</div>
 		                                </div>                                
-	                                </div>
+	                                </div>	                                
 	                                <a href="product/product_view.do?p_id=${bestList[i].p_id}">
 		                                <div class="p_info">
 		                                    <div class="p_info_brand">${bestList[i].brand}</div>

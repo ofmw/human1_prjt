@@ -1,6 +1,7 @@
 package com.omart.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -127,6 +128,9 @@ public class MypageController {
 		
 		// 주문내역이 있는지 체크
 		if (orderList != null) {
+			
+			// 주문 내역을 역순으로 정렬
+	        Collections.reverse(orderList);
 			
 			/***
 			 * 주문내역이 있을 경우 주문/배송조회 페이지의 주문내역 테이블의
@@ -305,7 +309,6 @@ public class MypageController {
 				 * 1이 아닌 (0은 판매 등록되지 않은 상품) 상품들의 정보를 제거
 				 ***/
 				p_info.removeIf(product -> product.getPost_state() != 1);
-				System.out.println("찜목록에 담긴 상품들의 정보(미등록 상품 제외): " +p_info);
 			}
 			
 			/***
@@ -323,6 +326,8 @@ public class MypageController {
 	//마이페이지 -> 인덱스
 	@GetMapping("/index.do")
 	public String mypage_index() {
+		System.out.println("MypageController index() 실행");
+		
 		return "redirect:/index.do";/* 뷰의 이름 */
 	}
 	

@@ -90,14 +90,4 @@ public class MemberController {
         return Integer.toString(randomNumber);
     }
 	
-	//로그아웃
-//	@GetMapping("/logout.do")
-//	public String logout(HttpServletRequest request) {
-//		
-//		HttpSession session = request.getSession();
-//		session.invalidate();
-//		
-//		return "member/logout";
-//	}
-	
 }

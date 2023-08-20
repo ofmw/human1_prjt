@@ -3,7 +3,6 @@ package com.omart.service.admin;
 import org.springframework.stereotype.Service;
 
 import com.omart.dao.AdminDao;
-import com.omart.vo.MemberVo;
 
 import lombok.RequiredArgsConstructor;
 

@@ -8,12 +8,11 @@
 <head>
     <title>주문상세 조회</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <link href="../resources/css/order_detail.css" rel="stylesheet">
+    <script type="text/javascript" src="../resources/js/mypage.js"></script>
+    <link href="../resources/css/mypage/order_detail.css" rel="stylesheet">
+    <link href="../resources/css/mypage/mypage-common.css" rel="stylesheet">
     
-    <style>
-   		/* a태그 공통 */
-		a:hover{text-decoration: underline;}
-		
+    <style>	
 		#od_header_btn-addcart{
 			width: 140px;
 			padding: 2px 5px;
@@ -47,7 +46,7 @@
     				
    	            	$.ajax({
    		                type: "POST",
-   		                url: "addCart.do",
+   		                url: "../cart/addCart.do",
    		                data: {
    		                    p_id: p_idArray,
    		                },
@@ -94,19 +93,23 @@
     <!-- 마이페이지 헤더부분 -->
     <div id="mp_header_area">
 
+		<!-- 회원 정보 영역 -->
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
+            <input type="hidden" id="session_m_idx" value="${member.m_idx}">
+            <input type="hidden" id="session_platform" value="${member.platform}">
+            
             <div id="mp_header_user_menu">
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
-	                    <li><a href="#">회원정보 변경</a></li>
-	                    <li><a href="#">비밀번호 변경</a></li>
+	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
+
 
         <div id="mp_header_coupon" class="mp_header_obj">
             <div class="mp_header_obj_title">쿠폰</div>
@@ -259,7 +262,7 @@
                             </colgroup>
                             <c:forEach items="${p_info}" var="p">
 	                            <tr>
-	                                <td class="td_img"><a href="#"><img src="../resources/uploads/${p.saveFile1}" alt="이미지" width="90" height="90"></a></td>
+	                                <td class="td_img"><a href="#"><img src="#" alt="이미지" width="90" height="90"></a></td>
 	                                <td class="td_pname">
 	                                	<input type="hidden" class="p_id" value="${p.p_id}">
 	                                	<a href="../product/product_view.do?p_id=${p.p_id}">
@@ -277,20 +280,9 @@
 	                                   <c:otherwise>
 	                                       <td class="td_review"><a class="btn_writeReview" >리뷰작성</a></td>	                                       
 	                                   </c:otherwise>
-	                                </c:choose>	                                
+	                                </c:choose>
+	                                
 	                            </tr>
-                            </c:forEach>
-                            <c:forEach items="${orderList}" var="o">
-	                            <c:if test="${o.order_idx eq param.order_idx}">
-			                        <tr>
-	                                    <th>최종결제금액</th>
-	                                    <td></td>
-	                                    <td class="td_odinfo">
-	                                       <span class="td_odinfo_price"><fmt:formatNumber value="${o.paid_price}" pattern="#,###"/><span>원</span></span><br>
-	                                       <span class="td_odinfo_amount">(포인트차감 : -<fmt:formatNumber value="${o.used_point}" pattern="#,###" />원)</span>
-	                                    </td>
-	                                </tr>
-			                    </c:if>			                    
                             </c:forEach>
                         </table>
                     </div>

@@ -3,7 +3,6 @@ package com.omart.service.cart;
 import org.springframework.stereotype.Service;
 
 import com.omart.dao.CartDao;
-import com.omart.vo.CartVo;
 
 import lombok.RequiredArgsConstructor;
 

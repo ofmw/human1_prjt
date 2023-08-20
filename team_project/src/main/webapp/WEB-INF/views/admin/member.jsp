@@ -178,6 +178,25 @@
     #btn_cancel:hover {
 	   background-color: rgb(230, 230, 230);
     }    
+    #td_btns input[type="button"]{
+       width: 80px;
+       height: 27px;
+       margin-left: 5px;
+       font-size: 11px;
+       font-weight: bold;
+       border: 1px solid lightgray;
+       border-radius: 3px;
+       cursor: pointer;
+       float: right;
+       margin-right: 10px;
+       margin-bottom: 5px;
+    }
+    #td_btns input:first-child {
+       margin-left: 59px !important;
+    }
+    #td_btns{
+        padding-left: 0 !important;
+    }
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
@@ -305,9 +324,9 @@ $(function(){
                 </td>
             </tr>
             <tr>
-                <td>
-                   <input id="btn_reset" type="button" value="초기화"/>
-                   <input id="btn_filter" type="button" value="선택완료"/>
+                <td id="td_btns">    
+                    <input id="btn_reset" type="button" value="초기화"/>               
+                   <input id="btn_filter" type="button" value="선택완료"/>                   
                 </td>
             </tr>
         </table>

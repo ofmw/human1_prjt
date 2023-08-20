@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.omart.dao.AdminDao;
-import com.omart.service.product.ProductService;
-import com.omart.vo.MemberVo;
 import com.omart.vo.OrderVo;
 
 import lombok.RequiredArgsConstructor;

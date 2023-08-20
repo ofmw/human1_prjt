@@ -6,22 +6,97 @@
 <html>
 <head>
     <title>마이페이지</title>
-
-<link href="../resources/css/mypage.css?v=1234" rel="stylesheet">
-<style>
-
-	/* a태그 공통 */
-	a:hover:not(#div_category a){text-decoration: underline;}
-	/* 버튼 및 선택 요소 공통 */
-	button:hover, #sel_box:hover{
-		background-color: #222 !important;
-		color: white;
-    }
     
-    #mp_header_area li span:hover{
-    	text-decoration: underline;
-    	cursor: pointer;
-    }
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="../resources/js/mypage.js"></script>
+<script type="text/javascript" src="../resources/js/mypage-wish.js"></script>
+<link href="../resources/css/mypage/mypage.css?v=1234" rel="stylesheet">
+<link href="../resources/css/mypage/mypage-common.css?v=1234" rel="stylesheet">
+
+<script>
+$(function() {
+
+	/* ---------------------찜한 상품 삭제--------------------- */
+	//*** 찜목록 상품 삭제 메서드 ***//
+	function removeWish(p_idArray) {
+        	
+		$.ajax({
+			type: "POST",
+			url: "remove_wishList.do",
+			data: {
+				p_id: p_idArray,
+			},
+			success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+				if (response === "success") { // 수량 업데이트가 성공한 경우
+					alert('찜목록에서 상품이 삭제되었습니다.');
+					//페이지 새로고침
+					location.reload();
+				} else {
+					alert("찜목록 삭제에 실패했습니다.");
+				}
+			},
+			error: function () {
+				alert("오류가 발생하였습니다.");
+			}
+		}); // end of ajax
+		
+	}
+        
+        
+	//*** 찜 버튼 클릭 이벤트 처리 ***//
+	$(".w_btn").click(function() {
+	
+		let p_idArray = [$(this).siblings(".p_id").val()];
+
+		// 상품 삭제 여부 결정
+		let confirmed = confirm("해당 상품을 찜목록에서 삭제하시겠습니까?");
+
+		// "확인" 을 눌렀을 경우
+		if (confirmed) {
+
+		removeWish(p_idArray);
+
+		}
+
+	});
+  
+	/* ---------------------찜한 상품 장바구니 추가--------------------- */
+	//*** 장바구니에 선택한 상품 추가 ***//
+	function addCart(p_idArray) {
+
+		$.ajax({
+			type: "POST",
+			url: "../cart/addCart.do",
+			data: {
+				p_id: p_idArray,
+			},
+			success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+				if (response === "success") { // 수량 업데이트가 성공한 경우
+					alert('장바구니에 상품이 추가되었습니다.');
+					//페이지 새로고침
+					location.reload();
+				} else {
+					alert("장바구니 상품 추가에 실패했습니다.");
+				}
+			},
+			error: function () {
+				alert("오류가 발생하였습니다.");
+			}
+		}); // end of ajax
+        	
+	}
+        
+	//*** 장바구니 버튼 클릭 이벤트 처리 ***//
+	$(".c_btn").click(function() {
+	
+		let p_idArray = [$(this).siblings(".p_id").val()];
+        	addCart(p_idArray);
+        	
+	});
+   	
+});
+</script>
+<style>
 	/* ---------------------섹션 상품 표시 영역--------------------- */
 	#mp_w_main_products{
     	margin: 20px 0;
@@ -30,11 +105,13 @@
 		width: 100%;
 	}
 	#w_empty{
-		height: 150px;
-		font-size: 18px;
-		line-height: 150px;
-		text-align: center;
-		user-select: none;
+		display: flex;
+		justify-content: center;
+	    align-items: center;
+	    height: 150px;
+		width: 100%;
+	    font-size: 18px;
+	    color: #222;
 	}
     .w_inner_elements_box{
         display: flex;
@@ -66,7 +143,7 @@
     }
 	.w_img_opt-box {
 		width: 100%;
-		height: 30px;
+		height: 40px;
 		position: absolute;
 		text-align: center;
 		bottom: 0;
@@ -82,8 +159,16 @@
 		justify-content: center;
 	}
 	.w_img_opt-box-innerDiv button{
+		width: 30px;
+		height: 28px;
 		margin: 0 5px;
-		background-color: #fcfcfc;
+		background: none;
+		border: 0;
+		border-radius: 5px;
+		font-size: 18px;
+		padding-bottom: 2px;
+		box-sizing: content-box;
+		line-height: 28px;
 	}
 	.w_info_brand{
         font-size: 12px;
@@ -112,145 +197,6 @@
 	}
 </style>
 
-
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-
-	<script>
-        $(function() {
-        	
-        	
-        	
-        	/* ---------------------배송지 변경--------------------- */
-            // 기존에 열려있는 자식 창에 대한 변수 초기화
-            let childWindow = null;
-            
-            //*** 배송지 변경 자식창 열기 ***//
-            function openManageAddress() {
-            	
-            	// 기존에 자식창이 열려있는지에 대한 여부
-            	if (childWindow) { // 이미 자식창이 열려있으면
-                    childWindow.close(); // 자식창을 닫음
-                }
-            	
-            	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
-            	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=1";
-            	// 자식창을 열고 그 여부를 변수에 저장
-            	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
-            	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
-            }
-            
-            //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
-            $("#manage_address").on("click", function(){
-            	openManageAddress();
-            });
-            
-            /* ---------------------회원 탈퇴--------------------- */
-            //*** 회원탈퇴 버튼 클릭 이벤트 처리 ***//
-            $("#cancel").on("click", function(){
-            	
-            	let platform = $("#session_platform").val();
-            	
-            	if (platform === "omart") {
-            		location.href = "omartCancel.do";
-            	} else if (platform === "kakao") {
-            		location.href = "kakaoCancel.do";
-            	}
-            	
-            });
-        	
-        	/* ---------------------상품에 마우스 커서 호버 옵션박스------------------- */
-        	//*** 상품 이미지 마우스 커서 호버 이벤트 처리 ***//
-            $(".w_img").hover(
-                function() {
-                	$(this).find(".w_img_opt-box").stop().fadeIn(300);
-                },
-                function() {
-                	$(this).find(".w_img_opt-box").stop().fadeOut(300);
-                }
-            );
-            
-            /* ---------------------찜한 상품 삭제 관리--------------------- */
-            //*** 찜목록 상품 삭제 메서드 ***//
-            function removeWish(p_idArray) {
-            	
-            	$.ajax({
-	                type: "POST",
-	                url: "remove_wishList.do",
-	                data: {
-	                    p_id: p_idArray,
-	                },
-	                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
-	                   if (response === "success") { // 수량 업데이트가 성공한 경우
-	                	   	alert('찜목록에서 상품이 삭제되었습니다.');
-	                	  	//페이지 새로고침
-	                	   	location.reload();
-	                    } else {
-	                        alert("찜목록 삭제에 실패했습니다.");
-	                    }
-	                },
-	                error: function () {
-	                    alert("오류가 발생하였습니다.");
-	                }
-            	}); // end of ajax
-            	
-            }
-            
-            
-         	//*** 찜 버튼 클릭 이벤트 처리 ***//
-            $(".w_btn").click(function() {
-            	let p_idArray = [$(this).siblings(".p_id").val()];
-            	console.log(p_idArray);
-            	
-            	// 상품 삭제 여부 결정
-                let confirmed = confirm("해당 상품을 찜목록에서 삭제하시겠습니까?");
-
-                // "확인" 을 눌렀을 경우
-                if (confirmed) {
-
-                	removeWish(p_idArray);
-
-                } // end of if (confirmed)
-            	
-            });
-      
-            /* ---------------------찜한 상품 관리--------------------- */
-            //*** 장바구니에 선택한 상품 추가 ***//
-            function addCart(p_idArray) {
-            	
-            	$.ajax({
-	                type: "POST",
-	                url: "addCart.do",
-	                data: {
-	                    p_id: p_idArray,
-	                },
-	                success: function (response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
-	                   if (response === "success") { // 수량 업데이트가 성공한 경우
-	                	   	alert('장바구니에 상품이 추가되었습니다.');
-	                	  	//페이지 새로고침
-	                	   	location.reload();
-	                    } else {
-	                        alert("장바구니 상품 추가에 실패했습니다.");
-	                    }
-	                },
-	                error: function () {
-	                    alert("오류가 발생하였습니다.");
-	                }
-            	}); // end of ajax
-            	
-            }
-            
-            
-          	//*** 장바구니 버튼 클릭 이벤트 처리 ***//
-            $(".c_btn").click(function() {
-            	let p_idArray = [$(this).siblings(".p_id").val()];
-            	console.log(p_idArray);
-            	
-            	addCart(p_idArray);
-            });
-          	
-        });
-    </script>
-
 </head>
 <body>
 
@@ -278,7 +224,6 @@
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
-
                 </ul>
             </div>
         </div>
@@ -328,8 +273,8 @@
                 <div class="mp_main_menu_list">
                     <ul>
                         <li><a href="wish.do">찜목록</a></li>
-                        <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
-                        <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
+                        <li><a href="#">상품 리뷰</a></li>
+                        <li><a href="#">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>
@@ -366,7 +311,6 @@
                     <div class="mp_main_osc_infobar_obj_btw"><span>배송중</span><p>${delivery_in_progress}</p></div>
                     <div class="mp_main_osc_infobar_obj"><span>배송완료</span><p>${delivery_completed}</p></div>
                 </div>
-                <div style="border-radius: 4px;background-color: #fafafa;height: 40px;width: 100%;margin-top: 5px;"></div>
             </div>
             
             <div id="mp_main_review" class="mp_main_obj">
@@ -390,8 +334,8 @@
 									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
 									                	<div style="display:none" class="w_img_opt-box">
 									                		<div class="w_img_opt-box-innerDiv">
-										                		<button type="button" class="c_btn">카</button>
-										                		<button type="button" class="w_btn" style="color:red;">♥</button>
+										                		<button type="button" class="c_btn">🛒</button>
+										                		<button type="button" class="w_btn" style="color:red;font-size:22px;">❤</button>
 										                		<input type="hidden" class="p_id" value="${p_info[j].p_id}">
 									                		</div>
 									                	</div>
@@ -413,7 +357,12 @@
 				                                            <c:set var="discount_new" value="${p_info[j].price*(p_info[j].discount/100)}"></c:set>
 				                                            <fmt:formatNumber value="${p_info[j].price - discount_new}" pattern="#,###" />원
 				                                        </div>
-									                    <div class="w_info_stars">★ 4.5 (1043)</div>
+									                    <c:if test="${p_info[j].reviews ne 0}">
+															<div class="w_info_stars">★
+																${p_info[j].stars_avg}
+																(${p_info[j].reviews})</div>
+															<!-- 괄호 안 숫자는 리뷰 갯수 -->
+														</c:if>
 									                </div>
 								                </c:if>
 								            </div>

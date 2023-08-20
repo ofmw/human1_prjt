@@ -17,7 +17,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.omart.dao.KakaoDao;
 import com.omart.dao.MemberDao;
-import com.omart.service.member.MemberWishService;
 import com.omart.vo.MemberVo;
 
 import lombok.Setter;
@@ -154,7 +153,6 @@ public class KakaoTokenService implements KakaoService {
 			//회원가입 후 테이블 조회 재실행
 			System.out.println("----------카카오 회원가입 완료 후 테이블 재조회----------");
 			MemberVo vo = kd.findkakao(userInfo);
-			dao.insertWish(vo.getM_idx());
 			return vo;
 		}else {
 			return result;

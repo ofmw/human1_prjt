@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.omart.dao.MemberDao;
 import com.omart.vo.BoardFileVo;
-import com.omart.vo.ProductVo;
 
 import lombok.Setter;
 

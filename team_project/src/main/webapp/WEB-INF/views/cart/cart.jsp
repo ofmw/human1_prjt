@@ -8,7 +8,7 @@
     <title>오!마트 - 장바구니</title>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    
+
     <style>
     /* ---------------------전체 요소 공통--------------------- */
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');       
@@ -665,11 +665,12 @@
                 // "전체상품" 수량에 반영
                 $("#product_total span").text(totalAmount);
                 
-            } else { // 장바구니에 상품이 있을 경우
+            } else { // 장바구니에 상품이 없을 경우
                 $("#shipping-fee").text("+0 원");
                 $("#ordered-price").text("0 원");
                 $("#payment-price").text("0");
                 $("#product_total span").text("0");
+                $("#discount-price").text("0 원");
             }
             
             
@@ -910,12 +911,12 @@
                                    			<tr>
 		                                        <td class="td_img">
 		                                            <div>
-		                                                <a href="#"><img src="#" alt="이미지" width="90" height="90"></a>
+		                                                <a href="../product/product_view.do?p_id=${c.p_id}"><img src="../resources/uploads/${c.saveFile1}" alt="${c.p_name}" width="90" height="90"></a>
 		                                                <input type="checkbox" class="sel_product">
 		                                            </div>
 		                                        </td>
 		                                        <td class="td_pname">
-		                                        	<a href="#">
+		                                        	<a href="../product/product_view.do?p_id=${c.p_id}">
 		                                        		[${c.brand}] ${c.p_name} ${c.standard}${c.unit}
 		                                        	</a>
 		                                        </td>

@@ -376,7 +376,20 @@
 	   font-weight: normal;
 	   color: gray;
 	}
-    
+    #div_horizon{
+        display: flex;
+        align-items: center;
+    }
+    .p_stock{
+        font-weight: bold;
+        color: gray;
+    }
+    .soldout{        
+        text-align: center;
+        background-color: #eee;
+        color: gray;
+        border: 1px solid lightgray;
+    }
 </style>
 <script>
     window.onload = function(){
@@ -432,6 +445,7 @@
         let dCalPrice = $("#div_calPrice");
         let hCalPrice = $("#h3_calPrice");
         let totalPrice = $("#h1_totalPrice");
+        let stock =  parseInt($(".p_stock").text().replace(/\D/g, ''));
         
         minusBtn.on("click",function(){
        		if(amount.val()>1){
@@ -444,6 +458,11 @@
         });
         
         plusBtn.on("click",function(){
+        	if(amount.val() > stock-1){
+        		alert("해당 상품의 재고는 " + stock + "개입니다.");
+        		return;
+        	}
+        	
        		if(amount.val()<20){
                 amount.val(parseInt(amount.val())+1);
                 dCalPrice.text((dcPrice*amount.val()).toLocaleString()+"원");
@@ -473,7 +492,7 @@
         
         let buyThisBtn = $(".btn_buyThis");
         
-        buyThisBtn.on("click", function(){        	
+        buyThisBtn.on("click", function(){
         	
         	let frm_buyThis = $("#frm_buyThis");
         	
@@ -597,12 +616,32 @@
         <div id="div_dcPrice">
 	        <c:choose>
 	            <c:when test="${product.discount eq 0}">
-	                <h1><fmt:formatNumber value="${product.price}" pattern="#,###" />원</h1>
+	                <div id="div_horizon">
+	                   <h1><fmt:formatNumber value="${product.price}" pattern="#,###" />원</h1>
+	                   <c:choose>
+	                       <c:when test="${product.stock gt 0}">
+	                           <p class="p_stock">(재고 : ${product.stock}개)</p>
+	                       </c:when>
+	                       <c:otherwise>
+	                           <p class="p_stock">재고없음</p>
+	                       </c:otherwise>
+	                   </c:choose>
+	                </div>
 	            </c:when>
 	            <c:otherwise>
 	                <c:set var="discount_price" value="${product.price * ((100 - product.discount)/100)}"></c:set>
 	                <h4><fmt:formatNumber value="${product.price}" pattern="#,###" />원</h4>
-	                <span>${product.discount}%</span><h1><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h1>
+	                <div id="div_horizon">
+		                <span>${product.discount}%</span><h1><fmt:formatNumber value="${discount_price}" pattern="#,###" />원</h1>
+		                <c:choose>
+	                        <c:when test="${product.stock gt 0}">
+	                            <p class="p_stock">(재고 : ${product.stock}개)</p>
+	                        </c:when>
+	                        <c:otherwise>
+	                            <p class="p_stock">재고없음</p>
+	                        </c:otherwise>
+	                    </c:choose>
+                    </div>
 	            </c:otherwise>
 	        </c:choose>
         </div>
@@ -638,8 +677,15 @@
         <c:choose>
             <c:when test="${empty member}">
                 <div class="need_login btn1" id="div_wish_btn">♡</div>
-                <div class="need_login btn1" id="div_cart_btn">장바구니</div>
-                <div class="need_login btn1" id="div_buy_btn">구매하기</div>
+                <c:choose>
+                    <c:when test="${product.stock ne 0}">
+                        <div class="need_login btn1" id="div_cart_btn">장바구니</div>
+                        <div class="need_login btn1" id="div_buy_btn">구매하기</div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="soldout btn1" style="width: 425px;">품절상품</div>
+                    </c:otherwise>
+                </c:choose>                
             </c:when>
             <c:otherwise>
                 <div class="btn_addWish btn1" id="div_wish_btn">
@@ -651,8 +697,15 @@
 	                    <c:otherwise>♡<input type="hidden" value="N"></c:otherwise>
 	                </c:choose>
                 </div>
-                <div class="btn_addCart2 btn1" id="div_cart_btn">장바구니</div>
-                <div class="btn_buyThis btn1" id="div_buy_btn">구매하기</div>
+                 <c:choose>
+                    <c:when test="${product.stock ne 0}">
+		                <div class="btn_addCart2 btn1" id="div_cart_btn">장바구니</div>
+		                <div class="btn_buyThis btn1" id="div_buy_btn">구매하기</div>
+	                </c:when>
+	                <c:otherwise>
+                        <div class="soldout btn1" style="width: 425px;">품절상품</div>
+                    </c:otherwise>
+                </c:choose>		                
             </c:otherwise>
         </c:choose> 
     </div>
@@ -703,8 +756,15 @@
         <c:choose>
             <c:when test="${empty member}">
                 <div class="need_login btn2" id="div_wish_btn2">♡</div>
-		        <div class="need_login btn2" id="div_cart_btn">장바구니</div>
-		        <div class="need_login btn2" id="div_buy_btn">구매하기</div>
+                <c:choose>
+                    <c:when test="${product.stock ne 0}">
+				        <div class="need_login btn2" id="div_cart_btn">장바구니</div>
+				        <div class="need_login btn2" id="div_buy_btn">구매하기</div>
+		            </c:when>
+		            <c:otherwise>
+                        <div class="soldout btn2" style="width: 270px;">품절상품</div>
+                    </c:otherwise>
+		        </c:choose>		        
             </c:when>
             <c:otherwise>
                 <div class="btn_addWish btn2" id="div_wish_btn2">
@@ -715,8 +775,15 @@
                         <c:otherwise>♡</c:otherwise>
                     </c:choose>
                 </div>
-		        <div class="btn_addCart2 btn2" id="div_cart_btn">장바구니</div>
-		        <div class="btn_buyThis btn2" id="div_buy_btn">구매하기</div>
+                <c:choose>
+                    <c:when test="${product.stock ne 0}">
+				        <div class="btn_addCart2 btn2" id="div_cart_btn">장바구니</div>
+				        <div class="btn_buyThis btn2" id="div_buy_btn">구매하기</div>
+				    </c:when>
+                    <c:otherwise>
+                        <div class="soldout btn2" style="width: 270px;">품절상품</div>
+                    </c:otherwise>
+                </c:choose>                        
             </c:otherwise>
         </c:choose>        
     </div>

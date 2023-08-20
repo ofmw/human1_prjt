@@ -37,9 +37,9 @@ public class KakaoDao {
 		
 		String gender = (String) userInfo.get("gender");
 		if (gender.equals("male")) {
-			userInfo.put("gender", 0);
-		} else {
 			userInfo.put("gender", 1);
+		} else {
+			userInfo.put("gender", 2);
 		}
 		sqlSession.insert(MAPPER+".kjoin", userInfo);
 	}

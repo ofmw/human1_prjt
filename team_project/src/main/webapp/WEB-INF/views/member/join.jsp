@@ -85,7 +85,7 @@
         color: gray;
         user-select: none;
     }
-    #m_name, #m_id, #m_pw, #m_pwCheck{
+    #m_name, #m_id, #m_pw, #m_pwCheck, #aNum{
         width: 365.79px;
         height: 24.79px;
     }
@@ -139,10 +139,6 @@
         width: 73px;
         height: 37px;
     }
-    #aNum{
-        width: 285px;
-        height: 24.79px;
-    }
     button{
     	margin-top: 5px;
         margin-bottom: 8px;
@@ -165,7 +161,7 @@
   		padding-top: 5px;
   	}
   	.hidden_row{
-  		display: ;
+  		display: none;
   	}
 
    
@@ -191,9 +187,79 @@
             };            
         });
     }
-</script>
-<script>
+
     $(document).ready(function () {
+    	
+		//휴대전화 본인 인증 체크박스 "본인 확인을 위한 약관 모두 동의" 클릭시 동작
+		var isChecked = false;
+		
+    	$('#All-check').click(function() {
+            var isChecked = $(this).prop('checked');
+            $('input[type="checkbox"]').prop('checked', isChecked);
+        });
+
+        $('input[type="checkbox"]').not('#All-check').change(function() {
+            var allChecked = true;
+            $('input[type="checkbox"]').not('#All-check').each(function() {
+                if (!$(this).prop('checked')) {
+                    allChecked = false;
+                    return false;
+                }
+            });
+
+            $('#All-check').prop('checked', allChecked);
+        });
+    	
+    	//인증번호 받는 구문
+    	var code2 = "";
+        
+        $("#btn_get_aNum").click(function() {
+            var selNum = $("#selNum").val();
+            
+            $.ajax({
+                type: "GET",
+                url: "selNumCheck?selNum=" + selNum,
+                cache: false,
+                success: function(data) {
+                    if (data == "error") {
+                        $("#selNum").attr("autofocus", true);
+                    } else {
+                        $("#aNum").attr("disabled", false); // aNum 활성화
+                        $("#btn_check_aNum").css("display", "inline-block");
+                        $("#selNum").attr("readonly", true); // selNum 읽기 전용 처리
+                        code2 = data;
+                    }
+                }
+            });
+            
+            return false;
+        });
+		
+        //"인증번호 확인" 버튼 클릭시 동작
+        $("#btn_check_aNum").click(function() {
+            var enteredCode = $("#aNum").val();
+            if (enteredCode === ""){
+            	$("#certifiedNum_check").text("인증번호를 입력해주세요.")
+            	$("#certifiedNum_check").css("color", "red");
+            	return false;
+            }
+            if (enteredCode == code2) {
+                $("#certifiedNum_check").text("인증번호가 일치합니다.");
+        		$("#certifiedNum_check").css("color","green");
+                $("#selNumDoubleChk").val("true");
+                $("#aNum").attr("disabled", true); // aNUm 다시 비활성화
+                $(".hidden_row").css("display", "table-row");
+                
+            } else {
+                $("#selNumDoubleChk").val("false");
+                $("#aNum").focus();
+                $("#selNumDoubleChk").text("인증번호가 일치하지 않습니다.");
+                $("#selNumDoubleChk").css("color", "red");
+            }
+            return false;
+        });
+    	
+        //회원가입 유효성검사
         var namePattern = /^[가-힣]{2,6}$/;
         var birthPattern = /^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))$/;
         var genderPattern = /^[1-4]$/;
@@ -201,7 +267,14 @@
         var passwordPattern = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[a-z\d@$!%*?&]{8,12}$/;
 		var idPattern = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
         
+		
 		$('#btn_join').click(function() {
+			
+			if (!$('#All-check').prop('checked')) {
+			    alert('약관에 동의해주세요.'); // 체크박스가 선택되지 않았을 경우 경고창 표시
+			    return false; // 가입 처리 중단
+			}
+			
 	        var fields = [
 	            { input: $('#m_name'), error: $('#name_check'), message: '이름을 입력해주세요.', pattern: namePattern, error_message: '이름을 올바르게 입력해주세요.' },
 	            { input: $('#birth'), error: $('#birth_check'), message: '생년월일을 입력해주세요.', pattern: birthPattern, error_message: '생년월일을 올바르게 입력해주세요.' },
@@ -228,6 +301,7 @@
 	                field.error.text(''); // 에러 메시지 초기화
 	            }
 	        }
+	        
 	        
 	     	// 비밀번호 일치 여부 확인
 	        var passwordInput = $('#m_pw');
@@ -431,58 +505,8 @@
                 passwordConfirmCheck.css('color', 'red');
             }
         });
-    });
-   
-
-</script>
-<script>
-$(document).ready(function() {
-    var code2 = "";
-    
-    $("#btn_get_aNum").click(function() {
-        var selNum = $("#selNum").val();
         
-        $.ajax({
-            type: "GET",
-            url: "selNumCheck?selNum=" + selNum,
-            cache: false,
-            success: function(data) {
-                if (data == "error") {
-                    $("#selNum").attr("autofocus", true);
-                } else {
-                    $("#aNum").attr("disabled", false); // aNum 활성화
-                    $("#btn_check_aNum").css("display", "inline-block");
-                    $("#selNum").attr("readonly", true); // selNum 읽기 전용 처리
-                    code2 = data;
-                }
-            }
-        });
-        
-        return false;
     });
-
-    $("#btn_check_aNum").click(function() {
-        var enteredCode = $("#aNum").val();
-        if (enteredCode === ""){
-        	$("#certifiedNum_check").text("인증번호를 입력해주세요.")
-        	$("#certifiedNum_check").css("color", "red");
-        	return false;
-        }
-        if (enteredCode == code2) {
-            $("#certifiedNum_check").text("인증번호가 일치합니다.");
-    		$("#certifiedNum_check").css("color","green");
-            $("#selNumDoubleChk").val("true");
-            $("#aNum").attr("disabled", true); // aNUm 다시 비활성화
-            $(".hidden_row").css("display", "table-row");
-        } else {
-            $("#selNumDoubleChk").val("false");
-            $("#aNum").focus();
-            $("#selNumDoubleChk").text("인증번호가 일치하지 않습니다.");
-            $("#selNumDoubleChk").css("color", "red");
-        }
-        return false;
-    });
-});
 
 </script>
 <body>
@@ -495,7 +519,7 @@ $(document).ready(function() {
                 <table id="tbl_join">
                     <tr>
                         <td><p id="selNum_text">휴대전화 본인 인증</p>
-                            <input type="checkbox">
+                            <input type="checkbox" id="All-check">
                                 <label for="All-check" id="lbl_all">본인 확인을 위한 약관 모두 동의</label>
                             <p id="lbl_allSee" class="close">보기</p>
                             <ul id="lbl_behind" style="display: none;">

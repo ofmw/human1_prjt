@@ -224,13 +224,48 @@
         margin-top: 5px;
         margin-right: 5px;        
     }
+    #td_btns input[type="button"]{
+       width: 80px;
+       height: 27px;
+       margin-left: 5px;
+       font-size: 11px;
+       font-weight: bold;
+       border: 1px solid lightgray;
+       border-radius: 3px;
+       cursor: pointer;
+       float: right;
+       margin-right: 10px;
+       margin-bottom: 5px;
+    }
+    #td_btns input:first-child {
+       margin-left: 59px !important;
+    }
+    #td_btns{
+        padding-left: 0 !important;
+    }
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
-	$(function(){		
+	$(function(){
 		
-		let categoryMap = {"1": "AA", "2": "BB", "3": "CC", "4": "DD"};
-		let brandMap = {"1": "농협", "2": "목우촌", "3": "하림", "4": "수협"};
+		let brandList = "${categoryList.brand}";		
+		let subList = "${categoryList.sub}";
+		
+		let brandArr = (brandList.replace("[","").replace("]","")).split(",");
+		let subArr = (subList.replace("[","").replace("]","")).split(",");
+		
+	    let brandMap = {};
+	    let subMap = {};
+	    
+	    for (let i = 0; i < brandArr.length; i++) {
+	        brandMap[i] = brandArr[i].trim();
+	    }
+
+	    for (let i = 0; i < subArr.length; i++) {
+	        subMap[i] = subArr[i].trim();
+	    }
+						
+		let categoryMap = {"1": "AA", "2": "BB", "3": "CC", "4": "DD"};		
 		let postStateMap = {"1": "판매중", "0": "판매중단"};
 	    let p_id; //상품코드
 		let p_name; //상품명
@@ -371,8 +406,9 @@
 		$("#btn_filter").click(function () {
             let selectedCategories = [];
             let selectedBrands = [];
+            let selectedSubs = []; 
             let selectedPostStates = [];
-            let selectedStocks = [];
+            let selectedStocks = [];                       
 
             $(".checkbox_category:checked").each(function () {
                 let categoryId = $(this).attr("id").replace("checkbox1_", "");
@@ -384,30 +420,39 @@
                 selectedBrands.push(brandMap[brandId]);
             });
             
+            $(".checkbox_sub:checked").each(function () {
+                let subId = $(this).attr("id").replace("checkbox3_", "");
+                selectedSubs.push(subMap[subId]);
+            });
+            
             $(".checkbox_postState:checked").each(function () {
-                let postStateId = $(this).attr("id").replace("checkbox3_", "");
+                let postStateId = $(this).attr("id").replace("checkbox4_", "");
                 selectedPostStates.push(postStateMap[postStateId]);
             });
             
             $(".checkbox_stock:checked").each(function () {
-                let stockId = $(this).attr("id").replace("checkbox4_", "");
+                let stockId = $(this).attr("id").replace("checkbox5_", "");
                 selectedStocks.push(stockId);
             });
+            
+            
 
-            applyFilter(selectedCategories, selectedBrands, selectedPostStates, selectedStocks);
+            applyFilter(selectedCategories, selectedBrands, selectedSubs, selectedPostStates, selectedStocks);
         });
 
-		function applyFilter(selectedCategories, selectedBrands, selectedPostStates, selectedStocks) {
+		function applyFilter(selectedCategories, selectedBrands, selectedSubs, selectedPostStates, selectedStocks) {
 	        $("#tbl_contents tr:not(:first-child)").each(function () {
 	            let productId = $(this).find("td:nth-child(3)").text();
-	            let brandName = $(this).find("td:nth-child(5)").text();
-	            let postState = $(this).find("td:nth-child(12)").text();
-	            let stockState = $(this).find("td:nth-child(10)").text();
+	            let brandName = $(this).find("td:nth-child(6)").text();
+	            let subCategory = $(this).find("td:nth-child(4)").text();
+	            let postState = $(this).find("td:nth-child(13)").text();
+	            let stockState = $(this).find("td:nth-child(11)").text().trim();
 	            let showCategory = selectedCategories.length === 0 || selectedCategories.includes(productId.substring(0, 2));
 	            let showBrand = selectedBrands.length === 0 || selectedBrands.includes(brandName);
+	            let showSub = selectedSubs.length === 0 || selectedSubs.includes(subCategory);
 	            let showPostState = selectedPostStates.length === 0 || selectedPostStates.includes(postState.trim());
 	            let showStock = selectedStocks.length === 0 || (stockState === "0" && selectedStocks.includes("0")) || (stockState !== "0" && selectedStocks.includes("1"));
-	            if (showCategory && showBrand && showPostState && showStock) {
+	            if (showCategory && showBrand && showSub && showPostState && showStock) {
 	                $(this).show();
 	            } else {
 	                $(this).hide();
@@ -548,10 +593,6 @@
                 
             }
             
-
-
-            
-            
         });
         
         $("#checkAll").click(function(){
@@ -685,7 +726,7 @@
         <h3>제품관리</h3>
         <table>
             <tr>
-                <td>분류</td>
+                <td>카테고리</td>
             </tr>
             <tr>
                 <td>
@@ -695,7 +736,25 @@
                     <input type="checkbox" class="checkbox_category" id="checkbox1_4"><label for="checkbox1_4">야채</label><br>
                 </td>
             </tr>
-            <tr>
+            <c:forEach items="${categoryList}" var="category" varStatus="status">
+                <tr>
+                    <td>
+                        <c:choose>
+                            <c:when test="${category.key eq 'brand'}">브랜드</c:when>
+                            <c:when test="${category.key eq 'sub'}">분류</c:when>
+                        </c:choose>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+		                <c:forEach items="${category.value}" var="item" varStatus="s">                    
+	                        <input type="checkbox" class="checkbox_${category.key}" id="checkbox${status.index+2}_${s.index}"/>
+	                        <label for="checkbox${status.index+2}_${s.index}">${item}</label><br>
+		                </c:forEach>
+                    </td> 
+                </tr>
+            </c:forEach>
+            <!-- <tr>
                 <td>브랜드</td>
             </tr>
             <tr>
@@ -705,14 +764,14 @@
                     <input type="checkbox" class="checkbox_brand" id="checkbox2_3"><label for="checkbox2_3">하림</label><br>
                     <input type="checkbox" class="checkbox_brand" id="checkbox2_4"><label for="checkbox2_4">수협</label><br>
                 </td>
-            </tr>
+            </tr> -->
             <tr>
                 <td>게시상태</td>
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" class="checkbox_postState" id="checkbox3_1"><label for="checkbox3_1">판매중</label><br>
-                    <input type="checkbox" class="checkbox_postState" id="checkbox3_0"><label for="checkbox3_0">판매중단</label><br>
+                    <input type="checkbox" class="checkbox_postState" id="checkbox4_1"><label for="checkbox4_1">판매중</label><br>
+                    <input type="checkbox" class="checkbox_postState" id="checkbox4_0"><label for="checkbox4_0">판매중단</label><br>
                 </td>
             </tr>
             <tr>
@@ -720,15 +779,15 @@
             </tr>
             <tr>
                 <td>
-                    <input type="checkbox" class="checkbox_stock" id="checkbox4_1"><label for="checkbox4_1">있음</label><br>
-                    <input type="checkbox" class="checkbox_stock" id="checkbox4_0"><label for="checkbox4_0">없음</label><br>
+                    <input type="checkbox" class="checkbox_stock" id="checkbox5_1"><label for="checkbox5_1">있음</label><br>
+                    <input type="checkbox" class="checkbox_stock" id="checkbox5_0"><label for="checkbox5_0">없음</label><br>
                 </td>
             </tr>
             <tr>
-            	<td>
+            	<td id="td_btns">                  
             	   <input id="btn_reset" type="button" value="초기화"/>
-            	   <input id="btn_filter" type="button" value="선택완료"/>
-            	</td>
+                   <input id="btn_filter" type="button" value="선택완료"/>                   
+                </td>
             </tr>
         </table>
     </div>

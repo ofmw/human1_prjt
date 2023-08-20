@@ -31,7 +31,9 @@
 	            </div>
 	            <!-- 검색 -->
 	            <div id="input_search_area">
-	                <input id="input_search" type="search">
+	                <form action="product/product_list.do" method="get" name="frm_keyword">
+	                   <input id="input_search" type="search" name="keyword" value="${keyword}">
+	                </form>
 	            </div>
              
 				<!-- ㅁㄴㅇㄹ -->
@@ -61,10 +63,11 @@
                                         <a href="member/logout.do">로그아웃</a>
                                     </c:when>
                                 </c:choose>							
-								<a href="boardFile/list_faq_member.do">고객센터</a>								
+								<a href="boardFile/faq_member.do">고객센터</a>								
 							</c:otherwise>
 						</c:choose>
 					</div>
+					<div id="div_division"></div>
 					<div id="div_persnal_menu">
 						<c:choose>
 							<c:when test="${empty member}">
@@ -144,7 +147,7 @@
 				<div id="login_sns_area">
 				    <div id="sns_title">SNS 로그인</div>
 				    <div id="sns_box">
-					    <a href="#" id="sns_kakao_btn" class="sns_button"><img src="resources/img/kakao_login_large_wide.png" alt="카카오로그인"></a>
+					    <img src="resources/img/kakao_login_large_wide.png" alt="카카오로그인" width="325" id="sns_kakao_btn">
 					</div>
 				</div>
 				
@@ -153,7 +156,7 @@
     </div><!-- end of shadow -->
     <div id="shadow_addCart" style="display:none;">
         <div id="addCart_container">
-            제품이 장바구니에 추가되었습니다.
+            상품이 장바구니에 추가되었습니다.
         </div>
     </div>
 </body>

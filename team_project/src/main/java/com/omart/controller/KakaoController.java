@@ -62,13 +62,13 @@ public class KakaoController {
 	}
 	
 	//카카오 로그아웃
-	@GetMapping("/kakaologout.do")
+	@GetMapping("/**/kakaologout.do")
 	public String kakaoLogout(HttpSession session) {
 		System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그아웃 요청>━━━━━━━━━━━━━━━━━");
 		System.out.println("access_token: " +session.getAttribute("access_token"));
 		kToken.kakaoLogout((String)session.getAttribute("access_token"));
-		session.invalidate();
-		return "redirect:/index.do";
+	
+		return "redirect:/logout.do";
 	}
 	
 }

@@ -91,7 +91,7 @@
         background-color: rgb(70, 90, 120);
     }
     #div_admin_sideBar div{
-        border: 1px solid white;
+/*         border: 1px solid white; */
         width: 50px;
         height: 50px;
         border-radius: 25px;
@@ -115,7 +115,10 @@
         left: 65px;
         height: 100%;
         width: 100%;
-    }    
+    } 
+    .inverted-image {
+        filter: invert(100%);
+    }   
     
 </style>
 <script>
@@ -189,17 +192,12 @@
         
         function extendSession() {
             // 서버에 연장 요청 보내기
-            $.ajax({
-                url: "extendSession.do",
-                type: "post",
-                success: function(response) {
-                    // 연장 성공 시 메시지 표시하고 남은 시간 갱신
-                    alert("세션 연장에 성공하였습니다.");
-                    updateRemainingTime();
-                },
-                error: function(error) {
-                    console.log("세션 연장에 실패하였습니다.");
-                }
+            $.post("extendSession.do", function(response) {
+                // 연장 성공 시 메시지 표시하고 남은 시간 갱신
+                alert("세션 연장에 성공하였습니다.");
+                updateRemainingTime();
+            }).fail(function(error) {
+                console.log("세션 연장에 실패하였습니다.");
             });
         }
         
@@ -229,7 +227,7 @@
 	           <li>
                  <div>
                      <a href="${pageContext.request.contextPath}/admin/authority.do">
-                         <img src="" alt="">
+                         <img src="../resources/img/권한.png" alt="" class="inverted-image">
                          <p>권한</p>
                      </a>
                  </div>                    
@@ -239,7 +237,7 @@
 	           <li>
                  <div>
                      <a href="${pageContext.request.contextPath}/admin/member.do">
-                         <img src="" alt="">
+                         <img src="../resources/img/회원.png" alt="" class="inverted-image">
                          <p>회원</p>
                      </a>
                  </div>                    
@@ -249,7 +247,7 @@
 	           <li>
                  <div>
                      <a href="${pageContext.request.contextPath}/admin/product.do">
-                         <img src="" alt="">
+                         <img src="../resources/img/판매.png" alt="" class="inverted-image">
                          <p>판매</p>
                      </a>
                  </div>                    
@@ -259,7 +257,7 @@
 	           <li>
                  <div>
                      <a href="${pageContext.request.contextPath}/admin/inquiry.do">
-                         <img src="" alt="">
+                         <img src="../resources/img/문의.png" alt="" class="inverted-image">
                          <p>문의</p>
                      </a>
                  </div>                    
@@ -269,7 +267,7 @@
                <li>
                  <div>
                      <a href="${pageContext.request.contextPath}/admin/order.do">
-                         <img src="" alt="">
+                         <img src="../resources/img/주문.png" alt="" class="inverted-image">
                          <p>주문</p>
                      </a>
                  </div>                    

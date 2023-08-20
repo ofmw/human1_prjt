@@ -21,15 +21,22 @@
     }
     #div_logo{
     	position: absolute;
-    	margin-right: 1000px;
+    	width: 100%;
     	height: 70px;
-    	width: 195px;
-    	cursor: pointer;
+    	display: flex;
+    	justify-content: space-between;
     }
     #div_logo img{
-    	width: 100%;
-    	height: 100%;
     	cursor: pointer;
+    	margin-left: 110px;
+    }
+    #div_logo p{
+        width: 150px;
+        margin-right: 200px;
+        font-weight: bold;
+        user-select: none;
+        cursor: pointer;
+        padding-top: 10px;        
     }
     /*전체 영역*/
     #div_notice {
@@ -139,7 +146,7 @@
 <script>
 	$(document).ready(function(){
 		var isLoggedIn = false;
-		$("#inquiryLink").click(function(event){
+		$(".inquiryLink").click(function(event){
 			if(!isLoggedIn){
 				document.getElementById("shadow").style.display = "block";
 				event.preventDefault();
@@ -156,7 +163,11 @@
     <div id="div_notice">
      <div id="div_logo">
 		<img src="../resources/img/로고_블랙.png" onclick="location.href='../index.do'">
-		<p>${member.m_name}님</p>
+		<c:choose>
+		  <c:when test="${!empty member}"><p><a href="../mypage/mypage.do">${member.m_name}님</a>&nbsp;&nbsp;&nbsp;<a href="logout.do">로그아웃</a></p></c:when>
+		  <c:otherwise><p><span class="inquiryLink">로그인</span>&nbsp;&nbsp;&nbsp;<a href="../member/join.do">회원가입</a></p></c:otherwise>
+		</c:choose>
+		
 	 </div>
         <div id="div_div_notice">
             <div id="div_side_menu">
@@ -175,7 +186,7 @@
                         <td>
                         	<c:choose>
                         		<c:when test="${empty member}">
-                        			<a href="inquiry.do" id="inquiryLink">1:1문의하기</a>
+                        			<a href="inquiry.do" class="inquiryLink">1:1문의하기</a>
                         		</c:when>
 								<c:otherwise>
 									<a href="inquiry.do">1:1문의하기</a>
@@ -263,7 +274,7 @@
                     <div id="unregist_tracking"><a href="#">비회원 배송조회</a></div>
                 </div>
 
-				<!-- 로그인 -->
+                <!-- 로그인 -->
                 <div id="login_input_area">
                     <input type="text" name="m_id" id="m_id" class="input_object" placeholder="아이디를 입력해주세요">
                     <input type="password" name="m_pw" id="m_pw" class="input_object" placeholder="비밀번호를 입력해주세요">
@@ -275,22 +286,17 @@
                     <input type="button" value="로그인" id="login_btn">
                 </div>
 
-				<div id="forgot_account_area">
-				    <a href="#">아이디 찾기</a><span id="division">|</span><a href="#">비밀번호 찾기</a>
-				</div>
-				
-				<div id="login_sns_area">
-				    <div id="sns_title">SNS 로그인</div>
-				    <div id="sns_box">
-						<label id="sns_naver" class="sns">
-						    <a href="#" id="sns_naver_btn" class="sns_button">네이버 로그인</a>
-						</label>
-						<label id="sns_kakao" class="sns">
-						    <a href="#" id="sns_kakao_btn" class="sns_button">카카오 로그인</a>
-						</label>
-					</div>
-				</div>
-				
+                <div id="forgot_account_area">
+                    <a href="#">아이디 찾기</a><span id="division">|</span><a href="#">비밀번호 찾기</a>
+                </div>
+                
+                <div id="login_sns_area">
+                    <div id="sns_title">SNS 로그인</div>
+                    <div id="sns_box">
+                        <a href="#" id="sns_kakao_btn" class="sns_button"><img src="../resources/img/kakao_login_large_wide.png" alt="카카오로그인"></a>
+                    </div>
+                </div>
+                
             </div><!-- end of 로그인창 내부요소 -->
         </div><!-- end of login container -->
     </div><!-- end of shadow -->

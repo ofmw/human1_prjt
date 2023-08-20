@@ -124,7 +124,7 @@
 				data: formData,
 				success: function(response){
 					alert("저장되었습니다.")
-					location.href = "faq.do"
+					location.href = "faq_member.do"
 				},
 				error: function(error){
 					alert("실패했습니다.");

@@ -64,18 +64,17 @@ $(function() {
     }
 
     //---------------카카오 로그인 처리 메서드---------------//
-    $("#sns_kakao_btn").click(function(event){
-        event.preventDefault();
+    $("#sns_kakao_btn").click(function(){
         
-        let windowWidth = 400;
-        let windowHeight = 650;
+        //let windowWidth = 400;
+        //let windowHeight = 650;
 
         // 화면 중앙에 위치시키기 위해 창의 x, y 위치 계산
-        let windowLeft = (window.screen.width - windowWidth) / 2;
-        let windowTop = (window.screen.height - windowHeight) / 2;
+        //let windowLeft = (window.screen.width - windowWidth) / 2;
+        //let windowTop = (window.screen.height - windowHeight) / 2;
 
         // 새 창을 띄우기 위한 윈도우 옵션들
-        let windowFeatures = "width=" + windowWidth + ",height=" + windowHeight + ",left=" + windowLeft + ",top=" + windowTop;
+        //let windowFeatures = "width=" + windowWidth + ",height=" + windowHeight + ",left=" + windowLeft + ",top=" + windowTop;
 
         let url = "https://kauth.kakao.com/oauth/authorize?client_id=96ad22b1dc5d2f8c1d217f6aa61146a0&redirect_uri=http://localhost:9090/prjt/kakaologin.do&response_type=code";
         //window.open(url, "_blank", windowFeatures);

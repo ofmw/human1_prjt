@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 <!DOCTYPE html>
 <html>
 <head>
     <title>footer</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-        *{margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
-
         #div_footer {
             position: relative;
             display: flex;
@@ -65,13 +63,12 @@
             color: #222;
         }
         #div_support {
-            /* width: 1280px; */
             height: 80px;
-            /* padding-left: 10px; */
             padding-top: 10px;
         }
         #div_support p {
             float: left;
+            margin-right: 15px
         }
         #div_support span {
             line-height: 40px;
@@ -79,15 +76,16 @@
             font-weight: bold;
         }
         #div_support input {
-            margin-left: 7px;
-            width: 60px;
-            height: 23px;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: left;
-            background-color: white;
-            border-radius: 3px;
-            cursor: pointer;
+		    width: 60px;
+		    height: 23px;
+		    font-size: 11px;
+		    text-align: left;
+		    background-color: white;
+		    border-radius: 3px;
+		    border: 1px solid #cacaca;
+		    color: gray;
+		    cursor: pointer;
+		    margin-left: 5px;
         }
         #div_support input[type="button"]{
             text-align: center;
@@ -126,8 +124,15 @@
                 <div id="div_support">
                     <span>(주)오마트닷컴</span><br>
                     <p>0000-0000</p>
-                    <input type="button" value="1:1문의" onclick="location.href='${pageContext.request.contextPath}/boardFile/list_inquiry.do';"/>
-                    <input type="button" value="고객센터" onclick="location.href='${pageContext.request.contextPath}/boardFile/list_faq_member.do';">
+                    <c:choose>
+                        <c:when test="${!empty member}">
+                            <input type="button" value="1:1문의" onclick="location.href='${pageContext.request.contextPath}/boardFile/inquiry.do';"/>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="button" value="1:1문의" class="need_login"/>
+                        </c:otherwise>
+                    </c:choose>                    
+                    <input type="button" value="고객센터" onclick="location.href='${pageContext.request.contextPath}/boardFile/faq_member.do';">
                 </div>
                 <div id="div_business_info">
                     <span>대표자:홍길동 천안시 동남구 대흥로 215 사업자등록번호: 000-00-00000 통신판매업 신고번호:제2023-서울강남-00000호</span><br>
