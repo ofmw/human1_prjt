@@ -28,11 +28,11 @@
     }
     #div_logo img{
     	cursor: pointer;
-    	margin-left: 110px;
+    	margin-left: 40px;
     }
     #div_logo p{
         width: 150px;
-        margin-right: 200px;
+        margin-right: 130px;
         font-weight: bold;
         user-select: none;
         cursor: pointer;

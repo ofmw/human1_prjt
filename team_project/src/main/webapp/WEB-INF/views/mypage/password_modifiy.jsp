@@ -9,9 +9,11 @@
 <head>
     <title>회원정보수정</title>
     
-    <link href="../resources/css/mypage.css" rel="stylesheet">
+    <link href="../resources/css/mypage.css?v=1234" rel="stylesheet">
+    <link href="../resources/css/mypage/mypage.css?v=1234" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/mypage.js"></script>
     
     <style>
     

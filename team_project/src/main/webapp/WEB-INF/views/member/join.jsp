@@ -161,7 +161,7 @@
   		padding-top: 5px;
   	}
   	.hidden_row{
-  		display: none;
+  		display: ;
   	}
 
    
@@ -314,24 +314,6 @@
 	        } else {
 	        	passwordConfirmCheck.text('');
 	        }
-			
-	        /* if (isValid) {
-	        	   // 휴대전화 중복 여부 확인 AJAX 요청
-	               $.ajax({
-	                   type: 'POST',
-	                   url: 'checkSelNum',  // 실제 서버의 URL을 입력
-	                   data: { selNum: selNum },
-	                   success: function(response) {
-	                       if (response === 'duplicate') {
-	                           alert('이미 가입된 전화번호입니다.');
-	                           isValid = false;
-	                       } else {
-	                           // 서버에서 가입 가능한 상태임을 확인하면 여기에서는 아무 작업이 필요 없음
-	                           alert('회원 가입이 완료되었습니다.');
-	                       }
-	                   }
-	               });
-	        } */
 	        
 	        if (isValid) {
 	        	var formData = {
@@ -356,6 +338,7 @@
 	        	                url: 'join_process.do', // 회원 가입 처리 엔드포인트 URL
 	        	                data: formData,
 	        	                success: function(response) {
+	        	                	console.log("리스폰스: " + response);
 	        	                    if (response === 'success') {
 	        	                        alert('회원 가입이 완료되었습니다.');
 	        	                        location.href = '../index.do';
@@ -363,6 +346,7 @@
 	        	                        alert('회원 가입에 실패했습니다.');
 	        	                    }
 	        	                }
+	        	                
 	        	            });
 	        	        }
 	        	    }
@@ -510,7 +494,6 @@
 
 </script>
 <body>
-    <form action="join_process.do" method="POST">
         <div id="div_join">
         <img src="../resources/img/로고_블랙.png" onclick="location.href='../index.do'">
             <div  id="div_box">
@@ -595,11 +578,10 @@
                            		<input type="password" name="m_pwCheck" id="m_pwCheck"><br>
                             	<div class="check" id="pw_check2"></div>
                         
-                            <button type="submit" name="btn_join" id="btn_join">가입하기</button>
+                            <button type="button" name="btn_join" id="btn_join">가입하기</button>
                         </td>
                      </tr>
                 </table>
             </div>
-    </form>
 </body>
 </html>

@@ -38,16 +38,14 @@ public class MemberController {
 	public String join() {
 		return "member/join";
 	}	
-	
-	
+
 	@PostMapping("/join_process.do")
 	@ResponseBody
 	public String join_process(MemberVo memberVo){
 
 		int result = mJoin.join(memberVo);
-  
+		
 		if(result == 1) {
-
 			return "success";
 		} else {
 			return "fail";

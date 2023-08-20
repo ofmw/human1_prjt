@@ -18,7 +18,7 @@
         WHERE selNum=#{selNUm}
     </select>
     <!-- 회원가입 구문 (오마트) -->
-    <insert id="join" parameterType="MemberVo">
+    <insert id="join" parameterType="memberVo">
         CALL join_member(#{m_name}, #{birth}, #{gender}, #{selNum}, #{m_id}, #{m_pw}, "omart")
     </insert>
     

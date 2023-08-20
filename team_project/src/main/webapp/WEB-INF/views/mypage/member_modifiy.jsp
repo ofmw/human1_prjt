@@ -25,8 +25,8 @@
     	}
     
     	#mp_main {
-    		height: 600px;
     		position: relative;
+    		height: 600px;
     	}
     	
         .mp_main_title{

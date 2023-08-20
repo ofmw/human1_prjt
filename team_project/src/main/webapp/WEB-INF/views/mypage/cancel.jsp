@@ -124,10 +124,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
-<<<<<<< HEAD
 	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
-=======
->>>>>>> branch 'main' of https://github.com/ofmw/human1_prjt.git
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
