@@ -75,8 +75,8 @@ $(function() {
 					alert('장바구니에 상품이 추가되었습니다.');
 					//페이지 새로고침
 					location.reload();
-				} else {
-					alert("장바구니 상품 추가에 실패했습니다.");
+				} else if (response === "max") {
+					alert("장바구니에는 최대 20개까지 담을 수 있습니다.");
 				}
 			},
 			error: function () {
