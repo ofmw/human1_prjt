@@ -451,7 +451,7 @@
 	    	
 	        	$.ajax({
 	                type: "POST",
-	                url: "product/remove_wishList.do",
+	                url: "mypage/remove_wishList.do",
 	                data: {
 	                	m_idx: m_idx,
 	                    p_id: p_id,
@@ -489,11 +489,11 @@
 	  		
 	  		if ($(this).hasClass('inWish')) {
 	  			
-	  			let p_id = $(this).siblings(".p_id").val();
+	  			let p_id = [$(this).siblings(".p_id").val()]
 	  			removeWish(p_id);
 	  	    } else {
 	  	    	
-	  	    	let p_id = $(this).siblings(".p_id").val();
+	  	    	let p_id = $(this).siblings(".p_id").val()
 	           	addWish(p_id);
 	  	    }
 	  	});
