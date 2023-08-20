@@ -353,6 +353,99 @@ section {
 			$(this).find(".p_img_opt-box").stop().fadeOut(300);
 		});
 
+
+		/* ---------------------찜목록 상품 추가, 삭제--------------------- */
+		//*** 찜목록 상품 추가 메서드 ***//
+		function addWish(p_id) {
+
+			let m_idx = parseInt($("#m_idx").val());
+
+			if (isNaN(m_idx)) {
+				alert("로그인 후 이용 가능합니다.");
+				$("#shadow").show();
+			} else {
+
+				$.ajax({
+					type : "POST",
+					url : "add_wishList.do",
+					data : {
+						m_idx : m_idx,
+						p_id : p_id,
+					},
+					success : function(response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+						if (response === "success") { // 수량 업데이트가 성공한 경우
+							alert("찜목록에 추가되었습니다!");
+
+							/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
+							 *  같은 상태로 임의변경 */
+							$('.p_id[value=' + p_id + ']').siblings(".w_btn")
+									.text("❤").css('color', 'red').addClass(
+											"inWish");
+						} else if (response === "max") {
+							alert("찜목록이 꽉 찼습니다! (최대 100개)");
+						} else {
+							alert("찜목록 추가에 실패했습니다.");
+						}
+					}.bind(this), // 증감 버튼이 속한 행으로 한정
+					error : function() {
+						alert("오류가 발생하였습니다.");
+					}
+				}); // end of ajax
+			}
+		}
+
+		//*** 찜목록 상품 삭제 메서드 ***//
+		function removeWish(p_id) {
+
+			let m_idx = parseInt($("#m_idx").val());
+
+			if (isNaN(m_idx)) {
+				alert("로그인 후 이용 가능합니다.");
+				$("#shadow").show();
+			} else {
+
+				$.ajax({
+					type : "POST",
+					url : "../mypage/remove_wishList.do",
+					data : {
+						m_idx : m_idx,
+						p_id : p_id,
+					},
+					success : function(response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
+						if (response === "success") { // 수량 업데이트가 성공한 경우
+							alert("찜목록에서 삭제되었습니다!");
+
+							/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
+							 *  같은 상태로 임의변경 */
+							$('.p_id[value=' + p_id + ']').siblings(".w_btn")
+									.text("♡").css('color', '#222')
+									.removeClass("inWish");
+						} else {
+							alert("찜목록 삭제에 실패했습니다.");
+						}
+					}.bind(this), // 증감 버튼이 속한 행으로 한정
+					error : function() {
+						alert("오류가 발생하였습니다.");
+					}
+				}); // end of ajax
+
+			}
+		}
+
+		//*** 찜버튼 클릭 이벤트 처리 ***//
+		$(".w_btn").click(function() {
+
+			if ($(this).hasClass('inWish')) {
+
+				let p_id = [$(this).siblings(".p_id").val()];
+				removeWish(p_id);
+			} else {
+
+				let p_id = $(this).siblings(".p_id").val();
+				addWish(p_id);
+			}
+		});
+
 		let optCheckbox = $(".opt_checkbox");
 		let selectSort = $("#select_sort");
 		let keyword = $("#keyword").val();
