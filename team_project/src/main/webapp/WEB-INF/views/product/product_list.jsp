@@ -399,13 +399,13 @@ section {
 
 				$.ajax({
 					type : "POST",
-					url : "remove_wishList.do",
+					url : "../mypage/remove_wishList.do",
 					data : {
 						m_idx : m_idx,
 						p_id : p_id,
 					},
 					success : function(response) { // 해당 상품 수량이 업데이트된 새로운 장바구니 객체 반환
-						if (response != null) { // 수량 업데이트가 성공한 경우
+						if (response === "success") { // 수량 업데이트가 성공한 경우
 							alert("찜목록에서 삭제되었습니다!");
 
 							/* 페이지 새로고침 없이 class를 수정하여 업데이트된 세션객체의 찜목록과
@@ -430,7 +430,7 @@ section {
 
 			if ($(this).hasClass('inWish')) {
 
-				let p_id = $(this).siblings(".p_id").val();
+				let p_id = [$(this).siblings(".p_id").val()];
 				removeWish(p_id);
 			} else {
 

@@ -565,11 +565,11 @@
         function removeWish() {
         	
         	let m_idx = parseInt($("#m_idx").val());
-        	let p_id = $("#p_id").val();
+        	let p_id = [$("#p_id").val()];
         	
         	$.ajax({
                 type: "POST",
-                url: "remove_wishList.do",
+                url: "../mypage/remove_wishList.do",
                 data: {
                 	m_idx: m_idx,
                     p_id: p_id,
