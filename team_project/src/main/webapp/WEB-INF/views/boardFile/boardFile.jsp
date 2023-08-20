@@ -80,7 +80,7 @@
     	margin-top: 30px;
         padding-left: 10px;
 	    padding-top: 10px;
-	    border-top: 3px solid black;
+	    border-top: 2px solid black;
 	    font-size: 23px;
 	    min-width: 1260px;
 	    height: 50px;
@@ -108,6 +108,19 @@
     	margin-top: 40px;
     	float: right;
     }
+    #div_business_info {
+    	padding-left: 10px;
+    }
+	#div_business_info *{
+        color: gray;
+    }
+    #div_business_info span {
+        font-size: 13px;
+    }
+    #div_business_info p {
+        font-size: 10px;
+    }
+	
 
     /* PC, 테블릿 가로 (해상도 768px ~ 1023px) */
     @media all and (min-width: 768px) and (max-width: 1023px) {
@@ -229,9 +242,14 @@
            		</c:choose>
             </div>
         </div>
-    </div>
     <div id="div_footer">
         고객센터 이용안내 <span>운영시간09:00~21:00</span>
+    </div>
+    <div id="div_business_info">
+        <span>대표자:홍길동 천안시 동남구 대흥로 215 사업자등록번호: 000-00-00000 통신판매업 신고번호:제2023-서울강남-00000호</span><br>
+        <span>개인정보보호책임자: 김길동 Fax: 041-0000-0000  omart@omart.com</span><br><br>
+        <p>OMART.COM 호스팅서비스 사업자:(주)오마트닷컴</p>
+        <p>(주)오마트닷컴 사이트의 상품/판매자/쇼핑정보,컨텐츠,UI 등에 대한 무단 복제,전송,배포,스크래핑 등의 혐위는 저작권법,콘텐츠사업 진흥법 등에 의하여 엄격히 금지됩니다.</p>
     </div>
     <!-- 로그인 모달창 -->
     <div id="shadow" style="display:none;">

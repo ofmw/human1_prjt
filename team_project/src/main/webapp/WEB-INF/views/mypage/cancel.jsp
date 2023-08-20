@@ -117,8 +117,8 @@
             <div id="mp_header_user_menu">
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
-	                    <li><a href="#">회원정보 변경</a></li>
-	                    <li><a href="#">비밀번호 변경</a></li>
+	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><span id="cancel">회원 탈퇴</span></li>

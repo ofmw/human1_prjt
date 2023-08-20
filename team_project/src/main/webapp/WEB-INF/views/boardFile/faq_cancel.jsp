@@ -154,7 +154,11 @@
                         </table>
                     </c:forEach>         
                 </table>
-           <a href="list_faq_write.do"><button id="btn_write">글등록</button></a>
+           <c:choose>
+		        <c:when test="${sessionScope.member.grade eq 9}">
+		            <a href="faq_write.do"><button id="btn_write">글등록</button></a>
+		        </c:when>
+		   </c:choose>
      </div>
 </body>
 </html>
