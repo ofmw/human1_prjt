@@ -23,6 +23,10 @@
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+body{
+    overflow-x: hidden;
+}
+
 /* a태그 공통 */
 a {
     text-decoration: none;

@@ -48,7 +48,10 @@
 							<c:otherwise>
 							    <input type="hidden" id="m_idx" value="${member.m_idx}"/>
 								<c:choose>
-							        <c:when test="${member.grade eq 9 or member.grade eq 8 or member.grade eq 7}">
+								    <c:when test="${member.grade eq 9}">
+								        <a href="admin/authority.do">${member.m_name}님</a>
+								    </c:when>
+							        <c:when test="${member.grade eq 8 or member.grade eq 7}">
 							            <a href="admin/member.do">${member.m_name}님</a>
 							        </c:when>
 							        <c:otherwise>
@@ -67,6 +70,7 @@
 							</c:otherwise>
 						</c:choose>
 					</div>
+					
 					<div id="div_division"></div>
 					<div id="div_persnal_menu">
 						<c:choose>

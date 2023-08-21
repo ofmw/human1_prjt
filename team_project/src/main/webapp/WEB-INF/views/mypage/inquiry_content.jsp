@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>배송지 설정</title>
+<title>문의내역</title>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 

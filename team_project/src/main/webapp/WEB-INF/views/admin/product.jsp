@@ -738,7 +738,12 @@
             </tr>
             <c:forEach items="${categoryList}" var="category" varStatus="status">
                 <tr>
-                    <td>${category.key}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${category.key eq 'brand'}">브랜드</c:when>
+                            <c:when test="${category.key eq 'sub'}">분류</c:when>
+                        </c:choose>
+                    </td>
                 </tr>
                 <tr>
                     <td>

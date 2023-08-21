@@ -425,7 +425,7 @@
             var passwordConfirmCheck = $('#pw_check2');
             
             if (passwordInput.val() === passwordConfirmInput.val()) {
-                passwordConfirmCheck.text('');
+                passwordConfirmCheck.text('비밀번호가 일치합니다.');
             } else {
                 passwordConfirmCheck.text('비밀번호가 일치하지 않습니다.');
                 passwordConfirmCheck.css('color', 'red');

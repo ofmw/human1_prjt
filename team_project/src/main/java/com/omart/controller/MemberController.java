@@ -43,15 +43,18 @@ public class MemberController {
 	@PostMapping("/join_process.do")
 	@ResponseBody
 	public String join_process(MemberVo memberVo){
+		
+		System.out.println(memberVo.getM_name());
 
 		int result = mJoin.join(memberVo);
-  
+		
 		if(result == 1) {
-
 			return "success";
-		} else {
+		}else {
 			return "fail";
 		}
+		
+		 
 	}
 
 	@PostMapping("/checkSelNum")
