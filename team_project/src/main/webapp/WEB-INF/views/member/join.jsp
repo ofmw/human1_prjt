@@ -165,7 +165,7 @@
   		padding-top: 5px;
   	}
   	.hidden_row{
-  		display: ;
+  		display: none;
   	}
 
    
