@@ -109,6 +109,7 @@
 		let category = $("#category").val();
 		let title = $("#title").val();
 		let content = $("#content").val();
+		let m_name = $("#m_name").val();
 		let m_idx = $("#m_idx").val();
 	
 		if(category == "" || title == "" || content == ""){
@@ -118,6 +119,7 @@
 				category: parseInt(category),
 				title: title,
 				content: content,
+				m_name: m_name,
 				m_idx: parseInt(m_idx)
 			};
 			

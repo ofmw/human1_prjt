@@ -136,6 +136,9 @@ $(function() {
         margin-bottom: 5px;
         background-color: gold;
     }
+    .w_img img{
+        width: 100%;
+    }
     .w_img a{
        	display: block;
       	width: 100%;
@@ -331,7 +334,7 @@ $(function() {
 								            <div class="w_products">
 								            	<c:if test="${!empty wishList[j] and !empty p_info[j]}">
 									                <div class="w_img">
-									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
+									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="../resources/uploads/${p_info[j].saveFile1}" alt="${p_info[j].p_name}"></a>
 									                	<div style="display:none" class="w_img_opt-box">
 									                		<div class="w_img_opt-box-innerDiv">
 										                		<button type="button" class="c_btn">🛒</button>

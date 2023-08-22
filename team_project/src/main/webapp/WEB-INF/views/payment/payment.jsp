@@ -392,8 +392,11 @@
             let discount = parseInt($("#discount_product").val());        
             let minPrice = 5000;
             
-            if(mPoint)
-            $("#input_point").val(Number(mPoint).toLocaleString());   
+            if(mPoint > (beforePrice - discount - minPrice)){
+            	$("#input_point").val(beforePrice - discount - minPrice);   
+            }else{
+            	$("#input_point").val(mPoint);
+            }
             
             dc_final();
             
@@ -477,7 +480,6 @@
         }, function (rsp) { // callback
             if (rsp.success) { //결제 성공시 실행할 로직
                 console.log(rsp);
-                alert("결제 성공");
                 frm.submit();
                 
             } else { //결제 실패시 실행할 로직

@@ -38,8 +38,7 @@ public class MemberController {
 	public String join() {
 		return "member/join";
 	}	
-	
-	
+
 	@PostMapping("/join_process.do")
 	@ResponseBody
 	public String join_process(MemberVo memberVo){

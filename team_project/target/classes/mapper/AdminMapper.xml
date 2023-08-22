@@ -62,7 +62,7 @@
     </select>
     
     <insert id="createAccount" parameterType="memberVo">
-        insert into member_omart (m_id, m_pw, grade, m_name) values (#{m_id}, #{m_pw}, #{grade}, #{m_name})
+        CALL create_account(#{m_id}, #{m_pw}, #{grade}, #{m_name})
     </insert>
     
     <select id="checkAccount" resultType="_int" parameterType="string">

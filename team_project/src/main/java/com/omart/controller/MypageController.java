@@ -235,6 +235,8 @@ public class MypageController {
 					// 해당 인덱스의 ProductVo에 저장된 p_id의 상품의 리뷰 작성 여부 가져오기
 					pVo.setReview_state(pdCheck.checkReview(pVo));
 					
+					pVo.setSaveFile1((pdInfo.getProduct(pVo.getP_id())).getSaveFile1());
+					
 		        }
 				// 세션에 p_info 저장
 				session.setAttribute("p_info", p_info);
@@ -546,6 +548,9 @@ public class MypageController {
 				cVo.setAmount(Integer.parseInt(amountsArr[i]));
 				cVo.setPrice(Integer.parseInt(p_priceArr[i]));
 				cVo.setP_name(pVo.getP_name());
+				cVo.setStandard(pVo.getStandard());
+				cVo.setUnit(pVo.getUnit());
+				cVo.setSaveFile1(pVo.getSaveFile1());
 			}
 		}
 		

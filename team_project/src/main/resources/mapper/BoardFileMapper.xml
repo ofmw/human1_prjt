@@ -23,7 +23,7 @@
     </insert>
     <!-- FAQ 게시글 추가 처리구문 -->
     <insert id="insertFaq" parameterType='boardFileVo'>
-    	insert into faq (m_idx, m_id, title, content, category) values(#{m_idx}, #{m_id}, #{title}, #{content}, #{category})
+    	insert into faq (m_idx, m_name, title, content, category) values(#{m_idx}, #{m_name}, #{title}, #{content}, #{category})
     </insert>
     <!-- 이벤트 게시글 추가 처리구문 -->
     <insert id="insertEvent" parameterType='boardFileVo'>

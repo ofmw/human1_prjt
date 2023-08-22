@@ -167,7 +167,7 @@
 			          
 			        </table>
 		        <div id="div_sbm">
-		            <input type="button" value="이전" id="btn_back">
+		            <input type="button" value="이전" id="btn_back" onclick="history.back()">
 		            <input type="button" value="저장" id="smt_save">
 		        </div>
       		</div>

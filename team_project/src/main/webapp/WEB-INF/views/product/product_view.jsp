@@ -494,6 +494,13 @@
         
         buyThisBtn.on("click", function(){
         	
+        	let bt_price = parseInt($("#div_calPrice").text().replace(/\D/g, ''));
+        	
+        	if(bt_price < 5000){
+        		alert("최소 주문금액은 5,000원입니다.");
+        		return;
+        	}
+        	
         	let frm_buyThis = $("#frm_buyThis");
         	
         	var requestor = $("<input>").attr("type", "hidden").attr("name", "requestor").val("buyThis");

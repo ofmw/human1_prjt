@@ -262,7 +262,7 @@
                             </colgroup>
                             <c:forEach items="${p_info}" var="p">
 	                            <tr>
-	                                <td class="td_img"><a href="#"><img src="#" alt="이미지" width="90" height="90"></a></td>
+	                                <td class="td_img"><a href="#"><img src="../resources/uploads/${p.saveFile1}" alt="이미지" width="90" height="90"></a></td>
 	                                <td class="td_pname">
 	                                	<input type="hidden" class="p_id" value="${p.p_id}">
 	                                	<a href="../product/product_view.do?p_id=${p.p_id}">

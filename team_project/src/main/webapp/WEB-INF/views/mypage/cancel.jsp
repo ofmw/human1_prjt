@@ -124,6 +124,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
@@ -176,8 +177,8 @@
                 <div class="mp_main_menu_list">
                     <ul>
                         <li><a href="wish.do">찜목록</a></li>
-                        <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
-                        <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
+                        <li><a href="#">상품 리뷰</a></li>
+                        <li><a href="#">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>

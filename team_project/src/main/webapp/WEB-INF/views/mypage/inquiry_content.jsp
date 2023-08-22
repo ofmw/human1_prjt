@@ -6,7 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>문의내역</title>
+
+<title>1:1문의내역</title>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 

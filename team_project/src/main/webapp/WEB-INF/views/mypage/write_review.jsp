@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,6 +120,11 @@
     #td_img{
         width: 100px;
     }
+    #td_img img{
+        width: 100px;
+        border: 1px solid black;
+        margin-top: 3px;
+    }
     #td_content{
         height: 150px;
         padding: 20px 20px;
@@ -196,6 +202,8 @@
 
             let starIndex = $(this).index();
             
+            score = starIndex + 1;            
+            
             for (let i = 0; i < stars.length; i++) {
                 if (i <= starIndex) {
                 stars.eq(i).css('color', 'red').addClass("click");
@@ -264,11 +272,11 @@
 	<div id="ca_section">
 		<table id="ca_product_tbl">
 	      <tr>
-            <td id="td_img"><img src="#" alt="#"></td>
-            <td id="td_p-name">상품이름ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ</td>
+            <td id="td_img"><img src="../resources/uploads/${selected_product.saveFile1}" alt="${selected_product.p_name}"></td>
+            <td id="td_p-name">${selected_product.p_name} ${selected_product.standard}${selected_product.unit}</td>
             <td id="td_p-info">
-                <fmt:formatNumber value="${selected_product.price}" pattern="#,###" />10,000 원<br>
-                <fmt:formatNumber value="${selected_product.amount}" pattern="#,###" />39 개
+                <fmt:formatNumber value="${selected_product.price}" pattern="#,###" />원<br>
+                <fmt:formatNumber value="${selected_product.amount}" pattern="#,###" />개
             </td>
           </tr>
 		  <tr>

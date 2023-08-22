@@ -9,12 +9,23 @@
 <head>
     <title>회원정보수정</title>
     
-    <link href="../resources/css/mypage.css" rel="stylesheet">
-    <link href="../resources/css/mupage/mypage.css" rel="stylesheet">
+
+    <link href="../resources/css/mypage.css?v=1234" rel="stylesheet">
+    <link href="../resources/css/mypage/mypage.css?v=1234" rel="stylesheet">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="../resources/js/mypage.js"></script>
     
     <style>
+    
+    	/* a태그 공통 */
+		a:hover:not(#div_category a){text-decoration: underline;}
+    	
+    	#mp_header_area li span:hover{
+    	text-decoration: underline;
+    	cursor: pointer;
+    	}
+    	
     	#mp_main {
     		position: relative;
     		height: 600px;
@@ -177,9 +188,6 @@
 
 	        var passwordInput = $('#input_pw');
 	        var passwordConfirmInput = $('#m_pwCheck');
-	        
-	        console.log('Password Input:', passwordInput.val());
-	        console.log('Password Confirm Input:', passwordConfirmInput.val());
 
 	        if (!passwordPattern.test(passwordInput.val())) {
 	            alert('비밀번호는 8~12자리의 영소문자, 숫자 및 특수문자(@$!%*?&)를 포함해야 합니다.');
@@ -194,7 +202,34 @@
 	        }
 
 	        // 유효성 검사를 모두 통과한 경우, 폼 전송
+	        alert('비밀번호 변경이 완료되었습니다.');
 	        this.submit();
+	    });
+	});
+	
+	$(function() {
+		/* ---------------------배송지 변경--------------------- */
+	    // 기존에 열려있는 자식 창에 대한 변수 초기화
+	    let childWindow = null;
+		
+		//*** 배송지 변경 자식창 열기 ***//
+	    function openManageAddress() {
+	    	
+	    	// 기존에 자식창이 열려있는지에 대한 여부
+	    	if (childWindow) { // 이미 자식창이 열려있으면
+	            childWindow.close(); // 자식창을 닫음
+	        }
+	    	
+	    	// 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
+	    	let url = "manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=1";
+	    	// 자식창을 열고 그 여부를 변수에 저장
+	    	childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
+	    	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
+	    }
+	    
+	    //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
+	    $("#manage_address").on("click", function(){
+	    	openManageAddress();
 	    });
 	});
 </script>
@@ -210,11 +245,14 @@
 
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
+            <input type="hidden" id="session_m_idx" value="${member.m_idx}">
+            
             <div id="mp_header_user_menu">
                 <ul>
                     <li><a href="member_modifiy.do">회원정보 변경</a></li>
-                    <li><a href="password_modifiy">비밀번호 변경</a></li>
-                    <li><a href="#">배송지 관리</a></li>
+                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
+                    <li><span id="manage_address">배송지 관리</span></li>
+                    <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>
             </div>
         </div>
@@ -234,9 +272,12 @@
             </div>
         </div>
 
+        <!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">30 P</div>
+            <div id="mp_header_point_num">
+            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
+            </div>
         </div>
 
     </div>
@@ -260,9 +301,9 @@
                 <div class="mp_main_menu_title">나의 활동관리</div>
                 <div class="mp_main_menu_list">
                     <ul>
-                        <li><a href="mypage 찜목록.html">찜목록</a></li>
-                        <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
-                        <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
+                        <li><a href="wish.do">찜목록</a></li>
+                        <li><a href="#">상품 리뷰</a></li>
+                        <li><a href="#">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>

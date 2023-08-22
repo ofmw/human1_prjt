@@ -38,7 +38,6 @@ public class AjaxController {
 	private BoardFileService bfInsert, bfList, bfState;
 	@Setter(onMethod_= {@Autowired})
 	private MemberService mLogin;
-
 	
 	@GetMapping("/admin/countCategory.do")
 	@ResponseBody

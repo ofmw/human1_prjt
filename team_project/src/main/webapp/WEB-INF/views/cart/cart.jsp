@@ -849,10 +849,15 @@
         
         
         $("#order-nav_btn").on("click", function(){
+        	let od_price = parseInt($("#ordered-price").text().replace(/[^0-9]/g, ""));
+        	let od_dc = parseInt($("#discount-price").text().replace(/[^0-9]/g, ""));
+        	
         	if($("#product_total span").text() == "0"){
                 alert("장바구니에 담긴 상품이 없습니다.");
         	}else if($("#manage_address").text() == "배송지 등록"){
         		alert("배송지를 등록해주세요.");        		
+        	}else if((od_price - od_dc)<5000){
+        		alert("최소 주문금액은 5,000원 입니다.")
         	}else{
         		window.location.href = "../payment/payment.do?requestor=cart";
         	}

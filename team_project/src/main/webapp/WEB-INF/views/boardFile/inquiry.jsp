@@ -124,7 +124,7 @@
 				data: formData,
 				success: function(response){
 					alert("저장되었습니다.")
-					location.href = "faq.do"
+					location.href = "faq_member.do"
 				},
 				error: function(error){
 					alert("실패했습니다.");
@@ -176,7 +176,7 @@
 			          
 			        </table>
 		        <div id="div_sbm">
-		            <input type="button" value="이전" id="btn_back">
+		            <input type="button" value="이전" id="btn_back" onclick="history.back()">
 		            <input type="button" value="저장" id="btn_save">
 		        </div>
       		</div>

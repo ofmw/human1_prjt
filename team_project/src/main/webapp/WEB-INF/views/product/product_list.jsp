@@ -810,7 +810,7 @@ section {
                                                             <a href="product_view.do?p_id=${productList[j].p_id}">
                                                                 <div class="p_info">
                                                                     <div class="p_info_brand">${productList[j].brand}</div>
-                                                                    <div class="p_info_name">${productList[j].p_name}</div>
+                                                                    <div class="p_info_name">${productList[j].p_name} ${productList[j].standard}${productList[j].unit}</div>
                                                                     <c:if test="${productList[j].discount gt 0}">
                                                                         <div class="p_info_price">
                                                                             <fmt:formatNumber value="${productList[j].price}"
