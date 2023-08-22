@@ -194,6 +194,11 @@
 		border-radius: 3px;
 		background-color: #fcfcfc;
 	}
+	.w_checkbox{
+	   position: absolute;
+	   z-index: 100;
+	   margin: 5px;
+	}
 </style>
     
 <script>
