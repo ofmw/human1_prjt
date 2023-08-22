@@ -75,7 +75,7 @@ $(function() {
 					alert('장바구니에 상품이 추가되었습니다.');
 					//페이지 새로고침
 					location.reload();
-				} else if (response === "max") {
+				} else if (response === "max") { // 단일 상품 추가시 수량 초과한 경우
 					alert("장바구니에는 최대 20개까지 담을 수 있습니다.");
 				}
 			},
@@ -135,6 +135,9 @@ $(function() {
         height: 180px;
         margin-bottom: 5px;
         background-color: gold;
+    }
+    .w_img img{
+        width: 100%;
     }
     .w_img a{
        	display: block;
@@ -218,6 +221,7 @@ $(function() {
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
@@ -270,8 +274,8 @@ $(function() {
                 <div class="mp_main_menu_list">
                     <ul>
                         <li><a href="wish.do">찜목록</a></li>
-                        <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
-                        <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
+                        <li><a href="#">상품 리뷰</a></li>
+                        <li><a href="#">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>
@@ -328,7 +332,7 @@ $(function() {
 								            <div class="w_products">
 								            	<c:if test="${!empty wishList[j] and !empty p_info[j]}">
 									                <div class="w_img">
-									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
+									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="../resources/uploads/${p_info[j].saveFile1}" alt="${p_info[j].p_name}"></a>
 									                	<div style="display:none" class="w_img_opt-box">
 									                		<div class="w_img_opt-box-innerDiv">
 										                		<button type="button" class="c_btn">🛒</button>

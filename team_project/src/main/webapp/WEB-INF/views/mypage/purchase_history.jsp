@@ -307,12 +307,12 @@
             $("#sel2").change(function() {
                 let selectedOption = parseInt($(this).val());
                 
-                if (selectedOption === 20) { // 4개씩 표시
-                    showElements(20);
-                } else if (selectedOption === 40) { // 8개씩 표시
-                	showElements(40);
+                if (selectedOption === 4) { // 4개씩 표시
+                    showElements(selectedOption);
+                } else if (selectedOption === 8) { // 8개씩 표시
+                	showElements(selectedOption);
                 } else if (selectedOption === 100) { // 100개씩 표시
-                	showElements(100);
+                	showElements(selectedOption);
                 }
             });
             
@@ -356,9 +356,11 @@
 				
 			}
             
-            //페이지 로드시 기본 버튼 생성
-            setNav(Math.ceil(countVisibleRows() / 20)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
-            
+          	//*** 페이지 로드시 기본 버튼 생성 ***//
+    		// 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+    		// html의 #sel2의 value를 수정했을 경우 여기도 첫번째 옵션 값과 똑같게 수정해야 함
+            setNav(Math.ceil(countVisibleRows() / 4));
+          	
           	//*** 페이지 변환 ***//
             function changePage(pageNum) {
             
@@ -393,23 +395,6 @@
           		let pageNum = parseInt($(this).val());
           		console.log(pageNum);
           		changePage(pageNum);
-          		
-          		// 선택된 페이지의 페이지 내비게이션 버튼 색상 고정
-    			$(".p-nav").each(function() {
-    				
-    				if (parseInt($(this).val()) === pageNum) {
-    					$(this).css({
-    						'background-color':'#222',
-    						'color':'white'
-    					});
-    				} else {
-    					$(this).css({
-    						'background-color':'',
-    						'color':''
-    					});
-    				}
-    			
-    			});
 			});
           	
           	
@@ -455,6 +440,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
@@ -503,8 +489,8 @@
                 <div class="mp_main_menu_list">
                     <ul>
                         <li><a href="wish.do">찜목록</a></li>
-                        <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
-                        <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
+                        <li><a href="#">상품 리뷰</a></li>
+                        <li><a href="#">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>
@@ -522,8 +508,8 @@
 	                    <div id="mp_main_ph_header_opt-box">
 		                    <div id="mp_main_ph_header_sel-box">
 		                        <select id="sel2">
-		                            <option value="20" selected>20개씩</option>
-		                            <option value="40">40개씩</option>
+		                            <option value="4" selected>4개씩</option>
+		                            <option value="8">8개씩</option>
 		                            <option value="100">100개씩</option>
 		                        </select>
 		                    </div>

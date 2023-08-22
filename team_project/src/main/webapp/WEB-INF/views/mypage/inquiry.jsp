@@ -17,7 +17,7 @@
 		padding-bottom: 15px;
 		font-size: 20px;
 		font-weight: bold;
-		border-bottom: 2px solid #222;
+		border: none;
 	}
 	table{
 		margin-top: 10px;
@@ -72,6 +72,7 @@
 
 </head>
 <script type="text/javascript">
+	
 	$(function(){
 		$(".inquiry_detail_btn").click(function(){
 		    let b_idx = $(this).closest("tr").find(".b_idx").val();
@@ -106,11 +107,30 @@
         	//childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
         }
         
+        
         //*** 배송지 변경 자식창 열기 이벤트 처리 ***//
         $("#manage_address").on("click", function(){
         	openManageAddress();
         });
+        
+       	checkEmpty();
+        
 	});	
+	
+	function checkEmpty() {
+		
+		let visibleRowCount = $("#mp_main_inquiry_content table tr:visible").length;
+			
+			console.log("현재 표시된 내역: " +visibleRowCount);
+			
+			if (visibleRowCount === 1) {
+	        $("#tr_empty_history").show();
+	    } else {
+	        $("#tr_empty_history").hide();
+	    }
+	}
+
+
 </script>
 <body>
 
@@ -132,6 +152,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
@@ -184,8 +205,8 @@
                 <div class="mp_main_menu_list">
                     <ul>
                         <li><a href="wish.do">찜목록</a></li>
-                        <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
-                        <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
+                        <li><a href="#">상품 리뷰</a></li>
+                        <li><a href="#">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>
@@ -244,11 +265,7 @@
                             <td><input type="hidden" class="b_idx" value="${inquiry.b_idx}"/><a class="inquiry_detail_btn">문의상세내역</a></td>
                         </tr>
                         </c:forEach>
-                        
-                        <tr>
-                            <td colspan="4" id="td_pnav">내비게이션</td>
-                        </tr>
-                        
+                        <tr id="tr_empty_history" style="display:none;height:210px;"><td colspan="5">1:1 문의 내역이 없습니다!</td></tr>
                     </table>
                 </div>
 					<div id="mp_notice">

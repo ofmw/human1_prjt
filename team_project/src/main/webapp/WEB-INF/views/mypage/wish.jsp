@@ -102,6 +102,10 @@
 		margin-bottom: 5px;
 		background-color: gold;
 	}
+	
+	.w_img img{
+	   width: 100%
+	}
 	/* 상품 이미지 a태그 */
 	.w_img a{
 		display: block;
@@ -278,7 +282,7 @@
 						let p_id = $(this).siblings('.w_img').find('.p_id').val();
 						p_idArray.push(p_id);       
 					}); // end of .each()
-	
+						
 					// 장바구니 테이블에 추가 요청
 					addCart(p_idArray);
 	
@@ -289,6 +293,7 @@
 	
 		});
 		
+
 		/* ---------------------찜한 상품 삭제--------------------- */
 		//*** 찜목록 상품 삭제 메서드 ***//
 		function removeWish(p_idArray) {
@@ -348,7 +353,7 @@
 						alert('장바구니에 상품이 추가되었습니다.');
 						//페이지 새로고침
 						location.reload();
-					} else if (response === "max") {
+					} else if (response === "max") { // 단일 상품 추가시 수량 초과한 경우
 						alert("장바구니에는 최대 20개까지 담을 수 있습니다.");
 					}
 				},
@@ -468,11 +473,11 @@
 			let selectedOption = parseInt($(this).val());
 	            
 			if (selectedOption === 4) { // 20개씩 표시
-				showElements(4);
+				showElements(selectedOption);
 			} else if (selectedOption === 8) { // 40개씩 표시
-				showElements(8);
+				showElements(selectedOption);
 			} else if (selectedOption === 100) { // 100개씩 표시
-				showElements(100);
+				showElements(selectedOption);
 			}
 		});
 	         
@@ -501,7 +506,9 @@
 		}
 	         
 		//*** 페이지 로드시 기본 버튼 생성 ***//
-		setNav(Math.ceil($(".w_products").length / 4)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+		// 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+		// html의 #sel2의 value를 수정했을 경우 여기도 첫번째 옵션 값과 똑같게 수정해야 함
+		setNav(Math.ceil($(".w_products").length / 4));
 	
 		//*** 페이지 전환 ***//
 		function changePage(pageNum) {
@@ -580,6 +587,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
@@ -631,8 +639,8 @@
                 <div class="mp_main_menu_list">
                     <ul>
                         <li><a href="wish.do">찜목록</a></li>
-                        <li><a href="mypage 상품리뷰.html">상품 리뷰</a></li>
-                        <li><a href="mypage 상품QnA.html">상품 Q&A</a></li>
+                        <li><a href="#">상품 리뷰</a></li>
+                        <li><a href="#">상품 Q&A</a></li>
                         <li><a href="inquiry.do">1:1 문의</a></li>
                     </ul>
                 </div>
@@ -660,8 +668,8 @@
                        			<option value="name">이름순</option>
 							</select>
 	                        <select id="sel2">
-	                            <option value="4">20개씩</option>
-	                            <option value="8">40개씩</option>
+	                            <option value="4">4개씩</option>
+	                            <option value="8">8개씩</option>
 	                            <option value="100">100개씩</option>
 	                        </select>
 	                    </div>
@@ -679,7 +687,7 @@
 						            	<c:if test="${!empty p_info[j]}">
 						            		<input type="checkbox" class="w_checkbox">
 							                <div class="w_img">
-							                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="#" alt="#"></a>
+							                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="../resources/uploads/${p_info[j].saveFile1}" alt="#"></a>
 							                	<div style="display:none" class="w_img_opt-box">
 							                		<div class="w_img_opt-box-innerDiv">
 								                		<button type="button" class="c_btn">🛒</button>
@@ -708,8 +716,8 @@
 		                                        <c:if test="${p_info[j].reviews ne 0}">
 													<div class="w_info_stars">★
 														${p_info[j].stars_avg}
-														(${p_info[j].reviews})</div>
-													<!-- 괄호 안 숫자는 리뷰 갯수 -->
+														(${p_info[j].reviews})
+													</div>
 												</c:if>
 							                </div>
 						                </c:if>

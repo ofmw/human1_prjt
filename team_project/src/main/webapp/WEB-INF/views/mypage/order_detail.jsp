@@ -103,6 +103,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
@@ -262,7 +263,7 @@
                             </colgroup>
                             <c:forEach items="${p_info}" var="p">
 	                            <tr>
-	                                <td class="td_img"><a href="#"><img src="#" alt="이미지" width="90" height="90"></a></td>
+	                                <td class="td_img"><a href="#"><img src="../resources/uploads/${p.saveFile1}" alt="이미지" width="90" height="90"></a></td>
 	                                <td class="td_pname">
 	                                	<input type="hidden" class="p_id" value="${p.p_id}">
 	                                	<a href="../product/product_view.do?p_id=${p.p_id}">
