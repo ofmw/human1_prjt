@@ -34,7 +34,7 @@ public class paymentController {
 	@Setter(onMethod_= {@Autowired})	
 	private CartService cList, cAdd, cDel, cAddress;
 	@Setter(onMethod_= {@Autowired})	
-	private MemberService mBenefit;
+	private MemberService mBenefit, mOdrList, mInfo;
 	@Setter(onMethod_= {@Autowired})	
 	private PaymentService pmOrder;
 	@Setter(onMethod_= {@Autowired})	
@@ -213,8 +213,8 @@ public class paymentController {
 		return "redirect:/payment/orderCompleted.do";
 	}
 	@GetMapping("/orderCompleted.do")
-	public String orderCompleted(@RequestParam String orderNum, @RequestParam String orderName, Model model) {
-		
+	public String orderCompleted(@RequestParam String orderNum, @RequestParam String orderName, HttpServletRequest request, Model model) {
+				
 		OrderVo orderVo = pmOrder.selectOrder(orderNum);
 		
 		String[] pIds = orderVo.getProducts().split(",");
@@ -239,6 +239,34 @@ public class paymentController {
 			
 			orderList.add(cartVo);
 		}
+		
+		HttpSession session = request.getSession();
+		MemberVo member = (MemberVo)session.getAttribute("member");
+		int m_idx = member.getM_idx();	
+		int grade = member.getGrade();
+		
+		int total_paid =  mOdrList.checkTotalPaid(m_idx);
+		
+		System.out.println("total_paid check : " + total_paid);
+		
+		String strGrade = null;
+		
+		if(grade == 0) {
+			strGrade = "브론즈";
+		}else if(grade == 1) {
+			strGrade = "실버";
+		}
+		
+		if(total_paid > 500000 && grade == 0) {
+			mBenefit.gradeUp(m_idx);
+			model.addAttribute("bfGrade", strGrade);
+			model.addAttribute("afGrade", "실버");
+		}else if(total_paid > 1000000 && grade <= 1) {
+			mBenefit.gradeUp(m_idx);
+			model.addAttribute("bfGrade", strGrade);
+			model.addAttribute("afGrade", "골드");
+		}
+		
 	    model.addAttribute("orderName", orderName);
 	    model.addAttribute("orderVo", orderVo);
 	    model.addAttribute("orderList", orderList);

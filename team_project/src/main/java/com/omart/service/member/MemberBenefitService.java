@@ -27,4 +27,8 @@ public class MemberBenefitService implements MemberService {
 		dao.addPoint(pointVo);
 	}
 	
+	public void gradeUp(int m_idx) {
+		dao.gradeUp(m_idx);
+	}
+	
 }

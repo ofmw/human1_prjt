@@ -157,5 +157,15 @@
         JOIN order_list o ON m.m_idx = o.m_idx
         WHERE o.order_idx = #{order_idx}
     </select>
+    
+    <select id="checkTotalPaid" parameterType="_int" resultType="_int">
+        select sum(paid_price) as totalPaid from order_list where m_idx = #{m_idx}
+    </select>
+    
+    <update id="gradeUp" parameterType="_int">
+        update member_omart
+        set grade = grade + 1
+        where m_idx = #{m_idx}
+    </update>
 	
 </mapper>

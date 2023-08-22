@@ -19,4 +19,8 @@ public class MemberOrderListService implements MemberService {
 		return dao.orderList(m_idx);
 	}
 	
+	public int checkTotalPaid(int m_idx) {
+		return dao.checkTotalPaid(m_idx);
+	}
+	
 }

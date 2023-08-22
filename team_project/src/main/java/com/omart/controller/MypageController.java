@@ -324,7 +324,6 @@ public class MypageController {
 		return "mypage/wish";
 	}
 	
-	
 	//마이페이지 -> 인덱스
 	@GetMapping("/index.do")
 	public String mypage_index() {

@@ -22,4 +22,5 @@ public class MemberInfoService implements MemberService {
 		return dao.getGradeFromOrder(order_idx);
 	}
 	
+	
 }

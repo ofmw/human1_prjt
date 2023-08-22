@@ -44,5 +44,7 @@ public interface MemberService {
 	default public void addPoint(PointVo pointVo) {}
 	default MemberVo updatePw(MemberVo memberVo) {return null;}
 	default MemberVo updateMember(MemberVo memberVo) {return null;}
+	default int checkTotalPaid(int m_idx) {return 0;}
+	default void gradeUp(int m_idx) {}
 	
 }

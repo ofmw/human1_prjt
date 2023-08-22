@@ -75,11 +75,37 @@
     td p{
         line-height: 25px;
     }
+    #shadow_gradeChange{
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 5000;
+    }    
+    #div_gradeChange{
+        width: 400px;
+        height: 100px;
+        position: absolute;
+        border: 1px solid black;
+        top: 50%;
+        left: 50%;
+        margin-top: -100px;
+        margin-left: -200px;
+        background-color: white;
+        border-radius: 15px;
+        text-align: center;        
+    }
+    #div_gradeChange h5{
+        margin: 20px;
+    }
     
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
 	$(function(){
+		
 	    // 주문번호에서 날짜 추출
 	    var dateString = $("#order_idx").text().replace("OMT","");
 	    
@@ -118,6 +144,19 @@
         var convertedDate = formatDate(date, dateFormat);
         
         $("#convertedDate").text(convertedDate);
+        
+        var bfGrade = $("#bfGrade").val();
+        var afGrade = $("#afGrade").val();
+        var shadow = $("#shadow_gradeChange");
+
+        if (bfGrade === "") {
+            shadow.hide();
+        }
+        
+        $("#close_shadow").click(function(){
+        	shadow.hide();
+        });
+        
 	});
 </script> 
 </head>
@@ -198,10 +237,20 @@
                     
                 </table>
             </div>
-        </div>
+        </div>        
     </section>
 
     <!-- 푸터 -->
 <footer><jsp:include page="../common/footer.jsp"></jsp:include></footer>
+
+<div id = shadow_gradeChange>
+    <input type="hidden" value="${bfGrade}" id="bfGrade"/>
+    <input type="hidden" value="${afGrade}" id="afGrade"/>
+	<div id="div_gradeChange">
+	    <h5>회원등급이 [${bfGrade}]에서 [${afGrade}]로 상승했습니다.</h5>
+	    <input type="button" value="확인" id="close_shadow"/>
+	</div>
+</div>        
+
 </body>
 </html>

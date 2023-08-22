@@ -199,4 +199,14 @@ public class MemberDao{
 		return updateVo;
 	}
 	
+	//회원의 총 구매액 구하기
+	public int checkTotalPaid(int m_idx) {
+		return sqlSession.selectOne(MAPPER+".checkTotalPaid", m_idx);
+	}
+	
+	//등급 업
+	public void gradeUp(int m_idx) {
+		sqlSession.update(MAPPER+".gradeUp", m_idx);
+	}
+	
 }
