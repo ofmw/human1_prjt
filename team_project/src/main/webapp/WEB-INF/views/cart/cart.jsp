@@ -272,6 +272,9 @@
     .calprice{
         font-size: 22px;
     }
+    .soldout_price{
+        font-size: 22px;
+    }
     /* 상품 개당 가격 */
     .td_odinfo_op{
     	font-size: 11px;
@@ -368,7 +371,9 @@
 		list-style-type: circle;
 		font-size: 13px;
 	}
-
+    .soldout_text{
+        font-size: 12px;
+    }
     </style>
 
 <script>
@@ -862,6 +867,8 @@
         //let current_add = opener.sessionStorage.getItem("current_add");
         //sessionStorage.setItem("current_add", current_add);
         
+        //일시품절 상품
+        let soldout = $(".soldout_text");
         
         $("#order-nav_btn").on("click", function(){
         	let od_price = parseInt($("#ordered-price").text().replace(/[^0-9]/g, ""));
@@ -872,8 +879,10 @@
         	}else if($("#manage_address").text() == "배송지 등록"){
         		alert("배송지를 등록해주세요.");        		
         	}else if((od_price - od_dc)<5000){
-        		alert("최소 주문금액은 5,000원 입니다.")
-        	}else{
+        		alert("최소 주문금액은 5,000원 입니다.");
+        	}else if(soldout.length > 0){
+        		alert("품절상품을 삭제해주세요.");
+        	}else{        	
         		window.location.href = "../payment/payment.do?requestor=cart";
         	}
         	
@@ -926,9 +935,9 @@
                                         <td colspan="4">장바구니에 담긴 상품이 없습니다!</td>
                                     </tr>
                                    	<c:if test="${!empty CartList}">
-                                    	<c:forEach items="${CartList}" var="c">
+                                    	<c:forEach items="${CartList}" var="c" varStatus="status">
                                    			<tr>
-		                                        <td class="td_img">
+		                                        <td class="td_img">		                                            	          
 		                                            <div>
 		                                                <a href="../product/product_view.do?p_id=${c.p_id}"><img src="../resources/uploads/${c.saveFile1}" alt="${c.p_name}" width="90" height="90"></a>
 		                                                <input type="checkbox" class="sel_product">
@@ -941,7 +950,14 @@
 		                                        </td>
 		                                        <td class="td_odinfo">
 		                                            <div class="td_odinfo_price">
-		                                            	<span class="calprice"></span>
+		                                                <c:choose>
+		                                                  <c:when test="${c.stock ne 0}">
+		                                                      <span class="calprice"></span>
+		                                                  </c:when>
+		                                                  <c:otherwise>
+		                                                      <span class="soldout_price">${c.price}</span>
+		                                                  </c:otherwise>
+		                                                </c:choose>		                                            	
 		                                            	<span style="font-size:11px;padding-left:1px;">원</span>
 		                                            </div>
 		                                            <c:choose>
@@ -957,14 +973,23 @@
 		                                              </c:otherwise>
 		                                            </c:choose>		                                            
 		                                            <div class="td_odinfo_amount">
-		                                                <button type="button" class="plist_minus-btn">-</button>
-		                                                <input type="text" class="plist_amount_value" value="${c.amount}">
-		                                                <input type="hidden" class="plist_stock" value="${c.stock}"/>
-		                                                <button type="button" class="plist_plus-btn">+</button>
-		                                                <input type="hidden" class="m_idx" value="${c.m_idx}">
-		                                                <input type="hidden" class="p_id" value="${c.p_id}">
-		                                                <input type="hidden" class="price" value="${c.price}">
-		                                                <input type="hidden" class="discount" value="${c.discount}"/>
+		                                              <c:choose>
+		                                                  <c:when test="${c.stock ne 0}">
+		                                                      <button type="button" class="plist_minus-btn">-</button>
+		                                                      <input type="text" class="plist_amount_value" value="${c.amount}">
+		                                                      <input type="hidden" class="plist_stock" value="${c.stock}"/>
+		                                                      <button type="button" class="plist_plus-btn">+</button>
+		                                                      <input type="hidden" class="m_idx" value="${c.m_idx}">
+		                                                      <input type="hidden" class="p_id" value="${c.p_id}">
+		                                                      <input type="hidden" class="price" value="${c.price}">
+		                                                      <input type="hidden" class="discount" value="${c.discount}"/>
+		                                                  </c:when>
+		                                                  <c:otherwise>
+		                                                      <input type="hidden" class="m_idx" value="${c.m_idx}">
+                                                              <input type="hidden" class="p_id" value="${c.p_id}">
+		                                                      <span class="soldout_text">일시품절</span>
+		                                                  </c:otherwise>		                                                  
+		                                              </c:choose>
 		                                            </div>
 		                                        </td>
 		                                        <td class="td_delete"><button type="button">삭제하기</button></td>
