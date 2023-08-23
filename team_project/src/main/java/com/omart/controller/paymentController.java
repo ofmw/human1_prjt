@@ -243,8 +243,11 @@ public class paymentController {
 		}
 		
 		HttpSession session = request.getSession();
-		MemberVo member = (MemberVo)session.getAttribute("member");
-		int m_idx = member.getM_idx();	
+		
+		int m_idx = ((MemberVo)(session.getAttribute("member"))).getM_idx();
+		
+		MemberVo member = mInfo.getMemberInfo(m_idx);
+		
 		int grade = member.getGrade();
 		
 		int total_paid =  mOdrList.checkTotalPaid(m_idx);
@@ -259,19 +262,18 @@ public class paymentController {
 			strGrade = "실버";
 		}
 		
-		if(total_paid >= 1000000 && grade == 0) {
-			mBenefit.gradeUp(m_idx);
-			mBenefit.gradeUp(m_idx);
-			model.addAttribute("bfGrade", strGrade);
-			model.addAttribute("afGrade", "실버");
-		}else if(total_paid >= 500000 && grade == 0) {
-			mBenefit.gradeUp(m_idx);
-			model.addAttribute("bfGrade", strGrade);
-			model.addAttribute("afGrade", "실버");
-		}else if(total_paid >= 1000000 && grade == 1) {
-			mBenefit.gradeUp(m_idx);
-			model.addAttribute("bfGrade", strGrade);
-			model.addAttribute("afGrade", "골드");
+		model.addAttribute("bfGrade", strGrade);
+		
+		if(grade != 9 && grade != 8 && grade != 7) {
+			if(total_paid >= 500000 && grade == 0) {
+				mBenefit.gradeUp(m_idx);
+				model.addAttribute("afGrade", "실버");
+			}else if(total_paid >= 1000000 && grade == 0) {
+				mBenefit.gradeUp(m_idx);
+			}else if(total_paid >= 1000000 && grade == 1) {
+				mBenefit.gradeUp(m_idx);
+				model.addAttribute("afGrade", "골드");
+			}
 		}
 		
 	    model.addAttribute("orderName", orderName);

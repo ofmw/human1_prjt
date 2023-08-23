@@ -168,4 +168,7 @@
         where m_idx = #{m_idx}
     </update>
 	
+	<select id="getMemberInfo" parameterType="_int" resultType="memberVo">
+	    select * from member_omart where m_idx = #{m_idx}
+	</select>
 </mapper>

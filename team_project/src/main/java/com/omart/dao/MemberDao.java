@@ -209,4 +209,8 @@ public class MemberDao{
 		sqlSession.update(MAPPER+".gradeUp", m_idx);
 	}
 	
+	public MemberVo getMemberInfo(int m_idx) {
+		return sqlSession.selectOne(MAPPER+".getMemberInfo", m_idx);
+	}
+	
 }

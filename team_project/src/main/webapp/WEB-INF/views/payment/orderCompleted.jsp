@@ -99,6 +99,18 @@
     }
     #div_gradeChange h5{
         margin: 20px;
+        user-select: none;
+        color: #222;
+    }
+    #close_shadow{
+        width: 50px;
+        height: 30px;
+        font-size: 14px;
+        font-weight: bold;
+        border: 1px solid #222;
+        border-radius: 3px;
+        cursor: pointer;
+        color: #222;
     }
     
 </style>
@@ -149,7 +161,7 @@
         var afGrade = $("#afGrade").val();
         var shadow = $("#shadow_gradeChange");
 
-        if (bfGrade === "") {
+        if (afGrade === "") {
             shadow.hide();
         }
         

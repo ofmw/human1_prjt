@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.omart.dao.MemberDao;
+import com.omart.vo.MemberVo;
 
 import lombok.Setter;
 
@@ -13,6 +14,10 @@ public class MemberInfoService implements MemberService {
 	
 	@Setter(onMethod_={ @Autowired })
 	private MemberDao dao;
+	
+	public MemberVo getMemberInfo(int m_idx) {
+		return dao.getMemberInfo(m_idx);
+	}
 	
 	public String getMemberNameFromOrder(String order_idx) {
 		return dao.getMemberNameFromOrder(order_idx);

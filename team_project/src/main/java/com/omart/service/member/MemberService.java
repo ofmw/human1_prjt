@@ -46,5 +46,6 @@ public interface MemberService {
 	default MemberVo updateMember(MemberVo memberVo) {return null;}
 	default int checkTotalPaid(int m_idx) {return 0;}
 	default void gradeUp(int m_idx) {}
+	default MemberVo getMemberInfo(int m_idx) {return null;}
 	
 }

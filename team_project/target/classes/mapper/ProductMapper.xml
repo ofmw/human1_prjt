@@ -91,7 +91,7 @@
     <!-- 상품재고 감소 -->
     <update id="updateStock" parameterType="productVo">
         update product
-        set stock = stock - #{amount}
+        set stock = stock - #{stock}
         where p_id = #{p_id}
     </update>
     

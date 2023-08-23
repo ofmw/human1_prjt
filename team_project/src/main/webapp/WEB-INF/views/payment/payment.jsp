@@ -323,7 +323,7 @@
             }
             
             // 자식창에 로그인한 회원이 m_idx 파라미터 값 넘겨줌
-            let url = "../cart/manage_address.do?m_idx=" + $("#session_m_idx").val();
+            let url = "../cart/manage_address.do?m_idx=" + $("#session_m_idx").val() + "&page=2";
             // 자식창을 열고 그 여부를 변수에 저장
             childWindow = window.open(url, '배송지 설정', 'menubar=no,width=700,height=750');
             //childWindow = window.open(url, '_blank', 'menubar=no,width=715,height=830');
@@ -430,6 +430,12 @@
     var frm, requestor, merchant_uid, name, amount, point, receiver, selnum, address, request, pgName, shFee;
         
     function requestPay() {
+    	
+    	if($("#manage_address").text() == "배송지 등록"){
+            alert("배송지를 등록해주세요.");
+            return;
+    	}
+    	
     	frm = $("#frm_payment");
     	orderNum = "OMT"+makeMerchantUid;
     	name = $("#orderName").val();
