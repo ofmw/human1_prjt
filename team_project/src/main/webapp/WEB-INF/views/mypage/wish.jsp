@@ -614,9 +614,7 @@
         <!-- 포인트 영역 -->
         <div id="mp_header_point" class="mp_header_obj">
             <div class="mp_header_obj_title">포인트</div>
-            <div id="mp_header_point_num">
-            	<fmt:formatNumber value="${point}" pattern="#,###"/> P
-            </div>
+            <div id="mp_header_point_num"><fmt:formatNumber value="${point}" pattern="#,###"/> P</div>
         </div>
 
     </div>

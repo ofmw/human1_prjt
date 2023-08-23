@@ -29,7 +29,16 @@ $(function() {
     	shadow.css('z-index', '5000');
         shadow.fadeOut(100);
         $("body").css('overflow-y', 'visible');
-    });    
+    });
+    
+    /* 로그인 모달창 닫기 메서드 (ESC 입력) */
+    $(document).keydown(function(event) {
+	    if (event.keyCode === 27) { // ESC 키의 keyCode는 27입니다.
+	        if ($('#shadow').css('visibility') === 'visible') {
+	            $('#shadow').fadeOut(100);
+	        }
+	    }
+	});
     
     login_btn2.on("click", showShadow);    
     need_login.on("click", function(event){

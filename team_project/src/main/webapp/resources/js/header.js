@@ -23,12 +23,21 @@ $(function() {
         $("body").css('overflow', 'hidden');
     }
     
-    /* 로그인 모달창 닫기 메서드 */
+    /* 로그인 모달창 닫기 메서드 (닫기 버튼 클릭) */
     close_btn.on("click", function() {
     	shadow.css('z-index', '5000');
         shadow.fadeOut(100);
         $("body").css('overflow-y', 'visible');
     });
+    
+    /* 로그인 모달창 닫기 메서드 (ESC 입력) */
+    $(document).keydown(function(event) {
+	    if (event.keyCode === 27) { // ESC 키의 keyCode는 27입니다.
+	        if ($('#shadow').css('visibility') === 'visible') {
+	            $('#shadow').fadeOut(100);
+	        }
+	    }
+	});
 
     login_btn2.on("click", showShadow);
     need_login.on("click", function(event){
@@ -36,7 +45,6 @@ $(function() {
         showShadow();
     });
     
-
     
     /* 비밀번호 입력 CapsLock 감지 */
     let checkCapsLock = document.getElementById('m_pw');

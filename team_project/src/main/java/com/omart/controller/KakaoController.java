@@ -22,7 +22,7 @@ import lombok.Setter;
 public class KakaoController {
 	
 	@Setter(onMethod_={ @Autowired })
-	private KakaoService kToken;
+	private KakaoService kToken, kCancel;
 	@Setter(onMethod_={ @Autowired })
 	private MemberService mWish;
 	
@@ -33,28 +33,43 @@ public class KakaoController {
 		System.out.println("카카오로그인 메서드 실행");
 
 		MemberVo userInfo = new MemberVo();
-	    String access_Token = null;
+	    String access_token = null;
 	    	
     	// code는 카카오 서버로부터 받은 인가 코드
 	    System.out.println("━━━━━━━━━━━━━━━━━<카카오 로그인 요청>━━━━━━━━━━━━━━━━━");
 	    System.out.println("인가 코드: " + code);
 	    
-        access_Token = kToken.getKakaoAccessToken(code);
-        userInfo = kToken.getKakaoUserInfo(access_Token);
+        access_token = kToken.getKakaoAccessToken(code);
+        userInfo = kToken.getKakaoUserInfo(access_token);
+        String platform = userInfo.getPlatform();
         
-        List<String> wishList = mWish.getWishList(userInfo.getM_idx());
-        System.out.println("카카오 유저 m_idx: " +userInfo.getM_idx());
-        
-        session.setAttribute("access_token", access_Token);
-        session.setAttribute("member", userInfo);
-        session.setAttribute("wishList", wishList);
-        
-        // 출력
-	    System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
-	    System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
-	    System.out.println("가입된 회원 성별 : " + userInfo.getGender());
+        if (userInfo.getPlatform().equals("kakao")) {
+        	
+        	List<String> wishList = mWish.getWishList(userInfo.getM_idx());
+            System.out.println("카카오 유저 m_idx: " +userInfo.getM_idx());
+            
+            session.setAttribute("access_token", access_token);
+            session.setAttribute("member", userInfo);
+            session.setAttribute("wishList", wishList);
+            
+            // 출력
+    	    System.out.println("가입된 회원 이름 : " + userInfo.getM_name());
+    	    System.out.println("가입된 회원 이메일(id) : " + userInfo.getM_id());
+    	    System.out.println("가입된 회원 성별 : " + userInfo.getGender());
 
-	    return "redirect:/index.do";
+    	    return "redirect:/index.do";
+        } else {
+        	System.out.println("기존 가입 플랫폼 존재: " +platform);
+        	
+        	int unlink_result = kCancel.kakaoUnlink(access_token);
+        	if (unlink_result == 1) {
+        		System.out.println("카카오 계정에서 사이트 연결 해제");
+        		return "redirect:/member/checkMember.do?platform="+platform;
+        	} else {
+        		System.out.println("카카오 계정에서 사이트 연결 해제 실패");
+        		return "redirect:/index.do";
+        	}
+        }
 		
 	}
 	
