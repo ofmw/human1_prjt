@@ -198,6 +198,19 @@ $(function() {
 		font-size: 11px;
 		color: #8b96a1;
 	}
+	.soldout{
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        background-color: rgba(100, 100, 100, 0.5);
+        text-align: center;
+        line-height: 180px;
+        font-size: 17px;
+        color: white;
+        font-weight: bold;
+        user-select: none;
+        cursor: pointer;
+    }
 </style>
 
 </head>
@@ -325,7 +338,6 @@ $(function() {
             <div id="mp_main_wish" class="mp_main_obj">
                 <div class="mp_main_title"><a href="wish.do">찜목록</a></div>
                 <div id="mp_w_main_products">
-
                     <div id="w_box">
                         <div class="w_inner_elements">
 							<c:choose>
@@ -335,6 +347,9 @@ $(function() {
 								            <div class="w_products">
 								            	<c:if test="${!empty wishList[j] and !empty p_info[j]}">
 									                <div class="w_img">
+									                    <c:if test="${p_info[j].stock eq 0}">
+				                                           <div class="soldout" onclick="location.href='product_view.do?p_id=${p_info[j].p_id}'">품절</div>
+				                                        </c:if>
 									                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="../resources/uploads/${p_info[j].saveFile1}" alt="${p_info[j].p_name}"></a>
 									                	<div style="display:none" class="w_img_opt-box">
 									                		<div class="w_img_opt-box-innerDiv">
@@ -347,7 +362,7 @@ $(function() {
 									                <div class="w_info">
 									                    <div class="w_info_brand">${p_info[j].brand}</div>
 									                    <div class="w_info_name">
-									                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name}</a>
+									                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name} ${p_info[j].standard}${p_info[j].unit}</a>
 									                    </div>
 									                    <c:if test="${p_info[j].discount gt 0}">
 										                    <div class="w_info_price">

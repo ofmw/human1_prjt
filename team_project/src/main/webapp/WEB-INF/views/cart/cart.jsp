@@ -927,7 +927,6 @@
                                     </tr>
                                    	<c:if test="${!empty CartList}">
                                     	<c:forEach items="${CartList}" var="c">
-	                                    	
                                    			<tr>
 		                                        <td class="td_img">
 		                                            <div>

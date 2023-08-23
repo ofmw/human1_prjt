@@ -199,6 +199,19 @@
 	   z-index: 100;
 	   margin: 5px;
 	}
+	.soldout{
+        position: absolute;
+        width: 230px;
+        height: 230px;
+        background-color: rgba(100, 100, 100, 0.5);
+        text-align: center;
+        line-height: 230px;
+        font-size: 17px;
+        color: white;
+        font-weight: bold;
+        user-select: none;
+        cursor: pointer;
+    }
 </style>
     
 <script>
@@ -692,6 +705,9 @@
 						            	<c:if test="${!empty p_info[j]}">
 						            		<input type="checkbox" class="w_checkbox">
 							                <div class="w_img">
+							                    <c:if test="${p_info[j].stock eq 0}">
+                                                   <div class="soldout" onclick="location.href='product_view.do?p_id=${p_info[j].p_id}'">품절</div>
+                                                </c:if>
 							                	<a href="product_view.do?p_id=${p_info[j].p_id}"><img src="../resources/uploads/${p_info[j].saveFile1}" alt="#"></a>
 							                	<div style="display:none" class="w_img_opt-box">
 							                		<div class="w_img_opt-box-innerDiv">
@@ -704,7 +720,7 @@
 							                <div class="w_info">
 							                    <div class="w_info_brand">${p_info[j].brand}</div>
 							                    <div class="w_info_name">
-							                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name}</a>
+							                    	<a href="product_view.do?p_id=${p_info[j].p_id}">${p_info[j].p_name} ${p_info[j].standard}${p_info[j].unit}</a>
 							                    </div>
 							                    <c:if test="${p_info[j].discount gt 0}">
 								                    <div class="w_info_price">

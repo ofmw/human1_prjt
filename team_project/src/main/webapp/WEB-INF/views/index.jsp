@@ -540,7 +540,7 @@
 	                            <div class="p_products">
 	                                <div class="p_img">
 	                                    <c:if test="${bestList[i].stock eq 0}">
-	                                       <div class="soldout">품절</div>
+	                                       <div class="soldout" onclick="location.href='product_view.do?p_id=${bestList[i].p_id}'">품절</div>
 	                                    </c:if>		                                    
 	                                	<a href="product/product_view.do?p_id=${bestList[i].p_id}"><img class="thumbnail" src="resources/uploads/${bestList[i].saveFile1}" alt="${bestList[i].p_name}"></a>
 		                                <div style="display:none" class="p_img_opt-box">
@@ -594,6 +594,9 @@
                             <c:forEach begin="0" end="3" var="i">
 	                            <div class="p_products">
 	                                <div class="p_img">
+	                                    <c:if test="${saleList[i].stock eq 0}">
+                                           <div class="soldout">품절</div>
+                                        </c:if>
 	                                	<a href="product/product_view.do?p_id=${saleList[i].p_id}"><img class="thumbnail" src="resources/uploads/${saleList[i].saveFile1}" alt="${saleList[i].p_name}"></a>
 		                                <div style="display:none" class="p_img_opt-box">
 		                                	<div class="p_img_opt-box-innerDiv">
@@ -644,6 +647,9 @@
                             <c:forEach begin="0" end="3" var="i">                                 
                                 <div class="p_products">
 	                                <div class="p_img">
+	                                    <c:if test="${newList[i].stock eq 0}">
+                                           <div class="soldout">품절</div>
+                                        </c:if>
 	                                	<a href="product/product_view.do?p_id=${newList[i].p_id}"><img class="thumbnail" src="resources/uploads/${newList[i].saveFile1}" alt="${newList[i].p_name}"></a>
 		                                <div style="display:none" class="p_img_opt-box">
 		                                	<div class="p_img_opt-box-innerDiv">
