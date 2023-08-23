@@ -151,8 +151,8 @@
 				<div id="login_sns_area">
 				    <div id="sns_title">SNS 로그인</div>
 				    <div id="sns_box">
-				    	<button type="button" id="sns_naver_btn">네이버임시</button>
-					    <img src="../resources/img/kakao_login_large_wide.png" alt="카카오로그인" width="325" id="sns_kakao_btn">
+				    	<img src="../resources/img/네이버.png" alt="네이버로그인" width="157" id="sns_naver_btn">
+					    <img src="../resources/img/카카오.png" alt="카카오로그인" width="157" id="sns_kakao_btn">
 					</div>
 				</div>
 				
