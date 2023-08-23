@@ -39,7 +39,10 @@
 			<!-- 경로 패턴을 가리키는 특수문자(*: 0개 또는 그 이상의 글자, ?: 1개 글자, **: 0개 또는 그 이상의 폴더
 			exclude-mapping: intercepte 하지 않을 페이지들 설정 -->
 			<exclude-mapping path="/index.do"/>
+			<exclude-mapping path="/naverlogin.do"/>
 			<exclude-mapping path="/kakaologin.do"/>
+			<exclude-mapping path="/member/join.do"/>
+			<exclude-mapping path="/member/checkMember.do"/>
 			<exclude-mapping path="/**/login.do"/>
 			<exclude-mapping path="/product/*"/>
 			<exclude-mapping path="/boardFile/*"/>

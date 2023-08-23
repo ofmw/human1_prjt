@@ -4,6 +4,7 @@ package com.omart.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,15 @@ public class MemberController {
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
+	}
+	
+	@GetMapping("/checkMember.do")
+	public String checkMember(@RequestParam("platform") String platform, Model model) {
+		
+		System.out.println("멤버 체크 결과 실행");
+		
+		model.addAttribute(platform);
+		return "member/checkMember";
 	}
 	
 	@GetMapping("/join.do")

@@ -38,6 +38,13 @@ public class MemberDao{
 		
 		return sqlSession.selectOne(MAPPER+".login", map);
 	}
+	
+	//회원가입 전 기존 가입 여부 확인 (sns 계정 포함)
+	public MemberVo checkMember(String email) {
+		System.out.println("사용자 이메일 : "+email);
+		MemberVo vo = sqlSession.selectOne(MAPPER+".checkMember", email);
+		return vo;
+	}
 	  
 	//회원가입 처리
 	public int join(MemberVo vo) {	
@@ -131,10 +138,6 @@ public class MemberDao{
 		sqlSession.update(MAPPER+".recordLogin", m_idx);
 	}
 	
-	// 원본 백업
-//	public List<OrderVo> orderList(int m_idx) {
-//		return sqlSession.selectList(MAPPER+".orderList", m_idx);
-//	}
 	
 	public List<OrderVo> orderList(int m_idx) {
 		List<OrderVo> orderList = sqlSession.selectList(MAPPER+".orderList", m_idx);

@@ -75,6 +75,8 @@
 				cancel("omart");
 			} else if (platform === "kakao") {
 				cancel("kakao");
+			} else if (platform === "naver") {
+				cancel("naver");	
 			}
         	
 		});

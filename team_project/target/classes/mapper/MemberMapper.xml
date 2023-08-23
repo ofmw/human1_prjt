@@ -27,6 +27,11 @@
         CALL join_member(#{nickname}, #{birthday}, #{gender}, #{selNum}, #{email}, "kakao", "kakao")
     </insert>
     
+    <!-- 회원가입 구문 (카카오) -->
+    <insert id="njoin" parameterType="MemberVo">
+        CALL join_member(#{name}, #{birthday}, #{gender}, #{mobile}, #{email}, "naver", "naver")
+    </insert>
+    
     <!-- 회원가입시 찜목록에 행 생성하기 위해 가입정보 조회 -->
     <select id="checkM_idx" parameterType="memberVo" resultType="_int">
     	SELECT m_idx
@@ -73,18 +78,12 @@
 	    CALL cancel_member(#{m_idx})
     </delete>
     
-    <!-- 정보 찾기 -->
-	<select id="klogin" parameterType="string" resultType="memberVo">
+    <!-- 가입자 정보 찾기 -->
+	<select id="checkMember" parameterType="string" resultType="memberVo">
 		SELECT *
 		FROM member_omart
 		WHERE m_id=#{email}
 	</select>
-	
-	<!-- 카카오 회원 정보 저장 -->
-<!--<insert id="kjoin" parameterType="map">
-		INSERT INTO member_omart(m_id, m_pw, m_name, birth, platform, gender)
-		VALUES(#{email}, "kakao", #{nickname}, #{birthday}, "kakao", #{gender}) 
-	</insert>-->
 	
 	<insert id="insertWish" parameterType="_int">
 	   insert into wish (m_idx) values(#{m_idx})

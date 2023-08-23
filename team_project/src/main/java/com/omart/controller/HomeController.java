@@ -119,7 +119,6 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-
 			String referer = request.getHeader("referer");
 			System.out.println(referer);
 		

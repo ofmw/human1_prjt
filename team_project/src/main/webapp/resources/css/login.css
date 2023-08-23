@@ -178,7 +178,11 @@ a{
     color: #222;
     user-select: none;
 }
-#sns_kakao_btn{
-	cursor: pointer;
+#sns_box{
+	display: flex;
+	justify-content: space-between;
 	margin-top: 20px;
+}
+#sns_box img {
+	cursor: pointer;
 }

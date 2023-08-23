@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.omart.service.kakao.KakaoService;
 import com.omart.service.member.MemberService;
+import com.omart.service.naver.NaverService;
 import com.omart.vo.MemberVo;
 
 import lombok.Setter;
@@ -22,6 +23,8 @@ public class AjaxMemberController {
 	private MemberService mLogin, mCancel, mWish;
 	@Setter(onMethod_={ @Autowired })
 	private KakaoService kCancel;
+	@Setter(onMethod_={ @Autowired })
+	private NaverService nCancel;
 
 	// 로그인
 	@PostMapping("/**/login.do")
@@ -108,6 +111,30 @@ public class AjaxMemberController {
 		
 	}
 	
+	//네이버 회원탈퇴
+	@PostMapping("/mypage/naverCancel.do")
+	public String naverCancel(HttpSession session) {
+		
+		System.out.println("━━━━━━━━━━━━━━━━━<네이버 회원탈퇴 요청>━━━━━━━━━━━━━━━━━");
+		
+		String access_token = (String) session.getAttribute("access_token");
+		MemberVo vo = (MemberVo) session.getAttribute("member");
+		int m_idx = vo.getM_idx();
+		
+		int result = nCancel.naverCancel(access_token, m_idx);
+		
+		if (result != 0) {
+			
+			session.invalidate();
+			System.out.println("네이버 회원탈퇴 성공");
+			return "success";
+		} else {
+			System.out.println("네이버 회원탈퇴 실패");
+			return "fail";
+		}
+
+	}
+	
 	//카카오 회원탈퇴
 	@PostMapping("/mypage/kakaoCancel.do")
 	public String kakaoCancel(HttpSession session) {
@@ -124,10 +151,10 @@ public class AjaxMemberController {
 		if (result != 0) {
 			
 			session.invalidate();
-			System.out.println("회원탈퇴 성공");
+			System.out.println("카카오 회원탈퇴 성공");
 			return "success";
 		} else {
-			System.out.println("회원탈퇴 실패");
+			System.out.println("카카오 회원탈퇴 실패");
 			return "fail";
 		}
 		
