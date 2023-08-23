@@ -52,8 +52,7 @@ public class AjaxController {
 	}
 	
 	@PostMapping("/admin/editProduct.do")
-	public void editProduct(ProductVo productVo, @RequestParam("thumbnail") MultipartFile thumbnail, HttpServletRequest request) {
-		System.out.println("컨트롤러 fileCheck: "+thumbnail);
+	public void editProduct(ProductVo productVo, @RequestParam(name = "thumbnail", required = false) MultipartFile thumbnail, HttpServletRequest request) {
 		pdEdit.editProduct(productVo, thumbnail, request);
 	}
 	

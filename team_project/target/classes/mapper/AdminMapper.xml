@@ -14,23 +14,28 @@
     </insert>
     
     <update id="editProduct" parameterType="productVo">
-        update product
-        set p_id = #{p_id},
-            p_name = #{p_name},
-            brand = #{brand},
-            cost = #{cost},
-            price = #{price},
-            standard = #{standard},
-            unit = #{unit},
-            stock = #{stock},
-            discount = #{discount},
-            post_state = #{post_state},
-            sub_category = #{sub_category},
-            originfile1 = #{originFile1},
-            savefile1 = #{saveFile1}
-        where p_id = #{p_id}
-            
-    </update>
+	    update product
+	    set p_name = #{p_name},
+	        brand = #{brand},
+	        cost = #{cost},
+	        price = #{price},
+	        standard = #{standard},
+	        unit = #{unit},
+	        stock = #{stock},
+	        discount = #{discount},
+	        post_state = #{post_state},
+	        sub_category = #{sub_category}
+	        <choose>
+	            <when test="originFile1 != null and saveFile1 != null">
+	                ,originfile1 = #{originFile1},
+	                savefile1 = #{saveFile1}
+	            </when>
+	            <otherwise>
+	                <!-- 업데이트 제외할 경우 아무 작업도 하지 않음 -->
+	            </otherwise>
+	        </choose>
+	    where p_id = #{p_id}            
+	</update>
     
     <update id="stateChangeTrue" parameterType="string">
         update product

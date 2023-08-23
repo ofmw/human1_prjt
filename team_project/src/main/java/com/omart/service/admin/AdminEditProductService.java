@@ -23,30 +23,33 @@ public class AdminEditProductService implements AdminService {
 	
 	public int editProduct(ProductVo productVo, MultipartFile thumbnail, HttpServletRequest request) {
 		
-		//1. 저장 디렉터리에 저장할 새로운 파일명 만들기
-		String originFileName = thumbnail.getOriginalFilename();
-		
-		System.out.println(originFileName);
-		
-		if(originFileName.length() != 0) {
-			String ext = originFileName.substring(originFileName.lastIndexOf("."));//파일 확장자를 추출함
-			String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
-			String saveFileName = now + ext;//새로운 파일이름: 업로드 일시.확장자
+		if(thumbnail != null) {
+			//1. 저장 디렉터리에 저장할 새로운 파일명 만들기
+			String originFileName = thumbnail.getOriginalFilename();
 			
-			//2. 지정된 경로에 파일 저장
-			String saveDirectory = request.getServletContext().getRealPath("resources/uploads/");
-			String fullPath = saveDirectory + saveFileName;
+			System.out.println(originFileName);
 			
-			try {
-				thumbnail.transferTo(new File(fullPath));//지정된 경로에 파일 저장
-			} catch (IllegalStateException | IOException e) {
-				System.out.println("파일 저장 중 예외 발생");
-				e.printStackTrace();
-			} 
-			
-			productVo.setOriginFile1(originFileName);
-			productVo.setSaveFile1(saveFileName);
+			if(originFileName.length() != 0) {
+				String ext = originFileName.substring(originFileName.lastIndexOf("."));//파일 확장자를 추출함
+				String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
+				String saveFileName = now + ext;//새로운 파일이름: 업로드 일시.확장자
+				
+				//2. 지정된 경로에 파일 저장
+				String saveDirectory = request.getServletContext().getRealPath("resources/uploads/");
+				String fullPath = saveDirectory + saveFileName;
+				
+				try {
+					thumbnail.transferTo(new File(fullPath));//지정된 경로에 파일 저장
+				} catch (IllegalStateException | IOException e) {
+					System.out.println("파일 저장 중 예외 발생");
+					e.printStackTrace();
+				} 
+				
+				productVo.setOriginFile1(originFileName);
+				productVo.setSaveFile1(saveFileName);
+			}
 		}
+		
 		return dao.editProduct(productVo);
 	}
 	

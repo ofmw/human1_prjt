@@ -572,7 +572,9 @@
                 formData.append("sub_category", sub_category);
                 
                 //파일 필드
-                formData.append("thumbnail", thumbnail[0]);
+               if (thumbnail.length > 0) {
+		           formData.append("thumbnail", thumbnail[0]);
+		       }
                 
                 $.ajax({
                     
