@@ -179,7 +179,9 @@ public class paymentController {
 			ProductVo pVo = new ProductVo();
 			pVo.setP_id(p_id);
 			pVo.setSalesAmount(amount);
+			pVo.setStock(amount);
 			pdInfo.updateTotalSales(pVo);
+			pdInfo.updateStock(pVo);
 		}
 		
 		MemberVo mVo = new MemberVo();
@@ -257,11 +259,16 @@ public class paymentController {
 			strGrade = "실버";
 		}
 		
-		if(total_paid > 500000 && grade == 0) {
+		if(total_paid >= 1000000 && grade == 0) {
+			mBenefit.gradeUp(m_idx);
 			mBenefit.gradeUp(m_idx);
 			model.addAttribute("bfGrade", strGrade);
 			model.addAttribute("afGrade", "실버");
-		}else if(total_paid > 1000000 && grade <= 1) {
+		}else if(total_paid >= 500000 && grade == 0) {
+			mBenefit.gradeUp(m_idx);
+			model.addAttribute("bfGrade", strGrade);
+			model.addAttribute("afGrade", "실버");
+		}else if(total_paid >= 1000000 && grade == 1) {
 			mBenefit.gradeUp(m_idx);
 			model.addAttribute("bfGrade", strGrade);
 			model.addAttribute("afGrade", "골드");

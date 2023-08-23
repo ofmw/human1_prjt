@@ -81,8 +81,15 @@
         select count(*) from review where p_id = #{p_id}
     </select>
     
-    <!-- 상품재고 -->
+    <!-- 상품재고 설정 -->
     <update id="setStock" parameterType="productVo">
+        update product
+        set stock = stock - #{amount}
+        where p_id = #{p_id}
+    </update>
+    
+    <!-- 상품재고 감소 -->
+    <update id="updateStock" parameterType="productVo">
         update product
         set stock = stock - #{amount}
         where p_id = #{p_id}

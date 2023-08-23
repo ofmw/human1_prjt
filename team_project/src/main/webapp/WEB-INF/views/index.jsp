@@ -487,9 +487,8 @@
 	  	//*** 찜버튼 클릭 이벤트 처리 ***//
 	  	$(".p_btn").click(function() {
 	  		
-	  		if ($(this).hasClass('inWish')) {
-	  			
-	  			let p_id = [$(this).siblings(".p_id").val()]
+	  		if ($(this).hasClass('inWish')) {	  			
+	  			let p_id = [$(this).siblings(".p_id").val()];
 	  			removeWish(p_id);
 	  	    } else {
 	  	    	

@@ -425,7 +425,7 @@
 <div id="ca_area">
 
 	<div id="ca_header">
-		배송지 설정
+		배송지 관리
 		<input type="hidden" id="m_idx" value="${m_idx}">
 	</div>
 
@@ -553,8 +553,13 @@
 				<ul>
 					<li>·&nbsp;&nbsp;배송지는 최대 5개 까지 저장 가능합니다.</li>
 					<li>·&nbsp;&nbsp;기본 배송지로 설정된 배송지는 주문시 기본값으로 적용됩니다.</li>
-                    <li>·&nbsp;&nbsp;기본 배송지 및 현재 주문 배송지는 삭제할 수 없습니다.</li>
-                    <li>·&nbsp;&nbsp;배송지는 마이페이지에서도 관리 가능합니다.</li>
+					<c:if test="${page eq '1'}">
+						<li>·&nbsp;&nbsp;기본 배송지는 삭제할 수 없습니다.</li>
+					</c:if>
+					<c:if test="${page eq '2'}">
+	                    <li>·&nbsp;&nbsp;기본 배송지 및 현재 주문 배송지는 삭제할 수 없습니다.</li>
+	                    <li>·&nbsp;&nbsp;배송지는 마이페이지에서도 관리 가능합니다.</li>
+					</c:if>
 					<li>·&nbsp;&nbsp;결제 전 배송지를 반드시 확인해주세요.</li>
 				</ul>
 			</div>

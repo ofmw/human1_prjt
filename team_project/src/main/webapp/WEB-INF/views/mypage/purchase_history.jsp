@@ -308,11 +308,11 @@
                 let selectedOption = parseInt($(this).val());
                 
                 if (selectedOption === 4) { // 4개씩 표시
-                    showElements(4);
+                    showElements(selectedOption);
                 } else if (selectedOption === 8) { // 8개씩 표시
-                	showElements(8);
+                	showElements(selectedOption);
                 } else if (selectedOption === 100) { // 100개씩 표시
-                	showElements(100);
+                	showElements(selectedOption);
                 }
             });
             
@@ -356,9 +356,11 @@
 				
 			}
             
-            //페이지 로드시 기본 버튼 생성
-            setNav(Math.ceil(countVisibleRows() / 4)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
-            
+          	//*** 페이지 로드시 기본 버튼 생성 ***//
+    		// 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+    		// html의 #sel2의 value를 수정했을 경우 여기도 첫번째 옵션 값과 똑같게 수정해야 함
+            setNav(Math.ceil(countVisibleRows() / 4));
+          	
           	//*** 페이지 변환 ***//
             function changePage(pageNum) {
             
@@ -438,6 +440,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>

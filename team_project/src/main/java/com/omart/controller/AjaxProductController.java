@@ -73,29 +73,6 @@ public class AjaxProductController {
 		
 		return "success";
 	}
-	
-	//찜목록 선택 상품 장바구니 추가
-	@PostMapping("/addCart.do")
-	public String addCart(@RequestParam("p_id[]") String [] p_id,
-			 			  HttpSession session) {
-		
-		System.out.println(Arrays.toString(p_id));
-		System.out.println("addCart.do 요청됨");
-		
-		MemberVo member = (MemberVo) session.getAttribute("member");
-		int m_idx = member.getM_idx();
-		
-		int result = cAdd.addCart2(m_idx, p_id);
-		
-		if (result != 0) {
-			return "success";
-		} else if (result == 0) {
-			return "max";
-		} else {
-			return "fail";
-		}
-		
-	}
 
 	@RequestMapping("/update_product_list.do")
 	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, String category, String selectedSort, String keyword){

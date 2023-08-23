@@ -152,6 +152,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
 	                <li><a href="password_modifiy.do">비밀번호 변경</a></li>
                     <li><span id="manage_address">배송지 관리</span></li>
@@ -272,8 +273,8 @@
 						<div id="mp_notice_title">1:1 문의 안내</div>
 		                <div id="mp_notice_content">
 	                	<ul>
-	                		<li>고객센터 1:1문의에 작성하신 문의 내역입니다.</li>
-	                		<li>상세 내용은 '자세히보기' 버튼을 클릭하여 확인 가능합니다.</li>
+	                		<li>고객센터 1:1 문의에 작성하신 문의 내역입니다.</li>
+	                		<li>상세 내용은 '문의상세내역' 버튼을 클릭하여 확인 가능합니다.</li>
 	                	</ul>
 	                </div>
 	            </div>

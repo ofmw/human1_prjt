@@ -227,6 +227,7 @@ $(function(){
             $("#platForm_info").val(memberRow.find("td:nth-child(13)").text().trim());
             $("#a_date_info").val(memberRow.find("td:nth-child(11)").text().trim());
             $("#a_state_info").val(memberRow.find("td:nth-child(12)").text().trim());
+            $("#login_date_info").val(memberRow.find("td:nth-child(8)").text().trim());
             
         });
 	});
@@ -382,7 +383,7 @@ $(function(){
                         </c:choose> 
                     </td>
                     <td>${member.selNum}</td>
-                    <td>${member.login_date}</td>
+                    <td><fmt:formatDate value="${member.login_date}" pattern="yyyy-MM-dd"/></td>
                     <td><fmt:formatDate value="${member.j_date}" pattern="yyyy-MM-dd"/></td>
                     <td><fmt:formatDate value="${member.u_date}" pattern="yyyy-MM-dd"/></td>
                     <td><fmt:formatDate value="${member.a_date}" pattern="yyyy-MM-dd"/></td>
@@ -447,7 +448,7 @@ $(function(){
 		           </tr>
 		           <tr>
 			           <th>최근접속일</th>
-			           <td><input type="text" /></td>
+			           <td><input type="text" id="login_date_info" disabled/></td>
 			           <th>플랫폼</th>
 			           <td><input type="text" id="platForm_info" disabled/></td>
 		           </tr>

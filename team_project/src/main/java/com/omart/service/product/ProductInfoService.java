@@ -29,4 +29,8 @@ public class ProductInfoService implements ProductService {
 		return dao.getReviews(p_id);
 	}
 	
+	public void updateStock(ProductVo pVo) {
+		dao.updateStock(pVo);
+	}
+	
 }

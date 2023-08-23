@@ -75,8 +75,8 @@ $(function() {
 					alert('장바구니에 상품이 추가되었습니다.');
 					//페이지 새로고침
 					location.reload();
-				} else {
-					alert("장바구니 상품 추가에 실패했습니다.");
+				} else if (response === "max") { // 단일 상품 추가시 수량 초과한 경우
+					alert("장바구니에는 최대 20개까지 담을 수 있습니다.");
 				}
 			},
 			error: function () {
@@ -221,8 +221,9 @@ $(function() {
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
-	                <c:if test="${member.platform eq 'omart'}">
+	                <c:if test="${member.platform eq 'kakao'}">
 	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>

@@ -358,8 +358,8 @@
 						alert('장바구니에 상품이 추가되었습니다.');
 						//페이지 새로고침
 						location.reload();
-					} else {
-						alert("장바구니 상품 추가에 실패했습니다.");
+					} else if (response === "max") { // 단일 상품 추가시 수량 초과한 경우
+						alert("장바구니에는 최대 20개까지 담을 수 있습니다.");
 					}
 				},
 				error: function () {
@@ -478,11 +478,11 @@
 			let selectedOption = parseInt($(this).val());
 	            
 			if (selectedOption === 4) { // 20개씩 표시
-				showElements(4);
+				showElements(selectedOption);
 			} else if (selectedOption === 8) { // 40개씩 표시
-				showElements(8);
+				showElements(selectedOption);
 			} else if (selectedOption === 100) { // 100개씩 표시
-				showElements(100);
+				showElements(selectedOption);
 			}
 		});
 	         
@@ -511,7 +511,9 @@
 		}
 	         
 		//*** 페이지 로드시 기본 버튼 생성 ***//
-		setNav(Math.ceil($(".w_products").length / 4)); // 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+		// 나누는 값은 기본 표시 개수 (20개, 테스트용은 4개)
+		// html의 #sel2의 value를 수정했을 경우 여기도 첫번째 옵션 값과 똑같게 수정해야 함
+		setNav(Math.ceil($(".w_products").length / 4));
 	
 		//*** 페이지 전환 ***//
 		function changePage(pageNum) {
@@ -590,6 +592,7 @@
                 <ul>
                 	<c:if test="${member.platform eq 'omart'}">
 	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
 	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
@@ -718,8 +721,8 @@
 		                                        <c:if test="${p_info[j].reviews ne 0}">
 													<div class="w_info_stars">★
 														${p_info[j].stars_avg}
-														(${p_info[j].reviews})</div>
-													<!-- 괄호 안 숫자는 리뷰 갯수 -->
+														(${p_info[j].reviews})
+													</div>
 												</c:if>
 							                </div>
 						                </c:if>
@@ -743,7 +746,6 @@
 	                    <ul>
 	                        <li>찜목록은 최대 100개까지 저장 가능합니다.</li>
 	                        <li>판매중단 상품은 표시되지 않습니다.</li>
-	                        <li>추가할 내용</li>
 	                    </ul>
 	                </div>
                 </div>

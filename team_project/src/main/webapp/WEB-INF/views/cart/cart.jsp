@@ -684,19 +684,29 @@
             let currentAmount = $(this).siblings(".plist_amount_value");
             // 선택된 상품 수량을 int형으로 변환하여 저장
             let currentAmountValue = parseInt(currentAmount.val());
+            
+            // 선택된 상품의 재고량
+            let stock = parseInt($(this).siblings(".plist_stock").val());
 
             // 현재 버튼이 속한 행의 정보 저장
             let m_idx = parseInt($(this).siblings(".m_idx").val());
         	let p_id = $(this).siblings(".p_id").val();
         	let price = parseInt($(this).siblings(".price").val()); // 판매가격
+        	let calPrice = 0;
+        	let calPriceElement = $(this).closest('tr').find('.calprice');
         	
-            // 장바구니 테이블의 상품 수량 갱신
-        	if (currentAmountValue < 20) { // 상품 수량이 20개 미만일 때
+        	//장바구니 테이블 상품 수량을 재고량으로 제한 및 갱신
+        	if(currentAmountValue >= stock){
+        		alert("해당 상품의 재고는 "+ stock +"개 입니다.");
+        		currentAmount.val(stock);
+        		updateAmount(m_idx, p_id, stock);
+        		calPrice = calculatePrice(price, stock);
+        		calPriceElement.text(calPrice.toLocaleString());        		
+        	}else if (currentAmountValue < 20) { // 상품 수량이 20개 미만일 때
                 // 장바구니 테이블 amount 갱신
                 currentAmount.val(Math.min(currentAmountValue + 1, 20));
                 updateAmount(m_idx, p_id, currentAmountValue + 1);
-                let calPrice = calculatePrice(price, currentAmountValue + 1);
-	        	let calPriceElement = $(this).closest('tr').find('.calprice');
+                calPrice = calculatePrice(price, currentAmountValue + 1);	        	
 	            calPriceElement.text(calPrice.toLocaleString());
             } else { 
                 // 값이 20이상이면 경고창을 띄웁니다.
@@ -779,6 +789,8 @@
             let inputValue = parseInt($(this).val());
         	// 기존에 입력된 값
             let prevValue = parseInt($(this).data("prev-value"));
+        	//상품 재고
+        	let stock = parseInt($(this).siblings(".plist_stock").val());
 
             if (isNaN(inputValue)) {
                 // 숫자가 아닌 값을 입력한 경우 이전 값으로 복구
@@ -787,11 +799,14 @@
                 // 최소 주문 수량 1개로 제한
                 alert("최소 주문 수량은 1개 입니다.");
                 $(this).val(1); // 최소값으로 설정
+            } else if (inputValue > stock){
+                alert("해당 상품의 재고는 "+stock+"개 입니다.");
+                $(this).val(stock); // 재고수량으로 설정
             } else if (inputValue > 20) {
                 // 최대 주문 수량 20개로 제한
                 alert("최대 주문 수량은 20개 입니다.");
                 $(this).val(20); // 최대값으로 설정
-            }
+            } 
 
             // 기존 값을 새로 입력된 값으로 다시 저장
             $(this).data("prev-value", $(this).val());
@@ -945,6 +960,7 @@
 		                                            <div class="td_odinfo_amount">
 		                                                <button type="button" class="plist_minus-btn">-</button>
 		                                                <input type="text" class="plist_amount_value" value="${c.amount}">
+		                                                <input type="hidden" class="plist_stock" value="${c.stock}"/>
 		                                                <button type="button" class="plist_plus-btn">+</button>
 		                                                <input type="hidden" class="m_idx" value="${c.m_idx}">
 		                                                <input type="hidden" class="p_id" value="${c.p_id}">

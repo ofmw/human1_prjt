@@ -364,14 +364,17 @@
     <!-- 마이페이지 헤더부분 -->
     <div id="mp_header_area">
 
+		<!-- 회원 정보 영역 -->
         <div id="mp_header_user" class="mp_header_obj">
             <div id="mp_header_user_name">${member.m_name}님</div>
             <input type="hidden" id="session_m_idx" value="${member.m_idx}">
-            
+            <input type="hidden" id="session_platform" value="${member.platform}">            
             <div id="mp_header_user_menu">
                 <ul>
-                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
-                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
+                	<c:if test="${member.platform eq 'omart'}">
+	                    <li><a href="member_modifiy.do">회원정보 변경</a></li>
+	                    <li><a href="password_modifiy.do">비밀번호 변경</a></li>
+	                </c:if>
                     <li><span id="manage_address">배송지 관리</span></li>
                     <li><a href="cancel.do">회원 탈퇴</a></li>
                 </ul>

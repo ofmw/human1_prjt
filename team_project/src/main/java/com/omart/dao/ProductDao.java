@@ -81,4 +81,8 @@ public class ProductDao{
 		sqlSession.update(MAPPER+".setStock", pVo);
 	}
 	
+	public void updateStock(ProductVo pVo) {
+		sqlSession.update(MAPPER+".updateStock", pVo);
+	}
+	
 }

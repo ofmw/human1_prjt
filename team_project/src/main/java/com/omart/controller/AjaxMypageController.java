@@ -102,6 +102,7 @@ public class AjaxMypageController {
 		
 		AddressVo vo = new AddressVo();
 		vo.setM_idx(m_idx);
+		vo.setOriginal_a_name(a_name);
 		vo.setA_name(a_name);
 		vo.setOriginal_a_name(a_name);
 		vo.setReceiver(receiver);
