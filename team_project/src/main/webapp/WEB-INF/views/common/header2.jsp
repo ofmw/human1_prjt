@@ -136,7 +136,7 @@
                     <div id="unregist_tracking"><a href="#">비회원 배송조회</a></div>
                 </div>
 
-				<!-- 로그인 -->
+                <!-- 로그인 -->
                 <div id="login_input_area">
                     <input type="text" name="m_id" id="m_id" class="input_object" placeholder="아이디를 입력해주세요">
                     <input type="password" name="m_pw" id="m_pw" class="input_object" placeholder="비밀번호를 입력해주세요">
@@ -148,18 +148,18 @@
                     <input type="button" value="로그인" id="login_btn">
                 </div>
 
-				<div id="forgot_account_area">
-				    <a href="#">아이디 찾기</a><span id="division">|</span><a href="#">비밀번호 찾기</a>
-				</div>
-				
-				<div id="login_sns_area">
-				    <div id="sns_title">SNS 로그인</div>
-				    <div id="sns_box">
-				    	<button type="button" id="sns_naver_btn">네이버임시</button>
-					    <img src="../resources/img/kakao_login_large_wide.png" alt="카카오로그인" width="325" id="sns_kakao_btn">
-					</div>
-				</div>
-				
+                <div id="forgot_account_area">
+                    <a href="#">아이디 찾기</a><span id="division">|</span><a href="#">비밀번호 찾기</a>
+                </div>
+                
+                <div id="login_sns_area">
+                    <div id="sns_title">SNS 로그인</div>
+                    <div id="sns_box">
+                        <img src="../resources/img/네이버.png" alt="네이버로그인" width="157" id="sns_naver_btn">
+                        <img src="../resources/img/카카오.png" alt="카카오로그인" width="157" id="sns_kakao_btn">
+                    </div>
+                </div>
+                
             </div><!-- end of 로그인창 내부요소 -->
         </div><!-- end of login container -->
     </div><!-- end of shadow -->

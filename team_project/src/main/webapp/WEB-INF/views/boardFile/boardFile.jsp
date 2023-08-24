@@ -84,12 +84,13 @@
     /*---------------footer---------------*/
     #div_footer{
     	margin-top: 30px;
-        padding-left: 10px;
-	    padding-top: 10px;
+        padding-left: 20px;
+        padding-top: 20px;
 	    border-top: 2px solid black;
 	    font-size: 23px;
 	    min-width: 1260px;
 	    height: 50px;
+	    width: 1200px;
     }
     #div_footer span{
         font-size: 17px;
@@ -115,7 +116,7 @@
     	float: right;
     }
     #div_business_info {
-    	padding-left: 10px;
+    	padding-left: 20px;
     }
 	#div_business_info *{
         color: gray;
@@ -292,7 +293,8 @@
                 <div id="login_sns_area">
                     <div id="sns_title">SNS 로그인</div>
                     <div id="sns_box">
-                        <a href="#" id="sns_kakao_btn" class="sns_button"><img src="../resources/img/kakao_login_large_wide.png" alt="카카오로그인"></a>
+                        <img src="../resources/img/네이버.png" alt="네이버로그인" width="157" id="sns_naver_btn">
+                        <img src="../resources/img/카카오.png" alt="카카오로그인" width="157" id="sns_kakao_btn">
                     </div>
                 </div>
                 
