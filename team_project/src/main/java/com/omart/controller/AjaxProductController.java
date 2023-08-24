@@ -75,7 +75,7 @@ public class AjaxProductController {
 	}
 
 	@RequestMapping("/update_product_list.do")
-	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, String category, String selectedSort, String keyword){
+	public List<ProductVo> update_product_list(@RequestBody Map<String, String[]> checkedMap, Model model, String category, String selectedSort, String keyword, String page){
 		
 		String[] checked_brand = checkedMap.get("1");
 		String[] checked_sub_category = checkedMap.get("2");
@@ -84,6 +84,17 @@ public class AjaxProductController {
 		System.out.println(Arrays.toString(checked_sub_category));
 		
 		List<ProductVo> productList = pdList.productList();
+		
+		if(page != null && !page.isEmpty()) {
+			if(page.equals("best")) {
+				productList.sort(Comparator.comparing(ProductVo::getTotal_sales).reversed());
+				productList.removeIf(product -> product.getTotal_sales() == 0);				
+			}else if(page.equals("sale")) {
+				/* productList.sort(Comparator.comparing(ProductVo::getDiscount).reversed()); */
+				productList.removeIf(product -> product.getDiscount() == 0);
+			}
+			
+		}
 		
 		if(keyword != null && !keyword.isEmpty()) {
 			final String keywordLowerCase = keyword.toLowerCase();

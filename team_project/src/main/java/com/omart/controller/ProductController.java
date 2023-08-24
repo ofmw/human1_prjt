@@ -1,6 +1,9 @@
 package com.omart.controller;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,11 +39,28 @@ public class ProductController {
 		
 	//상품페이지
 	@GetMapping("/product_list.do")
-	public String productList(String keyword, String category, Model model, HttpServletRequest request) {	
+	public String productList(String keyword, String category, String page, Model model, HttpServletRequest request) {	
 			
 		System.out.println("키워드체크: "+keyword);
+		System.out.println("페이지체크: "+page);
 		
 		List<ProductVo> productList = pdList.productList();
+		
+		LocalDateTime currentDate = LocalDateTime.now();
+		
+		if(page != null && !page.isEmpty()) {
+			if(page.equals("best")) {
+				productList.sort(Comparator.comparing(ProductVo::getTotal_sales).reversed());
+				productList.removeIf(product -> product.getTotal_sales() == 0);				
+			}else if(page.equals("sale")) {
+				/* productList.sort(Comparator.comparing(ProductVo::getDiscount).reversed()); */
+				productList.removeIf(product -> product.getDiscount() == 0);
+			}else if(page.equals("new")) {
+				productList.sort(Comparator.comparing(ProductVo::getAdd_date).reversed());
+				productList.removeIf(product -> ChronoUnit.DAYS.between(product.getAdd_date().toLocalDateTime(), currentDate) > 7);
+			}
+			
+		}
 		
 		if(keyword != null && !keyword.isEmpty()) {
 			final String keywordLowerCase = keyword.toLowerCase();

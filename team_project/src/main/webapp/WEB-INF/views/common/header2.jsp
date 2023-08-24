@@ -39,14 +39,27 @@
                 
                 <!-- ㅁㄴㅇㄹ -->
 				<div id="div_persnal">
-					<div id="div_member_menu">
-						<c:choose>
-							<c:when test="${empty member}">
-            		            <span id="login_btn2">로그인</span>
-    		                    <a href="../member/join.do">회원가입</a>
-		                        <a href="../boardFile/faq_member.do">고객센터</a>
-							</c:when>
-							<c:otherwise>
+				    <div id="div_persnal_menu">
+                        <c:choose>
+                            <c:when test="${empty member}">
+                                <a class="need_login" href="#">마이페이지</a>
+                                <a class="need_login" href="#">장바구니</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="../mypage/mypage.do">마이페이지</a>
+                                <a href="../cart/cart.do">장바구니</a>
+                            </c:otherwise>
+                        </c:choose>                     
+                    </div>					
+					<div id="div_division"></div>
+	                <div id="div_member_menu">
+                        <c:choose>
+                            <c:when test="${empty member}">
+                                <span id="login_btn2">로그인</span>
+                                <a href="../member/join.do">회원가입</a>
+                                <a href="../boardFile/faq_member.do">고객센터</a>
+                            </c:when>
+                            <c:otherwise>
                                 <input type="hidden" id="m_idx" value="${member.m_idx}"/>
                                 <input type="hidden" id="m_id" value="${member.m_id}"/>
                                 <input type="hidden" id="m_name" value="${member.m_name}"/>
@@ -73,20 +86,7 @@
                                 </c:choose>                               
                                 <a href="../boardFile/faq_member.do">고객센터</a>                               
                             </c:otherwise>
-						</c:choose>
-					</div>
-					<div id="div_division"></div>
-	                <div id="div_persnal_menu">
-                        <c:choose>
-                            <c:when test="${empty member}">
-                                <a class="need_login" href="#">마이페이지</a>
-                                <a class="need_login" href="#">장바구니</a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="../mypage/mypage.do">마이페이지</a>
-                                <a href="../cart/cart.do">장바구니</a>
-                            </c:otherwise>
-                        </c:choose>                     
+                        </c:choose>
                     </div>
 				</div>
 			</div>
@@ -115,10 +115,10 @@
                 
                 <!-- 메뉴모음 -->
                 <div id="div_quick_menu">
-                    <a href="">베스트</a>
-                    <a href="">할인</a>
-                    <a href="">신상품</a>
-                    <a href="">이벤트</a>
+                    <a href="../product/product_list.do?page=best">베스트</a>
+                    <a href="../product/product_list.do?page=sale">할인</a>
+                    <a href="../product/product_list.do?page=new">신상품</a>
+                    <a href="../boardFile/event.do">이벤트</a>
                 </div>
             </div>
         </div>

@@ -43,7 +43,7 @@
 	}
 	/* 사이트 로고 영역 */
 	#div_omart_logo{
-	    margin: 10px 0 0 10px;
+	    margin-top: 10px;
 	}
 	/* 검색 영역 */
 	#input_search_area{
@@ -63,9 +63,10 @@
 	}
 	#div_persnal {
 	    display: flex;
-	    flex-direction: row;
-	    width: 360px;
+	    flex-direction: row-reverse;
+	    width: 340px;
 	    height: 40px;
+	    margin-right: 10px;
 	}
 	#div_persnal div:not(#div_division) {
 	    height: 40px;
@@ -104,7 +105,7 @@
 	    justify-content: space-between;
 	    width: 1280px;
 	    height: 100%;
-	    padding: 0 20px;
+	    padding: 0 15px;
         box-sizing: border-box;
 	}
 	/* 카테고리 */

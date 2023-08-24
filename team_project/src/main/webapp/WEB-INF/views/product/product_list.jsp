@@ -360,6 +360,7 @@ section {
         let optCheckbox = $(".opt_checkbox");
         let selectSort = $("#select_sort");
         let keyword = $("#keyword").val();
+        let page = $("#page").val();
 
         optCheckbox.change(function() {
             changeList();
@@ -392,7 +393,7 @@ section {
                 type : "post",
                 url : "update_product_list.do?category=" + category
                         + "&selectedSort=" + selectedSort + "&keyword="
-                        + keyword,
+                        + keyword + "&page=" + page,
                 data : JSON.stringify(checkedMap),
                 dataType : "json",
                 contentType : "application/json;charset=UTF-8",
@@ -678,9 +679,10 @@ section {
     <section>
         <div id="pl_area">
             <div id="pl_area_contents">
-                <input type="hidden" id="m_idx" value="${member.m_idx}"> <input
-                    type="hidden" id="check_request" value="${param.check}" /> <input
-                    type="hidden" id="keyword" value="${keyword}" />
+                <input type="hidden" id="m_idx" value="${member.m_idx}">
+                <input type="hidden" id="check_request" value="${param.check}" />
+                <input type="hidden" id="keyword" value="${keyword}" />
+                <input type="hidden" id="page" value="${param.page}"/>
                 <!-- 상단 버튼 모음 -->
                 <div id="pl_header">
                     <div id="pl_header_btn_box">
@@ -718,7 +720,17 @@ section {
                     <div id="pl_main_header">
                         <div class="pl_main_header_title">
                             <c:choose>
-                                <c:when test="${keyword eq null}">
+                                <c:when test="${keyword ne null}">
+                                    '${keyword}'(으)로 검색된 상품 ${productList.size()}건
+                                </c:when>
+                                <c:when test="${param.page ne null}">
+                                    <c:choose>
+                                        <c:when test="${param.page eq 'best'}">베스트 상품</c:when>
+                                        <c:when test="${param.page eq 'sale'}">할인 상품</c:when>
+                                        <c:when test="${param.page eq 'new'}">신규 상품</c:when>
+                                    </c:choose>
+                                </c:when>
+                                <c:otherwise>                                    
                                     <c:choose>
                                         <c:when test="${param.category eq 'AA'}">육류</c:when>
                                         <c:when test="${param.category eq 'BB'}">가공</c:when>
@@ -726,10 +738,7 @@ section {
                                         <c:when test="${param.category eq 'DD'}">야채</c:when>
                                         <c:otherwise>전체</c:otherwise>
                                     </c:choose>
-                                </c:when>
-                                <c:otherwise>
-                                '${keyword}'(으)로 검색된 상품 ${productList.size()}건
-                            </c:otherwise>
+                                </c:otherwise>
                             </c:choose>
                         </div>
                         <div id="pl_main_header_sel_box">
