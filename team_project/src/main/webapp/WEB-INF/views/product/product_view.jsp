@@ -89,7 +89,7 @@
 	    width: 500px;
 	    height: 70px;
 	    border-radius: 5px;
-	    margin: 30px 10px;
+	    margin: 15px 10px;
 	    border-color: rgb(200, 200, 200);
 	    font-size: 17px;
 	    padding-left: 10px;
@@ -350,8 +350,7 @@
 	   width: 500px;	
 	   display: flex;
 	   align-items: center;
-	   margin-top: -10px;
-	   margin-bottom: -20px;
+	   margin-bottom: -30px;
 	}	
 	#div_main_price_area fieldset {
 	   margin-left: 20px;
@@ -417,10 +416,12 @@
                 productBar.style.top = "0";
                 buy_quick.style.position = "fixed";
                 buy_quick.style.top = "0";
+                buy_quick.style.marginLeft = "3px";
                 //detail.style.marginTop = "55px";
             }else{
                 productBar.style.position = "static";
                 buy_quick.style.position = "static";
+                buy_quick.style.marginLeft = "0px";
                 //detail.style.marginTop = "0px";
             }
         });

@@ -21,18 +21,17 @@
     }
     #div_logo{
     	position: absolute;
-    	width: 100%;
+    	width: 1200px;
     	height: 70px;
     	display: flex;
     	justify-content: space-between;
     }
     #div_logo img{
     	cursor: pointer;
-    	margin-left: 40px;
     }
     #div_logo p{
         width: 150px;
-        margin-right: 130px;
+        margin-right: 80px;
         font-weight: bold;
         user-select: none;
         cursor: pointer;
